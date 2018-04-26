@@ -3,7 +3,7 @@
 <!-- This file includes targets for building FreeCol,
      the metaserver, distribution packages, running tests
      and creating documentation. -->
-<project name="FreeCol" default="package">
+<project name="FreeCol" default="package" xmlns:jacoco="antlib:org.jacoco.ant">
     <description>
         This file includes targets for building FreeCol,
         the metaserver, distribution packages, running tests
@@ -438,6 +438,83 @@
             <report todir="${freecol.build.dir}/report" />
         </junitreport>
 
+        <echo message="For detailed results of the test run see: ${freecol.build.dir}/report/index.html"/>
+
+        <fail if="error.junit" message="Automated Unit Tests failed."/>
+    </target>
+
+
+    <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+        <classpath path="test/lib/jacocoant.jar" />
+    </taskdef>
+	
+    <target name="test-server-model" depends="build-unit-tests" unless="skip.dist.test"
+            description="Runs all server model unit tests">
+        <delete dir="${freecol.build.dir}/report" />
+        <mkdir dir="${freecol.build.dir}/report"/>
+        <mkdir dir="${freecol.build.dir}/report/xml"/>
+        <!-- if the next fails then here is the long answer:
+             http://ant.apache.org/faq.html#delegating-classloader
+             the short answer depends.
+             if you have Ant 1.7, the junit.jar can exist on the classpath.
+             upgrading to 1.7 may be the best solution.
+
+             if you have Ant 1.6:
+             ant -lib test/lib/junit.jar testall
+             if you have a version of Ant prior to 1.6 on Windows:
+             set CLASSPATH=%CLASSPATH%;test\lib\junit.jar
+             ant testall
+             if you have a version of Ant prior to 1.6 on UNIX:
+             export CLASSPATH=${CLASSPATH}:test/lib/junit.jar; ant testall
+        -->
+        <!-- Java Code Coverage -->
+
+        	
+	    	<jacoco:coverage destfile="${freecol.build.dir}/jacoco.exec">
+	        <junit printsummary="on" errorProperty="error.junit"
+	               failureProperty="error.junit" fork="yes" maxmemory="96M">
+	            <classpath refid="test.run.classpath"/>
+	            <formatter type="xml" />
+	
+	            <test todir="${freecol.build.dir}/report/xml"
+	                  name="net.sf.freecol.server.model.AllTests" fork="yes"/>
+	
+	            <!--
+	                <batchtest fork="false" todir="${freecol.build.dir}/report/xml">
+	                <fileset dir="test/src" includes="**/*Test.java" />
+	                </batchtest>
+	            -->
+	            <sysproperty key="java.awt.headless" value="true" />
+	        </junit>
+	    </jacoco:coverage>
+
+        <junitreport>
+            <fileset dir="${freecol.build.dir}/report/xml">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report todir="${freecol.build.dir}/report" />
+        </junitreport>
+	
+	    	<jacoco:report>
+	    	    <executiondata>
+	    	        <file file="${freecol.build.dir}/jacoco.exec" />
+	    	    </executiondata>
+	    	 
+	    	    <structure name="AntTestReporting">
+	    	        <classfiles>
+	    	            <fileset dir="${freecol.build.dir}/net/sf/freecol/server/model">
+	    	                <include name="**/*.class" />
+	    	                <!-- Exclude classes necessary for testing only from the code coverage report-->
+	    	                <exclude name="**/*Test*.class" />
+	    	                <!-- Exclude inner classes -->
+	    	                <exclude name="**/*$*.class" />
+	    	            </fileset>
+	    	        </classfiles>
+	    	    </structure>
+	    	 
+	    	    <html destdir="${freecol.build.dir}/report/jacoco" />
+	    	</jacoco:report>
+        	
         <echo message="For detailed results of the test run see: ${freecol.build.dir}/report/index.html"/>
 
         <fail if="error.junit" message="Automated Unit Tests failed."/>
