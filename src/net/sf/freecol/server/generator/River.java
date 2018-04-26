@@ -20,6 +20,7 @@
 package net.sf.freecol.server.generator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -43,6 +44,25 @@ public class River {
     private static final Logger logger = Logger.getLogger(SimpleMapGenerator.class.getName());
 
     private final TileImprovementType riverType;
+    
+    private static final HashMap<Direction, Direction> rightMap;
+    static
+    {
+    		rightMap = new HashMap<Direction, Direction>();
+    		rightMap.put(Direction.NE, Direction.SE);
+    		rightMap.put(Direction.SE, Direction.SW);
+    		rightMap.put(Direction.SW, Direction.NW);
+    		rightMap.put(Direction.NW, Direction.NE);
+    }
+    private static final HashMap<Direction, Direction> leftMap;
+    static
+    {
+    		leftMap = new HashMap<Direction, Direction>();
+    		leftMap.put(Direction.NE, Direction.NW);
+    		leftMap.put(Direction.SE, Direction.NE);
+    		leftMap.put(Direction.SW, Direction.SE);
+    		leftMap.put(Direction.NW, Direction.SW);
+    }
 
     /**
      * Possible direction changes for a river.
@@ -58,31 +78,9 @@ public class River {
             case STRAIGHT_AHEAD:
                 return oldDirection;
             case RIGHT_TURN:
-                switch(oldDirection) {
-                case NE:
-                    return Direction.SE;
-                case SE:
-                    return Direction.SW;
-                case SW:
-                    return Direction.NW;
-                case NW:
-                    return Direction.NE;
-                default:
-                    return oldDirection;
-                }
+            		return rightMap.get(oldDirection);
             case LEFT_TURN:
-                switch(oldDirection) {
-                case NE:
-                    return Direction.NW;
-                case SE:
-                    return Direction.NE;
-                case SW:
-                    return Direction.SE;
-                case NW:
-                    return Direction.SW;
-                default:
-                    return oldDirection;
-                }
+            		return leftMap.get(oldDirection);
             }
             return oldDirection;
         }

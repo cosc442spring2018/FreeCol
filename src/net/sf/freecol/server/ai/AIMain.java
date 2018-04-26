@@ -619,8 +619,6 @@ public class AIMain extends FreeColObject
             // We are hosed.  Try to resynchronize at the end of the tag
             // or aiMain.
             final String mainTag = getXMLElementTagName();
-            while (xr.nextTag() != XMLStreamConstants.END_ELEMENT
-                || !(xr.atTag(tag) || xr.atTag(mainTag)));
         }
     }
 

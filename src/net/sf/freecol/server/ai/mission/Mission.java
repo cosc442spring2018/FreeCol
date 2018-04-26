@@ -588,7 +588,7 @@ public abstract class Mission extends AIObject {
      */
     protected void moveRandomlyTurn(String logMe) {
         Direction direction = null;
-        while ((direction = moveRandomly(logMe, direction)) != null);
+        direction = moveRandomly(logMe, direction);
         getUnit().setMovesLeft(0);
     }
 
