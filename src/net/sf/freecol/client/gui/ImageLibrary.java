@@ -88,13 +88,15 @@ public final class ImageLibrary {
      * times scaling factor times requested size.
      */
     public static final Dimension ICON_SIZE = new Dimension(32, 32),
-                                  BUILDING_SIZE = new Dimension(128, 96),
+// TODO from UCDetector: Constant "ImageLibrary.BUILDING_SIZE" has 0 references
+//BUILDING_SIZE = new Dimension(128, 96), // NO_UCD (unused code)
                                   TILE_SIZE = new Dimension(128, 64),
                                   TILE_OVERLAY_SIZE = new Dimension(128, 96),
                                   TILE_FOREST_SIZE = new Dimension(128, 84);
 
     public static final String DELETE = "image.miscicon.delete",
-                               PLOWED = "image.tile.model.improvement.plow",
+// TODO from UCDetector: Constant "ImageLibrary.PLOWED" has 0 references
+//PLOWED = "image.tile.model.improvement.plow", // NO_UCD (unused code)
                                UNIT_SELECT = "image.tile.unitSelect",
                                TILE_TAKEN = "image.tile.tileTaken",
                                TILE_OWNED_BY_INDIANS = "image.tileitem.nativeLand",
@@ -303,9 +305,10 @@ public final class ImageLibrary {
      * @param type The type of the terrain-image to return.
      * @return The image at the given index.
      */
-    public BufferedImage getForestImage(TileType type) {
-        return getForestImage(type, tileForestSize);
-    }
+// TODO from UCDetector: Method "ImageLibrary.getForestImage(TileType)" has 0 references
+//    public BufferedImage getForestImage(TileType type) { // NO_UCD (unused code)
+//        return getForestImage(type, tileForestSize);
+//    }
 
     public static BufferedImage getForestImage(TileType type, Dimension size) {
         return ResourceManager.getImage("image.tileforest." + type.getId(),
@@ -387,11 +390,12 @@ public final class ImageLibrary {
         return ResourceManager.getImage(key, scale);
     }
 
-    public static BufferedImage getBuildingImage(BuildingType buildingType,
-                                                 float scale) {
-        return ResourceManager.getImage("image.buildingicon."
-            + buildingType.getId(), scale);
-    }
+// TODO Remove unused code found by UCDetector
+//     public static BufferedImage getBuildingImage(BuildingType buildingType,
+//                                                  float scale) {
+//         return ResourceManager.getImage("image.buildingicon."
+//             + buildingType.getId(), scale);
+//     }
 
     public static BufferedImage getBuildingImage(BuildingType buildingType,
                                                  Dimension size) {
@@ -753,10 +757,11 @@ public final class ImageLibrary {
             unit.hasNativeEthnicity(), grayscale, scaleFactor);
     }
 
-    public static BufferedImage getUnitImage(Unit unit, float scale) {
-        return getUnitImage(unit.getType(), unit.getRole().getId(),
-            unit.hasNativeEthnicity(), false, scale);
-    }
+// TODO Remove unused code found by UCDetector
+//     public static BufferedImage getUnitImage(Unit unit, float scale) {
+//         return getUnitImage(unit.getType(), unit.getRole().getId(),
+//             unit.hasNativeEthnicity(), false, scale);
+//     }
 
     public BufferedImage getTinyUnitImage(UnitType unitType) {
         return getUnitImage(unitType, unitType.getDisplayRoleId(),
@@ -936,16 +941,17 @@ public final class ImageLibrary {
      * @param image The <code>Image</code> object.
      * @return The created <code>BufferedImage</code> object.
      */
-    public static BufferedImage createBufferedImage(Image image) {
-        if(image == null)
-            return null;
-        BufferedImage result = new BufferedImage(image.getWidth(null),
-            image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = result.createGraphics();
-        g.drawImage(image, 0, 0, null);
-        g.dispose();
-        return result;
-    }
+ // TODO Remove unused code found by UCDetector    
+//    public static BufferedImage createBufferedImage(Image image) {
+//        if(image == null)
+//            return null;
+//        BufferedImage result = new BufferedImage(image.getWidth(null),
+//            image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+//        Graphics2D g = result.createGraphics();
+//        g.drawImage(image, 0, 0, null);
+//        g.dispose();
+//        return result;
+//    }
 
     public static BufferedImage createMirroredImage(Image image) {
         if(image == null)
@@ -980,23 +986,24 @@ public final class ImageLibrary {
      * @param target The offset.
      * @return The faded image.
      */
-    public static BufferedImage fadeImage(Image img, float fade, float target) {
-        int w = img.getWidth(null);
-        int h = img.getHeight(null);
-        BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = bi.createGraphics();
-        g.drawImage(img, 0, 0, null);
-
-        float offset = target * (1.0f - fade);
-        float[] scales = { fade, fade, fade, 1.0f };
-        float[] offsets = { offset, offset, offset, 0.0f };
-        RescaleOp rop = new RescaleOp(scales, offsets, null);
-
-        g.drawImage(bi, rop, 0, 0);
-
-        g.dispose();
-        return bi;
-    }
+// TODO Remove unused code found by UCDetector
+//    public static BufferedImage fadeImage(Image img, float fade, float target) {
+//        int w = img.getWidth(null);
+//        int h = img.getHeight(null);
+//        BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+//        Graphics2D g = bi.createGraphics();
+//        g.drawImage(img, 0, 0, null);
+//
+//        float offset = target * (1.0f - fade);
+//        float[] scales = { fade, fade, fade, 1.0f };
+//        float[] offsets = { offset, offset, offset, 0.0f };
+//        RescaleOp rop = new RescaleOp(scales, offsets, null);
+//
+//        g.drawImage(bi, rop, 0, 0);
+//
+//        g.dispose();
+//        return bi;
+//    }
 
     /**
      * Create a "chip" with the given text and colors.

@@ -68,7 +68,9 @@ import net.sf.freecol.server.FreeColServer.GameState;
  */
 public final class FreeColClient {
 
-    private static final Logger logger = Logger.getLogger(FreeColClient.class.getName());
+    private static final String SOUND_INTRO_GENERAL = "sound.intro.general";
+
+	private static final Logger logger = Logger.getLogger(FreeColClient.class.getName());
 
     private final ConnectController connectController;
 
@@ -281,14 +283,14 @@ public final class FreeColClient {
         //     do (which will often be to progress through the
         //     NewPanel to a call to the connect controller to start a game)
         if (savedGame != null) {
-            soundController.playSound("sound.intro.general");
+            soundController.playSound(SOUND_INTRO_GENERAL);
             SwingUtilities.invokeLater(() -> {
                     if (!connectController.startSavedGame(savedGame, userMsg)) {
                         gui.showMainPanel(userMsg);
                     }
                 });
         } else if (spec != null) { // Debug or fast start
-            soundController.playSound("sound.intro.general");
+            soundController.playSound(SOUND_INTRO_GENERAL);
             SwingUtilities.invokeLater(() -> {
                     if (!connectController.startSinglePlayerGame(spec, true)) {
                         gui.showMainPanel(userMsg);
@@ -299,7 +301,7 @@ public final class FreeColClient {
                     gui.showOpeningVideo(userMsg);
                 });
         } else {
-            soundController.playSound("sound.intro.general");
+            soundController.playSound(SOUND_INTRO_GENERAL);
             SwingUtilities.invokeLater(() -> {
                     gui.showMainPanel(userMsg);
                 });
@@ -361,7 +363,6 @@ public final class FreeColClient {
             clop.merge(userOptions);
         }
 
-        //logger.info("Final client options: " + clop.toString());
         return clop;
     }
 
@@ -754,12 +755,13 @@ public final class FreeColClient {
         gui.showNewPanel(specification);
     }
 
-    /**
-     * Continue playing after winning the game.
-     */
-    public void continuePlaying() {
-        askServer().continuePlaying();
-    }
+// TODO Remove unused code found by UCDetector
+//     /**
+//      * Continue playing after winning the game.
+//      */
+//     public void continuePlaying() {
+//         askServer().continuePlaying();
+//     }
 
     /**
      * Start the game skipping turns.

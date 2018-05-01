@@ -50,7 +50,8 @@ import net.sf.freecol.common.resources.ResourceManager;
 public abstract class FreeColAction extends AbstractAction
     implements Option<FreeColAction> {
 
-    /** Protected to congregate the subclasses here. */
+    private static final String ACTION = "action";
+	/** Protected to congregate the subclasses here. */
     protected static final Logger logger = Logger.getLogger(FreeColAction.class.getName());
 
     /**
@@ -63,7 +64,7 @@ public abstract class FreeColAction extends AbstractAction
      */
     public class InnerMenuKeyListener implements MenuKeyListener {
 
-        final int mnemonic;
+        private final int mnemonic;
 
 
         public InnerMenuKeyListener() {
@@ -416,6 +417,6 @@ public abstract class FreeColAction extends AbstractAction
      * @return "action".
      */
     public static String getXMLElementTagName() {
-        return "action";
+        return ACTION;
     }
 }

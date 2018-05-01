@@ -413,7 +413,7 @@ public final class TileViewer {
      * @param g a <code>Graphics2D</code>
      * @param image the BufferedImage
      */
-    void displayLargeCenteredImage(Graphics2D g, BufferedImage image) {
+    private void displayLargeCenteredImage(Graphics2D g, BufferedImage image) {
         int y = tileHeight - image.getHeight();
         if(y > 0)
             y /= 2;
@@ -549,14 +549,7 @@ public final class TileViewer {
             }
             break;
         case ClientOptions.DISPLAY_TILE_TEXT_REGIONS:
-            if (tile.getRegion() != null) {
-                if (FreeColDebugger.isInDebugMode(FreeColDebugger.DebugMode.MENUS)
-                    && tile.getRegion().getName() == null) {
-                    text = tile.getRegion().getSuffix();
-                } else {
-                    text = Messages.message(tile.getRegion().getLabel());
-                }
-            }
+            text = getRegion(tile, text);
             break;
         case ClientOptions.DISPLAY_TILE_TEXT_EMPTY:
             break;
@@ -600,6 +593,19 @@ public final class TileViewer {
                 (tileHeight - g.getFontMetrics().getAscent()) / 2);
         }
     }
+
+
+	private String getRegion(Tile tile, String text) {
+		if (tile.getRegion() != null) {
+		    if (FreeColDebugger.isInDebugMode(FreeColDebugger.DebugMode.MENUS)
+		        && tile.getRegion().getName() == null) {
+		        text = tile.getRegion().getSuffix();
+		    } else {
+		        text = Messages.message(tile.getRegion().getLabel());
+		    }
+		}
+		return text;
+	}
 
     /**
      * Displays the given Tile onto the given Graphics2D object at the
@@ -656,21 +662,7 @@ public final class TileViewer {
                 final int colonyLabels = freeColClient.getClientOptions()
                     .getInteger(ClientOptions.COLONY_LABELS);
                 if (colonyLabels != ClientOptions.COLONY_LABELS_MODERN) {
-                    // Draw the settlement chip
-                    chip = lib.getIndianSettlementChip(g, is);
-                    g.drawImage(chip, (int)xOffset, (int)yOffset, null);
-                    xOffset += chip.getWidth() + 2;
-
-                    // Draw the mission chip if needed.
-                    Unit missionary = is.getMissionary();
-                    if (missionary != null) {
-                        boolean expert
-                            = missionary.hasAbility(Ability.EXPERT_MISSIONARY);
-                        g.drawImage(lib.getMissionChip(g, missionary.getOwner(),
-                                                       expert),
-                                    (int)xOffset, (int)yOffset, null);
-                        xOffset += chip.getWidth() + 2;
-                    }
+                    xOffset = drawNecessaryChip(g, is, xOffset, yOffset);
                 }
 
                 // Draw the alarm chip if needed.
@@ -682,6 +674,27 @@ public final class TileViewer {
             }
         }
     }
+
+
+	private float drawNecessaryChip(Graphics2D g, IndianSettlement is, float xOffset, float yOffset) {
+		BufferedImage chip;
+		// Draw the settlement chip
+		chip = lib.getIndianSettlementChip(g, is);
+		g.drawImage(chip, (int)xOffset, (int)yOffset, null);
+		xOffset += chip.getWidth() + 2;
+
+		// Draw the mission chip if needed.
+		Unit missionary = is.getMissionary();
+		if (missionary != null) {
+		    boolean expert
+		        = missionary.hasAbility(Ability.EXPERT_MISSIONARY);
+		    g.drawImage(lib.getMissionChip(g, missionary.getOwner(),
+		                                   expert),
+		                (int)xOffset, (int)yOffset, null);
+		    xOffset += chip.getWidth() + 2;
+		}
+		return xOffset;
+	}
 
     /**
      * Displays the given tile's items onto the given Graphics2D object.
