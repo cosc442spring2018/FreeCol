@@ -80,7 +80,7 @@ public final class FreeCol {
     private static final String FREECOL_VERSION = "0.11.6";
 
     /** The difficulty levels. */
-    public static final String[] DIFFICULTIES = {
+    private static final String[] DIFFICULTIES = {
         "veryEasy", "easy", "medium", "hard", "veryHard"
     };
 
@@ -124,7 +124,8 @@ public final class FreeCol {
     private static final int GUI_SCALE_MIN_PCT = 100;
     private static final int GUI_SCALE_MAX_PCT = 200;
     private static final int GUI_SCALE_STEP_PCT = 25;
-    public static final float GUI_SCALE_MIN = GUI_SCALE_MIN_PCT / 100.0f;
+// TODO Remove unused code found by UCDetector
+//     public static final float GUI_SCALE_MIN = GUI_SCALE_MIN_PCT / 100.0f;
     public static final float GUI_SCALE_MAX = GUI_SCALE_MAX_PCT / 100.0f;
     public static final float GUI_SCALE_STEP = GUI_SCALE_STEP_PCT / 100.0f;
     public static final float GUI_SCALE_DEFAULT = 1.0f;
@@ -623,10 +624,10 @@ public final class FreeCol {
             }
 
             if (line.hasOption("default-locale")) {
-                ; // Do nothing, already handled in main().
+
             }
             if (line.hasOption("freecol-data")) {
-                ; // Do nothing, already handled in main().
+
             }
 
             if (line.hasOption("advantages")) {

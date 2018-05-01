@@ -83,7 +83,13 @@ import org.w3c.dom.NodeList;
  */
 public final class InGameInputHandler extends InputHandler {
 
-    private static final Logger logger = Logger.getLogger(InGameInputHandler.class.getName());
+    private static final String PLAYER = "player";
+
+	private static final String ATTACK_ANIMATION_FOR = "Attack animation for: ";
+
+	private static final String ANIMATION_FOR = "Animation for: ";
+
+	private static final Logger logger = Logger.getLogger(InGameInputHandler.class.getName());
 
     // A bunch of predefined non-closure runnables.
     private final Runnable closeMenusRunnable = () -> {
@@ -376,44 +382,44 @@ public final class InGameInputHandler extends InputHandler {
         Unit u;
 
         if ((str = element.getAttribute("attacker")).isEmpty()) {
-            throw new IllegalStateException("Attack animation for: "
+            throw new IllegalStateException(ATTACK_ANIMATION_FOR
                 + player.getId() + " missing attacker attribute.");
         }
         if ((u = game.getFreeColGameObject(str, Unit.class)) == null
             && (u = selectUnitFromElement(game, element, str)) == null) {
-            throw new IllegalStateException("Attack animation for: "
+            throw new IllegalStateException(ATTACK_ANIMATION_FOR
                 + player.getId() + " omitted attacker: " + str);
         }
         final Unit attacker = u;
 
         if ((str = element.getAttribute("defender")).isEmpty()) {
-            throw new IllegalStateException("Attack animation for: "
+            throw new IllegalStateException(ATTACK_ANIMATION_FOR
                 + player.getId() + " missing defender attribute.");
         }
         if ((u = game.getFreeColGameObject(str, Unit.class)) == null
             && (u = selectUnitFromElement(game, element, str)) == null) {
-            throw new IllegalStateException("Attack animation for: "
+            throw new IllegalStateException(ATTACK_ANIMATION_FOR
                 + player.getId() + " omitted defender: " + str);
         }
         final Unit defender = u;
 
         if ((str = element.getAttribute("attackerTile")).isEmpty()) {
-            throw new IllegalStateException("Attack animation for: "
+            throw new IllegalStateException(ATTACK_ANIMATION_FOR
                 + player.getId() + " missing attacker tile attribute.");
         }
         final Tile attackerTile = game.getFreeColGameObject(str, Tile.class);
         if (attackerTile == null) {
-            throw new IllegalStateException("Attack animation for: "
+            throw new IllegalStateException(ATTACK_ANIMATION_FOR
                 + player.getId() + " omitted attacker tile: " + str);
         }
 
         if ((str = element.getAttribute("defenderTile")).isEmpty()) {
-            throw new IllegalStateException("Attack animation for: "
+            throw new IllegalStateException(ATTACK_ANIMATION_FOR
                 + player.getId() + " missing defender tile attribute.");
         }
         final Tile defenderTile = game.getFreeColGameObject(str, Tile.class);
         if (defenderTile == null) {
-            throw new IllegalStateException("Attack animation for: "
+            throw new IllegalStateException(ATTACK_ANIMATION_FOR
                 + player.getId() + " omitted defender tile: " + str);
         }
 
@@ -446,7 +452,7 @@ public final class InGameInputHandler extends InputHandler {
 
         String unitId = element.getAttribute("unit");
         if (unitId.isEmpty()) {
-            logger.warning("Animation for: " + player.getId()
+            logger.warning(ANIMATION_FOR + player.getId()
                 + " missing unitId.");
             return null;
         }
@@ -456,7 +462,7 @@ public final class InGameInputHandler extends InputHandler {
             //if (u != null) logger.info("Added unit from element: " + unitId);
         }
         if (u == null) {
-            logger.warning("Animation for: " + player.getId()
+            logger.warning(ANIMATION_FOR + player.getId()
                 + " missing unit:" + unitId);
             return null;
         }
@@ -464,26 +470,26 @@ public final class InGameInputHandler extends InputHandler {
 
         String oldTileId = element.getAttribute("oldTile");
         if (oldTileId.isEmpty()) {
-            logger.warning("Animation for: " + player.getId()
+            logger.warning(ANIMATION_FOR + player.getId()
                 + " missing oldTileId");
             return null;
         }
         final Tile oldTile = game.getFreeColGameObject(oldTileId, Tile.class);
         if (oldTile == null) {
-            logger.warning("Animation for: " + player.getId()
+            logger.warning(ANIMATION_FOR + player.getId()
                 + " missing oldTile: " + oldTileId);
             return null;
         }
 
         String newTileId = element.getAttribute("newTile");
         if (newTileId.isEmpty()) {
-            logger.warning("Animation for: " + player.getId()
+            logger.warning(ANIMATION_FOR + player.getId()
                 + " missing newTileId");
             return null;
         }
         final Tile newTile = game.getFreeColGameObject(newTileId, Tile.class);
         if (newTile == null) {
-            logger.warning("Animation for: " + player.getId()
+            logger.warning(ANIMATION_FOR + player.getId()
                 + " missing newTile: " + newTileId);
             return null;
         }
@@ -584,26 +590,26 @@ public final class InGameInputHandler extends InputHandler {
      *     tree) that holds all the information.
      * @return Null.
      */
-    private Element disposeUnits(Element element) {
-        Game game = getGame();
-        NodeList nodes = element.getChildNodes();
-
-        for (int i = 0; i < nodes.getLength(); i++) {
-            // Do not read the whole unit out of the element as we are
-            // only going to dispose of it, not forgetting that the
-            // server may have already done so and its view will only
-            // mislead us here in the client.
-            Element e = (Element) nodes.item(i);
-            String id = FreeColObject.readId(e);
-            Unit u = game.getFreeColGameObject(id, Unit.class);
-            if (u == null) {
-                logger.warning("Object is not a unit");
-            } else {
-                u.dispose();
-            }
-        }
-        return null;
-    }
+//    private Element disposeUnits(Element element) {
+//        Game game = getGame();
+//        NodeList nodes = element.getChildNodes();
+//
+//        for (int i = 0; i < nodes.getLength(); i++) {
+//            // Do not read the whole unit out of the element as we are
+//            // only going to dispose of it, not forgetting that the
+//            // server may have already done so and its view will only
+//            // mislead us here in the client.
+//            Element e = (Element) nodes.item(i);
+//            String id = FreeColObject.readId(e);
+//            Unit u = game.getFreeColGameObject(id, Unit.class);
+//            if (u == null) {
+//                logger.warning("Object is not a unit");
+//            } else {
+//                u.dispose();
+//            }
+//        }
+//        return null;
+//    }
 
     /**
      * Handle an "error"-message.
@@ -952,7 +958,7 @@ public final class InGameInputHandler extends InputHandler {
      */
     private Element setAI(Element element) {
         final Game game = getGame();
-        Player p = game.getFreeColGameObject(element.getAttribute("player"),
+        Player p = game.getFreeColGameObject(element.getAttribute(PLAYER),
                                              Player.class);
         p.setAI(Boolean.parseBoolean(element.getAttribute("ai")));
 
@@ -968,7 +974,7 @@ public final class InGameInputHandler extends InputHandler {
      */
     private Element setCurrentPlayer(Element element) {
         final Player player
-            = getGame().getFreeColGameObject(element.getAttribute("player"),
+            = getGame().getFreeColGameObject(element.getAttribute(PLAYER),
                                              Player.class);
         if (player == null) {
             logger.warning("Invalid player for setCurrentPlayer");
@@ -988,7 +994,7 @@ public final class InGameInputHandler extends InputHandler {
      */
     private Element setDead(Element element) {
         final Player player = getGame()
-            .getFreeColGameObject(element.getAttribute("player"),Player.class);
+            .getFreeColGameObject(element.getAttribute(PLAYER),Player.class);
         if (player == null) {
             logger.warning("Invalid player for setDead");
             return null;

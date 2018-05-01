@@ -79,7 +79,11 @@ import javax.xml.stream.events.XMLEvent;
  */
 public class ClientOptions extends OptionGroup {
 
-    private static final Logger logger = Logger.getLogger(ClientOptions.class.getName());
+    private static final String CLIENT_OPTIONS_SAVEGAMES = "clientOptions.savegames";
+
+	private static final String CLIENT_OPTIONS_GUI = "clientOptions.gui";
+
+	private static final Logger logger = Logger.getLogger(ClientOptions.class.getName());
 
     //
     // Constants for each client option.
@@ -99,8 +103,9 @@ public class ClientOptions extends OptionGroup {
     public static final String LANGUAGE
         = "model.option.languageOption";
     // Value for automatic language selection.
-    public static final String AUTOMATIC
-        = "clientOptions.gui.languageOption.autoDetectLanguage";
+// TODO Remove unused code found by UCDetector
+//     public static final String AUTOMATIC
+//         = "clientOptions.gui.languageOption.autoDetectLanguage";
 
     /**
      * Used by GUI, the number will be displayed when a group of goods are
@@ -188,9 +193,10 @@ public class ClientOptions extends OptionGroup {
     public static final String REMEMBER_PANEL_SIZES
         = "model.option.rememberPanelSizes";
 
-    /** Whether to enable smooth rendering of the minimap when zoomed out. */
-    public static final String SMOOTH_MINIMAP_RENDERING
-        = "model.option.smoothRendering";
+// TODO Remove unused code found by UCDetector
+//     /** Whether to enable smooth rendering of the minimap when zoomed out. */
+//     public static final String SMOOTH_MINIMAP_RENDERING
+//         = "model.option.smoothRendering";
 
     /** Whether to display end turn grey background or not. */
     public static final String DISABLE_GRAY_LAYER
@@ -207,10 +213,12 @@ public class ClientOptions extends OptionGroup {
     /** Style of map controls. */
     public static final String MAP_CONTROLS
         = "model.option.mapControls";
-    public static final String MAP_CONTROLS_CORNERS
-        = "clientOptions.gui.mapControls.CornerMapControls";
-    public static final String MAP_CONTROLS_CLASSIC
-        = "clientOptions.gui.mapControls.ClassicMapControls";
+// TODO Remove unused code found by UCDetector
+//     public static final String MAP_CONTROLS_CORNERS
+//         = "clientOptions.gui.mapControls.CornerMapControls";
+// TODO Remove unused code found by UCDetector
+//     public static final String MAP_CONTROLS_CLASSIC
+//         = "clientOptions.gui.mapControls.ClassicMapControls";
 
     /**
      * The color to fill in around the actual map on the
@@ -293,14 +301,16 @@ public class ClientOptions extends OptionGroup {
     /** Option for selecting the compact colony report. */
     public static final String COLONY_REPORT
         = "model.option.colonyReport";
-    public static final int COLONY_REPORT_CLASSIC = 0;
+// TODO Remove unused code found by UCDetector
+//     public static final int COLONY_REPORT_CLASSIC = 0;
     public static final int COLONY_REPORT_COMPACT = 1;
 
     /** The type of labour report to display. */
     public static final String LABOUR_REPORT
         = "model.option.labourReport";
     public static final int LABOUR_REPORT_CLASSIC = 0;
-    public static final int LABOUR_REPORT_COMPACT = 1;
+// TODO Remove unused code found by UCDetector
+//     public static final int LABOUR_REPORT_COMPACT = 1;
 
 
     // clientOptions.savegames
@@ -308,9 +318,10 @@ public class ClientOptions extends OptionGroup {
     /** Use default values for savegames instead of displaying a dialog. */
     public static final String SHOW_SAVEGAME_SETTINGS
         = "model.option.showSavegameSettings";
-    public static final int SHOW_SAVEGAME_SETTINGS_NEVER = 0,
-        SHOW_SAVEGAME_SETTINGS_MULTIPLAYER = 1,
-        SHOW_SAVEGAME_SETTINGS_ALWAYS = 2;
+
+     public static final int SHOW_SAVEGAME_SETTINGS_NEVER = 0,
+         SHOW_SAVEGAME_SETTINGS_MULTIPLAYER = 1,
+         SHOW_SAVEGAME_SETTINGS_ALWAYS = 2;
 
     /**
      * Option for setting the period of autosaves. The value 0 signals that
@@ -355,17 +366,20 @@ public class ClientOptions extends OptionGroup {
 
     // clientOptions.warehouse
 
-    /** The amount of stock the custom house should keep when selling goods. */
-    public static final String CUSTOM_STOCK
-        = "model.option.customStock";
+// TODO Remove unused code found by UCDetector
+//     /** The amount of stock the custom house should keep when selling goods. */
+//     public static final String CUSTOM_STOCK
+//         = "model.option.customStock";
 
-    /** Generate warning of stock drops below this percentage of capacity. */
-    public static final String LOW_LEVEL
-        = "model.option.lowLevel";
+// TODO Remove unused code found by UCDetector
+//     /** Generate warning of stock drops below this percentage of capacity. */
+//     public static final String LOW_LEVEL
+//         = "model.option.lowLevel";
 
-    /** Generate warning of stock exceeds this percentage of capacity. */
-    public static final String HIGH_LEVEL
-        = "model.option.highLevel";
+// TODO Remove unused code found by UCDetector
+//     /** Generate warning of stock exceeds this percentage of capacity. */
+//     public static final String HIGH_LEVEL
+//         = "model.option.highLevel";
 
     /**
      * Should trade route units check production to determine goods levels at
@@ -754,27 +768,27 @@ public class ClientOptions extends OptionGroup {
         addIntegerOption(COLONY_REPORT,
             "clientOptions.messages", 0);
         addBooleanOption(USE_PIXMAPS,
-            "clientOptions.gui", true);
+            CLIENT_OPTIONS_GUI, true);
         // end @compat 0.10.1
         // @compat 0.10.7
         addBooleanOption(CONFIRM_SAVE_OVERWRITE,
-            "clientOptions.savegames", false);
+            CLIENT_OPTIONS_SAVEGAMES, false);
         addBooleanOption(DISABLE_GRAY_LAYER,
-            "clientOptions.gui", false);
+            CLIENT_OPTIONS_GUI, false);
         addBooleanOption(REMEMBER_PANEL_SIZES,
-            "clientOptions.gui", true);
+            CLIENT_OPTIONS_GUI, true);
         // end @compat 0.10.7
         // @compact 0.11.0
         addBooleanOption(MINIMAP_TOGGLE_BORDERS,
-            "clientOptions.gui", true);    
+            CLIENT_OPTIONS_GUI, true);    
         addBooleanOption(MINIMAP_TOGGLE_FOG_OF_WAR,
-            "clientOptions.gui", true);
+            CLIENT_OPTIONS_GUI, true);
         addTextOption(AUTO_SAVE_PREFIX,
-            "clientOptions.savegames", "Autosave");
+            CLIENT_OPTIONS_SAVEGAMES, "Autosave");
         addTextOption(LAST_TURN_NAME,
-            "clientOptions.savegames", "last-turn");
+            CLIENT_OPTIONS_SAVEGAMES, "last-turn");
         addTextOption(BEFORE_LAST_TURN_NAME,
-            "clientOptions.savegames", "before-last-turn");
+            CLIENT_OPTIONS_SAVEGAMES, "before-last-turn");
         // end @compact 0.11.0
 
         // @compat 0.11.1

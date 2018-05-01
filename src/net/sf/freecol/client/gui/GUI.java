@@ -85,7 +85,7 @@ public class GUI {
     protected static final Logger logger = Logger.getLogger(GUI.class.getName());
 
     /** Warning levels. */
-    protected static final String levels[] = {
+    private static final String levels[] = {
         "low", "normal", "high"
     };
 
@@ -113,10 +113,6 @@ public class GUI {
 
 
     // Simple accessors
-
-    protected InGameController igc() {
-        return freeColClient.getInGameController();
-    }
 
     public ImageLibrary getImageLibrary() {
         return imageLibrary;

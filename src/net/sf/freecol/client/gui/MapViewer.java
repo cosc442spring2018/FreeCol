@@ -1707,7 +1707,12 @@ public final class MapViewer {
         path.closePath();
 
         // draw everything
-        BufferedImage bi = new BufferedImage(extent, extent, BufferedImage.TYPE_INT_ARGB);
+        return drawBufferedImage(extent, padding, backgroundColor, path);
+    }
+
+
+	private static BufferedImage drawBufferedImage(int extent, int padding, Color backgroundColor, GeneralPath path) {
+		BufferedImage bi = new BufferedImage(extent, extent, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bi.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -1720,7 +1725,7 @@ public final class MapViewer {
         g.fill(path);
         g.dispose();
         return bi;
-    }
+	}
 
     /**
      * Creates an BufferedImage that shows the given text centred on a

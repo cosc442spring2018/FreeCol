@@ -112,7 +112,11 @@ import static net.sf.freecol.common.util.CollectionUtils.*;
  */
 public final class InGameController implements NetworkConstants {
 
-    private static final Logger logger = Logger.getLogger(InGameController.class.getName());
+    private static final String SOUND_EVENT_LOAD_CARGO = "sound.event.loadCargo";
+
+	private static final String SOUND_EVENT_ILLEGAL_MOVE = "sound.event.illegalMove";
+
+	private static final Logger logger = Logger.getLogger(InGameController.class.getName());
 
     /** Actions when an armed unit contacts a settlement. */
     public static enum ArmedUnitSettlementAction {
@@ -324,10 +328,10 @@ public final class InGameController implements NetworkConstants {
      */
     private void updateGUI(Tile tile) {
         if (displayModelMessages(false, false)) {
-            ; // If messages are displayed they probably refer to the
-              // current unit, so do not update it.
+            // If messages are displayed they probably refer to the
+            // current unit, so do not update it.
         } else if (updateActiveUnit(tile)) {
-            ; // setActiveUnit will update the menu bar
+            // setActiveUnit will update the menu bar
         } else {
             gui.updateMapControls();
             gui.updateMenuBar();
@@ -423,7 +427,7 @@ public final class InGameController implements NetworkConstants {
         UnitWas unitWas = new UnitWas(unit);
         if (askServer().embark(unit, carrier, null)
             && unit.getLocation() == carrier) {
-            sound("sound.event.loadCargo");
+            sound(SOUND_EVENT_LOAD_CARGO);
             unitWas.fireChanges();
             if (colonyWas != null) colonyWas.fireChanges();
             if (europeWas != null) europeWas.fireChanges();
@@ -1060,7 +1064,7 @@ public final class InGameController implements NetworkConstants {
         // Illegal moves
         case MOVE_NO_ACCESS_BEACHED:
             if (interactive || clearDestination) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
                 StringTemplate nation = getNationAt(unit.getTile(), direction);
                 gui.showInformationMessage(unit, StringTemplate
                     .template("move.noAccessBeached")
@@ -1069,7 +1073,7 @@ public final class InGameController implements NetworkConstants {
             break;
         case MOVE_NO_ACCESS_CONTACT:
             if (interactive || clearDestination) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
                 StringTemplate nation = getNationAt(unit.getTile(), direction);
                 gui.showInformationMessage(unit, StringTemplate
                     .template("move.noAccessContact")
@@ -1078,7 +1082,7 @@ public final class InGameController implements NetworkConstants {
             break;
         case MOVE_NO_ACCESS_GOODS:
             if (interactive || clearDestination) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
                 StringTemplate nation = getNationAt(unit.getTile(), direction);
                 gui.showInformationMessage(unit, StringTemplate
                     .template("move.noAccessGoods")
@@ -1090,13 +1094,13 @@ public final class InGameController implements NetworkConstants {
         case MOVE_NO_ACCESS_LAND:
             if (!moveDisembark(unit, direction)) {
                 if (interactive) {
-                    sound("sound.event.illegalMove");
+                    sound(SOUND_EVENT_ILLEGAL_MOVE);
                 }
             }
             break;
         case MOVE_NO_ACCESS_MISSION_BAN:
             if (interactive || clearDestination) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
                 StringTemplate nation = getNationAt(unit.getTile(), direction);
                 gui.showInformationMessage(unit, StringTemplate
                     .template("move.noAccessMissionBan")
@@ -1107,7 +1111,7 @@ public final class InGameController implements NetworkConstants {
             break;
         case MOVE_NO_ACCESS_SETTLEMENT:
             if (interactive || clearDestination) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
                 StringTemplate nation = getNationAt(unit.getTile(), direction);
                 gui.showInformationMessage(unit, StringTemplate
                     .template("move.noAccessSettlement")
@@ -1118,7 +1122,7 @@ public final class InGameController implements NetworkConstants {
             break;
         case MOVE_NO_ACCESS_SKILL:
             if (interactive || clearDestination) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
                 gui.showInformationMessage(unit, StringTemplate
                     .template("move.noAccessSkill")
                     .addStringTemplate("%unit%",
@@ -1127,7 +1131,7 @@ public final class InGameController implements NetworkConstants {
             break;
         case MOVE_NO_ACCESS_TRADE:
             if (interactive || clearDestination) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
                 StringTemplate nation = getNationAt(unit.getTile(), direction);
                 gui.showInformationMessage(unit, StringTemplate
                     .template("move.noAccessTrade")
@@ -1136,7 +1140,7 @@ public final class InGameController implements NetworkConstants {
             break;
         case MOVE_NO_ACCESS_WAR:
             if (interactive || clearDestination) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
                 StringTemplate nation = getNationAt(unit.getTile(), direction);
                 gui.showInformationMessage(unit, StringTemplate
                     .template("move.noAccessWar")
@@ -1145,7 +1149,7 @@ public final class InGameController implements NetworkConstants {
             break;
         case MOVE_NO_ACCESS_WATER:
             if (interactive || clearDestination) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
                 gui.showInformationMessage(unit, StringTemplate
                     .template("move.noAccessWater")
                     .addStringTemplate("%unit%",
@@ -1154,7 +1158,7 @@ public final class InGameController implements NetworkConstants {
             break;
         case MOVE_NO_ATTACK_MARINE:
             if (interactive || clearDestination) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
                 gui.showInformationMessage(unit, StringTemplate
                     .template("move.noAttackWater")
                     .addStringTemplate("%unit%",
@@ -1171,7 +1175,7 @@ public final class InGameController implements NetworkConstants {
             break;
         case MOVE_NO_TILE:
             if (interactive || clearDestination) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
                 gui.showInformationMessage(unit, StringTemplate
                     .template("move.noTile")
                     .addStringTemplate("%unit%",
@@ -1180,7 +1184,7 @@ public final class InGameController implements NetworkConstants {
             break;
         default:
             if (interactive || clearDestination) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
             }
             result = false;
             break;
@@ -1336,7 +1340,7 @@ public final class InGameController implements NetworkConstants {
         final Player other = colony.getOwner();
         if (other == player.getREFPlayer()) return false;
 
-        StringTemplate nation = other.getNationLabel();
+//        StringTemplate nation = other.getNationLabel();
         while (dt != null) {
             // Inform server of current agreement.
             dt = askServer().diplomacy(game, unit, colony, dt);
@@ -2427,7 +2431,7 @@ public final class InGameController implements NetworkConstants {
 
         // Unload everything that is on the carrier but not listed to
         // be loaded at this stop.
-        Game game = freeColClient.getGame();
+//        Game game = freeColClient.getGame();
         for (Goods goods : unit.getCompactGoodsList()) {
             GoodsType type = goods.getType();
             if (goodsTypesToLoad.contains(type)) continue; // Keep this cargo.
@@ -2704,7 +2708,7 @@ public final class InGameController implements NetworkConstants {
         if (!requireOurTurn() || unit == null) return false;
 
         // Check unit, which must be on the map and able to build.
-        if (unit == null) return false;
+//        if (unit == null) return false;
         final Tile tile = unit.getTile();
         if (tile == null) return false;
         if (!unit.canBuildColony()) {
@@ -2798,7 +2802,7 @@ public final class InGameController implements NetworkConstants {
         UnitWas unitWas = new UnitWas(carrier);
         boolean ret = askLoadGoods(europe, type, amount, carrier);
         if (ret) {
-            sound("sound.event.loadCargo");
+            sound(SOUND_EVENT_LOAD_CARGO);
             europeWas.fireChanges();
             unitWas.fireChanges();
             updateGUI(null);
@@ -2932,7 +2936,7 @@ public final class InGameController implements NetworkConstants {
         final Tile tile = unit.getTile();
         final Europe europe = unit.getOwner().getEurope();
         if (europe == null || unit.isInEurope()) {
-            ;// No need to check for transport.
+            // No need to check for transport.
         } else {
             int fee = unit.getTransportFee();
             StringTemplate template;
@@ -3744,7 +3748,7 @@ public final class InGameController implements NetworkConstants {
         boolean ret = askLoadGoods(goods.getLocation(), goods.getType(),
                                    goods.getAmount(), carrier);
         if (ret) {
-            sound("sound.event.loadCargo");
+            sound(SOUND_EVENT_LOAD_CARGO);
             if (colonyWas != null) colonyWas.fireChanges();
             if (sourceWas != null) sourceWas.fireChanges();
             carrierWas.fireChanges();
@@ -3870,17 +3874,17 @@ public final class InGameController implements NetworkConstants {
         // Sanity check current state.
         if (destination instanceof Europe) {
             if (unit.isInEurope()) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
                 return false;
             }
         } else if (destination instanceof Map) {
             if (unit.hasTile() && unit.getTile().getMap() == destination) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
                 return false;
             }
         } else if (destination instanceof Settlement) {
             if (unit.hasTile()) {
-                sound("sound.event.illegalMove");
+                sound(SOUND_EVENT_ILLEGAL_MOVE);
                 return false;
             }
         } else {
@@ -3928,8 +3932,8 @@ public final class InGameController implements NetworkConstants {
 
         if (!askClearGotoOrders(unit)) return false;
 
-        final int unitCount = unit.getUnitCount(),
-            goodsCount = unit.getGoodsList().size();
+//        final int unitCount = unit.getUnitCount(),
+//            goodsCount = unit.getGoodsList().size();
         final Tile oldTile = unit.getTile();
         UnitWas unitWas = new UnitWas(unit);
         ColonyWas colonyWas = (unit.getColony() == null) ? null
@@ -4577,7 +4581,7 @@ public final class InGameController implements NetworkConstants {
             FreeColDebugger.finishDebugRun(freeColClient, true);
             if (freeColClient.isSinglePlayer()) {
                 if (player.getPlayerType() == Player.PlayerType.RETIRED) {
-                    ; // Do nothing, retire routine will quit
+                     // Do nothing, retire routine will quit
 
                 } else if (player.getPlayerType() != Player.PlayerType.UNDEAD
                     && gui.confirm("defeatedSinglePlayer.text",
@@ -4878,7 +4882,7 @@ public final class InGameController implements NetworkConstants {
         if (!requireOurTurn() || unit == null
             || workLocation == null) return false;
 
-        StringTemplate template;
+//        StringTemplate template;
         if (unit.getStudent() != null
             && !gui.confirmAbandonEducation(unit, false)) return false;
 

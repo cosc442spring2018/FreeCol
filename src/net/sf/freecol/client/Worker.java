@@ -49,18 +49,22 @@ public final class Worker extends Thread {
     public void run() {
         while (!stopRunning) {
             try {
-                // run the next waiting job
-                Runnable job = jobList.take();
-                try {
-                    job.run();
-                } catch (Exception e) {
-                    logger.log(Level.SEVERE, "Worker task failed!", e);
-                }
+                runNextWaitingJob();
             } catch (InterruptedException e) {
                 logger.log(Level.INFO, "Worker interrupted, aborting!", e);
             }
         }
     }
+
+    // run the next waiting job
+	private void runNextWaitingJob() throws InterruptedException {
+		Runnable job = jobList.take();
+		try {
+		    job.run();
+		} catch (Exception e) {
+		    logger.log(Level.SEVERE, "Worker task failed!", e);
+		}
+	}
 
     /**
      * Adds a new job to the queue
@@ -71,11 +75,12 @@ public final class Worker extends Thread {
         jobList.add(job);
     }
 
-    /**
-     * Makes the worker thread stop running.
-     */
-    public void askToStop() {
-        stopRunning = true;
-        this.interrupt();
-    }
+// TODO Remove unused code found by UCDetector
+//     /**
+//      * Makes the worker thread stop running.
+//      */
+//     public void askToStop() {
+//         stopRunning = true;
+//         this.interrupt();
+//     }
 }

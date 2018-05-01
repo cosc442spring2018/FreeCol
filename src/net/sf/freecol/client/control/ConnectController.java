@@ -39,7 +39,6 @@ import net.sf.freecol.client.FreeColClient;
 import net.sf.freecol.client.gui.ChoiceItem;
 import net.sf.freecol.client.gui.GUI;
 import net.sf.freecol.client.gui.LoadingSavegameInfo;
-import net.sf.freecol.common.FreeColException;
 import net.sf.freecol.common.ServerInfo;
 import net.sf.freecol.common.debug.FreeColDebugger;
 import net.sf.freecol.common.i18n.Messages;
@@ -67,7 +66,9 @@ import net.sf.freecol.server.FreeColServer.GameState;
  */
 public final class ConnectController {
 
-    private static final Logger logger = Logger.getLogger(ConnectController.class.getName());
+    private static final String SERVER_COULD_NOT_CONNECT = "server.couldNotConnect";
+
+	private static final Logger logger = Logger.getLogger(ConnectController.class.getName());
 
     private final FreeColClient freeColClient;
 
@@ -159,7 +160,7 @@ public final class ConnectController {
         try {
             return new Connection(host, port, null, FreeCol.CLIENT_THREAD);
         } catch (IOException e) {
-            gui.showErrorMessage("server.couldNotConnect", e.getMessage());
+            gui.showErrorMessage(SERVER_COULD_NOT_CONNECT, e.getMessage());
             logger.log(Level.WARNING, "Could not connect to " + host
                 + ":" + port, e);
         }
@@ -183,12 +184,12 @@ public final class ConnectController {
             if (mc == null) return null;
             Element reply = mc.ask(element);
             if (reply == null) {
-                gui.showErrorMessage("server.couldNotConnect", "no reply");
+                gui.showErrorMessage(SERVER_COULD_NOT_CONNECT, "no reply");
                 return null;
             } else if (!"gameState".equals(reply.getTagName())) {
                 logger.warning("The reply has an unknown type: "
                     + reply.getTagName());
-                gui.showErrorMessage("server.couldNotConnect",
+                gui.showErrorMessage(SERVER_COULD_NOT_CONNECT,
                     "bad reply: " + reply.getTagName());
                 return null;
             }
@@ -196,7 +197,7 @@ public final class ConnectController {
 
         } catch (IOException e) {
             logger.log(Level.WARNING, "Could not send message to server.", e);
-            gui.showErrorMessage("server.couldNotConnect", e.getMessage());
+            gui.showErrorMessage(SERVER_COULD_NOT_CONNECT, e.getMessage());
             return null;
         }
 
@@ -204,7 +205,7 @@ public final class ConnectController {
             return Enum.valueOf(GameState.class, state);
         } catch (Exception e) {
             logger.log(Level.WARNING, "Bad state: " + state, e);
-            gui.showErrorMessage("server.couldNotConnect", e.getMessage());
+            gui.showErrorMessage(SERVER_COULD_NOT_CONNECT, e.getMessage());
         }
         return null;
     }
@@ -271,7 +272,7 @@ public final class ConnectController {
             message = e.getMessage();
         }
         if (message != null) {
-            gui.showErrorMessage("server.couldNotConnect", message);
+            gui.showErrorMessage(SERVER_COULD_NOT_CONNECT, message);
             return false;
         }
         logger.info("Connected to " + host + ":" + port);
@@ -729,27 +730,32 @@ public final class ConnectController {
                 FreeCol.META_SERVER_PORT, null,
                 FreeCol.CLIENT_THREAD);
         ) {
-            Element reply = null;
-            try {
-                reply = mc.ask(DOMMessage.createMessage("getServerList"));
-            } catch (IOException e) {
-                reply = null;
-            }
-            if (reply == null) {
-                gui.showErrorMessage("metaServer.communicationError");
-                logger.warning("The meta-server did not return a list.");
-                return null;
-            }
-            List<ServerInfo> items = new ArrayList<>();
-            NodeList nl = reply.getChildNodes();
-            for (int i = 0; i < nl.getLength(); i++) {
-                items.add(new ServerInfo((Element)nl.item(i)));
-            }
-            return items;
+            return getExtractedList(mc);
         } catch (IOException e) {
             gui.showErrorMessage("metaServer.couldNotConnect");
             logger.log(Level.WARNING, "Could not connect to the meta-server.", e);
             return null;
         }
     }
+
+
+	private List<ServerInfo> getExtractedList(Connection mc) {
+		Element reply = null;
+		try {
+		    reply = mc.ask(DOMMessage.createMessage("getServerList"));
+		} catch (IOException e) {
+		    reply = null;
+		}
+		if (reply == null) {
+		    gui.showErrorMessage("metaServer.communicationError");
+		    logger.warning("The meta-server did not return a list.");
+		    return null;
+		}
+		List<ServerInfo> items = new ArrayList<>();
+		NodeList nl = reply.getChildNodes();
+		for (int i = 0; i < nl.getLength(); i++) {
+		    items.add(new ServerInfo((Element)nl.item(i)));
+		}
+		return items;
+	}
 }
