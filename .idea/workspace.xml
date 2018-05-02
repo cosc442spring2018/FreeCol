@@ -1,0 +1,1584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/net/sf/freecol/client/gui/Canvas.java" line="2164" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="07d03f95-dd95-42d2-8849-5d949a3ae485" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.classpath" beforeDir="false" afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FreeCol.jar" beforeDir="false" afterPath="$PROJECT_DIR$/FreeCol.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/ClientOptions.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/ClientOptions.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/Worker.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/Worker.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/control/SoundController.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/control/SoundController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/DialogHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/DialogHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/FontLibrary$FontSize.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/FontLibrary$FontSize.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/FontLibrary$FontType.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/FontLibrary$FontType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/FontLibrary.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/FontLibrary.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/FrameMotionListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/FrameMotionListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/FullScreenFrameListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/FullScreenFrameListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/GUIMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/GUIMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/LoadingSavegameInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/LoadingSavegameInfo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/TerrainCursor.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/TerrainCursor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/WindowedFrameListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/WindowedFrameListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/AboutAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/AboutAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/CenterAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/CenterAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ChangeWindowedModeAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ChangeWindowedModeAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ChatAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ChatAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ColopediaAction$PanelType.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ColopediaAction$PanelType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ColopediaAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ColopediaAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ContinueAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ContinueAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/DisplayBordersAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/DisplayBordersAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/DisplayGridAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/DisplayGridAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/DisplayTileTextAction$DisplayText.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/DisplayTileTextAction$DisplayText.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/DisplayTileTextAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/DisplayTileTextAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/FindSettlementAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/FindSettlementAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/MapControlsAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/MapControlsAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/MapEditorAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/MapEditorAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/MapboardAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/MapboardAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/MiniMapToggleFogOfWarAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/MiniMapToggleFogOfWarAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/MiniMapToggleViewAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/MiniMapToggleViewAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/MiniMapZoomInAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/MiniMapZoomInAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/MiniMapZoomOutAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/MiniMapZoomOutAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/NewAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/NewAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/PreferencesAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/PreferencesAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/QuitAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/QuitAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportCargoAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportCargoAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportColonyAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportColonyAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportContinentalCongressAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportContinentalCongressAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportEducationAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportEducationAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportExplorationAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportExplorationAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportForeignAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportForeignAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportHistoryAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportHistoryAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportIndianAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportIndianAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportLabourAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportLabourAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportMilitaryAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportMilitaryAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportNavalAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportNavalAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportProductionAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportProductionAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportReligionAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportReligionAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportRequirementsAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportRequirementsAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportTradeAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ReportTradeAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ShowDifficultyAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ShowDifficultyAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ShowGameOptionsAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ShowGameOptionsAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ShowMainAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ShowMainAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ShowMapGeneratorOptionsAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ShowMapGeneratorOptionsAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/TilePopupAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/TilePopupAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ToggleViewModeAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ToggleViewModeAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/TradeRouteAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/TradeRouteAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ZoomInAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ZoomInAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ZoomOutAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/action/ZoomOutAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/menu/FreeColMenuTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/menu/FreeColMenuTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/AudioMixerOptionUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/AudioMixerOptionUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/BooleanOptionUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/BooleanOptionUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/FileOptionUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/FileOptionUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/FreeColActionUI$BlinkingLabel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/FreeColActionUI$BlinkingLabel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/FreeColActionUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/FreeColActionUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/IntegerOptionUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/IntegerOptionUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/LanguageOptionUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/LanguageOptionUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/ListOptionUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/ListOptionUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/ModOptionUI$BoxRenderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/ModOptionUI$BoxRenderer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/ModOptionUI$ModOptionRenderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/ModOptionUI$ModOptionRenderer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/ModOptionUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/ModOptionUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/OptionUpdater.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/OptionUpdater.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/SliderOptionUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/SliderOptionUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/StringOptionUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/StringOptionUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/TextOptionUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/option/TextOptionUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ColopediaDetailPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ColopediaDetailPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ColopediaTreeCellRenderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ColopediaTreeCellRenderer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ColopediaTreeItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ColopediaTreeItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ColorCellEditor.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ColorCellEditor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ColorChooserPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ColorChooserPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ConceptDetailPanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ConceptDetailPanel$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ConceptDetailPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ConceptDetailPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ConfirmDeclarationDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ConfirmDeclarationDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Draggable.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Draggable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/DropListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/DropListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ErrorPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ErrorPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/EventPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/EventPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Flag$Alignment.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Flag$Alignment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Flag$Background.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Flag$Background.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Flag$Decoration.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Flag$Decoration.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Flag$UnionPosition.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Flag$UnionPosition.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Flag$UnionShape.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Flag$UnionShape.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Flag.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Flag.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ImageSelection.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ImageSelection.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/MainPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/MainPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/MigPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/MigPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Parameters.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/Parameters.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ServerListPanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ServerListPanel$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ServerListPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ServerListPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ServerListTableModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/ServerListTableModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/StatusPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/StatusPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/UnitButton$UnitButtonActionPropertyChangeListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/UnitButton$UnitButtonActionPropertyChangeListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/UnitButton.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/panel/UnitButton.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColCheckBoxUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColCheckBoxUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColComboBoxRenderer$NormalComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColComboBoxRenderer$NormalComponent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColComboBoxRenderer$SelectedComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColComboBoxRenderer$SelectedComponent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColComboBoxRenderer.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColComboBoxRenderer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColComboBoxUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColComboBoxUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColFileChooserUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColFileChooserUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColLabelUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColLabelUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColMenuItemUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColMenuItemUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColRadioButtonUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColRadioButtonUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColScrollPaneUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColScrollPaneUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColSelectedPanelUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColSelectedPanelUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColTableHeaderUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColTableHeaderUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColTableUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColTableUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColTransparentPanelUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/FreeColTransparentPanelUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/LAFUtilities.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/plaf/LAFUtilities.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/video/VideoComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/video/VideoComponent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/video/VideoListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/client/gui/video/VideoListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/FreeColException.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/FreeColException.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/FreeColSeed.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/FreeColSeed.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/ObjectWithId.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/ObjectWithId.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/DefaultNumberRule.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/DefaultNumberRule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/DualNumberRule.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/DualNumberRule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/Number$Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/Number$Category.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/Number.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/Number.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/OtherNumberRule.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/OtherNumberRule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/PluralNumberRule.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/PluralNumberRule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/Relation.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/Relation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/Rule.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/Rule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/Selector.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/Selector.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/ZeroOneNumberRule.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/i18n/ZeroOneNumberRule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/io/FreeColDataFile.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/io/FreeColDataFile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/io/FreeColDirectories.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/io/FreeColDirectories.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/io/FreeColTcFile.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/io/FreeColTcFile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/io/sza/AnimationEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/io/sza/AnimationEvent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/io/sza/ImageAnimationEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/io/sza/ImageAnimationEvent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/logging/TextFormatter.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/logging/TextFormatter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/Locatable.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/Locatable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/Movable.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/Movable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/Nameable.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/Nameable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/Named.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/Named.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/ProductionInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/ProductionInfo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/Stance.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/Stance.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/Tension$Level.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/Tension$Level.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/Tension.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/Tension.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/TradeLocation.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/TradeLocation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/TransactionListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/model/TransactionListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/networking/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/networking/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/networking/MessageHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/networking/MessageHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/networking/NetworkConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/networking/NetworkConstants.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/networking/NetworkReplyObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/networking/NetworkReplyObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/networking/NetworkRequestHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/networking/NetworkRequestHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/networking/TrivialMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/networking/TrivialMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/AbstractUnitOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/AbstractUnitOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/AudioMixerOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/AudioMixerOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/BooleanOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/BooleanOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/FileOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/FileOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/IntegerOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/IntegerOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/LanguageOption$Language.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/LanguageOption$Language.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/LanguageOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/LanguageOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/MapGeneratorOptions.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/MapGeneratorOptions.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/ModListOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/ModListOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/ModOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/ModOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/OptionGroup.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/OptionGroup.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/StringOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/StringOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/TextOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/TextOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/UnitListOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/UnitListOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/UnitTypeOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/option/UnitTypeOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/AudioResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/AudioResource.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/ColorResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/ColorResource.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/FontResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/FontResource.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/ImageResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/ImageResource.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/Resource$Cleanable.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/Resource$Cleanable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/Resource$Preloadable.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/Resource$Preloadable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/Resource.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/Resource.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/ResourceFactory$ResourceSink.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/ResourceFactory$ResourceSink.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/ResourceFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/ResourceFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/ResourceMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/ResourceMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/ResourceMapping.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/ResourceMapping.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/StringResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/StringResource.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/Video.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/Video.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/VideoResource.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/resources/VideoResource.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/sound/OggVorbisDecoderFactory$OggStream.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/sound/OggVorbisDecoderFactory$OggStream.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/sound/OggVorbisDecoderFactory$OggVorbisAudioInputStream.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/sound/OggVorbisDecoderFactory$OggVorbisAudioInputStream.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/sound/OggVorbisDecoderFactory.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/sound/OggVorbisDecoderFactory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/sound/Playlist.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/sound/Playlist.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/sound/SoundPlayer$SoundPlayerThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/sound/SoundPlayer$SoundPlayerThread.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/sound/SoundPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/sound/SoundPlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/CollectionUtils$1$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/CollectionUtils$1$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/CollectionUtils$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/CollectionUtils$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/CollectionUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/CollectionUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/Introspector.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/Introspector.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/RandomChoice.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/RandomChoice.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/RandomUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/RandomUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/StringUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/StringUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/Utils.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/Utils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/Xml$Exception.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/Xml$Exception.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/Xml$Method.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/Xml$Method.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/Xml.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/common/util/Xml.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/metaserver/MetaItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/metaserver/MetaItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/metaserver/MetaServer$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/metaserver/MetaServer$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/metaserver/MetaServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/metaserver/MetaServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/metaserver/NetworkHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/metaserver/NetworkHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/server/ai/ColonyPlan$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/server/ai/ColonyPlan$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/server/ai/goal/GoalConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/server/ai/goal/GoalConstants.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/server/ai/mission/TransportMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/server/ai/mission/TransportMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/server/networking/DummyConnection.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/server/networking/DummyConnection.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ColonizationMapReader.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ColonizationMapReader.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ColonizationSaveGameReader$Colonist.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ColonizationSaveGameReader$Colonist.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ColonizationSaveGameReader$ColonyData.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ColonizationSaveGameReader$ColonyData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ColonizationSaveGameReader$GameData.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ColonizationSaveGameReader$GameData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ColonizationSaveGameReader$PlayerData.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ColonizationSaveGameReader$PlayerData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ColonizationSaveGameReader.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ColonizationSaveGameReader.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/DesktopEntry$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/DesktopEntry$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/DesktopEntry.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/DesktopEntry.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/FSGConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/FSGConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ForestMaker$ImageLocation.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ForestMaker$ImageLocation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ForestMaker.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/ForestMaker.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/InstallerTranslations$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/InstallerTranslations$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/InstallerTranslations.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/InstallerTranslations.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/MergeTranslations$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/MergeTranslations$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/MergeTranslations.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/MergeTranslations.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/RiverMaker.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/RiverMaker.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/SaveGameValidator.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/SaveGameValidator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/TranslationReport$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/TranslationReport$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/TranslationReport$LanguageStatsRecord.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/TranslationReport$LanguageStatsRecord.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/net/sf/freecol/tools/TranslationReport.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/net/sf/freecol/tools/TranslationReport.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/FreeCol.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/FreeCol.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/ClientOptions.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/ClientOptions.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/FreeColClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/FreeColClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/control/ConnectController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/control/ConnectController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/control/InGameController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/control/InGameController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/control/InGameInputHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/control/InGameInputHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/control/InputHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/control/InputHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/control/MapEditorController$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/control/MapEditorController$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/control/MapEditorController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/control/MapEditorController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/control/PreGameInputHandler$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/control/PreGameInputHandler$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/control/PreGameInputHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/control/PreGameInputHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/Canvas.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/Canvas.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/CanvasMapEditorMouseListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/CanvasMapEditorMouseListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/ChoiceItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/ChoiceItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/GUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/GUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/ImageLibrary$PathType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/ImageLibrary$PathType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/ImageLibrary.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/ImageLibrary.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/MapViewer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/MapViewer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/RoadPainter.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/RoadPainter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/ScrollThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/ScrollThread.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/SwingGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/SwingGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/TilePopup.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/TilePopup.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/BuildColonyAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/BuildColonyAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/ChangeWindowedModeAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/ChangeWindowedModeAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/ChatAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/ChatAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/DeclareIndependenceAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/DeclareIndependenceAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/DetermineHighSeasAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/DetermineHighSeasAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/DisplayTileTextAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/DisplayTileTextAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/EuropeAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/EuropeAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/FortifyAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/FortifyAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/GotoTileAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/GotoTileAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/ImprovementAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/ImprovementAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/LoadAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/LoadAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/MapboardAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/MapboardAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/RetireAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/RetireAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/ScaleMapAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/ScaleMapAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/SelectableAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/SelectableAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/UnitAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/UnitAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/UnloadAction.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/action/UnloadAction.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/animation/UnitImageAnimation.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/animation/UnitImageAnimation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/animation/UnitMoveAnimation.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/animation/UnitMoveAnimation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/menu/DebugMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/menu/DebugMenu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/menu/FreeColMenuTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/menu/FreeColMenuTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/menu/MapEditorMenuBar.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/menu/MapEditorMenuBar.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/option/AudioMixerOptionUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/option/AudioMixerOptionUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/option/FileOptionUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/option/FileOptionUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/option/ListOptionUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/option/ListOptionUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/BuildQueuePanel$BuildQueueTransferHandler$BuildablesTransferable.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/BuildQueuePanel$BuildQueueTransferHandler$BuildablesTransferable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/BuildQueuePanel$BuildQueueTransferHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/BuildQueuePanel$BuildQueueTransferHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/CaptureGoodsDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/CaptureGoodsDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ColonyPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ColonyPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ColopediaGameObjectTypePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ColopediaGameObjectTypePanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ColopediaPanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ColopediaPanel$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/CompactLabourReport.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/CompactLabourReport.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ConceptDetailPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ConceptDetailPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ConfirmDeclarationDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ConfirmDeclarationDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/DeclarationPanel$SignaturePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/DeclarationPanel$SignaturePanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/DeclarationPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/DeclarationPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/DefaultTransferHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/DefaultTransferHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/DifficultyDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/DifficultyDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/EditSettlementDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/EditSettlementDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/FreeColDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/FreeColDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/FreeColPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/FreeColPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/InfoPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/InfoPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/InformationPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/InformationPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/LabourData.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/LabourData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/LoadDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/LoadDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/MainPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/MainPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/MapEditorTransformPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/MapEditorTransformPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/MapGeneratorOptionsDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/MapGeneratorOptionsDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/MiniMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/MiniMap.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ModifierFormat.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ModifierFormat.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/MonarchDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/MonarchDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/NewPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/NewPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/NewUnitPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/NewUnitPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ParametersDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ParametersDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/PlayersTable$AvailableCellEditor.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/PlayersTable$AvailableCellEditor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/PlayersTable$PlayerCellEditor.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/PlayersTable$PlayerCellEditor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/PlayersTable$PlayersTableModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/PlayersTable$PlayersTableModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/PlayersTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/PlayersTable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/PortPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/PortPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/QuickActionMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/QuickActionMenu.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportClassicColonyPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportClassicColonyPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportCompactColonyPanel$ColonySummary.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportCompactColonyPanel$ColonySummary.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportCompactColonyPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportCompactColonyPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportContinentalCongressPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportContinentalCongressPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportMilitaryPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportMilitaryPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportNavalPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportNavalPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportProductionPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportProductionPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportTurnPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ReportTurnPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ResourcesDetailPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ResourcesDetailPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/SaveDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/SaveDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ScaleMapSizeDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ScaleMapSizeDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/SelectDestinationDialog$Destination.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/SelectDestinationDialog$Destination.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/SelectDestinationDialog$DestinationComparator.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/SelectDestinationDialog$DestinationComparator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/SelectDestinationDialog$DistanceComparator.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/SelectDestinationDialog$DistanceComparator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/SelectDestinationDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/SelectDestinationDialog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ServerListTableModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/ServerListTableModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/TradeRouteInputPanel$CargoHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/TradeRouteInputPanel$CargoHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/TradeRouteInputPanel$StopListHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/TradeRouteInputPanel$StopListHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/TradeRouteInputPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/TradeRouteInputPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/TradeRoutePanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/TradeRoutePanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/UnitDetailPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/UnitDetailPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/UnitLabel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/UnitLabel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/Utility.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/panel/Utility.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/plaf/FreeColOptionPaneUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/client/gui/plaf/FreeColOptionPaneUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/debug/DebugUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/debug/DebugUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/debug/FreeColDebugger.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/debug/FreeColDebugger.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/i18n/DefaultNumberRule.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/i18n/DefaultNumberRule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/i18n/Messages.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/i18n/Messages.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/i18n/NameCache.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/i18n/NameCache.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/i18n/Rule.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/i18n/Rule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/io/FreeColDataFile.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/io/FreeColDataFile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/io/FreeColDirectories.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/io/FreeColDirectories.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/io/FreeColModFile.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/io/FreeColModFile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/io/FreeColSavegameFile.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/io/FreeColSavegameFile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/io/FreeColXMLReader.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/io/FreeColXMLReader.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/io/sza/SimpleZippedAnimation.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/io/sza/SimpleZippedAnimation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Ability.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Ability.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/AbstractGoods$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/AbstractGoods$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/AbstractGoods.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/AbstractGoods.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/AbstractUnit.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/AbstractUnit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/BuildQueue.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/BuildQueue.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/BuildableType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/BuildableType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Building.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Building.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/BuildingType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/BuildingType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Colony.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Colony.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/ColonyTile.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/ColonyTile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/ColonyTradeItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/ColonyTradeItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/CombatModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/CombatModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/DiplomaticTrade.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/DiplomaticTrade.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Disaster.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Disaster.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Effect.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Effect.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/EquipmentType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/EquipmentType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Europe$MigrationType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Europe$MigrationType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Event.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Event.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Feature.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Feature.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/FeatureContainer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/FeatureContainer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/FoundingFather.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/FoundingFather.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/FreeColGameObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/FreeColGameObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/FreeColObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/FreeColObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Game.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/GoldTradeItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/GoldTradeItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Goods.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Goods.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/GoodsContainer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/GoodsContainer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/GoodsLocation.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/GoodsLocation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/GoodsTradeItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/GoodsTradeItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/GoodsType$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/GoodsType$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/HighScore.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/HighScore.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/HistoryEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/HistoryEvent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/InciteTradeItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/InciteTradeItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/IndianNationType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/IndianNationType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/IndianSettlement.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/IndianSettlement.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/LandMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/LandMap.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Limit.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Limit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/LostCityRumour.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/LostCityRumour.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Map$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Map$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Map$MoveCandidate.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Map$MoveCandidate.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Map$Position.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Map$Position.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Map.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Map.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Market.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Market.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/ModelMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/ModelMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Modifier.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Modifier.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Monarch$Force.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Monarch$Force.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Monarch.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Monarch.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Nation.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Nation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/NationType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/NationType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Operand.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Operand.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Player$ActivePredicate.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Player$ActivePredicate.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Player$GoingToPredicate.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Player$GoingToPredicate.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Player$UnitIterator.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Player$UnitIterator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Player.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/ProductionCache.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/ProductionCache.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/ProductionType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/ProductionType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/RandomRange.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/RandomRange.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Region.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Region.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Resource.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Resource.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Role.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Role.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Scope.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Scope.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Settlement.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Settlement.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/SettlementType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/SettlementType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/SimpleCombatModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/SimpleCombatModel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Specification.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Specification.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/StanceTradeItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/StanceTradeItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/StringTemplate.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/StringTemplate.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Tension.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Tension.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Tile.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Tile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TileImprovement.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TileImprovement.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TileImprovementType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TileImprovementType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TileItemContainer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TileItemContainer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TileType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TileType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TileTypeChange.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TileTypeChange.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TradeItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TradeItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TradeRoute.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TradeRoute.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TradeRouteStop.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/TradeRouteStop.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Turn.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Turn.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Unit.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/Unit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/UnitLocation.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/UnitLocation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/UnitTradeItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/UnitTradeItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/UnitType.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/UnitType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/UnitTypeChange.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/UnitTypeChange.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/UnitWas.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/UnitWas.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/WorkLocation.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/WorkLocation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/mission/AbstractMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/mission/AbstractMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/mission/CompoundMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/mission/CompoundMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/mission/GoToMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/mission/GoToMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/mission/ImprovementMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/mission/ImprovementMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/pathfinding/CostDeciders$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/pathfinding/CostDeciders$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/pathfinding/CostDeciders$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/pathfinding/CostDeciders$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/model/pathfinding/CostDeciders.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/model/pathfinding/CostDeciders.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/AbandonColonyMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/AbandonColonyMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/AskSkillMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/AskSkillMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/AssignTeacherMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/AssignTeacherMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/AssignTradeRouteMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/AssignTradeRouteMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/AttackMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/AttackMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/BuildColonyMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/BuildColonyMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/BuyMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/BuyMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/BuyPropositionMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/BuyPropositionMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/CashInTreasureTrainMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/CashInTreasureTrainMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ChangeStateMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ChangeStateMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ChangeWorkImprovementTypeMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ChangeWorkImprovementTypeMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ChangeWorkTypeMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ChangeWorkTypeMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ChooseFoundingFatherMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ChooseFoundingFatherMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ClaimLandMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ClaimLandMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ClearSpecialityMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ClearSpecialityMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/CloseTransactionMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/CloseTransactionMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/Connection.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/Connection.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/CurrentPlayerNetworkRequestHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/CurrentPlayerNetworkRequestHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DOMMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DOMMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DeclareIndependenceMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DeclareIndependenceMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DeclineMoundsMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DeclineMoundsMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DeliverGiftMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DeliverGiftMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DemandTributeMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DemandTributeMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DiplomacyMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DiplomacyMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DisbandUnitMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DisbandUnitMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DisembarkMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/DisembarkMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/EmbarkMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/EmbarkMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/EmigrateUnitMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/EmigrateUnitMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/EquipForRoleMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/EquipForRoleMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/FirstContactMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/FirstContactMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/GetTransactionMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/GetTransactionMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/GoodsForSaleMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/GoodsForSaleMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/InciteMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/InciteMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/IndianDemandMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/IndianDemandMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/JoinColonyMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/JoinColonyMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/LearnSkillMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/LearnSkillMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/LoadGoodsMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/LoadGoodsMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/LoginMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/LoginMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/LootCargoMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/LootCargoMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/Message.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/Message.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/MissionaryMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/MissionaryMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/MonarchActionMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/MonarchActionMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/MoveMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/MoveMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/MoveToMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/MoveToMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/NewLandNameMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/NewLandNameMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/NewRegionNameMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/NewRegionNameMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/PayArrearsMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/PayArrearsMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/PayForBuildingMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/PayForBuildingMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/PutOutsideColonyMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/PutOutsideColonyMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/RearrangeColonyMessage$UnitChange.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/RearrangeColonyMessage$UnitChange.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/RearrangeColonyMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/RearrangeColonyMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ReceivingThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ReceivingThread.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/RenameMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/RenameMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ScoutIndianSettlementMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ScoutIndianSettlementMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ScoutSpeakToChiefMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ScoutSpeakToChiefMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SellMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SellMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SellPropositionMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SellPropositionMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ServerAPI.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/ServerAPI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SetBuildQueueMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SetBuildQueueMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SetCurrentStopMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SetCurrentStopMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SetDestinationMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SetDestinationMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SetGoodsLevelsMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SetGoodsLevelsMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SetTradeRoutesMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SetTradeRoutesMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SpySettlementMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/SpySettlementMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/TrainUnitInEuropeMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/TrainUnitInEuropeMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/UnloadGoodsMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/UnloadGoodsMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/WorkMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/networking/WorkMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/option/AudioMixerOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/option/AudioMixerOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/option/LanguageOption$Language.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/option/LanguageOption$Language.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/option/LanguageOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/option/LanguageOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/option/ListOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/option/ListOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/option/ModOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/option/ModOption.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/option/OptionGroup.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/option/OptionGroup.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/resources/ResourceMapping.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/resources/ResourceMapping.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/sound/SoundPlayer$SoundPlayerThread.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/sound/SoundPlayer$SoundPlayerThread.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/sound/SoundPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/sound/SoundPlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/util/CollectionUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/util/CollectionUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/util/LogBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/util/LogBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/common/util/RandomChoice.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/common/util/RandomChoice.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/FreeColServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/FreeColServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIColony$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIColony$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIColony.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIColony.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIGoods.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIGoods.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIInGameInputHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIInGameInputHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIMain.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIMain.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIPlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIUnit.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/AIUnit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/CacheEntryComparator.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/CacheEntryComparator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/Cargo$CargoPlan.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/Cargo$CargoPlan.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/Cargo.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/Cargo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/ColonyPlan.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/ColonyPlan.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/EuropeanAIPlayer$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/EuropeanAIPlayer$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/EuropeanAIPlayer$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/EuropeanAIPlayer$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/EuropeanAIPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/EuropeanAIPlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/GoodsWish.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/GoodsWish.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/NativeAIPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/NativeAIPlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/REFAIPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/REFAIPlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/Wish.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/Wish.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/WorkerWish.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/WorkerWish.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/goal/ManageMissionariesGoal.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/goal/ManageMissionariesGoal.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/BuildColonyMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/BuildColonyMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/CashInTreasureTrainMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/CashInTreasureTrainMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/DefendSettlementMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/DefendSettlementMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/IdleAtSettlementMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/IdleAtSettlementMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/IndianBringGiftMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/IndianBringGiftMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/IndianDemandMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/IndianDemandMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/Mission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/Mission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/MissionaryMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/MissionaryMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/PioneeringMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/PioneeringMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/PrivateerMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/PrivateerMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/ScoutingMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/ScoutingMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/TransportMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/TransportMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/UnitSeekAndDestroyMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/UnitSeekAndDestroyMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/UnitWanderHostileMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/UnitWanderHostileMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/WishRealizationMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/WishRealizationMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/WorkInsideColonyMission.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/ai/mission/WorkInsideColonyMission.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/ChangeSet$AttackChange.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/ChangeSet$AttackChange.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/ChangeSet$MoveChange.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/ChangeSet$MoveChange.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/ChangeSet$RemoveChange.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/ChangeSet$RemoveChange.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/ChangeSet.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/ChangeSet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameController$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameController$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameController$DOMMessageCallable.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameController$DOMMessageCallable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$10.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$10.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$11.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$11.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$12.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$12.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$13.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$13.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$14.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$14.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$15.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$15.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$16.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$16.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$17.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$17.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$18.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$18.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$19.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$19.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$20.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$20.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$21.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$21.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$22.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$22.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$23.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$23.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$24.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$24.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$25.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$25.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$26.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$26.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$27.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$27.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$28.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$28.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$29.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$29.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$30.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$30.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$31.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$31.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$32.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$32.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$33.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$33.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$34.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$34.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$35.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$35.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$36.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$36.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$37.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$37.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$38.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$38.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$39.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$39.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$40.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$40.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$41.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$41.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$42.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$42.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$43.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$43.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$44.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$44.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$45.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$45.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$46.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$46.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$47.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$47.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$48.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$48.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$49.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$49.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$50.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$50.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$51.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$51.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$52.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$52.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$53.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$53.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$54.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$54.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$8.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$9.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler$9.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InGameInputHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InputHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/InputHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/PreGameInputHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/PreGameInputHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/control/UserConnectionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/control/UserConnectionHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/generator/River.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/generator/River.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/generator/SimpleMapGenerator.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/generator/SimpleMapGenerator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/generator/TerrainGenerator.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/generator/TerrainGenerator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/model/ServerColony.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/model/ServerColony.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/model/ServerGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/model/ServerGame.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/model/ServerPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/model/ServerPlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/server/model/ServerUnit.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/server/model/ServerUnit.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/tools/DesktopEntry$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/tools/DesktopEntry$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/tools/FSGConverter.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/tools/FSGConverter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/tools/MergeTranslations.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/tools/MergeTranslations.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/net/sf/freecol/tools/TranslationReport.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/net/sf/freecol/tools/TranslationReport.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/net/sf/freecol/client/gui/panel/ConfirmDeclarationDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/sf/freecol/client/gui/panel/ConfirmDeclarationDialog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/net/sf/freecol/common/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/net/sf/freecol/common/model/Player.java" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/bin/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="PlayerImmigrationTest.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PlayerImmigrationTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="965">
+              <caret line="148" column="35" lean-forward="true" selection-start-line="148" selection-start-column="35" selection-end-line="148" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServerUnit.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/server/model/ServerUnit.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="188">
+              <caret line="106" column="11" selection-start-line="106" selection-start-column="11" selection-end-line="106" selection-end-column="11" />
+              <folding>
+                <element signature="e#3619#3620#0" expanded="true" />
+                <element signature="e#3650#3651#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UnitTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/UnitTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="213">
+              <caret line="76" column="50" selection-start-line="76" selection-start-column="10" selection-end-line="76" selection-end-column="50" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Unit.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Unit.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="263">
+              <caret line="239" column="14" selection-start-line="239" selection-start-column="11" selection-end-line="239" selection-end-column="15" />
+              <folding>
+                <element signature="e#7274#7275#0" expanded="true" />
+                <element signature="e#7305#7306#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Messages.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/i18n/Messages.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="390">
+              <caret line="730" column="59" lean-forward="true" selection-start-line="730" selection-start-column="59" selection-end-line="730" selection-end-column="59" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Canvas.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/client/gui/Canvas.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="296">
+              <caret line="2164" column="31" selection-start-line="2164" selection-start-column="23" selection-end-line="2164" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ModelMessage.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/ModelMessage.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="188">
+              <caret line="176" column="11" selection-start-line="176" selection-start-column="11" selection-end-line="176" selection-end-column="11" />
+              <folding>
+                <element signature="e#7618#7619#0" expanded="true" />
+                <element signature="e#7650#7651#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ModelMessageTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/ModelMessageTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="350">
+              <caret line="92" column="37" lean-forward="true" selection-start-line="92" selection-start-column="37" selection-end-line="92" selection-end-column="37" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Player.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="288">
+              <caret line="1407" column="41" selection-start-line="1407" selection-start-column="41" selection-end-line="1407" selection-end-column="41" />
+              <folding>
+                <element signature="e#36975#36976#0" expanded="true" />
+                <element signature="e#37030#37031#0" expanded="true" />
+                <element signature="e#37909#37910#0" expanded="true" />
+                <element signature="e#37972#37973#0" expanded="true" />
+                <element signature="e#56507#56508#0" expanded="true" />
+                <element signature="e#56536#56537#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StringTemplate.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/StringTemplate.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="291">
+              <caret line="233" column="43" lean-forward="true" selection-start-line="233" selection-start-column="43" selection-end-line="233" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>immigration</find>
+      <find>immigra</find>
+      <find>religious</find>
+      <find>Turn</find>
+      <find>colonies</find>
+      <find>settlements.Add</find>
+      <find>Colony(</find>
+      <find>specificat</find>
+      <find>map</find>
+      <find>Colony</find>
+      <find>ModelMess</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PathNodeTest.groovy" />
+        <option value="$PROJECT_DIR$/src/net/sf/freecol/common/model/Modifier.java" />
+        <option value="$PROJECT_DIR$/src/net/sf/freecol/common/model/Player.java" />
+        <option value="$PROJECT_DIR$/src/net/sf/freecol/common/i18n/Messages.java" />
+        <option value="$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PlayerImmigrationTest.java" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="260" />
+    <option name="y" value="20" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="freecol" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="freecol" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="freecol" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="Groovy JUnit" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Groovy JUnit" value="groovy.util.GroovyTestCase" />
+    <property name="create.test.in.the.same.root" value="true" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/test/src/net/sf/freecol/common/model" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="net.sf.freecol.common.model" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="groovy.util.GroovyTestCase" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.PlayerImmigrationTest.testGetEmigrationMessage">
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="PlayerImmigrationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FreeCol" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="net.sf.freecol.common.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="net.sf.freecol.common.model" />
+      <option name="MAIN_CLASS_NAME" value="net.sf.freecol.common.model.PlayerImmigrationTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration name="PlayerImmigrationTest.testGetEmigrationMessage" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FreeCol" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="net.sf.freecol.common.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="net.sf.freecol.common.model" />
+      <option name="MAIN_CLASS_NAME" value="net.sf.freecol.common.model.PlayerImmigrationTest" />
+      <option name="METHOD_NAME" value="testGetEmigrationMessage" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration name="PlayerImmigrationTest.testGetTotalImmigrationProduction" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FreeCol" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="net.sf.freecol.common.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="net.sf.freecol.common.model" />
+      <option name="MAIN_CLASS_NAME" value="net.sf.freecol.common.model.PlayerImmigrationTest" />
+      <option name="METHOD_NAME" value="testGetTotalImmigrationProduction" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration name="PlayerImmigrationTest.testModifyImmigration" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FreeCol" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="net.sf.freecol.common.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="net.sf.freecol.common.model" />
+      <option name="MAIN_CLASS_NAME" value="net.sf.freecol.common.model.PlayerImmigrationTest" />
+      <option name="METHOD_NAME" value="testModifyImmigration" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <properties />
+      <listeners />
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.PlayerImmigrationTest" />
+      <item itemvalue="JUnit.PlayerImmigrationTest.testModifyImmigration" />
+      <item itemvalue="JUnit.PlayerImmigrationTest.testGetTotalImmigrationProduction" />
+      <item itemvalue="JUnit.PlayerImmigrationTest.testGetEmigrationMessage" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.PlayerImmigrationTest.testGetEmigrationMessage" />
+        <item itemvalue="JUnit.PlayerImmigrationTest.testGetTotalImmigrationProduction" />
+        <item itemvalue="JUnit.PlayerImmigrationTest" />
+        <item itemvalue="JUnit.PlayerImmigrationTest.testModifyImmigration" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="07d03f95-dd95-42d2-8849-5d949a3ae485" name="Default" comment="" />
+      <created>1525034578842</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1525034578842</updated>
+      <workItem from="1525034584135" duration="628000" />
+      <workItem from="1525035227721" duration="12921000" />
+      <workItem from="1525158054957" duration="3869000" />
+      <workItem from="1525270307334" duration="5314000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="PlayerImmigrationTest_testGetEmigrationMessage - 2018.05.01 at 03h 02m 17s.xml">
+      <configuration name="PlayerImmigrationTest.testGetEmigrationMessage" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerImmigrationTest_testGetEmigrationMessage - 2018.05.02 at 16h 15m 57s.xml">
+      <configuration name="PlayerImmigrationTest.testGetEmigrationMessage" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerImmigrationTest_testGetEmigrationMessage - 2018.05.02 at 16h 39m 33s.xml">
+      <configuration name="PlayerImmigrationTest.testGetEmigrationMessage" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerImmigrationTest_testGetEmigrationMessage - 2018.05.02 at 17h 34m 25s.xml">
+      <configuration name="PlayerImmigrationTest.testGetEmigrationMessage" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerImmigrationTest_testGetEmigrationMessage - 2018.05.02 at 17h 40m 35s.xml">
+      <configuration name="PlayerImmigrationTest.testGetEmigrationMessage" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerImmigrationTest_testGetEmigrationMessage - 2018.05.02 at 17h 46m 05s.xml">
+      <configuration name="PlayerImmigrationTest.testGetEmigrationMessage" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerImmigrationTest_testGetEmigrationMessage - 2018.05.02 at 17h 47m 36s.xml">
+      <configuration name="PlayerImmigrationTest.testGetEmigrationMessage" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerImmigrationTest_testGetEmigrationMessage - 2018.05.02 at 17h 54m 26s.xml">
+      <configuration name="PlayerImmigrationTest.testGetEmigrationMessage" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerImmigrationTest_testGetEmigrationMessage - 2018.05.02 at 17h 55m 20s.xml">
+      <configuration name="PlayerImmigrationTest.testGetEmigrationMessage" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerImmigrationTest_testGetEmigrationMessage - 2018.05.02 at 17h 55m 31s.xml">
+      <configuration name="PlayerImmigrationTest.testGetEmigrationMessage" configurationId="JUnit" />
+    </history-entry>
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="22732000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.32943678" />
+      <window_info anchor="right" id="Palette&#9;" order="4" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32943678" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info id="Designer" order="2" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18020834" />
+      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32943678" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3995749" />
+      <window_info id="Favorites" order="3" side_tool="true" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Colony.java</url>
+          <line>2675</line>
+          <properties />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/net/sf/freecol/common/model/WorkLocation.java</url>
+          <line>515</line>
+          <properties />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/net/sf/freecol/common/i18n/Messages.java</url>
+          <line>729</line>
+          <properties />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/net/sf/freecol/common/model/StringTemplate.java</url>
+          <line>231</line>
+          <properties />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="6" />
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/GoodsType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Building.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7800">
+          <caret line="349" column="19" selection-start-line="349" selection-start-column="19" selection-end-line="349" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/ProductionInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="825">
+          <caret line="59" column="22" selection-start-line="59" selection-start-column="22" selection-end-line="59" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PlayerImmigrationTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PathNodeTest.groovy" />
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/PathNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-16">
+          <caret line="33" column="16" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Turn.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="138" column="15" selection-start-line="138" selection-start-column="15" selection-end-line="138" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Modifier.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="345" column="23" selection-start-line="345" selection-start-column="23" selection-end-line="345" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/FeatureContainer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="281" column="24" selection-start-line="281" selection-start-column="24" selection-end-line="281" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/GameOptions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="293" column="31" selection-start-line="293" selection-start-column="31" selection-end-line="293" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/FreeColGameObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="277" column="25" selection-start-line="277" selection-start-column="25" selection-end-line="277" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/server/model/ServerColony.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="85" column="14" selection-start-line="85" selection-start-column="11" selection-end-line="85" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/ColonyProductionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="81" column="28" selection-start-line="81" selection-start-column="28" selection-end-line="81" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Settlement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="39" column="22" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Map.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="2297" column="16" selection-start-line="2297" selection-start-column="16" selection-end-line="2297" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/Program Files/Java/jre/lib/rt.jar!/sun/reflect/NativeMethodAccessorImpl.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="849">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-312">
+          <caret line="745" column="17" lean-forward="true" selection-start-line="745" selection-start-column="17" selection-end-line="745" selection-end-column="17" />
+          <folding>
+            <element signature="e#8510#8511#0" expanded="true" />
+            <element signature="e#8546#8547#0" expanded="true" />
+            <element signature="e#24972#24973#0" expanded="true" />
+            <element signature="e#24998#24999#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/util/test/FreeColTestCase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="181" column="33" selection-start-line="181" selection-start-column="30" selection-end-line="181" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/Program Files/Java/src.zip!/java/util/Collection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="638">
+          <caret line="579" column="22" selection-start-line="579" selection-start-column="22" selection-end-line="579" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Occupation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Europe.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="242" column="15" selection-start-line="242" selection-start-column="15" selection-end-line="242" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/Program Files/Java/src.zip!/java/util/Map.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="341" column="18" selection-start-line="341" selection-start-column="18" selection-end-line="341" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/BuildingType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="541">
+          <caret line="72" column="11" selection-start-line="72" selection-start-column="11" selection-end-line="72" selection-end-column="11" />
+          <folding>
+            <element signature="e#2457#2458#0" expanded="true" />
+            <element signature="e#2497#2498#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/GoodsLocation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="281" column="19" selection-start-line="281" selection-start-column="19" selection-end-line="281" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/GoodsType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/ProductionInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="825">
+          <caret line="59" column="22" selection-start-line="59" selection-start-column="22" selection-end-line="59" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Specification.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27075">
+          <caret line="1179" column="27" selection-start-line="1179" selection-start-column="27" selection-end-line="1179" selection-end-column="27" />
+          <folding>
+            <element signature="e#43308#43309#0" expanded="true" />
+            <element signature="e#43372#43373#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Goods.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Building.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7800">
+          <caret line="349" column="19" selection-start-line="349" selection-start-column="19" selection-end-line="349" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/AbstractGoods.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1125">
+          <caret line="74" column="11" selection-start-line="74" selection-start-column="11" selection-end-line="74" selection-end-column="11" />
+          <folding>
+            <element signature="e#8727#8728#0" expanded="true" />
+            <element signature="e#8778#8779#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/ProductionCache.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5700">
+          <caret line="258" column="39" selection-start-line="258" selection-start-column="15" selection-end-line="258" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Colony.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="47375">
+          <caret line="2007" column="48" selection-start-line="2007" selection-start-column="31" selection-end-line="2007" selection-end-column="48" />
+          <folding>
+            <element signature="e#5178#5179#0" expanded="true" />
+            <element signature="e#5224#5225#0" expanded="true" />
+            <element signature="e#5560#5561#0" expanded="true" />
+            <element signature="e#5591#5592#0" expanded="true" />
+            <element signature="e#6328#6329#0" expanded="true" />
+            <element signature="e#6396#6397#0" expanded="true" />
+            <element signature="e#72292#72293#0" expanded="true" />
+            <element signature="e#72356#72357#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/WorkLocation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11025">
+          <caret line="491" column="44" selection-start-line="491" selection-start-column="27" selection-end-line="491" selection-end-column="44" />
+          <folding>
+            <element signature="e#18007#18008#0" expanded="true" />
+            <element signature="e#18065#18066#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/server/model/ServerPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="421">
+          <caret line="2290" column="29" selection-start-line="2290" selection-start-column="19" selection-end-line="2290" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/server/control/ChangeSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="1628" column="10" selection-start-line="1628" selection-start-column="10" selection-end-line="1628" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/Program Files/Java/src.zip!/java/util/List.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="306" column="12" selection-start-line="306" selection-start-column="12" selection-end-line="306" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/client/gui/GUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="1276" column="16" selection-start-line="1276" selection-start-column="16" selection-end-line="1276" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/client/gui/SwingGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="296">
+          <caret line="1273" column="22" lean-forward="true" selection-start-line="1273" selection-start-column="22" selection-end-line="1273" selection-end-column="22" />
+          <folding>
+            <element signature="e#40373#40374#0" expanded="true" />
+            <element signature="e#40428#40429#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/i18n/MessagesTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="394" column="49" selection-start-line="394" selection-start-column="49" selection-end-line="394" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/client/control/InGameController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="388">
+          <caret line="3606" column="24" selection-start-line="3606" selection-start-column="24" selection-end-line="3606" selection-end-column="24" />
+          <folding>
+            <element signature="e#26105#26106#0" expanded="true" />
+            <element signature="e#26164#26165#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/FreeColObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="96" column="18" selection-start-line="96" selection-start-column="18" selection-end-line="96" selection-end-column="18" />
+          <folding>
+            <element signature="e#3228#3229#0" expanded="true" />
+            <element signature="e#3253#3254#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/client/gui/Canvas.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="296">
+          <caret line="2164" column="31" selection-start-line="2164" selection-start-column="23" selection-end-line="2164" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/ModelMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="176" column="11" selection-start-line="176" selection-start-column="11" selection-end-line="176" selection-end-column="11" />
+          <folding>
+            <element signature="e#7618#7619#0" expanded="true" />
+            <element signature="e#7650#7651#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/ModelMessageTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="92" column="37" lean-forward="true" selection-start-line="92" selection-start-column="37" selection-end-line="92" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/i18n/Messages.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="730" column="59" lean-forward="true" selection-start-line="730" selection-start-column="59" selection-end-line="730" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="1407" column="41" selection-start-line="1407" selection-start-column="41" selection-end-line="1407" selection-end-column="41" />
+          <folding>
+            <element signature="e#36975#36976#0" expanded="true" />
+            <element signature="e#37030#37031#0" expanded="true" />
+            <element signature="e#37909#37910#0" expanded="true" />
+            <element signature="e#37972#37973#0" expanded="true" />
+            <element signature="e#56507#56508#0" expanded="true" />
+            <element signature="e#56536#56537#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/StringTemplate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="291">
+          <caret line="233" column="43" lean-forward="true" selection-start-line="233" selection-start-column="43" selection-end-line="233" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Unit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="239" column="14" selection-start-line="239" selection-start-column="11" selection-end-line="239" selection-end-column="15" />
+          <folding>
+            <element signature="e#7274#7275#0" expanded="true" />
+            <element signature="e#7305#7306#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/UnitTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="76" column="50" selection-start-line="76" selection-start-column="10" selection-end-line="76" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/server/model/ServerUnit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="106" column="11" selection-start-line="106" selection-start-column="11" selection-end-line="106" selection-end-column="11" />
+          <folding>
+            <element signature="e#3619#3620#0" expanded="true" />
+            <element signature="e#3650#3651#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PlayerImmigrationTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="965">
+          <caret line="148" column="35" lean-forward="true" selection-start-line="148" selection-start-column="35" selection-end-line="148" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
