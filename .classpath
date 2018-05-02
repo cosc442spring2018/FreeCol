@@ -9,6 +9,6 @@
 	<classpathentry kind="lib" path="jars/jorbis-0.0.17.jar"/>
 	<classpathentry kind="lib" path="jars/miglayout-core-4.2.jar"/>
 	<classpathentry kind="lib" path="jars/miglayout-swing-4.2.jar"/>
-	<classpathentry kind="lib" path="test/lib/junit.jar"/>
+	<classpathentry exported="true" kind="lib" path="test/lib/junit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
