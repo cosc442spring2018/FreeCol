@@ -27,31 +27,29 @@ import javax.swing.plaf.basic.BasicTableHeaderUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 
-
 /**
  * UI-class for table headers.
  */
 public class FreeColTableHeaderUI extends BasicTableHeaderUI {
 
-    public static ComponentUI createUI(@SuppressWarnings("unused") JComponent c) {
-        return new FreeColTableHeaderUI();
-    }
+	public static ComponentUI createUI(@SuppressWarnings("unused") JComponent c) {
+		return new FreeColTableHeaderUI();
+	}
 
+	@Override
+	public void installUI(JComponent c) {
+		super.installUI(c);
 
-    @Override
-    public void installUI(JComponent c) {
-        super.installUI(c);
+		JTableHeader j = (JTableHeader) c;
+		j.setOpaque(false);
 
-        JTableHeader j = (JTableHeader) c;
-        j.setOpaque(false);
+		DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) j.getDefaultRenderer();
+		dtcr.setOpaque(false);
+	}
 
-        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) j.getDefaultRenderer();
-        dtcr.setOpaque(false);
-    }
-
-    @Override
-    public void paint(Graphics g, JComponent c) {
-        LAFUtilities.setProperties(g, c);
-        super.paint(g, c);
-    }
+	@Override
+	public void paint(Graphics g, JComponent c) {
+		LAFUtilities.setProperties(g, c);
+		super.paint(g, c);
+	}
 }

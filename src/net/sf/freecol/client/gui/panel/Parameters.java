@@ -21,13 +21,12 @@ package net.sf.freecol.client.gui.panel;
 
 public class Parameters {
 
-    public final int distToLandFromHighSeas;
+	public final int distToLandFromHighSeas;
 
-    public final int maxDistanceToEdge;
+	public final int maxDistanceToEdge;
 
-
-    Parameters(int distToLandFromHighSeas, int maxDistanceToEdge) {
-        this.distToLandFromHighSeas = distToLandFromHighSeas;
-        this.maxDistanceToEdge = maxDistanceToEdge;
-    }
+	Parameters(int distToLandFromHighSeas, int maxDistanceToEdge) {
+		this.distToLandFromHighSeas = distToLandFromHighSeas;
+		this.maxDistanceToEdge = maxDistanceToEdge;
+	}
 }

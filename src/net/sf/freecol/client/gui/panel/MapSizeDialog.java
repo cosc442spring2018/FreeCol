@@ -29,72 +29,67 @@ import net.miginfocom.swing.MigLayout;
 
 import net.sf.freecol.client.FreeColClient;
 
-
 /**
  * A dialog for choosing a map size.
  */
 public final class MapSizeDialog extends FreeColInputDialog<Dimension> {
 
-    private static final int COLUMNS = 5;
-    private static final int DEFAULT_HEIGHT = 100;
-    private static final int DEFAULT_WIDTH = 40;
+	private static final int COLUMNS = 5;
+	private static final int DEFAULT_HEIGHT = 100;
+	private static final int DEFAULT_WIDTH = 40;
 
-    private final JTextField inputWidth
-        = new JTextField(Integer.toString(DEFAULT_WIDTH), COLUMNS);
-    private final JTextField inputHeight
-        = new JTextField(Integer.toString(DEFAULT_HEIGHT), COLUMNS);
+	private final JTextField inputWidth = new JTextField(Integer.toString(DEFAULT_WIDTH), COLUMNS);
+	private final JTextField inputHeight = new JTextField(Integer.toString(DEFAULT_HEIGHT), COLUMNS);
 
+	/**
+	 * Creates a dialog to choose the map size.
+	 *
+	 * @param freeColClient
+	 *            The <code>FreeColClient</code> for the game.
+	 * @param frame
+	 *            The owner frame.
+	 */
+	public MapSizeDialog(FreeColClient freeColClient, JFrame frame) {
+		super(freeColClient, frame);
 
-    /**
-     * Creates a dialog to choose the map size.
-     *
-     * @param freeColClient The <code>FreeColClient</code> for the game.
-     * @param frame The owner frame.
-     */
-    public MapSizeDialog(FreeColClient freeColClient, JFrame frame) {
-        super(freeColClient, frame);
+		JLabel widthLabel = Utility.localizedLabel("width");
+		widthLabel.setLabelFor(inputWidth);
+		JLabel heightLabel = Utility.localizedLabel("height");
+		heightLabel.setLabelFor(inputHeight);
 
-        JLabel widthLabel = Utility.localizedLabel("width");
-        widthLabel.setLabelFor(inputWidth);
-        JLabel heightLabel = Utility.localizedLabel("height");
-        heightLabel.setLabelFor(inputHeight);
+		MigPanel panel = new MigPanel(new MigLayout("wrap 2"));
 
-        MigPanel panel = new MigPanel(new MigLayout("wrap 2"));
-        
-        panel.add(Utility.localizedHeader("mapSizeDialog.mapSize", true),
-                  "span, align center");
-        panel.add(widthLabel, "newline 20");
-        panel.add(inputWidth);
-        panel.add(heightLabel);
-        panel.add(inputHeight);
+		panel.add(Utility.localizedHeader("mapSizeDialog.mapSize", true), "span, align center");
+		panel.add(widthLabel, "newline 20");
+		panel.add(inputWidth);
+		panel.add(heightLabel);
+		panel.add(inputHeight);
 
-        initializeInputDialog(frame, true, panel, null, "ok", "cancel");
-    }
+		initializeInputDialog(frame, true, panel, null, "ok", "cancel");
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Dimension getInputValue() {
-        int width, height;
-        try {
-            width = Integer.parseInt(inputWidth.getText());
-            height = Integer.parseInt(inputHeight.getText());
-        } catch (NumberFormatException nfe) {
-            return null;
-        }
-        return (width <= 0 || height <= 0) ? null
-            : new Dimension(width, height);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected Dimension getInputValue() {
+		int width, height;
+		try {
+			width = Integer.parseInt(inputWidth.getText());
+			height = Integer.parseInt(inputHeight.getText());
+		} catch (NumberFormatException nfe) {
+			return null;
+		}
+		return (width <= 0 || height <= 0) ? null : new Dimension(width, height);
+	}
 
+	// Override Component
 
-    // Override Component
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void requestFocus() {
-        this.inputWidth.requestFocus();
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void requestFocus() {
+		this.inputWidth.requestFocus();
+	}
 }

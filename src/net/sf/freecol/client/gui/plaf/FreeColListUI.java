@@ -27,27 +27,25 @@ import javax.swing.plaf.basic.BasicListUI;
 
 import net.sf.freecol.client.gui.ImageLibrary;
 
-
 /**
- * UI-class for lists, such as the drop down list of colonies in the
- * Colony panel.
+ * UI-class for lists, such as the drop down list of colonies in the Colony
+ * panel.
  */
 public class FreeColListUI extends BasicListUI {
 
-    public static ComponentUI createUI(@SuppressWarnings("unused") JComponent c) {
-        return new FreeColListUI();
-    }
+	public static ComponentUI createUI(@SuppressWarnings("unused") JComponent c) {
+		return new FreeColListUI();
+	}
 
+	@Override
+	public void installUI(JComponent c) {
+		super.installUI(c);
+	}
 
-    @Override
-    public void installUI(JComponent c) {
-        super.installUI(c);
-    }
-
-    @Override
-    public void paint(Graphics g, JComponent c) {
-        ImageLibrary.drawTiledImage("image.background.FreeColList", g, c, null);
-        LAFUtilities.setProperties(g, c);
-        super.paint(g, c);
-    }
+	@Override
+	public void paint(Graphics g, JComponent c) {
+		ImageLibrary.drawTiledImage("image.background.FreeColList", g, c, null);
+		LAFUtilities.setProperties(g, c);
+		super.paint(g, c);
+	}
 }

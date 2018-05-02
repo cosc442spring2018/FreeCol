@@ -30,75 +30,61 @@ import net.sf.freecol.client.FreeColClient;
 
 import static net.sf.freecol.common.util.StringUtils.*;
 
-
 /**
  * Display text over tiles.
  */
 public class DisplayTileTextAction extends SelectableAction {
 
-    public static final String id = "displayTileTextAction.";
+	public static final String id = "displayTileTextAction.";
 
-    // FIXME: make ClientOptions use enum
-    public static enum DisplayText {
-        EMPTY, NAMES, OWNERS, REGIONS;
+	// FIXME: make ClientOptions use enum
+	public static enum DisplayText {
+		EMPTY, NAMES, OWNERS, REGIONS;
 
-        public String getKey() {
-            return getEnumKey(this);
-        }
-    };
+		public String getKey() {
+			return getEnumKey(this);
+		}
+	};
 
-    private static final int[] accelerators = {
-        KeyEvent.VK_E,
-        KeyEvent.VK_N,
-        KeyEvent.VK_O,
-        KeyEvent.VK_R
-    };
+	private static final int[] accelerators = { KeyEvent.VK_E, KeyEvent.VK_N, KeyEvent.VK_O, KeyEvent.VK_R };
 
-    private DisplayText display = null;
+	private DisplayText display = null;
 
+	/**
+	 * Creates this action
+	 *
+	 * @param freeColClient
+	 *            The <code>FreeColClient</code> for the game.
+	 * @param type
+	 *            a <code>DisplayText</code> value
+	 */
+	public DisplayTileTextAction(FreeColClient freeColClient, DisplayText type) {
+		super(freeColClient, id + type.getKey(), ClientOptions.DISPLAY_TILE_TEXT);
+		display = type;
+		setAccelerator(KeyStroke.getKeyStroke(accelerators[type.ordinal()], KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK));
+	}
 
-    /**
-     * Creates this action
-     *
-     * @param freeColClient The <code>FreeColClient</code> for the game.
-     * @param type a <code>DisplayText</code> value
-     */
-    public DisplayTileTextAction(FreeColClient freeColClient,
-                                 DisplayText type) {
-        super(freeColClient, id + type.getKey(),
-              ClientOptions.DISPLAY_TILE_TEXT);
-        display = type;
-        setAccelerator(KeyStroke.getKeyStroke(accelerators[type.ordinal()],
-                KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK));
-    }
+	// Override SelectableAction
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean shouldBeSelected() {
+		return super.shouldBeEnabled() && freeColClient.getClientOptions() != null && display != null
+				&& freeColClient.getClientOptions().getDisplayTileText() == display.ordinal();
+	}
 
-    // Override SelectableAction
+	// Interface ActionListener
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean shouldBeSelected() {
-        return super.shouldBeEnabled()
-            && freeColClient.getClientOptions() != null
-            && display != null
-            && freeColClient.getClientOptions().getDisplayTileText()
-                == display.ordinal();
-    }
-
-
-    // Interface ActionListener
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void actionPerformed(ActionEvent ae) {
-        if (((JRadioButtonMenuItem)ae.getSource()).isSelected()) {
-            freeColClient.getClientOptions()
-                .setInteger(ClientOptions.DISPLAY_TILE_TEXT, display.ordinal());
-            getGUI().refresh();
-        }
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		if (((JRadioButtonMenuItem) ae.getSource()).isSelected()) {
+			freeColClient.getClientOptions().setInteger(ClientOptions.DISPLAY_TILE_TEXT, display.ordinal());
+			getGUI().refresh();
+		}
+	}
 }

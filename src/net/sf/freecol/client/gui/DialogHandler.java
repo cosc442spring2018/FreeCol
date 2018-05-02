@@ -19,12 +19,11 @@
 
 package net.sf.freecol.client.gui;
 
-
 /**
  * The interface for non-modal dialog handlers.
  */
 public interface DialogHandler<T> {
 
-    void handle(T response);
+	void handle(T response);
 
 };

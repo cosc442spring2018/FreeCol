@@ -25,62 +25,62 @@ import java.util.logging.Logger;
 
 import net.sf.freecol.FreeCol;
 
-
 /**
- * The Worker Thread executes jobs one after another.  The thread
- * manages a queue where new jobs can be enqueued.  The jobs are
- * processed synchronously by the worker.
+ * The Worker Thread executes jobs one after another. The thread manages a queue
+ * where new jobs can be enqueued. The jobs are processed synchronously by the
+ * worker.
  */
 public final class Worker extends Thread {
 
-    private final LinkedBlockingQueue<Runnable> jobList;
+	private final LinkedBlockingQueue<Runnable> jobList;
 
-    private volatile boolean stopRunning;
+	private volatile boolean stopRunning;
 
-    private static final Logger logger = Logger.getLogger(Worker.class.getName());
-    
-    public Worker() {
-        super(FreeCol.CLIENT_THREAD+"Worker");
-        jobList = new LinkedBlockingQueue<>();
-        stopRunning = false;
-    }
+	private static final Logger logger = Logger.getLogger(Worker.class.getName());
 
-    @Override
-    public void run() {
-        while (!stopRunning) {
-            try {
-                runNextWaitingJob();
-            } catch (InterruptedException e) {
-                logger.log(Level.INFO, "Worker interrupted, aborting!", e);
-            }
-        }
-    }
+	public Worker() {
+		super(FreeCol.CLIENT_THREAD + "Worker");
+		jobList = new LinkedBlockingQueue<>();
+		stopRunning = false;
+	}
 
-    // run the next waiting job
-	private void runNextWaitingJob() throws InterruptedException {
-		Runnable job = jobList.take();
-		try {
-		    job.run();
-		} catch (Exception e) {
-		    logger.log(Level.SEVERE, "Worker task failed!", e);
+	@Override
+	public void run() {
+		while (!stopRunning) {
+			try {
+				runNextWaitingJob();
+			} catch (InterruptedException e) {
+				logger.log(Level.INFO, "Worker interrupted, aborting!", e);
+			}
 		}
 	}
 
-    /**
-     * Adds a new job to the queue
-     * 
-     * @param job the job to add to the queue.
-     */
-    public void schedule(Runnable job) {
-        jobList.add(job);
-    }
+	// run the next waiting job
+	private void runNextWaitingJob() throws InterruptedException {
+		Runnable job = jobList.take();
+		try {
+			job.run();
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Worker task failed!", e);
+		}
+	}
 
-// TODO Remove unused code found by UCDetector
-//     /**
-//      * Makes the worker thread stop running.
-//      */
-//     public void askToStop() {
-//         stopRunning = true;
-//         this.interrupt();
-//     }
+	/**
+	 * Adds a new job to the queue
+	 * 
+	 * @param job
+	 *            the job to add to the queue.
+	 */
+	public void schedule(Runnable job) {
+		jobList.add(job);
+	}
+
+	// TODO Remove unused code found by UCDetector
+	// /**
+	// * Makes the worker thread stop running.
+	// */
+	// public void askToStop() {
+	// stopRunning = true;
+	// this.interrupt();
+	// }
 }
