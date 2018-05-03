@@ -96,6 +96,12 @@ public class DebugUtils {
 
 	private static final Logger logger = Logger.getLogger(DebugUtils.class.getName());
 
+	private static final String CANCEL = "cancel";
+
+	private static final String COLONYKEY = "%colony%";
+
+	private static final String NAT = "\nat ";
+
 	/**
 	 * Debug action to add buildings to the user colonies.
 	 *
@@ -112,7 +118,7 @@ public class DebugUtils {
 		final GUI gui = freeColClient.getGUI();
 		final Player player = freeColClient.getMyPlayer();
 
-		BuildingType buildingType = gui.getChoice(null, buildingTitle, "cancel",
+		BuildingType buildingType = gui.getChoice(null, buildingTitle, CANCEL,
 				game.getSpecification().getBuildingTypeList().stream().map(bt -> {
 					String msg = Messages.getName(bt);
 					return new ChoiceItem<BuildingType>(msg, bt);
@@ -163,7 +169,7 @@ public class DebugUtils {
 		final Specification sSpec = sGame.getSpecification();
 		final Player sPlayer = sGame.getFreeColGameObject(player.getId(), Player.class);
 
-		FoundingFather father = gui.getChoice(null, fatherTitle, "cancel",
+		FoundingFather father = gui.getChoice(null, fatherTitle, CANCEL,
 				sSpec.getFoundingFathers().stream().filter(f -> !sPlayer.hasFather(f)).map(f -> {
 					String msg = Messages.getName(f);
 					return new ChoiceItem<FoundingFather>(msg, f);
@@ -189,7 +195,7 @@ public class DebugUtils {
 		final Player sPlayer = sGame.getFreeColGameObject(player.getId(), Player.class);
 
 		String response = gui.getInput(null, StringTemplate.template("prompt.selectGold"), Integer.toString(1000), "ok",
-				"cancel");
+				CANCEL);
 		if (response == null || response.isEmpty())
 			return;
 		int gold;
@@ -218,7 +224,7 @@ public class DebugUtils {
 		final Player sPlayer = sGame.getFreeColGameObject(player.getId(), Player.class);
 
 		String response = gui.getInput(null, StringTemplate.template("prompt.selectImmigration"), Integer.toString(100),
-				"ok", "cancel");
+				"ok", CANCEL);
 		if (response == null || response.isEmpty())
 			return;
 		int crosses;
@@ -246,7 +252,7 @@ public class DebugUtils {
 		final Game sGame = server.getGame();
 
 		String response = gui.getInput(null, StringTemplate.template("prompt.selectLiberty"), Integer.toString(100),
-				"ok", "cancel");
+				"ok", CANCEL);
 		if (response == null || response.isEmpty())
 			return;
 		int liberty;
@@ -302,7 +308,7 @@ public class DebugUtils {
 		final Tile sTile = sGame.getFreeColGameObject(tile.getId(), Tile.class);
 		final GUI gui = freeColClient.getGUI();
 
-		UnitType unitChoice = gui.getChoice(null, StringTemplate.template("prompt.selectUnitType"), "cancel",
+		UnitType unitChoice = gui.getChoice(null, StringTemplate.template("prompt.selectUnitType"), CANCEL,
 				sSpec.getUnitTypeList().stream().map(ut -> {
 					String msg = Messages.getName(ut);
 					return new ChoiceItem<UnitType>(msg, ut);
@@ -354,7 +360,7 @@ public class DebugUtils {
 			gtl.add(new ChoiceItem<>(msg, t));
 		}
 		Collections.sort(gtl);
-		GoodsType goodsType = gui.getChoice(null, StringTemplate.template("prompt.selectGoodsType"), "cancel",
+		GoodsType goodsType = gui.getChoice(null, StringTemplate.template("prompt.selectGoodsType"), CANCEL,
 				sSpec.getGoodsTypeList().stream().filter(gt -> !gt.isFoodType() || gt == sSpec.getPrimaryFoodType())
 						.map(gt -> {
 							String msg = Messages.getName(gt);
@@ -363,7 +369,7 @@ public class DebugUtils {
 		if (goodsType == null)
 			return;
 
-		String amount = gui.getInput(null, StringTemplate.template("prompt.selectGoodsAmount"), "20", "ok", "cancel");
+		String amount = gui.getInput(null, StringTemplate.template("prompt.selectGoodsAmount"), "20", "ok", CANCEL);
 		if (amount == null)
 			return;
 
@@ -395,10 +401,10 @@ public class DebugUtils {
 		List<RandomChoice<Disaster>> disasters = colony.getDisasters();
 		if (disasters.isEmpty()) {
 			gui.showErrorMessage(
-					StringTemplate.template("error.disasterNotAvailable").addName("%colony%", colony.getName()));
+					StringTemplate.template("error.disasterNotAvailable").addName(COLONYKEY, colony.getName()));
 			return;
 		}
-		Disaster disaster = gui.getChoice(null, StringTemplate.template("prompt.selectDisaster"), "cancel",
+		Disaster disaster = gui.getChoice(null, StringTemplate.template("prompt.selectDisaster"), CANCEL,
 				disasters.stream().map(rc -> {
 					String label = Messages.getName(rc.getObject()) + " " + Integer.toString(rc.getProbability());
 					return new ChoiceItem<Disaster>(label, rc.getObject());
@@ -411,7 +417,7 @@ public class DebugUtils {
 		final ServerColony sColony = sGame.getFreeColGameObject(colony.getId(), ServerColony.class);
 		final Disaster sDisaster = sGame.getSpecification().getDisaster(disaster.getId());
 		if (server.getInGameController().debugApplyDisaster(sColony, sDisaster) <= 0) {
-			gui.showErrorMessage(StringTemplate.template("error.disasterAvoided").addName("%colony%", colony.getName())
+			gui.showErrorMessage(StringTemplate.template("error.disasterAvoided").addName(COLONYKEY, colony.getName())
 					.addNamed("%disaster%", disaster));
 		}
 		freeColClient.getInGameController().nextModelMessage();
@@ -434,7 +440,7 @@ public class DebugUtils {
 		final GUI gui = freeColClient.getGUI();
 		final Game game = freeColClient.getGame();
 
-		Player player = gui.getChoice(null, StringTemplate.template("prompt.selectOwner"), "cancel",
+		Player player = gui.getChoice(null, StringTemplate.template("prompt.selectOwner"), CANCEL,
 				game.getLiveEuropeanPlayers(colony.getOwner()).stream().map(p -> {
 					String msg = Messages.message(p.getCountryLabel());
 					return new ChoiceItem<Player>(msg, p);
@@ -468,7 +474,7 @@ public class DebugUtils {
 		final GUI gui = freeColClient.getGUI();
 		final Game game = unit.getGame();
 
-		Player player = gui.getChoice(null, StringTemplate.template("prompt.selectOwner"), "cancel",
+		Player player = gui.getChoice(null, StringTemplate.template("prompt.selectOwner"), CANCEL,
 				game.getLivePlayers(null).stream().filter(p -> unit.getType().isAvailableTo(p)).map(p -> {
 					String msg = Messages.message(p.getCountryLabel());
 					return new ChoiceItem<Player>(msg, p);
@@ -507,7 +513,7 @@ public class DebugUtils {
 		final Unit sUnit = sGame.getFreeColGameObject(unit.getId(), Unit.class);
 		final GUI gui = freeColClient.getGUI();
 
-		Role roleChoice = gui.getChoice(null, StringTemplate.template("prompt.selectRole"), "cancel",
+		Role roleChoice = gui.getChoice(null, StringTemplate.template("prompt.selectRole"), CANCEL,
 				sGame.getSpecification().getRoles().stream().map(r -> new ChoiceItem<Role>(r.getId(), r)).sorted()
 						.collect(Collectors.toList()));
 		if (roleChoice == null)
@@ -527,6 +533,7 @@ public class DebugUtils {
 	 *            The <code>FreeColClient</code> for the game.
 	 * @return True if desynchronization found.
 	 */
+	// Refactored
 	public static boolean checkDesyncAction(final FreeColClient freeColClient) {
 		final FreeColServer server = freeColClient.getFreeColServer();
 		final Game game = freeColClient.getGame();
@@ -540,56 +547,98 @@ public class DebugUtils {
 		LogBuilder lb = new LogBuilder(256);
 		lb.add("Desynchronization detected\n");
 		for (Tile t : sMap.getAllTiles()) {
-			if (!sPlayer.canSee(t))
-				continue;
-			for (Unit u : t.getUnitList()) {
-				if (!sPlayer.owns(u) && (t.hasSettlement() || u.isOnCarrier()))
-					continue;
-				if (game.getFreeColGameObject(u.getId(), Unit.class) == null) {
-					lb.add("Unit missing on client-side.\n", "  Server: ",
-							u.getDescription(Unit.UnitLabelType.NATIONAL), "(", u.getId(), ") from: ",
-							u.getLocation().getId(), ".\n");
-					try {
-						lb.add("  Client: ", map.getTile(u.getTile().getX(), u.getTile().getY()).getFirstUnit().getId(),
-								"\n");
-					} catch (NullPointerException npe) {
-					}
-					problemDetected = true;
-				} else {
-					Unit cUnit = game.getFreeColGameObject(u.getId(), Unit.class);
-					if (cUnit.hasTile() && !cUnit.getTile().getId().equals(u.getTile().getId())) {
-						lb.add("Unit located on different tiles.\n", "  Server: ",
-								u.getDescription(Unit.UnitLabelType.NATIONAL), "(", u.getId(), ") from: ",
-								u.getLocation().getId(), "\n", "  Client: ",
-								cUnit.getDescription(Unit.UnitLabelType.NATIONAL), "(", cUnit.getId(), ") at: ",
-								cUnit.getLocation().getId(), "\n");
-						problemDetected = true;
-					}
-				}
-			}
+			problemDetected = dsyncProblemDetection(lb, t, game, map, sPlayer);
+
 			Tile ct = game.getFreeColGameObject(t.getId(), Tile.class);
 			Settlement sSettlement = t.getSettlement();
 			Settlement cSettlement = ct.getSettlement();
-			if (sSettlement == null) {
-				if (cSettlement == null) {
-					;// OK
-				} else {
-					lb.add("Settlement still present in client: ", cSettlement);
-					problemDetected = true;
-				}
+			problemDetected = dsyncCheckSettlement(lb, sSettlement, cSettlement);
+		}
+
+		problemDetected = dsyncGoodsProblemDetection(problemDetected, lb, game, sGame, player, sPlayer, freeColClient);
+
+		return problemDetected;
+	}
+
+	// Refactored: Extracted detecting a problem from checkDesyncAction
+	public static boolean dsyncProblemDetection(LogBuilder lb, Tile t, Game game, Map map, ServerPlayer sPlayer) {
+		boolean problemDetected = false;
+		for (Unit u : t.getUnitList()) {
+			if (!sPlayer.owns(u) && (t.hasSettlement() || u.isOnCarrier()))
+				continue;
+			if (game.getFreeColGameObject(u.getId(), Unit.class) == null) {
+				return dsyncCheckNullUnit(lb, u, game, map);
 			} else {
-				if (cSettlement == null) {
-					lb.add("Settlement not present in client: ", sSettlement);
-					problemDetected = true;
-				} else if (sSettlement.getId().equals(cSettlement.getId())) {
-					;// OK
-				} else {
-					lb.add("Settlements differ.\n  Server: ", sSettlement.toString(), "\n  Client: ",
-							cSettlement.toString(), "\n");
-				}
+				return dsyncCheckUnit(lb, game, u);
+			}
+		}
+		return problemDetected;
+	}
+
+	// Refactored: Extracted detecting a problem with null units from
+	// checkDesyncAction
+	public static boolean dsyncCheckNullUnit(LogBuilder lb, Unit u, Game game, Map map) {
+		boolean problemDetected = false;
+		if (game.getFreeColGameObject(u.getId(), Unit.class) == null) {
+			lb.add("Unit missing on client-side.\n", "  Server: ", u.getDescription(Unit.UnitLabelType.NATIONAL), "(",
+					u.getId(), ") from: ", u.getLocation().getId(), ".\n");
+			try {
+				lb.add("  Client: ", map.getTile(u.getTile().getX(), u.getTile().getY()).getFirstUnit().getId(), "\n");
+			} catch (NullPointerException npe) {
+			}
+			problemDetected = true;
+		}
+
+		return problemDetected;
+	}
+
+	// Refactored: Extracted detecting a problem with set units from
+	// checkDesyncAction
+	public static boolean dsyncCheckUnit(LogBuilder lb, Game game, Unit u) {
+		boolean problemDetected = false;
+		Unit cUnit = game.getFreeColGameObject(u.getId(), Unit.class);
+		if (cUnit.hasTile() && !cUnit.getTile().getId().equals(u.getTile().getId())) {
+			lb.add("Unit located on different tiles.\n", "  Server: ", u.getDescription(Unit.UnitLabelType.NATIONAL),
+					"(", u.getId(), ") from: ", u.getLocation().getId(), "\n", "  Client: ",
+					cUnit.getDescription(Unit.UnitLabelType.NATIONAL), "(", cUnit.getId(), ") at: ",
+					cUnit.getLocation().getId(), "\n");
+			problemDetected = true;
+		}
+
+		return problemDetected;
+	}
+
+	// Refactored: Extracted checking of the settlement for dsync from
+	// checkDesyncAction
+	public static boolean dsyncCheckSettlement(LogBuilder lb, Settlement sSettlement, Settlement cSettlement) {
+		boolean problemDetected = false;
+
+		if (sSettlement == null) {
+			if (cSettlement == null) {
+				;// OK
+			} else {
+				lb.add("Settlement still present in client: ", cSettlement);
+				problemDetected = true;
+			}
+		} else {
+			if (cSettlement == null) {
+				lb.add("Settlement not present in client: ", sSettlement);
+				problemDetected = true;
+			} else if (sSettlement.getId().equals(cSettlement.getId())) {
+				;// OK
+			} else {
+				lb.add("Settlements differ.\n  Server: ", sSettlement.toString(), "\n  Client: ",
+						cSettlement.toString(), "\n");
 			}
 		}
 
+		return problemDetected;
+	}
+
+	// Refactored: Extracted detecting a problem with the goods from
+	// checkDesyncAction
+	public static boolean dsyncGoodsProblemDetection(boolean problemDetected, LogBuilder lb, Game game, Game sGame,
+			Player player, ServerPlayer sPlayer, FreeColClient freeColClient) {
 		boolean goodsProblemDetected = false;
 		for (GoodsType sg : sGame.getSpecification().getGoodsTypeList()) {
 			int sPrice = sPlayer.getMarket().getBidPrice(sg, 1);
@@ -611,6 +660,7 @@ public class DebugUtils {
 			freeColClient.getGUI().showInformationMessage(err);
 			logger.severe(err);
 		}
+
 		return problemDetected;
 	}
 
@@ -630,7 +680,7 @@ public class DebugUtils {
 		final AIColony aiColony = aiMain.getAIColony(colony);
 		if (aiColony == null) {
 			freeColClient.getGUI().showErrorMessage(
-					StringTemplate.template("error.notAIColony").addName("%colony%", colony.getName()));
+					StringTemplate.template("error.notAIColony").addName(COLONYKEY, colony.getName()));
 		} else {
 			// TODO: Missing i18n
 			freeColClient.getGUI().showInformationMessage(aiColony.planToString());
@@ -667,6 +717,7 @@ public class DebugUtils {
 	 * @param freeColClient
 	 *            The <code>FreeColClient</code> for the game.
 	 */
+	// Refactored
 	public static void displayEurope(final FreeColClient freeColClient) {
 		final FreeColServer server = freeColClient.getFreeColServer();
 		final Game sGame = server.getGame();
@@ -690,40 +741,8 @@ public class DebugUtils {
 			units.put(Messages.message("sailingToAmerica"), toAmerica);
 			lb.add("\n==", Messages.message(p.getCountryLabel()), "==\n");
 
-			for (Unit u : p.getEurope().getUnitList()) {
-				if (u.getDestination() instanceof Map) {
-					toAmerica.add(u);
-					continue;
-				}
-				if (u.getDestination() instanceof Europe) {
-					toEurope.add(u);
-					continue;
-				}
-				inEurope.add(u);
-			}
+			displayEuropeUnitLog(lb, toAmerica, toEurope, inEurope, units, p, aiMain);
 
-			for (Entry<String, List<Unit>> entry : units.entrySet()) {
-				final String label = entry.getKey();
-				final List<Unit> list = entry.getValue();
-				if (list.isEmpty())
-					continue;
-				lb.add("\n->", label, "\n");
-				for (Unit u : list) {
-					lb.add("\n", u.getDescription(Unit.UnitLabelType.NATIONAL));
-					if (u.isDamaged()) {
-						lb.add(" (", Messages.message(u.getRepairLabel()), ")");
-					} else {
-						lb.add("    ");
-						AIUnit aiu = aiMain.getAIUnit(u);
-						if (!aiu.hasMission()) {
-							lb.add(" (", Messages.message("none"), ")");
-						} else {
-							lb.add(aiu.getMission().toString().replaceAll("\n", "    \n"));
-						}
-					}
-				}
-				lb.add("\n");
-			}
 			lb.add("\n->", Messages.message("immigrants"), "\n\n");
 			for (UnitType unitType : p.getEurope().getRecruitables()) {
 				lb.add(Messages.getName(unitType), "\n");
@@ -731,6 +750,49 @@ public class DebugUtils {
 			lb.add("\n");
 		}
 		freeColClient.getGUI().showInformationMessage(lb.toString());
+	}
+
+	// Refactored
+	public static void displayEuropeUnitLog(LogBuilder lb, List<Unit> toAmerica, List<Unit> toEurope,
+			List<Unit> inEurope, HashMap<String, List<Unit>> units, Player p, AIMain aiMain) {
+		for (Unit u : p.getEurope().getUnitList()) {
+			if (u.getDestination() instanceof Map) {
+				toAmerica.add(u);
+				continue;
+			}
+			if (u.getDestination() instanceof Europe) {
+				toEurope.add(u);
+				continue;
+			}
+			inEurope.add(u);
+		}
+
+		for (Entry<String, List<Unit>> entry : units.entrySet()) {
+			final String label = entry.getKey();
+			final List<Unit> list = entry.getValue();
+			if (list.isEmpty())
+				continue;
+			lb.add("\n->", label, "\n");
+			for (Unit u : list) {
+				lb.add("\n", u.getDescription(Unit.UnitLabelType.NATIONAL));
+				if (u.isDamaged()) {
+					lb.add(" (", Messages.message(u.getRepairLabel()), ")");
+				} else {
+					lb.add("    ");
+					AIUnit aiu = aiMain.getAIUnit(u);
+					if (!aiu.hasMission()) {
+						lb.add(" (", Messages.message("none"), ")");
+					} else {
+						lb.add(aiu.getMission().toString().replaceAll("\n", "    \n"));
+					}
+				}
+			}
+			lb.add("\n");
+		}
+		lb.add("\n->", Messages.message("immigrants"), "\n\n");
+		for (UnitType unitType : p.getEurope().getRecruitables()) {
+			lb.add(Messages.getName(unitType), "\n");
+		}
 	}
 
 	/**
@@ -761,38 +823,57 @@ public class DebugUtils {
 	 * @param freeColClient
 	 *            The <code>FreeColClient</code> for the game.
 	 */
+
+	// Refactored
 	public static void displayUnits(final FreeColClient freeColClient) {
 		final Player player = freeColClient.getMyPlayer();
 		List<Unit> all = player.getUnits();
 		LogBuilder lb = new LogBuilder(256);
 		lb.add("\nActive units:\n");
 
-		Unit u, first = player.getNextActiveUnit();
-		if (first != null) {
-			lb.add(first.toString(), "\nat ", first.getLocation(), "\n");
-			all.remove(first);
-			while (player.hasNextActiveUnit() && (u = player.getNextActiveUnit()) != first) {
-				lb.add(u, "\nat ", u.getLocation(), "\n");
-				all.remove(u);
-			}
-		}
+		Unit u = player.getNextActiveUnit();
+		Unit first = player.getNextActiveUnit();
+
+		displayActiveUnit(lb, player, all, u, first);
+
 		lb.add("Going-to units:\n");
 		first = player.getNextGoingToUnit();
-		if (first != null) {
-			all.remove(first);
-			lb.add(first, "\nat ", first.getLocation(), "\n");
-			while (player.hasNextGoingToUnit() && (u = player.getNextGoingToUnit()) != first) {
-				lb.add(u, "\nat ", u.getLocation(), "\n");
-				all.remove(u);
-			}
-		}
+
+		displayGoingUnit(lb, player, all, u, first);
+
 		lb.add("Remaining units:\n");
 		while (!all.isEmpty()) {
 			u = all.remove(0);
-			lb.add(u, "\nat ", u.getLocation(), "\n");
+			lb.add(u, NAT, u.getLocation(), "\n");
 		}
 
 		freeColClient.getGUI().showInformationMessage(lb.toString());
+	}
+
+	// Refactored: Extracted the portion of code that logs the next active units
+	// location
+	public static void displayActiveUnit(LogBuilder lb, Player player, List<Unit> all, Unit u, Unit first) {
+		if (first != null) {
+			lb.add(first.toString(), NAT, first.getLocation(), "\n");
+			all.remove(first);
+			while (player.hasNextActiveUnit() && (u = player.getNextActiveUnit()) != first) {
+				lb.add(u, NAT, u.getLocation(), "\n");
+				all.remove(u);
+			}
+		}
+	}
+
+	// Refactored: Extracted the portion of code that logs the next going units
+	// location
+	public static void displayGoingUnit(LogBuilder lb, Player player, List<Unit> all, Unit u, Unit first) {
+		if (first != null) {
+			all.remove(first);
+			lb.add(first, NAT, first.getLocation(), "\n");
+			while (player.hasNextGoingToUnit() && (u = player.getNextGoingToUnit()) != first) {
+				lb.add(u, NAT, u.getLocation(), "\n");
+				all.remove(u);
+			}
+		}
 	}
 
 	/**
@@ -894,7 +975,7 @@ public class DebugUtils {
 	public static void setColonyGoods(final FreeColClient freeColClient, final Colony colony) {
 		final Specification spec = colony.getSpecification();
 		GoodsType goodsType = freeColClient.getGUI().getChoice(null, StringTemplate.template("prompt.selectGoodsType"),
-				"cancel", spec.getGoodsTypeList().stream()
+				CANCEL, spec.getGoodsTypeList().stream()
 						.filter(gt -> !gt.isFoodType() || gt == spec.getPrimaryFoodType()).map(gt -> {
 							String msg = Messages.getName(gt);
 							return new ChoiceItem<GoodsType>(msg, gt);
@@ -903,7 +984,7 @@ public class DebugUtils {
 			return;
 
 		String response = freeColClient.getGUI().getInput(null, StringTemplate.template("prompt.selectGoodsAmount"),
-				Integer.toString(colony.getGoodsCount(goodsType)), "ok", "cancel");
+				Integer.toString(colony.getGoodsCount(goodsType)), "ok", CANCEL);
 		if (response == null || response.isEmpty())
 			return;
 		int a;
@@ -940,7 +1021,7 @@ public class DebugUtils {
 		final ServerPlayer sPlayer = sGame.getFreeColGameObject(player.getId(), ServerPlayer.class);
 		final GUI gui = freeColClient.getGUI();
 
-		MonarchAction action = gui.getChoice(null, monarchTitle, "cancel", Arrays.stream(MonarchAction.values())
+		MonarchAction action = gui.getChoice(null, monarchTitle, CANCEL, Arrays.stream(MonarchAction.values())
 				.map(a -> new ChoiceItem<MonarchAction>(a)).sorted().collect(Collectors.toList()));
 		if (action == null)
 			return;
@@ -964,7 +1045,7 @@ public class DebugUtils {
 		final Tile sTile = sGame.getFreeColGameObject(tile.getId(), Tile.class);
 
 		RumourType rumourChoice = freeColClient.getGUI().getChoice(null,
-				StringTemplate.template("prompt.selectLostCityRumour"), "cancel",
+				StringTemplate.template("prompt.selectLostCityRumour"), CANCEL,
 				Arrays.stream(RumourType.values()).filter(r -> r != RumourType.NO_SUCH_RUMOUR)
 						.map(r -> new ChoiceItem<RumourType>(r.toString(), r)).sorted().collect(Collectors.toList()));
 		if (rumourChoice == null)
@@ -986,7 +1067,7 @@ public class DebugUtils {
 		freeColClient.skipTurns(0); // Clear existing skipping
 
 		String response = freeColClient.getGUI().getInput(null, StringTemplate.key("prompt.selectTurnsToSkip"),
-				Integer.toString(10), "ok", "cancel");
+				Integer.toString(10), "ok", CANCEL);
 		if (response == null || response.isEmpty())
 			return;
 		int skip;
@@ -1015,7 +1096,7 @@ public class DebugUtils {
 		while (more) {
 			int val = server.getInGameController().stepRandom();
 			more = gui.confirm(null, StringTemplate.template("prompt.stepRNG").addAmount("%value%", val), "more",
-					"cancel");
+					CANCEL);
 		}
 	}
 
@@ -1030,6 +1111,7 @@ public class DebugUtils {
 	 * @param is
 	 *            The <code>IndianSettlement</code> to summarize.
 	 */
+	// Refactored
 	public static void summarizeSettlement(final FreeColClient freeColClient, final IndianSettlement is) {
 		final FreeColServer server = freeColClient.getFreeColServer();
 		final Game sGame = server.getGame();
@@ -1048,6 +1130,23 @@ public class DebugUtils {
 					sis.getContactLevel(p), "\n");
 		}
 
+		summarizeSettlementGoods(lb, sis, sSpec);
+
+		summarizeSettlementUnits(lb, sis, aiMain);
+
+		lb.add("\nTiles\n");
+		for (Tile t : sis.getOwnedTiles())
+			lb.add(t, "\n");
+
+		lb.add("\nConvert Progress = ", sis.getConvertProgress());
+		lb.add("\nLast Tribute = ", sis.getLastTribute());
+
+		freeColClient.getGUI().showInformationMessage(lb.toString());
+	}
+
+	// Refactored: Extracted adding goods information to LogBuilder from
+	// summarizeSettlement
+	public static void summarizeSettlementGoods(LogBuilder lb, IndianSettlement sis, Specification sSpec) {
 		lb.add("\nGoods Present\n");
 		for (Goods goods : sis.getCompactGoods()) {
 			lb.add(Messages.message(goods.getLabel(true)), "\n");
@@ -1073,7 +1172,11 @@ public class DebugUtils {
 					sis.getPriceToSell(type, 1), "/", sis.getPriceToSell(type, 100),
 					((i < 0) ? "" : " wanted[" + Integer.toString(i) + "]"), "\n");
 		}
+	}
 
+	// Refactored: Extracted adding unit information to LogBuilder from
+	// summarizeSettlement
+	public static void summarizeSettlementUnits(LogBuilder lb, IndianSettlement sis, AIMain aiMain) {
 		lb.add("\nUnits present\n");
 		for (Unit u : sis.getUnitList()) {
 			Mission m = aiMain.getAIUnit(u).getMission();
@@ -1092,15 +1195,6 @@ public class DebugUtils {
 			}
 			lb.add("\n");
 		}
-
-		lb.add("\nTiles\n");
-		for (Tile t : sis.getOwnedTiles())
-			lb.add(t, "\n");
-
-		lb.add("\nConvert Progress = ", sis.getConvertProgress());
-		lb.add("\nLast Tribute = ", sis.getLastTribute());
-
-		freeColClient.getGUI().showInformationMessage(lb.toString());
 	}
 
 	/**
