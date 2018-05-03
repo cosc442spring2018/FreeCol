@@ -198,8 +198,8 @@ public class GoodsTradeItem extends TradeItem {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(16);
-		sb.append("[").append(getId()).append(" ").append(goods.getAmount()).append(" ").append(Messages.getName(goods))
-				.append("]");
+		sb.append('[').append(getId()).append(' ').append(goods.getAmount()).append(' ').append(Messages.getName(goods))
+				.append(']');
 		return sb.toString();
 	}
 

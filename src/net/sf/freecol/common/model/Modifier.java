@@ -631,7 +631,7 @@ public class Modifier extends Feature {
 		if (getSource() != null) {
 			sb.append(" (" + getSource().getId() + ")");
 		}
-		sb.append(" ").append(modifierType).append(" ").append(value);
+		sb.append(' ').append(modifierType).append(' ').append(value);
 		if (modifierIndex >= DEFAULT_MODIFIER_INDEX) {
 			sb.append(" index=").append(modifierIndex);
 		}
@@ -639,10 +639,10 @@ public class Modifier extends Feature {
 		if (!scopes.isEmpty()) {
 			sb.append(" [");
 			for (Scope s : scopes)
-				sb.append(" ").append(s);
+				sb.append(' ').append(s);
 			sb.append(" ]");
 		}
-		sb.append("]");
+		sb.append(']');
 		return sb.toString();
 	}
 

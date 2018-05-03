@@ -37,7 +37,7 @@ import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
-import net.sf.freecol.common.model.Direction;
+
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import net.sf.freecol.common.util.RandomChoice;
 import static net.sf.freecol.common.util.RandomUtils.*;
@@ -2238,7 +2238,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
 	public String toShortString() {
 		StringBuilder sb = new StringBuilder(16);
 		TileType type = getType();
-		sb.append(getX()).append(",").append(getY()).append("-").append((type == null) ? "?" : type.getSuffix());
+		sb.append(getX()).append(',').append(getY()).append('-').append((type == null) ? "?" : type.getSuffix());
 		return sb.toString();
 	}
 
@@ -2716,9 +2716,9 @@ public final class Tile extends UnitLocation implements Named, Ownable {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(64);
-		sb.append("[").append(getId()).append(" ").append((type == null) ? "unknown" : type.getSuffix()).append(" ")
-				.append(x).append(",").append(y).append((!hasSettlement()) ? "" : " " + getSettlement().getName())
-				.append("]");
+		sb.append('[').append(getId()).append(' ').append((type == null) ? "unknown" : type.getSuffix()).append(' ')
+				.append(x).append(',').append(y).append((!hasSettlement()) ? "" : " " + getSettlement().getName())
+				.append(']');
 		return sb.toString();
 	}
 

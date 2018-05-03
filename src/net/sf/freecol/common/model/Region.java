@@ -618,11 +618,11 @@ public class Region extends FreeColGameObject implements Nameable, Named {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(32);
-		sb.append("[").append(getId()).append(" ").append((key != null) ? key : (name != null) ? name : "<unnamed>")
-				.append(" ").append(type);
+		sb.append('[').append(getId()).append(' ').append((key != null) ? key : (name != null) ? name : "<unnamed>")
+				.append(' ').append(type);
 		if (getDiscoverable())
-			sb.append("!");
-		sb.append("]");
+			sb.append('!');
+		sb.append(']');
 		return sb.toString();
 	}
 

@@ -1561,7 +1561,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(64);
-		sb.append(getName()).append(" at (").append(tile.getX()).append(",").append(tile.getY()).append(")");
+		sb.append(getName()).append(" at (").append(tile.getX()).append(',').append(tile.getY()).append(')');
 		return sb.toString();
 	}
 

@@ -1,3 +1,4 @@
+// $codepro.audit.disable emptyStatement
 /**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
@@ -19,7 +20,6 @@
 
 package net.sf.freecol.common.model;
 
-import net.sf.freecol.common.model.Direction;
 import net.sf.freecol.common.util.LogBuilder;
 
 /**
@@ -226,7 +226,7 @@ public class PathNode {
 	 */
 	public PathNode getFirstNode() {
 		PathNode path;
-		for (path = this; path.previous != null; path = path.previous)
+		for (path = this; path.previous != null; path = path.previous) // $codepro.audit.disable
 			;
 		return path;
 	}
@@ -238,7 +238,7 @@ public class PathNode {
 	 */
 	public PathNode getLastNode() {
 		PathNode path;
-		for (path = this; path.next != null; path = path.next)
+		for (path = this; path.next != null; path = path.next) // $codepro.audit.disable
 			;
 		return path;
 	}

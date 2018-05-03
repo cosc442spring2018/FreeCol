@@ -28,7 +28,7 @@ import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
-import net.sf.freecol.common.model.Stance;
+
 import static net.sf.freecol.common.util.CollectionUtils.*;
 import static net.sf.freecol.common.util.StringUtils.*;
 
@@ -523,11 +523,11 @@ public class DiplomaticTrade extends FreeColObject {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(128);
-		sb.append("[").append(getId()).append(" ").append(context).append(" ").append(status).append(" from=")
+		sb.append('[').append(getId()).append(' ').append(context).append(' ').append(status).append(" from=")
 				.append(sender.getId()).append(" to=").append(recipient.getId()).append(" version=")
 				.append(getVersion()).append(" [");
 		for (TradeItem item : getTradeItems())
-			sb.append(" ").append(item);
+			sb.append(' ').append(item);
 		sb.append(" ]]");
 		return sb.toString();
 	}

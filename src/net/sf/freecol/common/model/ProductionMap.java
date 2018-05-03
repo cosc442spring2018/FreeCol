@@ -123,9 +123,9 @@ public class ProductionMap {
 		@Override
 		public String toString() {
 			StringBuilder sb = new StringBuilder(32);
-			sb.append("[").append(root.getSuffix()).append(":");
+			sb.append('[').append(root.getSuffix()).append(':');
 			for (AbstractGoods ag : leafs) {
-				sb.append(" ").append(ag.toString());
+				sb.append(' ').append(ag.toString());
 			}
 			sb.append(" ]");
 			return sb.toString();
@@ -202,9 +202,9 @@ public class ProductionMap {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(64);
-		sb.append("[");
+		sb.append('[');
 		for (Entry<GoodsType, Object> e : cache.entrySet()) {
-			sb.append(" ").append(e.getKey().getSuffix()).append(":").append(e.getValue().toString());
+			sb.append(' ').append(e.getKey().getSuffix()).append(':').append(e.getValue().toString());
 		}
 		sb.append(" ]");
 		return sb.toString();

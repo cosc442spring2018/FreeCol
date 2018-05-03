@@ -629,9 +629,9 @@ public class Building extends WorkLocation implements Named, Consumer {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(32);
-		sb.append("[").append(getId()).append(" ")
-				.append((buildingType == null) ? "" : lastPart(buildingType.getId(), ".")).append("/")
-				.append(getColony().getName()).append("]");
+		sb.append('[').append(getId()).append(' ')
+				.append((buildingType == null) ? "" : lastPart(buildingType.getId(), ".")).append('/')
+				.append(getColony().getName()).append(']');
 		return sb.toString();
 	}
 

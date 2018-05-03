@@ -36,8 +36,8 @@ import javax.xml.stream.XMLStreamException;
 import net.sf.freecol.common.i18n.Messages;
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
-import net.sf.freecol.common.model.CombatModel;
-import net.sf.freecol.common.model.Direction;
+
+
 import net.sf.freecol.common.model.pathfinding.CostDecider;
 import net.sf.freecol.common.model.pathfinding.CostDeciders;
 import net.sf.freecol.common.model.pathfinding.GoalDecider;
@@ -2318,9 +2318,9 @@ public class Unit extends GoodsLocation implements Consumer, Locatable, Movable,
 		if (quotient > 0 || remainder == 0)
 			sb.append(quotient);
 		if (remainder > 0) {
-			sb.append("(").append(remainder).append("/3) ");
+			sb.append('(').append(remainder).append("/3) ");
 		}
-		sb.append("/").append(getInitialMovesLeft() / 3);
+		sb.append('/').append(getInitialMovesLeft() / 3);
 		return sb.toString();
 	}
 
@@ -3845,12 +3845,12 @@ public class Unit extends GoodsLocation implements Consumer, Locatable, Movable,
 	@Override
 	public String toShortString() {
 		StringBuilder sb = new StringBuilder(32);
-		sb.append(getId()).append("-").append(getType().getSuffix());
+		sb.append(getId()).append('-').append(getType().getSuffix());
 		if (!hasDefaultRole()) {
-			sb.append("-").append(getRoleSuffix());
+			sb.append('-').append(getRoleSuffix());
 			int count = getRoleCount();
 			if (count > 1)
-				sb.append(".").append(count);
+				sb.append('.').append(count);
 		}
 		return sb.toString();
 	}
@@ -4428,22 +4428,22 @@ public class Unit extends GoodsLocation implements Consumer, Locatable, Movable,
 	 */
 	public String toString(String prefix) {
 		StringBuilder sb = new StringBuilder(64);
-		sb.append("[").append(prefix).append(getId());
+		sb.append('[').append(prefix).append(getId());
 		if (isUninitialized()) {
 			sb.append(" uninitialized");
 		} else if (isDisposed()) {
 			sb.append(" disposed");
 		} else {
-			sb.append(" ").append(lastPart(owner.getNationId(), ".")).append(" ").append(getType().getSuffix());
+			sb.append(' ').append(lastPart(owner.getNationId(), ".")).append(' ').append(getType().getSuffix());
 			if (!hasDefaultRole()) {
-				sb.append("-").append(getRoleSuffix());
+				sb.append('-').append(getRoleSuffix());
 				int count = getRoleCount();
 				if (count > 1)
-					sb.append(".").append(count);
+					sb.append('.').append(count);
 			}
-			sb.append(" ").append(getMovesAsString());
+			sb.append(' ').append(getMovesAsString());
 		}
-		sb.append("]");
+		sb.append(']');
 		return sb.toString();
 	}
 
