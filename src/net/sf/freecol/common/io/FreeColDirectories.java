@@ -43,11 +43,11 @@ public class FreeColDirectories {
 
 	private static final String CLASSIC_DIRECTORY = "classic";
 
-	private static final String[] CONFIG_DIRS = { "classic", "freecol" };
+	private static final String FREECOL_DIRECTORY = "freecol";
+
+	private static final String[] CONFIG_DIRS = { CLASSIC_DIRECTORY, FREECOL_DIRECTORY };
 
 	private static final String DATA_DIRECTORY = "data";
-
-	private static final String FREECOL_DIRECTORY = "freecol";
 
 	private static final String HIGH_SCORE_FILE = "HighScores.xml";
 
@@ -202,10 +202,14 @@ public class FreeColDirectories {
 	 * @return Null on success, an error message key on failure.
 	 */
 	public static String checkDir(File dir) {
-		return (dir == null || !dir.exists()) ? "cli.error.home.notExists"
-				: (!dir.isDirectory()) ? "cli.error.home.notDir"
-						: (!dir.canRead()) ? "cli.error.home.noRead"
-								: (!dir.canWrite()) ? "cli.error.home.noWrite" : null;
+		if (dir == null || !dir.exists()) {
+			return "cli.error.home.notExists";
+		} else if (!dir.isDirectory()) {
+			return "cli.error.home.notDir";
+		} else if (!dir.canRead()) {
+			return "cli.error.home.noRead";
+		}
+		return (!dir.canWrite()) ? "cli.error.home.noWrite" : null;
 	}
 
 	/**
@@ -554,20 +558,15 @@ public class FreeColDirectories {
 	 *         describing any directory migration, or null if nothing to say.
 	 */
 	public static synchronized String setUserDirectories() {
-		if (userConfigDirectory != null && !isGoodDirectory(userConfigDirectory))
-			userConfigDirectory = null;
-		if (userDataDirectory != null && !isGoodDirectory(userDataDirectory))
-			userDataDirectory = null;
-		if (userCacheDirectory != null && !isGoodDirectory(userCacheDirectory))
-			userCacheDirectory = null;
+
+		clearUserDirectoriesVar();
+
 		File dirs[] = { userConfigDirectory, userDataDirectory, userCacheDirectory };
 
 		// If the CL-specified directories are valid, all is well.
 		// Check for OSX next because it is a Unix.
-		int migrate = (dirs[0] != null && isGoodDirectory(dirs[0]) && dirs[1] != null && isGoodDirectory(dirs[1])
-				&& dirs[2] != null && isGoodDirectory(dirs[2])) ? 1
-						: (onMacOSX()) ? getMacOSXDirs(dirs)
-								: (onUnix()) ? getXDGDirs(dirs) : (onWindows()) ? getWindowsDirs(dirs) : -1;
+		int migrate = setMigrate(dirs);
+
 		File oldDir = getOldUserDirectory();
 		if (migrate < 0) {
 			if (oldDir == null)
@@ -576,26 +575,7 @@ public class FreeColDirectories {
 			migrate = 1;
 		}
 
-		// Only set user directories if not already overridden at the
-		// command line, and do not migrate in such cases.
-		if (userConfigDirectory == null) {
-			userConfigDirectory = dirs[0];
-		} else
-			migrate = 1;
-		if (userDataDirectory == null) {
-			userDataDirectory = dirs[1];
-		} else
-			migrate = 1;
-		if (userCacheDirectory == null) {
-			userCacheDirectory = dirs[2];
-		} else
-			migrate = 1;
-		if (migrate == 0 && oldDir != null) {
-			copyIfFound(oldDir, "classic", userConfigDirectory);
-			copyIfFound(oldDir, "freecol", userConfigDirectory);
-			copyIfFound(oldDir, "save", userDataDirectory);
-			copyIfFound(oldDir, "mods", userDataDirectory);
-		}
+		setUserDirectories(dirs, oldDir, migrate);
 
 		if (logFilePath == null) {
 			logFilePath = getUserCacheDirectory() + SEPARATOR + LOG_FILE;
@@ -612,9 +592,72 @@ public class FreeColDirectories {
 		if (!insistDirectory(userModsDirectory))
 			userModsDirectory = null;
 
-		return (migrate > 0) ? null
-				: (onMacOSX()) ? "main.userDir.macosx"
-						: (onUnix()) ? "main.userDir.unix" : (onWindows()) ? "main.userDir.windows" : null;
+		return setOSDirPath(migrate);
+	}
+
+	// Refactored
+	public static void clearUserDirectoriesVar() {
+		if (userConfigDirectory != null && !isGoodDirectory(userConfigDirectory))
+			userConfigDirectory = null;
+		if (userDataDirectory != null && !isGoodDirectory(userDataDirectory))
+			userDataDirectory = null;
+		if (userCacheDirectory != null && !isGoodDirectory(userCacheDirectory))
+			userCacheDirectory = null;
+	}
+
+	public static void setUserDirectories(File dirs[], File oldDir, int migrate) {
+		// Only set user directories if not already overridden at the
+		// command line, and do not migrate in such cases.
+		if (userConfigDirectory == null) {
+			userConfigDirectory = dirs[0];
+		} else
+			migrate = 1;
+		if (userDataDirectory == null) {
+			userDataDirectory = dirs[1];
+		} else
+			migrate = 1;
+		if (userCacheDirectory == null) {
+			userCacheDirectory = dirs[2];
+		} else
+			migrate = 1;
+
+		if (migrate == 0 && oldDir != null) {
+			copyIfFound(oldDir, CLASSIC_DIRECTORY, userConfigDirectory);
+			copyIfFound(oldDir, FREECOL_DIRECTORY, userConfigDirectory);
+			copyIfFound(oldDir, "save", userDataDirectory);
+			copyIfFound(oldDir, "mods", userDataDirectory);
+		}
+	}
+
+	// Refactored
+	public static int setMigrate(File dirs[]) {
+		if (dirs[0] != null && isGoodDirectory(dirs[0]) && dirs[1] != null && isGoodDirectory(dirs[1])
+				&& dirs[2] != null && isGoodDirectory(dirs[2])) {
+			return 1;
+		} else if (onMacOSX()) {
+			return getMacOSXDirs(dirs);
+		} else if (onUnix()) {
+			return getXDGDirs(dirs);
+		} else if (onWindows()) {
+			return getWindowsDirs(dirs);
+		} else {
+			return -1;
+		}
+	}
+
+	// Refactored
+	public static String setOSDirPath(int migrate) {
+		if (migrate > 0) {
+			return null;
+		} else if (onMacOSX()) {
+			return "main.userDir.macosx";
+		} else if (onUnix()) {
+			return "main.userDir.unix";
+		} else if (onWindows()) {
+			return "main.userDir.windows";
+		} else {
+			return null;
+		}
 	}
 
 	// Directory accessors.

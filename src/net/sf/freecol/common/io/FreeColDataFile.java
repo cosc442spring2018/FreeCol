@@ -59,7 +59,7 @@ public class FreeColDataFile {
 	private static final String RESOURCE_FILE_SUFFIX = ".properties";
 
 	/** A fake URI scheme for resources delegating to other resources. */
-	private static final String resourceScheme = "resource:";
+	private static final String RESOURCESCHEME = "resource:";
 
 	/** The file this object represents. */
 	private final File file;
@@ -164,15 +164,11 @@ public class FreeColDataFile {
 	 *            A name with special prefixes to convert to the URI.
 	 * @return A <code>URI</code>, or null if none found.
 	 */
+	// Refactored
 	protected URI getURI(String name) {
 		try {
 			if (name.startsWith("urn:")) {
-				try {
-					return new URI(name);
-				} catch (URISyntaxException e) {
-					logger.log(Level.WARNING, "Resource creation failure with: " + name, e);
-					return null;
-				}
+				return tryGetURI(name);
 			} else if (file.isDirectory()) {
 				return new File(file, name).toURI();
 			} else {
@@ -180,6 +176,15 @@ public class FreeColDataFile {
 			}
 		} catch (URISyntaxException e) {
 			logger.log(Level.WARNING, "Failed to lookup: " + file + "/" + name, e);
+			return null;
+		}
+	}
+
+	protected URI tryGetURI(String name) {
+		try {
+			return new URI(name);
+		} catch (URISyntaxException e) {
+			logger.log(Level.WARNING, "Resource creation failure with: " + name, e);
 			return null;
 		}
 	}
@@ -208,6 +213,7 @@ public class FreeColDataFile {
 	 * @return A <code>ResourceMapping</code> or <code>null</code> there is no
 	 *         resource mapping file.
 	 */
+	// Refactored
 	public ResourceMapping getResourceMapping() {
 		final Properties properties = new Properties();
 		LogBuilder lb = new LogBuilder(64);
@@ -227,12 +233,27 @@ public class FreeColDataFile {
 
 		ResourceMapping rc = new ResourceMapping();
 		List<String> todo = new ArrayList<>();
+
+		createResource(properties, rc, todo);
+
+		resolveResource(properties, rc, todo);
+
+		if (!todo.isEmpty()) {
+			lb.add(", could not resolve virtual resource/s: ", join(" ", todo));
+		}
+		if (lb.grew())
+			lb.log(logger, Level.INFO);
+		return rc;
+	}
+
+	// Refactored
+	public void createResource(Properties properties, ResourceMapping rc, List<String> todo) {
 		Enumeration<?> pn = properties.propertyNames();
 		ResourceMapper rm = new ResourceMapper(rc);
 		while (pn.hasMoreElements()) {
 			final String key = (String) pn.nextElement();
 			final String value = properties.getProperty(key);
-			if (value.startsWith(resourceScheme)) {
+			if (value.startsWith(RESOURCESCHEME)) {
 				todo.add(key);
 			} else {
 				URI uri = getURI(value);
@@ -242,6 +263,10 @@ public class FreeColDataFile {
 				}
 			}
 		}
+	}
+
+	// Refactored
+	public void resolveResource(Properties properties, ResourceMapping rc, List<String> todo) {
 		boolean progress = true;
 		List<String> miss = new ArrayList<>();
 		while (progress && !todo.isEmpty()) {
@@ -249,7 +274,7 @@ public class FreeColDataFile {
 			progress = false;
 			while (!todo.isEmpty()) {
 				final String key = todo.remove(0);
-				final String value = properties.getProperty(key).substring(resourceScheme.length());
+				final String value = properties.getProperty(key).substring(RESOURCESCHEME.length());
 				if (!rc.duplicateResource(value, key)) {
 					miss.add(key);
 				} else {
@@ -258,12 +283,6 @@ public class FreeColDataFile {
 			}
 			todo.addAll(miss);
 		}
-		if (!todo.isEmpty()) {
-			lb.add(", could not resolve virtual resource/s: ", join(" ", todo));
-		}
-		if (lb.grew())
-			lb.log(logger, Level.INFO);
-		return rc;
 	}
 
 	/**
@@ -276,12 +295,16 @@ public class FreeColDataFile {
 	 *            Acceptable file suffixes.
 	 * @return A suitable <code>FileFilter</code>.
 	 */
+	// Refactored
 	public static FileFilter makeFileFilter(final String requiredFile, final String... endings) {
 		return f -> {
 			final String name = f.getName();
-			return (name.startsWith(".")) ? false
-					: (requiredFile != null && f.isDirectory()) ? new File(f, requiredFile).exists()
-							: any(endings, e -> name.endsWith("." + e) && name.length() > e.length());
+			if (name.startsWith(".")) {
+				return false;
+			}
+
+			return (requiredFile != null && f.isDirectory()) ? new File(f, requiredFile).exists()
+					: any(endings, e -> name.endsWith("." + e) && name.length() > e.length());
 		};
 	}
 }
