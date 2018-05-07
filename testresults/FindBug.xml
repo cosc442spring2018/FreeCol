@@ -1,0 +1,1255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="3.0.1-dev-20150306-5afe4d1" sequence="1" timestamp="1525037944603" analysisTimestamp="1525037934802" release="">
+  <Project projectName="FreeCol">
+    <Jar>D:\College\Spring 2018\COSC442\Github\FreeCol-finalproject\bin\net\sf\freecol\common\model</Jar>
+    <AuxClasspathEntry>D:\College\Spring 2018\COSC442\Github\FreeCol-finalproject\bin</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\College\Spring 2018\COSC442\Github\FreeCol-finalproject\jars\commons-cli-1.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\College\Spring 2018\COSC442\Github\FreeCol-finalproject\jars\cortado-0.6.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\College\Spring 2018\COSC442\Github\FreeCol-finalproject\jars\jogg-0.0.17.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\College\Spring 2018\COSC442\Github\FreeCol-finalproject\jars\jorbis-0.0.17.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\College\Spring 2018\COSC442\Github\FreeCol-finalproject\jars\miglayout-core-4.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\College\Spring 2018\COSC442\Github\FreeCol-finalproject\jars\miglayout-swing-4.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>D:\College\Spring 2018\COSC442\Github\FreeCol-finalproject\test\lib\junit.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Program Files\Java\jre1.8.0_111\lib\rt.jar</AuxClasspathEntry>
+    <SrcDir>D:\College\Spring 2018\COSC442\Github\FreeCol-finalproject\test\src</SrcDir>
+    <SrcDir>D:\College\Spring 2018\COSC442\Github\FreeCol-finalproject\src</SrcDir>
+    <Cloud id="edu.umd.cs.findbugs.cloud.doNothingCloud" online="false"></Cloud>
+  </Project>
+  <BugInstance type="IJU_SETUP_NO_SUPER" priority="2" rank="7" abbrev="IJU" category="CORRECTNESS" first="1">
+    <Class classname="net.sf.freecol.common.model.BaseCostDeciderTest">
+      <SourceLine classname="net.sf.freecol.common.model.BaseCostDeciderTest" sourcefile="BaseCostDeciderTest.java" sourcepath="net/sf/freecol/common/model/BaseCostDeciderTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.BaseCostDeciderTest" name="setUp" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.BaseCostDeciderTest" start="53" end="54" startBytecode="0" endBytecode="53" sourcefile="BaseCostDeciderTest.java" sourcepath="net/sf/freecol/common/model/BaseCostDeciderTest.java"/>
+    </Method>
+    <Method classname="net.sf.freecol.util.test.FreeColTestCase" name="setUp" signature="()V" isStatic="false" role="METHOD_OVERRIDDEN">
+      <SourceLine classname="net.sf.freecol.util.test.FreeColTestCase" start="76" end="80" startBytecode="0" endBytecode="79" sourcefile="FreeColTestCase.java" sourcepath="net/sf/freecol/util/test/FreeColTestCase.java"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.BaseCostDeciderTest" start="53" end="53" startBytecode="0" endBytecode="0" sourcefile="BaseCostDeciderTest.java" sourcepath="net/sf/freecol/common/model/BaseCostDeciderTest.java"/>
+  </BugInstance>
+  <BugInstance type="IJU_TEARDOWN_NO_SUPER" priority="2" rank="7" abbrev="IJU" category="CORRECTNESS" first="1">
+    <Class classname="net.sf.freecol.common.model.BaseCostDeciderTest">
+      <SourceLine classname="net.sf.freecol.common.model.BaseCostDeciderTest" sourcefile="BaseCostDeciderTest.java" sourcepath="net/sf/freecol/common/model/BaseCostDeciderTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.BaseCostDeciderTest" name="tearDown" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.BaseCostDeciderTest" start="58" end="59" startBytecode="0" endBytecode="51" sourcefile="BaseCostDeciderTest.java" sourcepath="net/sf/freecol/common/model/BaseCostDeciderTest.java"/>
+    </Method>
+    <Method classname="net.sf.freecol.util.test.FreeColTestCase" name="tearDown" signature="()V" isStatic="false" role="METHOD_OVERRIDDEN">
+      <SourceLine classname="net.sf.freecol.util.test.FreeColTestCase" start="85" end="86" startBytecode="0" endBytecode="50" sourcefile="FreeColTestCase.java" sourcepath="net/sf/freecol/util/test/FreeColTestCase.java"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.BaseCostDeciderTest" start="59" end="59" startBytecode="5" endBytecode="5" sourcefile="BaseCostDeciderTest.java" sourcepath="net/sf/freecol/common/model/BaseCostDeciderTest.java"/>
+  </BugInstance>
+  <BugInstance type="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" priority="2" rank="11" abbrev="RCN" category="CORRECTNESS" first="1">
+    <Class classname="net.sf.freecol.common.model.BuildingTest">
+      <SourceLine classname="net.sf.freecol.common.model.BuildingTest" sourcefile="BuildingTest.java" sourcepath="net/sf/freecol/common/model/BuildingTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.BuildingTest" name="testUnitProduction" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.BuildingTest" start="859" end="895" startBytecode="0" endBytecode="864" sourcefile="BuildingTest.java" sourcepath="net/sf/freecol/common/model/BuildingTest.java"/>
+    </Method>
+    <LocalVariable name="output" register="6" pc="176" role="LOCAL_VARIABLE_VALUE_OF"/>
+    <Method classname="java.util.Iterator" name="next" signature="()Ljava/lang/Object;" isStatic="false" role="METHOD_RETURN_VALUE_OF">
+      <SourceLine classname="java.util.Iterator"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.BuildingTest" start="868" end="868" startBytecode="101" endBytecode="101" sourcefile="BuildingTest.java" sourcepath="net/sf/freecol/common/model/BuildingTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.BuildingTest" start="873" end="873" startBytecode="178" endBytecode="178" sourcefile="BuildingTest.java" sourcepath="net/sf/freecol/common/model/BuildingTest.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+    <SourceLine classname="net.sf.freecol.common.model.BuildingTest" start="873" end="873" startBytecode="178" endBytecode="178" sourcefile="BuildingTest.java" sourcepath="net/sf/freecol/common/model/BuildingTest.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="1" rank="15" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.ColonyTest">
+      <SourceLine classname="net.sf.freecol.common.model.ColonyTest" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.ColonyTest" name="testUnderSiege" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="431" end="466" startBytecode="0" endBytecode="104" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    </Method>
+    <LocalVariable name="brave" register="5" pc="64" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="439" end="439" startBytecode="62" endBytecode="62" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="439" end="439" startBytecode="62" endBytecode="62" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.DEAD_OBJECT_STORE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="brave"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="1" rank="15" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.ColonyTest">
+      <SourceLine classname="net.sf.freecol.common.model.ColonyTest" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.ColonyTest" name="testUnderSiege" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="431" end="466" startBytecode="0" endBytecode="104" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    </Method>
+    <LocalVariable name="brave2" register="8" pc="169" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="454" end="454" startBytecode="167" endBytecode="167" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="454" end="454" startBytecode="167" endBytecode="167" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.DEAD_OBJECT_STORE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="brave2"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="1" rank="15" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.ColonyTest">
+      <SourceLine classname="net.sf.freecol.common.model.ColonyTest" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.ColonyTest" name="testUnderSiege" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="431" end="466" startBytecode="0" endBytecode="104" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    </Method>
+    <LocalVariable name="soldier" register="7" pc="143" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="449" end="449" startBytecode="141" endBytecode="141" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="449" end="449" startBytecode="141" endBytecode="141" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.DEAD_OBJECT_STORE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="soldier"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+  </BugInstance>
+  <BugInstance type="NP_NULL_ON_SOME_PATH" priority="2" rank="8" abbrev="NP" category="CORRECTNESS" first="1">
+    <Class classname="net.sf.freecol.common.model.ColonyTest">
+      <SourceLine classname="net.sf.freecol.common.model.ColonyTest" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.ColonyTest" name="testFoundColony" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="297" end="428" startBytecode="0" endBytecode="2046" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    </Method>
+    <LocalVariable name="frenchTile" register="15" pc="381" role="LOCAL_VARIABLE_VALUE_OF"/>
+    <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="348" end="348" startBytecode="391" endBytecode="391" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java" role="SOURCE_LINE_DEREF"/>
+    <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="341" end="341" startBytecode="327" endBytecode="327" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java" role="SOURCE_LINE_NULL_VALUE"/>
+    <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="342" end="342" startBytecode="386" endBytecode="386" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java" role="SOURCE_LINE_KNOWN_NULL"/>
+  </BugInstance>
+  <BugInstance type="NP_NULL_ON_SOME_PATH" priority="2" rank="8" abbrev="NP" category="CORRECTNESS" first="1">
+    <Class classname="net.sf.freecol.common.model.ColonyTest">
+      <SourceLine classname="net.sf.freecol.common.model.ColonyTest" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.ColonyTest" name="testFoundColony" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="297" end="428" startBytecode="0" endBytecode="2046" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java"/>
+    </Method>
+    <LocalVariable name="nativeTile" register="12" pc="268" role="LOCAL_VARIABLE_VALUE_OF"/>
+    <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="335" end="335" startBytecode="278" endBytecode="278" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java" role="SOURCE_LINE_DEREF"/>
+    <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="328" end="328" startBytecode="214" endBytecode="214" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java" role="SOURCE_LINE_NULL_VALUE"/>
+    <SourceLine classname="net.sf.freecol.common.model.ColonyTest" start="329" end="329" startBytecode="273" endBytecode="273" sourcefile="ColonyTest.java" sourcepath="net/sf/freecol/common/model/ColonyTest.java" role="SOURCE_LINE_KNOWN_NULL"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="1" rank="15" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.CombatTest">
+      <SourceLine classname="net.sf.freecol.common.model.CombatTest" sourcefile="CombatTest.java" sourcepath="net/sf/freecol/common/model/CombatTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.CombatTest" name="testAttackShipWithLandUnit" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.CombatTest" start="436" end="467" startBytecode="0" endBytecode="93" sourcefile="CombatTest.java" sourcepath="net/sf/freecol/common/model/CombatTest.java"/>
+    </Method>
+    <LocalVariable name="combatModel" register="5" pc="44" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.CombatTest" start="442" end="442" startBytecode="42" endBytecode="42" sourcefile="CombatTest.java" sourcepath="net/sf/freecol/common/model/CombatTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.CombatTest" start="442" end="442" startBytecode="42" endBytecode="42" sourcefile="CombatTest.java" sourcepath="net/sf/freecol/common/model/CombatTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.DEAD_OBJECT_STORE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="combatModel"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.CombatTest">
+      <SourceLine classname="net.sf.freecol.common.model.CombatTest" sourcefile="CombatTest.java" sourcepath="net/sf/freecol/common/model/CombatTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.CombatTest" name="testCaptureConvert" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.CombatTest" start="544" end="592" startBytecode="0" endBytecode="181" sourcefile="CombatTest.java" sourcepath="net/sf/freecol/common/model/CombatTest.java"/>
+    </Method>
+    <LocalVariable name="igc" register="4" pc="23" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.CombatTest" start="547" end="547" startBytecode="21" endBytecode="21" sourcefile="CombatTest.java" sourcepath="net/sf/freecol/common/model/CombatTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.CombatTest" start="547" end="547" startBytecode="21" endBytecode="21" sourcefile="CombatTest.java" sourcepath="net/sf/freecol/common/model/CombatTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="igc"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="FE_FLOATING_POINT_EQUALITY" priority="2" rank="17" abbrev="FE" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.FeatureContainer">
+      <SourceLine classname="net.sf.freecol.common.model.FeatureContainer" sourcefile="FeatureContainer.java" sourcepath="net/sf/freecol/common/model/FeatureContainer.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.FeatureContainer" name="applyModifiers" signature="(FLnet/sf/freecol/common/model/Turn;Ljava/util/Collection;)F" isStatic="true">
+      <SourceLine classname="net.sf.freecol.common.model.FeatureContainer" start="284" end="293" startBytecode="0" endBytecode="341" sourcefile="FeatureContainer.java" sourcepath="net/sf/freecol/common/model/FeatureContainer.java"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.FeatureContainer" start="290" end="290" startBytecode="67" endBytecode="67" sourcefile="FeatureContainer.java" sourcepath="net/sf/freecol/common/model/FeatureContainer.java"/>
+  </BugInstance>
+  <BugInstance type="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" priority="2" rank="18" abbrev="RCN" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.FreeColObject">
+      <SourceLine classname="net.sf.freecol.common.model.FreeColObject" sourcefile="FreeColObject.java" sourcepath="net/sf/freecol/common/model/FreeColObject.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.FreeColObject" name="readId" signature="(Lorg/w3c/dom/Element;)Ljava/lang/String;" isStatic="true">
+      <SourceLine classname="net.sf.freecol.common.model.FreeColObject" start="883" end="885" startBytecode="0" endBytecode="97" sourcefile="FreeColObject.java" sourcepath="net/sf/freecol/common/model/FreeColObject.java"/>
+    </Method>
+    <LocalVariable name="id" register="1" pc="9" role="LOCAL_VARIABLE_VALUE_OF"/>
+    <Method classname="org.w3c.dom.Element" name="getAttribute" signature="(Ljava/lang/String;)Ljava/lang/String;" isStatic="false" role="METHOD_RETURN_VALUE_OF">
+      <SourceLine classname="org.w3c.dom.Element"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.FreeColObject" start="884" end="884" startBytecode="10" endBytecode="10" sourcefile="FreeColObject.java" sourcepath="net/sf/freecol/common/model/FreeColObject.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+    <SourceLine classname="net.sf.freecol.common.model.FreeColObject" start="884" end="884" startBytecode="10" endBytecode="10" sourcefile="FreeColObject.java" sourcepath="net/sf/freecol/common/model/FreeColObject.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+  </BugInstance>
+  <BugInstance type="DM_GC" priority="1" rank="16" abbrev="Dm" category="PERFORMANCE" first="1">
+    <Class classname="net.sf.freecol.common.model.Game">
+      <SourceLine classname="net.sf.freecol.common.model.Game" sourcefile="Game.java" sourcepath="net/sf/freecol/common/model/Game.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.Game" name="getStatistics" signature="()Ljava/util/Map;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.Game" start="1017" end="1048" startBytecode="0" endBytecode="699" sourcefile="Game.java" sourcepath="net/sf/freecol/common/model/Game.java"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.Game" start="1020" end="1020" startBytecode="8" endBytecode="8" sourcefile="Game.java" sourcepath="net/sf/freecol/common/model/Game.java"/>
+  </BugInstance>
+  <BugInstance type="DM_GC" priority="1" rank="16" abbrev="Dm" category="PERFORMANCE" first="1">
+    <Class classname="net.sf.freecol.common.model.Game">
+      <SourceLine classname="net.sf.freecol.common.model.Game" sourcefile="Game.java" sourcepath="net/sf/freecol/common/model/Game.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.Game" name="removeFreeColGameObject" signature="(Ljava/lang/String;Ljava/lang/String;)V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.Game" start="365" end="378" startBytecode="0" endBytecode="284" sourcefile="Game.java" sourcepath="net/sf/freecol/common/model/Game.java"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.Game" start="376" end="376" startBytecode="136" endBytecode="136" sourcefile="Game.java" sourcepath="net/sf/freecol/common/model/Game.java"/>
+  </BugInstance>
+  <BugInstance type="WMI_WRONG_MAP_ITERATOR" priority="2" rank="18" abbrev="WMI" category="PERFORMANCE" first="1">
+    <Class classname="net.sf.freecol.common.model.GoodsContainer">
+      <SourceLine classname="net.sf.freecol.common.model.GoodsContainer" sourcefile="GoodsContainer.java" sourcepath="net/sf/freecol/common/model/GoodsContainer.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.GoodsContainer" name="getGoods" signature="()Ljava/util/List;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.GoodsContainer" start="373" end="384" startBytecode="0" endBytecode="461" sourcefile="GoodsContainer.java" sourcepath="net/sf/freecol/common/model/GoodsContainer.java"/>
+    </Method>
+    <Field classname="net.sf.freecol.common.model.GoodsContainer" name="storedGoods" signature="Ljava/util/Map;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.GoodsContainer" sourcefile="GoodsContainer.java" sourcepath="net/sf/freecol/common/model/GoodsContainer.java"/>
+    </Field>
+    <SourceLine classname="net.sf.freecol.common.model.GoodsContainer" start="376" end="376" startBytecode="50" endBytecode="50" sourcefile="GoodsContainer.java" sourcepath="net/sf/freecol/common/model/GoodsContainer.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.GoodsContainer" start="376" end="376" startBytecode="50" endBytecode="50" sourcefile="GoodsContainer.java" sourcepath="net/sf/freecol/common/model/GoodsContainer.java"/>
+  </BugInstance>
+  <BugInstance type="WMI_WRONG_MAP_ITERATOR" priority="2" rank="18" abbrev="WMI" category="PERFORMANCE" first="1">
+    <Class classname="net.sf.freecol.common.model.GoodsContainer">
+      <SourceLine classname="net.sf.freecol.common.model.GoodsContainer" sourcefile="GoodsContainer.java" sourcepath="net/sf/freecol/common/model/GoodsContainer.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.GoodsContainer" name="removeAbove" signature="(I)V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.GoodsContainer" start="311" end="323" startBytecode="0" endBytecode="290" sourcefile="GoodsContainer.java" sourcepath="net/sf/freecol/common/model/GoodsContainer.java"/>
+    </Method>
+    <Field classname="net.sf.freecol.common.model.GoodsContainer" name="storedGoods" signature="Ljava/util/Map;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.GoodsContainer" sourcefile="GoodsContainer.java" sourcepath="net/sf/freecol/common/model/GoodsContainer.java"/>
+    </Field>
+    <SourceLine classname="net.sf.freecol.common.model.GoodsContainer" start="318" end="318" startBytecode="72" endBytecode="72" sourcefile="GoodsContainer.java" sourcepath="net/sf/freecol/common/model/GoodsContainer.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.GoodsContainer" start="318" end="318" startBytecode="72" endBytecode="72" sourcefile="GoodsContainer.java" sourcepath="net/sf/freecol/common/model/GoodsContainer.java"/>
+  </BugInstance>
+  <BugInstance type="BX_BOXING_IMMEDIATELY_UNBOXED_TO_PERFORM_COERCION" priority="2" rank="18" abbrev="Bx" category="PERFORMANCE" first="1">
+    <Class classname="net.sf.freecol.common.model.HighScore">
+      <SourceLine classname="net.sf.freecol.common.model.HighScore" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.HighScore" name="readAttributes" signature="(Lnet/sf/freecol/common/io/FreeColXMLReader;)V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.HighScore" start="535" end="599" startBytecode="0" endBytecode="702" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.HighScore" start="547" end="547" startBytecode="95" endBytecode="95" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.HighScore" start="547" end="547" startBytecode="95" endBytecode="95" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+  </BugInstance>
+  <BugInstance type="EI_EXPOSE_REP" priority="2" rank="18" abbrev="EI" category="MALICIOUS_CODE" first="1">
+    <Class classname="net.sf.freecol.common.model.HighScore">
+      <SourceLine classname="net.sf.freecol.common.model.HighScore" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.HighScore" name="getDate" signature="()Ljava/util/Date;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.HighScore" start="314" end="314" startBytecode="0" endBytecode="46" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    </Method>
+    <Field classname="net.sf.freecol.common.model.HighScore" name="date" signature="Ljava/util/Date;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.HighScore" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    </Field>
+    <SourceLine classname="net.sf.freecol.common.model.HighScore" start="314" end="314" startBytecode="4" endBytecode="4" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.HighScore" start="314" end="314" startBytecode="4" endBytecode="4" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+  </BugInstance>
+  <BugInstance type="EI_EXPOSE_REP2" priority="2" rank="18" abbrev="EI2" category="MALICIOUS_CODE" first="1">
+    <Class classname="net.sf.freecol.common.model.HighScore">
+      <SourceLine classname="net.sf.freecol.common.model.HighScore" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.HighScore" name="&lt;init&gt;" signature="(Lnet/sf/freecol/common/model/Player;Ljava/util/Date;)V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.HighScore" start="145" end="169" startBytecode="0" endBytecode="432" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    </Method>
+    <Field classname="net.sf.freecol.common.model.HighScore" name="date" signature="Ljava/util/Date;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.HighScore" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    </Field>
+    <LocalVariable name="theDate" register="2" pc="16" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.HighScore" start="147" end="147" startBytecode="16" endBytecode="16" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.HighScore" start="147" end="147" startBytecode="16" endBytecode="16" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+  </BugInstance>
+  <BugInstance type="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" priority="2" rank="16" abbrev="RV" category="BAD_PRACTICE" first="1">
+    <Class classname="net.sf.freecol.common.model.HighScore">
+      <SourceLine classname="net.sf.freecol.common.model.HighScore" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.HighScore" name="loadHighScores" signature="()Ljava/util/List;" isStatic="true">
+      <SourceLine classname="net.sf.freecol.common.model.HighScore" start="372" end="403" startBytecode="0" endBytecode="630" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    </Method>
+    <Method classname="java.io.File" name="createNewFile" signature="()Z" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.io.File"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.HighScore" start="376" end="376" startBytecode="20" endBytecode="20" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.HighScore" start="376" end="376" startBytecode="20" endBytecode="20" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+  </BugInstance>
+  <BugInstance type="STCAL_INVOKE_ON_STATIC_DATE_FORMAT_INSTANCE" priority="2" rank="8" abbrev="STCAL" category="MT_CORRECTNESS" first="1">
+    <Class classname="net.sf.freecol.common.model.HighScore">
+      <SourceLine classname="net.sf.freecol.common.model.HighScore" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.HighScore" name="readAttributes" signature="(Lnet/sf/freecol/common/io/FreeColXMLReader;)V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.HighScore" start="535" end="599" startBytecode="0" endBytecode="702" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    </Method>
+    <Method classname="java.text.SimpleDateFormat" name="parse" signature="(Ljava/lang/String;)Ljava/util/Date;" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.text.SimpleDateFormat"/>
+    </Method>
+    <Field classname="net.sf.freecol.common.model.HighScore" name="dateFormat" signature="Ljava/text/SimpleDateFormat;" isStatic="true">
+      <SourceLine classname="net.sf.freecol.common.model.HighScore" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    </Field>
+    <SourceLine classname="net.sf.freecol.common.model.HighScore" start="558" end="558" startBytecode="143" endBytecode="143" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.HighScore" start="558" end="558" startBytecode="143" endBytecode="143" sourcefile="HighScore.java" sourcepath="net/sf/freecol/common/model/HighScore.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="1" rank="15" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.HighSeasTest">
+      <SourceLine classname="net.sf.freecol.common.model.HighSeasTest" sourcefile="HighSeasTest.java" sourcepath="net/sf/freecol/common/model/HighSeasTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.HighSeasTest" name="test" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.HighSeasTest" start="30" end="37" startBytecode="0" endBytecode="23" sourcefile="HighSeasTest.java" sourcepath="net/sf/freecol/common/model/HighSeasTest.java"/>
+    </Method>
+    <LocalVariable name="unit" register="5" pc="40" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.HighSeasTest" start="34" end="34" startBytecode="38" endBytecode="38" sourcefile="HighSeasTest.java" sourcepath="net/sf/freecol/common/model/HighSeasTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.HighSeasTest" start="34" end="34" startBytecode="38" endBytecode="38" sourcefile="HighSeasTest.java" sourcepath="net/sf/freecol/common/model/HighSeasTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.DEAD_OBJECT_STORE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="unit"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+  </BugInstance>
+  <BugInstance type="HE_EQUALS_NO_HASHCODE" priority="2" rank="16" abbrev="HE" category="BAD_PRACTICE" first="1">
+    <Class classname="net.sf.freecol.common.model.HistoryEvent">
+      <SourceLine classname="net.sf.freecol.common.model.HistoryEvent" sourcefile="HistoryEvent.java" sourcepath="net/sf/freecol/common/model/HistoryEvent.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.HistoryEvent" name="equals" signature="(Ljava/lang/Object;)Z" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.HistoryEvent" start="262" end="269" startBytecode="0" endBytecode="179" sourcefile="HistoryEvent.java" sourcepath="net/sf/freecol/common/model/HistoryEvent.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="EI_EXPOSE_REP" priority="2" rank="18" abbrev="EI" category="MALICIOUS_CODE" first="1">
+    <Class classname="net.sf.freecol.common.model.IndianSettlement">
+      <SourceLine classname="net.sf.freecol.common.model.IndianSettlement" sourcefile="IndianSettlement.java" sourcepath="net/sf/freecol/common/model/IndianSettlement.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.IndianSettlement" name="getWantedGoods" signature="()[Lnet/sf/freecol/common/model/GoodsType;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.IndianSettlement" start="371" end="371" startBytecode="0" endBytecode="46" sourcefile="IndianSettlement.java" sourcepath="net/sf/freecol/common/model/IndianSettlement.java"/>
+    </Method>
+    <Field classname="net.sf.freecol.common.model.IndianSettlement" name="wantedGoods" signature="[Lnet/sf/freecol/common/model/GoodsType;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.IndianSettlement" sourcefile="IndianSettlement.java" sourcepath="net/sf/freecol/common/model/IndianSettlement.java"/>
+    </Field>
+    <SourceLine classname="net.sf.freecol.common.model.IndianSettlement" start="371" end="371" startBytecode="4" endBytecode="4" sourcefile="IndianSettlement.java" sourcepath="net/sf/freecol/common/model/IndianSettlement.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.IndianSettlement" start="371" end="371" startBytecode="4" endBytecode="4" sourcefile="IndianSettlement.java" sourcepath="net/sf/freecol/common/model/IndianSettlement.java"/>
+  </BugInstance>
+  <BugInstance type="EI_EXPOSE_REP2" priority="2" rank="18" abbrev="EI2" category="MALICIOUS_CODE" first="1">
+    <Class classname="net.sf.freecol.common.model.IndianSettlement">
+      <SourceLine classname="net.sf.freecol.common.model.IndianSettlement" sourcefile="IndianSettlement.java" sourcepath="net/sf/freecol/common/model/IndianSettlement.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.IndianSettlement" name="setWantedGoods" signature="([Lnet/sf/freecol/common/model/GoodsType;)V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.IndianSettlement" start="380" end="381" startBytecode="0" endBytecode="61" sourcefile="IndianSettlement.java" sourcepath="net/sf/freecol/common/model/IndianSettlement.java"/>
+    </Method>
+    <Field classname="net.sf.freecol.common.model.IndianSettlement" name="wantedGoods" signature="[Lnet/sf/freecol/common/model/GoodsType;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.IndianSettlement" sourcefile="IndianSettlement.java" sourcepath="net/sf/freecol/common/model/IndianSettlement.java"/>
+    </Field>
+    <LocalVariable name="wantedGoods" register="1" pc="2" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.IndianSettlement" start="380" end="380" startBytecode="2" endBytecode="2" sourcefile="IndianSettlement.java" sourcepath="net/sf/freecol/common/model/IndianSettlement.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.IndianSettlement" start="380" end="380" startBytecode="2" endBytecode="2" sourcefile="IndianSettlement.java" sourcepath="net/sf/freecol/common/model/IndianSettlement.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="1" rank="15" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.IndividualFatherTest">
+      <SourceLine classname="net.sf.freecol.common.model.IndividualFatherTest" sourcefile="IndividualFatherTest.java" sourcepath="net/sf/freecol/common/model/IndividualFatherTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.IndividualFatherTest" name="testBolivar" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.IndividualFatherTest" start="90" end="128" startBytecode="0" endBytecode="98" sourcefile="IndividualFatherTest.java" sourcepath="net/sf/freecol/common/model/IndividualFatherTest.java"/>
+    </Method>
+    <LocalVariable name="empty" register="5" pc="35" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.IndividualFatherTest" start="96" end="96" startBytecode="33" endBytecode="33" sourcefile="IndividualFatherTest.java" sourcepath="net/sf/freecol/common/model/IndividualFatherTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.IndividualFatherTest" start="96" end="96" startBytecode="33" endBytecode="33" sourcefile="IndividualFatherTest.java" sourcepath="net/sf/freecol/common/model/IndividualFatherTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.DEAD_OBJECT_STORE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="empty"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="1" rank="15" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.IndividualFatherTest">
+      <SourceLine classname="net.sf.freecol.common.model.IndividualFatherTest" sourcefile="IndividualFatherTest.java" sourcepath="net/sf/freecol/common/model/IndividualFatherTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.IndividualFatherTest" name="testPaine" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.IndividualFatherTest" start="319" end="365" startBytecode="0" endBytecode="140" sourcefile="IndividualFatherTest.java" sourcepath="net/sf/freecol/common/model/IndividualFatherTest.java"/>
+    </Method>
+    <LocalVariable name="empty" register="4" pc="32" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.IndividualFatherTest" start="323" end="323" startBytecode="30" endBytecode="30" sourcefile="IndividualFatherTest.java" sourcepath="net/sf/freecol/common/model/IndividualFatherTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.IndividualFatherTest" start="323" end="323" startBytecode="30" endBytecode="30" sourcefile="IndividualFatherTest.java" sourcepath="net/sf/freecol/common/model/IndividualFatherTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.DEAD_OBJECT_STORE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="empty"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.IndividualFatherTest">
+      <SourceLine classname="net.sf.freecol.common.model.IndividualFatherTest" sourcefile="IndividualFatherTest.java" sourcepath="net/sf/freecol/common/model/IndividualFatherTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.IndividualFatherTest" name="testBolivar" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.IndividualFatherTest" start="90" end="128" startBytecode="0" endBytecode="98" sourcefile="IndividualFatherTest.java" sourcepath="net/sf/freecol/common/model/IndividualFatherTest.java"/>
+    </Method>
+    <LocalVariable name="townHall" register="6" pc="44" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.IndividualFatherTest" start="97" end="97" startBytecode="42" endBytecode="42" sourcefile="IndividualFatherTest.java" sourcepath="net/sf/freecol/common/model/IndividualFatherTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.IndividualFatherTest" start="97" end="97" startBytecode="42" endBytecode="42" sourcefile="IndividualFatherTest.java" sourcepath="net/sf/freecol/common/model/IndividualFatherTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="townHall"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="SF_SWITCH_NO_DEFAULT" priority="2" rank="19" abbrev="SF" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.LandMap">
+      <SourceLine classname="net.sf.freecol.common.model.LandMap" sourcefile="LandMap.java" sourcepath="net/sf/freecol/common/model/LandMap.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.LandMap" name="generate" signature="(IIILjava/util/Random;)V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.LandMap" start="176" end="214" startBytecode="0" endBytecode="520" sourcefile="LandMap.java" sourcepath="net/sf/freecol/common/model/LandMap.java"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.LandMap" start="176" end="206" startBytecode="1" endBytecode="216" sourcefile="LandMap.java" sourcepath="net/sf/freecol/common/model/LandMap.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.LandMap" start="176" end="206" startBytecode="1" endBytecode="216" sourcefile="LandMap.java" sourcepath="net/sf/freecol/common/model/LandMap.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.Limit">
+      <SourceLine classname="net.sf.freecol.common.model.Limit" sourcefile="Limit.java" sourcepath="net/sf/freecol/common/model/Limit.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.Limit" name="evaluate" signature="(Lnet/sf/freecol/common/model/Settlement;)Z" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.Limit" start="223" end="256" startBytecode="0" endBytecode="73" sourcefile="Limit.java" sourcepath="net/sf/freecol/common/model/Limit.java"/>
+    </Method>
+    <LocalVariable name="spec" register="2" pc="5" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.Limit" start="223" end="223" startBytecode="4" endBytecode="4" sourcefile="Limit.java" sourcepath="net/sf/freecol/common/model/Limit.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.Limit" start="223" end="223" startBytecode="4" endBytecode="4" sourcefile="Limit.java" sourcepath="net/sf/freecol/common/model/Limit.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="spec"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="RC_REF_COMPARISON" priority="1" rank="1" abbrev="RC" category="CORRECTNESS" first="1">
+    <Class classname="net.sf.freecol.common.model.Limit">
+      <SourceLine classname="net.sf.freecol.common.model.Limit" sourcefile="Limit.java" sourcepath="net/sf/freecol/common/model/Limit.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.Limit" name="evaluate" signature="(Ljava/lang/Integer;Ljava/lang/Integer;)Z" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.Limit" start="278" end="287" startBytecode="0" endBytecode="56" sourcefile="Limit.java" sourcepath="net/sf/freecol/common/model/Limit.java"/>
+    </Method>
+    <Type descriptor="Ljava/lang/Integer;" role="TYPE_FOUND">
+      <SourceLine classname="java.lang.Integer"/>
+    </Type>
+    <LocalVariable name="rhs" register="2" pc="57" role="LOCAL_VARIABLE_VALUE_OF"/>
+    <LocalVariable name="lhs" register="1" pc="57" role="LOCAL_VARIABLE_VALUE_OF"/>
+    <SourceLine classname="net.sf.freecol.common.model.Limit" start="280" end="280" startBytecode="58" endBytecode="58" sourcefile="Limit.java" sourcepath="net/sf/freecol/common/model/Limit.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.Limit" start="280" end="280" startBytecode="58" endBytecode="58" sourcefile="Limit.java" sourcepath="net/sf/freecol/common/model/Limit.java"/>
+  </BugInstance>
+  <BugInstance type="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD" priority="2" rank="17" abbrev="ST" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.LostCityRumour">
+      <SourceLine classname="net.sf.freecol.common.model.LostCityRumour" sourcefile="LostCityRumour.java" sourcepath="net/sf/freecol/common/model/LostCityRumour.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.LostCityRumour" name="getNothingMessage" signature="(Lnet/sf/freecol/common/model/Player;ZLjava/util/Random;)Lnet/sf/freecol/common/model/ModelMessage;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.LostCityRumour" start="270" end="294" startBytecode="0" endBytecode="451" sourcefile="LostCityRumour.java" sourcepath="net/sf/freecol/common/model/LostCityRumour.java"/>
+    </Method>
+    <Field classname="net.sf.freecol.common.model.LostCityRumour" name="rumourNothing" signature="I" isStatic="true">
+      <SourceLine classname="net.sf.freecol.common.model.LostCityRumour" sourcefile="LostCityRumour.java" sourcepath="net/sf/freecol/common/model/LostCityRumour.java"/>
+    </Field>
+    <SourceLine classname="net.sf.freecol.common.model.LostCityRumour" start="291" end="291" startBytecode="144" endBytecode="144" sourcefile="LostCityRumour.java" sourcepath="net/sf/freecol/common/model/LostCityRumour.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.LostCityRumour" start="291" end="291" startBytecode="144" endBytecode="144" sourcefile="LostCityRumour.java" sourcepath="net/sf/freecol/common/model/LostCityRumour.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.Map">
+      <SourceLine classname="net.sf.freecol.common.model.Map" sourcefile="Map.java" sourcepath="net/sf/freecol/common/model/Map.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.Map" name="searchMap" signature="(Lnet/sf/freecol/common/model/Unit;Lnet/sf/freecol/common/model/Tile;Lnet/sf/freecol/common/model/pathfinding/GoalDecider;Lnet/sf/freecol/common/model/pathfinding/CostDecider;ILnet/sf/freecol/common/model/Unit;Lnet/sf/freecol/common/model/Map$SearchHeuristic;Lnet/sf/freecol/common/util/LogBuilder;)Lnet/sf/freecol/common/model/PathNode;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.Map" start="1367" end="1638" startBytecode="0" endBytecode="773" sourcefile="Map.java" sourcepath="net/sf/freecol/common/model/Map.java"/>
+    </Method>
+    <LocalVariable name="europe" register="13" pc="66" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.Map" start="1378" end="1378" startBytecode="64" endBytecode="64" sourcefile="Map.java" sourcepath="net/sf/freecol/common/model/Map.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.Map" start="1378" end="1378" startBytecode="64" endBytecode="64" sourcefile="Map.java" sourcepath="net/sf/freecol/common/model/Map.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="europe"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" priority="2" rank="11" abbrev="RCN" category="CORRECTNESS" first="1">
+    <Class classname="net.sf.freecol.common.model.Map">
+      <SourceLine classname="net.sf.freecol.common.model.Map" sourcefile="Map.java" sourcepath="net/sf/freecol/common/model/Map.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.Map" name="getFixedRegions" signature="()Ljava/util/Map;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.Map" start="488" end="493" startBytecode="0" endBytecode="195" sourcefile="Map.java" sourcepath="net/sf/freecol/common/model/Map.java"/>
+    </Method>
+    <LocalVariable name="r" register="2" pc="37" role="LOCAL_VARIABLE_VALUE_OF"/>
+    <Method classname="java.util.Iterator" name="next" signature="()Ljava/lang/Object;" isStatic="false" role="METHOD_RETURN_VALUE_OF">
+      <SourceLine classname="java.util.Iterator"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.Map" start="490" end="490" startBytecode="32" endBytecode="32" sourcefile="Map.java" sourcepath="net/sf/freecol/common/model/Map.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.Map" start="491" end="491" startBytecode="38" endBytecode="38" sourcefile="Map.java" sourcepath="net/sf/freecol/common/model/Map.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+    <SourceLine classname="net.sf.freecol.common.model.Map" start="491" end="491" startBytecode="38" endBytecode="38" sourcefile="Map.java" sourcepath="net/sf/freecol/common/model/Map.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+  </BugInstance>
+  <BugInstance type="SIC_INNER_SHOULD_BE_STATIC" priority="2" rank="18" abbrev="SIC" category="PERFORMANCE" first="1">
+    <Class classname="net.sf.freecol.common.model.Map$MoveCandidate">
+      <SourceLine classname="net.sf.freecol.common.model.Map$MoveCandidate" start="1189" end="1323" sourcefile="Map.java" sourcepath="net/sf/freecol/common/model/Map.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="SBSC_USE_STRINGBUFFER_CONCATENATION" priority="2" rank="18" abbrev="SBSC" category="PERFORMANCE" first="1">
+    <Class classname="net.sf.freecol.common.model.ModelMessage">
+      <SourceLine classname="net.sf.freecol.common.model.ModelMessage" sourcefile="ModelMessage.java" sourcepath="net/sf/freecol/common/model/ModelMessage.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.ModelMessage" name="getIgnoredMessageKey" signature="()Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.ModelMessage" start="339" end="355" startBytecode="0" endBytecode="282" sourcefile="ModelMessage.java" sourcepath="net/sf/freecol/common/model/ModelMessage.java"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.ModelMessage" start="346" end="346" startBytecode="96" endBytecode="96" sourcefile="ModelMessage.java" sourcepath="net/sf/freecol/common/model/ModelMessage.java"/>
+  </BugInstance>
+  <BugInstance type="SF_SWITCH_NO_DEFAULT" priority="2" rank="19" abbrev="SF" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.ModelMessage">
+      <SourceLine classname="net.sf.freecol.common.model.ModelMessage" sourcefile="ModelMessage.java" sourcepath="net/sf/freecol/common/model/ModelMessage.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.ModelMessage" name="getIgnoredMessageKey" signature="()Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.ModelMessage" start="339" end="355" startBytecode="0" endBytecode="282" sourcefile="ModelMessage.java" sourcepath="net/sf/freecol/common/model/ModelMessage.java"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.ModelMessage" start="342" end="344" startBytecode="44" endBytecode="135" sourcefile="ModelMessage.java" sourcepath="net/sf/freecol/common/model/ModelMessage.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.ModelMessage" start="342" end="344" startBytecode="44" endBytecode="135" sourcefile="ModelMessage.java" sourcepath="net/sf/freecol/common/model/ModelMessage.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.MonarchTest">
+      <SourceLine classname="net.sf.freecol.common.model.MonarchTest" sourcefile="MonarchTest.java" sourcepath="net/sf/freecol/common/model/MonarchTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.MonarchTest" name="testTaxActionChoices" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.MonarchTest" start="53" end="90" startBytecode="0" endBytecode="124" sourcefile="MonarchTest.java" sourcepath="net/sf/freecol/common/model/MonarchTest.java"/>
+    </Method>
+    <LocalVariable name="colony" register="4" pc="41" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.MonarchTest" start="62" end="62" startBytecode="39" endBytecode="39" sourcefile="MonarchTest.java" sourcepath="net/sf/freecol/common/model/MonarchTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.MonarchTest" start="62" end="62" startBytecode="39" endBytecode="39" sourcefile="MonarchTest.java" sourcepath="net/sf/freecol/common/model/MonarchTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="colony"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="HE_EQUALS_NO_HASHCODE" priority="2" rank="16" abbrev="HE" category="BAD_PRACTICE" first="1">
+    <Class classname="net.sf.freecol.common.model.Operand">
+      <SourceLine classname="net.sf.freecol.common.model.Operand" sourcefile="Operand.java" sourcepath="net/sf/freecol/common/model/Operand.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.Operand" name="equals" signature="(Ljava/lang/Object;)Z" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.Operand" start="322" end="322" startBytecode="0" endBytecode="156" sourcefile="Operand.java" sourcepath="net/sf/freecol/common/model/Operand.java"/>
+    </Method>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.PathfindingTest">
+      <SourceLine classname="net.sf.freecol.common.model.PathfindingTest" sourcefile="PathfindingTest.java" sourcepath="net/sf/freecol/common/model/PathfindingTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.PathfindingTest" name="testComposedGoalDeciders" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.PathfindingTest" start="47" end="144" startBytecode="0" endBytecode="196" sourcefile="PathfindingTest.java" sourcepath="net/sf/freecol/common/model/PathfindingTest.java"/>
+    </Method>
+    <LocalVariable name="colony" register="7" pc="51" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.PathfindingTest" start="55" end="55" startBytecode="49" endBytecode="49" sourcefile="PathfindingTest.java" sourcepath="net/sf/freecol/common/model/PathfindingTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.PathfindingTest" start="55" end="55" startBytecode="49" endBytecode="49" sourcefile="PathfindingTest.java" sourcepath="net/sf/freecol/common/model/PathfindingTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="colony"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.PathfindingTest">
+      <SourceLine classname="net.sf.freecol.common.model.PathfindingTest" sourcefile="PathfindingTest.java" sourcepath="net/sf/freecol/common/model/PathfindingTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.PathfindingTest" name="testComposedGoalDeciders" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.PathfindingTest" start="47" end="144" startBytecode="0" endBytecode="196" sourcefile="PathfindingTest.java" sourcepath="net/sf/freecol/common/model/PathfindingTest.java"/>
+    </Method>
+    <LocalVariable name="is" register="11" pc="112" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.PathfindingTest" start="63" end="63" startBytecode="110" endBytecode="110" sourcefile="PathfindingTest.java" sourcepath="net/sf/freecol/common/model/PathfindingTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.PathfindingTest" start="63" end="63" startBytecode="110" endBytecode="110" sourcefile="PathfindingTest.java" sourcepath="net/sf/freecol/common/model/PathfindingTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="is"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="1" rank="15" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.PlayerTest">
+      <SourceLine classname="net.sf.freecol.common.model.PlayerTest" sourcefile="PlayerTest.java" sourcepath="net/sf/freecol/common/model/PlayerTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.PlayerTest" name="testUnits" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.PlayerTest" start="39" end="74" startBytecode="0" endBytecode="131" sourcefile="PlayerTest.java" sourcepath="net/sf/freecol/common/model/PlayerTest.java"/>
+    </Method>
+    <LocalVariable name="unit3" register="8" pc="162" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.PlayerTest" start="55" end="55" startBytecode="160" endBytecode="160" sourcefile="PlayerTest.java" sourcepath="net/sf/freecol/common/model/PlayerTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.PlayerTest" start="55" end="55" startBytecode="160" endBytecode="160" sourcefile="PlayerTest.java" sourcepath="net/sf/freecol/common/model/PlayerTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.DEAD_OBJECT_STORE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="unit3"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="1" rank="15" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.PlayerTest">
+      <SourceLine classname="net.sf.freecol.common.model.PlayerTest" sourcefile="PlayerTest.java" sourcepath="net/sf/freecol/common/model/PlayerTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.PlayerTest" name="testUnits" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.PlayerTest" start="39" end="74" startBytecode="0" endBytecode="131" sourcefile="PlayerTest.java" sourcepath="net/sf/freecol/common/model/PlayerTest.java"/>
+    </Method>
+    <LocalVariable name="unit4" register="9" pc="183" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.PlayerTest" start="57" end="57" startBytecode="181" endBytecode="181" sourcefile="PlayerTest.java" sourcepath="net/sf/freecol/common/model/PlayerTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.PlayerTest" start="57" end="57" startBytecode="181" endBytecode="181" sourcefile="PlayerTest.java" sourcepath="net/sf/freecol/common/model/PlayerTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.DEAD_OBJECT_STORE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="unit4"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="1" rank="15" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.RandomRangeTest">
+      <SourceLine classname="net.sf.freecol.common.model.RandomRangeTest" sourcefile="RandomRangeTest.java" sourcepath="net/sf/freecol/common/model/RandomRangeTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.RandomRangeTest" name="testRandomRange" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.RandomRangeTest" start="32" end="50" startBytecode="0" endBytecode="99" sourcefile="RandomRangeTest.java" sourcepath="net/sf/freecol/common/model/RandomRangeTest.java"/>
+    </Method>
+    <LocalVariable name="r" register="2" pc="203" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.RandomRangeTest" start="47" end="47" startBytecode="202" endBytecode="202" sourcefile="RandomRangeTest.java" sourcepath="net/sf/freecol/common/model/RandomRangeTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.RandomRangeTest" start="47" end="47" startBytecode="202" endBytecode="202" sourcefile="RandomRangeTest.java" sourcepath="net/sf/freecol/common/model/RandomRangeTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.DEAD_OBJECT_STORE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="r"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+  </BugInstance>
+  <BugInstance type="BC_VACUOUS_INSTANCEOF" priority="2" rank="17" abbrev="BC" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.Scope">
+      <SourceLine classname="net.sf.freecol.common.model.Scope" sourcefile="Scope.java" sourcepath="net/sf/freecol/common/model/Scope.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.Scope" name="appliesTo" signature="(Lnet/sf/freecol/common/model/FreeColObject;)Z" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.Scope" start="174" end="199" startBytecode="0" endBytecode="82" sourcefile="Scope.java" sourcepath="net/sf/freecol/common/model/Scope.java"/>
+    </Method>
+    <Type descriptor="Lnet/sf/freecol/common/model/FreeColObject;" role="TYPE_FOUND">
+      <SourceLine classname="net.sf.freecol.common.model.FreeColObject" start="1" end="1376" sourcefile="FreeColObject.java" sourcepath="net/sf/freecol/common/model/FreeColObject.java"/>
+    </Type>
+    <Type descriptor="Lnet/sf/freecol/common/model/FreeColObject;" role="TYPE_EXPECTED">
+      <SourceLine classname="net.sf.freecol.common.model.FreeColObject" start="1" end="1376" sourcefile="FreeColObject.java" sourcepath="net/sf/freecol/common/model/FreeColObject.java"/>
+    </Type>
+    <SourceLine classname="net.sf.freecol.common.model.Scope" start="182" end="182" startBytecode="43" endBytecode="43" sourcefile="Scope.java" sourcepath="net/sf/freecol/common/model/Scope.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.Scope" start="182" end="182" startBytecode="43" endBytecode="43" sourcefile="Scope.java" sourcepath="net/sf/freecol/common/model/Scope.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.SerializationTest">
+      <SourceLine classname="net.sf.freecol.common.model.SerializationTest" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.SerializationTest" name="testStringTemplate" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="133" end="152" startBytecode="0" endBytecode="55" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    </Method>
+    <LocalVariable name="player" register="4" pc="54" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="141" end="141" startBytecode="52" endBytecode="52" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="141" end="141" startBytecode="52" endBytecode="52" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="player"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.SerializationTest">
+      <SourceLine classname="net.sf.freecol.common.model.SerializationTest" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.SerializationTest" name="testValidation" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="87" end="113" startBytecode="0" endBytecode="81" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    </Method>
+    <LocalVariable name="colony" register="2" pc="15" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="89" end="89" startBytecode="14" endBytecode="14" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="89" end="89" startBytecode="14" endBytecode="14" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="colony"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.SerializationTest">
+      <SourceLine classname="net.sf.freecol.common.model.SerializationTest" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.SerializationTest" name="testValidation" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="87" end="113" startBytecode="0" endBytecode="81" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    </Method>
+    <LocalVariable name="player" register="3" pc="22" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="90" end="90" startBytecode="21" endBytecode="21" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="90" end="90" startBytecode="21" endBytecode="21" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="player"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" first="1">
+    <Class classname="net.sf.freecol.common.model.SerializationTest">
+      <SourceLine classname="net.sf.freecol.common.model.SerializationTest" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.SerializationTest" name="testDifficulty" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="177" end="211" startBytecode="0" endBytecode="480" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    </Method>
+    <Method classname="java.lang.String" name="getBytes" signature="()[B" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.lang.String"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="190" end="190" startBytecode="69" endBytecode="69" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="190" end="190" startBytecode="69" endBytecode="69" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" first="1">
+    <Class classname="net.sf.freecol.common.model.SerializationTest">
+      <SourceLine classname="net.sf.freecol.common.model.SerializationTest" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.SerializationTest" name="testGeneratedLists" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="214" end="241" startBytecode="0" endBytecode="507" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    </Method>
+    <Method classname="java.lang.String" name="getBytes" signature="()[B" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.lang.String"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="227" end="227" startBytecode="69" endBytecode="69" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="227" end="227" startBytecode="69" endBytecode="69" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" first="1">
+    <Class classname="net.sf.freecol.common.model.SerializationTest">
+      <SourceLine classname="net.sf.freecol.common.model.SerializationTest" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.SerializationTest" name="testSpecification" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="156" end="174" startBytecode="0" endBytecode="301" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    </Method>
+    <Method classname="java.io.FileReader" name="&lt;init&gt;" signature="(Ljava/lang/String;)V" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.io.FileReader"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="166" end="166" startBytecode="57" endBytecode="57" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.SerializationTest" start="166" end="166" startBytecode="57" endBytecode="57" sourcefile="SerializationTest.java" sourcepath="net/sf/freecol/common/model/SerializationTest.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="1" rank="15" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.SpecificationTest">
+      <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.SpecificationTest" name="testExtends" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="364" end="383" startBytecode="0" endBytecode="33" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    </Method>
+    <LocalVariable name="spec" register="2" pc="62" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="379" end="379" startBytecode="61" endBytecode="61" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="379" end="379" startBytecode="61" endBytecode="61" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.DEAD_OBJECT_STORE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="spec"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="1" rank="15" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.SpecificationTest">
+      <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.SpecificationTest" name="testExtendsDelete" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="386" end="411" startBytecode="0" endBytecode="50" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    </Method>
+    <LocalVariable name="spec" register="2" pc="107" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="407" end="407" startBytecode="106" endBytecode="106" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="407" end="407" startBytecode="106" endBytecode="106" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.DEAD_OBJECT_STORE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="spec"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.SpecificationTest">
+      <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.SpecificationTest" name="testLoadMods" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="440" end="451" startBytecode="0" endBytecode="47" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    </Method>
+    <LocalVariable name="milkmaid" register="4" pc="77" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="445" end="445" startBytecode="75" endBytecode="75" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="445" end="445" startBytecode="75" endBytecode="75" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="milkmaid"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" first="1">
+    <Class classname="net.sf.freecol.common.model.SpecificationTest">
+      <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.SpecificationTest" name="testExtends" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="364" end="383" startBytecode="0" endBytecode="209" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    </Method>
+    <Method classname="java.lang.String" name="getBytes" signature="()[B" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.lang.String"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="372" end="372" startBytecode="13" endBytecode="13" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="372" end="372" startBytecode="13" endBytecode="13" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" first="1">
+    <Class classname="net.sf.freecol.common.model.SpecificationTest">
+      <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.SpecificationTest" name="testExtendsDelete" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="386" end="411" startBytecode="0" endBytecode="329" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    </Method>
+    <Method classname="java.lang.String" name="getBytes" signature="()[B" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.lang.String"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="393" end="393" startBytecode="13" endBytecode="13" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="393" end="393" startBytecode="13" endBytecode="13" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+  </BugInstance>
+  <BugInstance type="WMI_WRONG_MAP_ITERATOR" priority="2" rank="18" abbrev="WMI" category="PERFORMANCE" first="1">
+    <Class classname="net.sf.freecol.common.model.SpecificationTest">
+      <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.SpecificationTest" name="testRequiredAbilitiesForRoles" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="208" end="349" startBytecode="0" endBytecode="2245" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="282" end="282" startBytecode="764" endBytecode="764" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.SpecificationTest" start="282" end="282" startBytecode="764" endBytecode="764" sourcefile="SpecificationTest.java" sourcepath="net/sf/freecol/common/model/SpecificationTest.java"/>
+  </BugInstance>
+  <BugInstance type="CO_COMPARETO_INCORRECT_FLOATING" priority="2" rank="16" abbrev="Co" category="BAD_PRACTICE" first="1">
+    <Class classname="net.sf.freecol.common.model.Tile$1">
+      <SourceLine classname="net.sf.freecol.common.model.Tile$1" sourcefile="Tile.java" sourcepath="net/sf/freecol/common/model/Tile.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.Tile$1" name="compare" signature="(Lnet/sf/freecol/common/model/Tile;Lnet/sf/freecol/common/model/Tile;)I" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.Tile$1" start="209" end="210" startBytecode="0" endBytecode="122" sourcefile="Tile.java" sourcepath="net/sf/freecol/common/model/Tile.java"/>
+    </Method>
+    <Type descriptor="D"/>
+    <Method classname="java.lang.Double" name="compare" signature="(DD)I" isStatic="true" role="SHOULD_CALL">
+      <SourceLine classname="java.lang.Double"/>
+    </Method>
+    <LocalVariable name="f" register="3" pc="22" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.Tile$1" start="210" end="210" startBytecode="22" endBytecode="22" sourcefile="Tile.java" sourcepath="net/sf/freecol/common/model/Tile.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.Tile$1" start="210" end="210" startBytecode="22" endBytecode="22" sourcefile="Tile.java" sourcepath="net/sf/freecol/common/model/Tile.java"/>
+  </BugInstance>
+  <BugInstance type="SBSC_USE_STRINGBUFFER_CONCATENATION" priority="2" rank="18" abbrev="SBSC" category="PERFORMANCE" first="1">
+    <Class classname="net.sf.freecol.common.model.TileImprovement">
+      <SourceLine classname="net.sf.freecol.common.model.TileImprovement" sourcefile="TileImprovement.java" sourcepath="net/sf/freecol/common/model/TileImprovement.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.TileImprovement" name="updateRiverConnections" signature="(Ljava/lang/String;)Ljava/lang/String;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.TileImprovement" start="376" end="398" startBytecode="0" endBytecode="556" sourcefile="TileImprovement.java" sourcepath="net/sf/freecol/common/model/TileImprovement.java"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.TileImprovement" start="395" end="395" startBytecode="159" endBytecode="159" sourcefile="TileImprovement.java" sourcepath="net/sf/freecol/common/model/TileImprovement.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.TileTest">
+      <SourceLine classname="net.sf.freecol.common.model.TileTest" sourcefile="TileTest.java" sourcepath="net/sf/freecol/common/model/TileTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.TileTest" name="testImprovements" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.TileTest" start="381" end="410" startBytecode="0" endBytecode="82" sourcefile="TileTest.java" sourcepath="net/sf/freecol/common/model/TileTest.java"/>
+    </Method>
+    <LocalVariable name="river2" register="8" pc="125" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.TileTest" start="399" end="399" startBytecode="123" endBytecode="123" sourcefile="TileTest.java" sourcepath="net/sf/freecol/common/model/TileTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.TileTest" start="399" end="399" startBytecode="123" endBytecode="123" sourcefile="TileTest.java" sourcepath="net/sf/freecol/common/model/TileTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="river2"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.TileTest">
+      <SourceLine classname="net.sf.freecol.common.model.TileTest" sourcefile="TileTest.java" sourcepath="net/sf/freecol/common/model/TileTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.TileTest" name="testProductionModifiers" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.TileTest" start="413" end="522" startBytecode="0" endBytecode="348" sourcefile="TileTest.java" sourcepath="net/sf/freecol/common/model/TileTest.java"/>
+    </Method>
+    <LocalVariable name="river2" register="11" pc="206" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.TileTest" start="447" end="447" startBytecode="204" endBytecode="204" sourcefile="TileTest.java" sourcepath="net/sf/freecol/common/model/TileTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.TileTest" start="447" end="447" startBytecode="204" endBytecode="204" sourcefile="TileTest.java" sourcepath="net/sf/freecol/common/model/TileTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="river2"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="NP_NULL_ON_SOME_PATH" priority="2" rank="8" abbrev="NP" category="CORRECTNESS" first="1">
+    <Class classname="net.sf.freecol.common.model.TileTest">
+      <SourceLine classname="net.sf.freecol.common.model.TileTest" sourcefile="TileTest.java" sourcepath="net/sf/freecol/common/model/TileTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.TileTest" name="testProductionModifiers" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.TileTest" start="413" end="522" startBytecode="0" endBytecode="1582" sourcefile="TileTest.java" sourcepath="net/sf/freecol/common/model/TileTest.java"/>
+    </Method>
+    <LocalVariable name="colonyTile2" register="5" pc="88" role="LOCAL_VARIABLE_VALUE_OF"/>
+    <SourceLine classname="net.sf.freecol.common.model.TileTest" start="433" end="433" startBytecode="105" endBytecode="105" sourcefile="TileTest.java" sourcepath="net/sf/freecol/common/model/TileTest.java" role="SOURCE_LINE_DEREF"/>
+    <SourceLine classname="net.sf.freecol.common.model.TileTest" start="421" end="421" startBytecode="93" endBytecode="93" sourcefile="TileTest.java" sourcepath="net/sf/freecol/common/model/TileTest.java" role="SOURCE_LINE_KNOWN_NULL"/>
+  </BugInstance>
+  <BugInstance type="SIC_INNER_SHOULD_BE_STATIC" priority="2" rank="18" abbrev="SIC" category="PERFORMANCE" first="1">
+    <Class classname="net.sf.freecol.common.model.TileTest$Work">
+      <SourceLine classname="net.sf.freecol.common.model.TileTest$Work" start="134" end="138" sourcefile="TileTest.java" sourcepath="net/sf/freecol/common/model/TileTest.java"/>
+    </Class>
+  </BugInstance>
+  <BugInstance type="NP_NULL_ON_SOME_PATH" priority="2" rank="8" abbrev="NP" category="CORRECTNESS" first="1">
+    <Class classname="net.sf.freecol.common.model.Unit">
+      <SourceLine classname="net.sf.freecol.common.model.Unit" sourcefile="Unit.java" sourcepath="net/sf/freecol/common/model/Unit.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.Unit" name="getAbilities" signature="(Ljava/lang/String;Lnet/sf/freecol/common/model/FreeColGameObjectType;Lnet/sf/freecol/common/model/Turn;)Ljava/util/Set;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.Unit" start="4088" end="4122" startBytecode="0" endBytecode="405" sourcefile="Unit.java" sourcepath="net/sf/freecol/common/model/Unit.java"/>
+    </Method>
+    <String value="null" role="STRING_NONSTRING_CONSTANT"/>
+    <SourceLine classname="net.sf.freecol.common.model.Unit" start="4120" end="4120" startBytecode="160" endBytecode="160" sourcefile="Unit.java" sourcepath="net/sf/freecol/common/model/Unit.java" role="SOURCE_LINE_DEREF"/>
+    <SourceLine classname="net.sf.freecol.common.model.Unit" start="4118" end="4118" startBytecode="149" endBytecode="149" sourcefile="Unit.java" sourcepath="net/sf/freecol/common/model/Unit.java" role="SOURCE_LINE_KNOWN_NULL"/>
+  </BugInstance>
+  <BugInstance type="SF_SWITCH_NO_DEFAULT" priority="2" rank="19" abbrev="SF" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.Unit">
+      <SourceLine classname="net.sf.freecol.common.model.Unit" sourcefile="Unit.java" sourcepath="net/sf/freecol/common/model/Unit.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.Unit" name="findIntermediatePort" signature="(Lnet/sf/freecol/common/model/Location;)Lnet/sf/freecol/common/model/PathNode;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.Unit" start="2886" end="2962" startBytecode="0" endBytecode="1134" sourcefile="Unit.java" sourcepath="net/sf/freecol/common/model/Unit.java"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.Unit" start="2921" end="2949" startBytecode="156" endBytecode="428" sourcefile="Unit.java" sourcepath="net/sf/freecol/common/model/Unit.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.Unit" start="2921" end="2949" startBytecode="156" endBytecode="428" sourcefile="Unit.java" sourcepath="net/sf/freecol/common/model/Unit.java"/>
+  </BugInstance>
+  <BugInstance type="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" priority="2" rank="11" abbrev="RCN" category="CORRECTNESS" first="1">
+    <Class classname="net.sf.freecol.common.model.UnitLocation">
+      <SourceLine classname="net.sf.freecol.common.model.UnitLocation" sourcefile="UnitLocation.java" sourcepath="net/sf/freecol/common/model/UnitLocation.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.UnitLocation" name="readChild" signature="(Lnet/sf/freecol/common/io/FreeColXMLReader;)V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.UnitLocation" start="586" end="603" startBytecode="0" endBytecode="314" sourcefile="UnitLocation.java" sourcepath="net/sf/freecol/common/model/UnitLocation.java"/>
+    </Method>
+    <LocalVariable name="u" register="3" pc="94" role="LOCAL_VARIABLE_VALUE_OF"/>
+    <Method classname="net.sf.freecol.common.io.FreeColXMLReader" name="readFreeColGameObject" signature="(Lnet/sf/freecol/common/model/Game;Ljava/lang/Class;)Lnet/sf/freecol/common/model/FreeColGameObject;" isStatic="false" role="METHOD_RETURN_VALUE_OF">
+      <SourceLine classname="net.sf.freecol.common.io.FreeColXMLReader" start="703" end="703" startBytecode="0" endBytecode="130" sourcefile="FreeColXMLReader.java" sourcepath="net/sf/freecol/common/io/FreeColXMLReader.java"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.UnitLocation" start="590" end="590" startBytecode="30" endBytecode="30" sourcefile="UnitLocation.java" sourcepath="net/sf/freecol/common/model/UnitLocation.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.UnitLocation" start="596" end="596" startBytecode="95" endBytecode="95" sourcefile="UnitLocation.java" sourcepath="net/sf/freecol/common/model/UnitLocation.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+    <SourceLine classname="net.sf.freecol.common.model.UnitLocation" start="596" end="596" startBytecode="95" endBytecode="95" sourcefile="UnitLocation.java" sourcepath="net/sf/freecol/common/model/UnitLocation.java" role="SOURCE_REDUNDANT_NULL_CHECK"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="1" rank="15" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.UnitTest">
+      <SourceLine classname="net.sf.freecol.common.model.UnitTest" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.UnitTest" name="testCopy" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="561" end="589" startBytecode="0" endBytecode="127" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    </Method>
+    <LocalVariable name="soldier" register="7" pc="76" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="570" end="570" startBytecode="74" endBytecode="74" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="570" end="570" startBytecode="74" endBytecode="74" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.DEAD_OBJECT_STORE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="soldier"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="1" rank="15" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.UnitTest">
+      <SourceLine classname="net.sf.freecol.common.model.UnitTest" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.UnitTest" name="testElement" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="592" end="633" startBytecode="0" endBytecode="160" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    </Method>
+    <LocalVariable name="soldier" register="7" pc="76" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="601" end="601" startBytecode="74" endBytecode="74" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="601" end="601" startBytecode="74" endBytecode="74" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.DEAD_OBJECT_STORE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="soldier"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.UnitTest">
+      <SourceLine classname="net.sf.freecol.common.model.UnitTest" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.UnitTest" name="testCopy" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="561" end="589" startBytecode="0" endBytecode="127" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    </Method>
+    <LocalVariable name="tile2" register="5" pc="44" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="567" end="567" startBytecode="42" endBytecode="42" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="567" end="567" startBytecode="42" endBytecode="42" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="tile2"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.UnitTest">
+      <SourceLine classname="net.sf.freecol.common.model.UnitTest" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.UnitTest" name="testElement" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="592" end="633" startBytecode="0" endBytecode="160" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    </Method>
+    <LocalVariable name="tile2" register="5" pc="44" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="598" end="598" startBytecode="42" endBytecode="42" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="598" end="598" startBytecode="42" endBytecode="42" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="tile2"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <BugInstance type="DM_DEFAULT_ENCODING" priority="1" rank="19" abbrev="Dm" category="I18N" first="1">
+    <Class classname="net.sf.freecol.common.model.UnitTest">
+      <SourceLine classname="net.sf.freecol.common.model.UnitTest" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.UnitTest" name="testElement" signature="()V" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="592" end="633" startBytecode="0" endBytecode="816" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    </Method>
+    <Method classname="java.lang.String" name="getBytes" signature="()[B" isStatic="false" role="METHOD_CALLED">
+      <SourceLine classname="java.lang.String"/>
+    </Method>
+    <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="615" end="615" startBytecode="201" endBytecode="201" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.UnitTest" start="615" end="615" startBytecode="201" endBytecode="201" sourcefile="UnitTest.java" sourcepath="net/sf/freecol/common/model/UnitTest.java"/>
+  </BugInstance>
+  <BugInstance type="DLS_DEAD_LOCAL_STORE" priority="2" rank="17" abbrev="DLS" category="STYLE" first="1">
+    <Class classname="net.sf.freecol.common.model.WorkLocation">
+      <SourceLine classname="net.sf.freecol.common.model.WorkLocation" sourcefile="WorkLocation.java" sourcepath="net/sf/freecol/common/model/WorkLocation.java"/>
+    </Class>
+    <Method classname="net.sf.freecol.common.model.WorkLocation" name="getOccupation" signature="(Lnet/sf/freecol/common/model/UnitType;)Lnet/sf/freecol/common/model/Occupation;" isStatic="false">
+      <SourceLine classname="net.sf.freecol.common.model.WorkLocation" start="261" end="281" startBytecode="0" endBytecode="116" sourcefile="WorkLocation.java" sourcepath="net/sf/freecol/common/model/WorkLocation.java"/>
+    </Method>
+    <LocalVariable name="bestAmount" register="6" pc="140" role="LOCAL_VARIABLE_NAMED"/>
+    <SourceLine classname="net.sf.freecol.common.model.WorkLocation" start="274" end="274" startBytecode="138" endBytecode="138" sourcefile="WorkLocation.java" sourcepath="net/sf/freecol/common/model/WorkLocation.java"/>
+    <SourceLine classname="net.sf.freecol.common.model.WorkLocation" start="274" end="274" startBytecode="138" endBytecode="138" sourcefile="WorkLocation.java" sourcepath="net/sf/freecol/common/model/WorkLocation.java"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.BASE_VALUE" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.LOCAL_NAME" value="bestAmount"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.METHOD_RESULT" value="true"/>
+    <Property name="edu.umd.cs.findbugs.detect.DeadLocalStoreProperty.NO_LOADS" value="true"/>
+  </BugInstance>
+  <Errors errors="0" missingClasses="0"></Errors>
+  <FindBugsSummary timestamp="Sun, 29 Apr 2018 16:13:02 -0400" total_classes="265" referenced_classes="463" total_bugs="72" total_size="32882" num_packages="3" java_version="1.8.0_111" vm_version="25.111-b14" cpu_seconds="31.45" clock_seconds="183.17" peak_mbytes="943.85" alloc_mbytes="1024.00" gc_seconds="0.79" priority_2="49" priority_1="23">
+    <PackageStats package="net.sf.freecol.common.model" total_bugs="72" total_types="233" total_size="32063" priority_2="49" priority_1="23">
+      <ClassStats class="net.sf.freecol.common.model.Ability" sourceFile="Ability.java" interface="false" size="142" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.AbstractGoods" sourceFile="AbstractGoods.java" interface="false" size="100" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.AbstractGoods$1" sourceFile="AbstractGoods.java" interface="false" size="10" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.AbstractUnit" sourceFile="AbstractUnit.java" interface="false" size="83" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.AllTests" sourceFile="AllTests.java" interface="false" size="43" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.BaseCostDeciderTest" sourceFile="BaseCostDeciderTest.java" interface="false" size="149" bugs="2" priority_2="2"/>
+      <ClassStats class="net.sf.freecol.common.model.BuildQueue" sourceFile="BuildQueue.java" interface="false" size="81" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.BuildQueue$CompletionAction" sourceFile="BuildQueue.java" interface="false" size="20" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.BuildableType" sourceFile="BuildableType.java" interface="false" size="125" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Building" sourceFile="Building.java" interface="false" size="245" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.BuildingTest" sourceFile="BuildingTest.java" interface="false" size="747" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.BuildingType" sourceFile="BuildingType.java" interface="false" size="187" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Colony" sourceFile="Colony.java" interface="false" size="1243" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Colony$ColonyChangeEvent" sourceFile="Colony.java" interface="false" size="20" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Colony$NoBuildReason" sourceFile="Colony.java" interface="false" size="26" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Colony$TileImprovementSuggestion" sourceFile="Colony.java" interface="false" size="17" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Colony$TileImprovementSuggestion$1" sourceFile="Colony.java" interface="false" size="9" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.ColonyProductionTest" sourceFile="ColonyProductionTest.java" interface="false" size="296" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.ColonyTest" sourceFile="ColonyTest.java" interface="false" size="437" bugs="5" priority_2="2" priority_1="3"/>
+      <ClassStats class="net.sf.freecol.common.model.ColonyTile" sourceFile="ColonyTile.java" interface="false" size="218" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.ColonyTradeItem" sourceFile="ColonyTradeItem.java" interface="false" size="64" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.ColonyWas" sourceFile="ColonyWas.java" interface="false" size="39" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.CombatModel" sourceFile="CombatModel.java" interface="false" size="39" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.CombatModel$CombatOdds" sourceFile="CombatModel.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.CombatModel$CombatResult" sourceFile="CombatModel.java" interface="false" size="64" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.CombatTest" sourceFile="CombatTest.java" interface="false" size="461" bugs="2" priority_2="1" priority_1="1"/>
+      <ClassStats class="net.sf.freecol.common.model.Consumer" sourceFile="Consumer.java" interface="true" size="14" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.DiplomaticTrade" sourceFile="DiplomaticTrade.java" interface="false" size="189" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.DiplomaticTrade$TradeContext" sourceFile="DiplomaticTrade.java" interface="false" size="18" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.DiplomaticTrade$TradeStatus" sourceFile="DiplomaticTrade.java" interface="false" size="14" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Direction" sourceFile="Direction.java" interface="false" size="102" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Disaster" sourceFile="Disaster.java" interface="false" size="79" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Disaster$Effects" sourceFile="Disaster.java" interface="false" size="11" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.DisasterTest" sourceFile="DisasterTest.java" interface="false" size="21" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Effect" sourceFile="Effect.java" interface="false" size="75" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.EquipmentType" sourceFile="EquipmentType.java" interface="false" size="144" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Europe" sourceFile="Europe.java" interface="false" size="208" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Europe$MigrationType" sourceFile="Europe.java" interface="false" size="41" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.EuropeTest" sourceFile="EuropeTest.java" interface="false" size="15" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.EuropeWas" sourceFile="EuropeWas.java" interface="false" size="32" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.EuropeanNationType" sourceFile="EuropeanNationType.java" interface="false" size="98" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Event" sourceFile="Event.java" interface="false" size="74" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.ExportData" sourceFile="ExportData.java" interface="false" size="66" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Feature" sourceFile="Feature.java" interface="false" size="172" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.FeatureContainer" sourceFile="FeatureContainer.java" interface="false" size="209" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.FoundingFather" sourceFile="FoundingFather.java" interface="false" size="136" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.FoundingFather$FoundingFatherType" sourceFile="FoundingFather.java" interface="false" size="20" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.FoundingFatherTest" sourceFile="FoundingFatherTest.java" interface="false" size="100" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.FreeColGameObject" sourceFile="FreeColGameObject.java" interface="false" size="103" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.FreeColGameObjectListener" sourceFile="FreeColGameObjectListener.java" interface="true" size="4" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.FreeColGameObjectType" sourceFile="FreeColGameObjectType.java" interface="false" size="80" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.FreeColObject" sourceFile="FreeColObject.java" interface="false" size="432" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.Game" sourceFile="Game.java" interface="false" size="490" bugs="2" priority_1="2"/>
+      <ClassStats class="net.sf.freecol.common.model.Game$1" sourceFile="Game.java" interface="false" size="38" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Game$2" sourceFile="Game.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Game$FcgoState" sourceFile="Game.java" interface="false" size="14" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.GameOptions" sourceFile="GameOptions.java" interface="false" size="114" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.GameTest" sourceFile="GameTest.java" interface="false" size="59" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.GoldTradeItem" sourceFile="GoldTradeItem.java" interface="false" size="52" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Goods" sourceFile="Goods.java" interface="false" size="83" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.GoodsContainer" sourceFile="GoodsContainer.java" interface="false" size="232" bugs="2" priority_2="2"/>
+      <ClassStats class="net.sf.freecol.common.model.GoodsContainerTest" sourceFile="GoodsContainerTest.java" interface="false" size="74" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.GoodsLocation" sourceFile="GoodsLocation.java" interface="false" size="95" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.GoodsTest" sourceFile="GoodsTest.java" interface="false" size="192" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.GoodsTradeItem" sourceFile="GoodsTradeItem.java" interface="false" size="74" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.GoodsType" sourceFile="GoodsType.java" interface="false" size="228" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.GoodsType$1" sourceFile="GoodsType.java" interface="false" size="19" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.HighScore" sourceFile="HighScore.java" interface="false" size="234" bugs="5" priority_2="5"/>
+      <ClassStats class="net.sf.freecol.common.model.HighScore$ScoreLevel" sourceFile="HighScore.java" interface="false" size="54" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.HighSeas" sourceFile="HighSeas.java" interface="false" size="71" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.HighSeasTest" sourceFile="HighSeasTest.java" interface="false" size="11" bugs="1" priority_1="1"/>
+      <ClassStats class="net.sf.freecol.common.model.HistoryEvent" sourceFile="HistoryEvent.java" interface="false" size="101" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.HistoryEvent$HistoryEventType" sourceFile="HistoryEvent.java" interface="false" size="55" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.InciteTradeItem" sourceFile="InciteTradeItem.java" interface="false" size="58" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.IndianNationType" sourceFile="IndianNationType.java" interface="false" size="96" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.IndianSettlement" sourceFile="IndianSettlement.java" interface="false" size="602" bugs="2" priority_2="2"/>
+      <ClassStats class="net.sf.freecol.common.model.IndianSettlement$1" sourceFile="IndianSettlement.java" interface="false" size="20" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.IndianSettlement$ContactLevel" sourceFile="IndianSettlement.java" interface="false" size="16" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.IndianSettlementTest" sourceFile="IndianSettlementTest.java" interface="false" size="77" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.IndividualFatherTest" sourceFile="IndividualFatherTest.java" interface="false" size="297" bugs="3" priority_2="1" priority_1="2"/>
+      <ClassStats class="net.sf.freecol.common.model.LandMap" sourceFile="LandMap.java" interface="false" size="188" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.LastSale" sourceFile="LastSale.java" interface="false" size="56" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Limit" sourceFile="Limit.java" interface="false" size="140" bugs="2" priority_2="1" priority_1="1"/>
+      <ClassStats class="net.sf.freecol.common.model.Limit$Operator" sourceFile="Limit.java" interface="false" size="14" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.LimitTest" sourceFile="LimitTest.java" interface="false" size="130" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Locatable" sourceFile="Locatable.java" interface="true" size="6" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Location" sourceFile="Location.java" interface="true" size="26" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.LostCityRumour" sourceFile="LostCityRumour.java" interface="false" size="150" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.LostCityRumour$RumourType" sourceFile="LostCityRumour.java" interface="false" size="36" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Map" sourceFile="Map.java" interface="false" size="848" bugs="2" priority_2="2"/>
+      <ClassStats class="net.sf.freecol.common.model.Map$1" sourceFile="Map.java" interface="false" size="10" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Map$2" sourceFile="Map.java" interface="false" size="10" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Map$3" sourceFile="Map.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Map$CircleIterator" sourceFile="Map.java" interface="false" size="80" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Map$Layer" sourceFile="Map.java" interface="false" size="17" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Map$MoveCandidate" sourceFile="Map.java" interface="false" size="85" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.Map$MoveStep" sourceFile="Map.java" interface="false" size="13" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Map$Position" sourceFile="Map.java" interface="false" size="48" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Map$SearchHeuristic" sourceFile="Map.java" interface="true" size="2" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Map$WholeMapIterator" sourceFile="Map.java" interface="false" size="23" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.MapTest" sourceFile="MapTest.java" interface="false" size="411" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.MapTest$1" sourceFile="MapTest.java" interface="false" size="24" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Market" sourceFile="Market.java" interface="false" size="184" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Market$Access" sourceFile="Market.java" interface="false" size="12" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.MarketData" sourceFile="MarketData.java" interface="false" size="190" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.MarketTest" sourceFile="MarketTest.java" interface="false" size="16" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.MarketWas" sourceFile="MarketWas.java" interface="false" size="34" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.ModelMessage" sourceFile="ModelMessage.java" interface="false" size="182" bugs="2" priority_2="2"/>
+      <ClassStats class="net.sf.freecol.common.model.ModelMessage$MessageType" sourceFile="ModelMessage.java" interface="false" size="56" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.ModelMessageTest" sourceFile="ModelMessageTest.java" interface="false" size="59" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Modifier" sourceFile="Modifier.java" interface="false" size="267" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Modifier$ModifierType" sourceFile="Modifier.java" interface="false" size="14" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.ModifierTest" sourceFile="ModifierTest.java" interface="false" size="260" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Monarch" sourceFile="Monarch.java" interface="false" size="438" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Monarch$Force" sourceFile="Monarch.java" interface="false" size="124" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Monarch$MonarchAction" sourceFile="Monarch.java" interface="false" size="48" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.MonarchTest" sourceFile="MonarchTest.java" interface="false" size="51" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.Movable" sourceFile="Movable.java" interface="true" size="3" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.MovementTest" sourceFile="MovementTest.java" interface="false" size="258" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Nameable" sourceFile="Nameable.java" interface="true" size="3" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Named" sourceFile="Named.java" interface="true" size="2" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Nation" sourceFile="Nation.java" interface="false" size="129" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.NationOptions" sourceFile="NationOptions.java" interface="false" size="109" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.NationOptions$Advantages" sourceFile="NationOptions.java" interface="false" size="20" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.NationOptions$NationState" sourceFile="NationOptions.java" interface="false" size="20" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.NationSummary" sourceFile="NationSummary.java" interface="false" size="94" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.NationType" sourceFile="NationType.java" interface="false" size="82" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.NationType$AggressionLevel" sourceFile="NationType.java" interface="false" size="14" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.NationType$SettlementNumber" sourceFile="NationType.java" interface="false" size="14" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.NationTypeTest" sourceFile="NationTypeTest.java" interface="false" size="111" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Occupation" sourceFile="Occupation.java" interface="false" size="63" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Operand" sourceFile="Operand.java" interface="false" size="161" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.Operand$OperandType" sourceFile="Operand.java" interface="false" size="16" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Operand$ScopeLevel" sourceFile="Operand.java" interface="false" size="13" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Ownable" sourceFile="Ownable.java" interface="true" size="3" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.PathNode" sourceFile="PathNode.java" interface="false" size="109" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.PathfindingTest" sourceFile="PathfindingTest.java" interface="false" size="49" bugs="2" priority_2="2"/>
+      <ClassStats class="net.sf.freecol.common.model.PathfindingTest$1" sourceFile="PathfindingTest.java" interface="false" size="17" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.PathfindingTest$2" sourceFile="PathfindingTest.java" interface="false" size="17" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.PathfindingTest$3" sourceFile="PathfindingTest.java" interface="false" size="17" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.PathfindingTest$4" sourceFile="PathfindingTest.java" interface="false" size="18" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Player" sourceFile="Player.java" interface="false" size="1500" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Player$1" sourceFile="Player.java" interface="false" size="15" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Player$ActivePredicate" sourceFile="Player.java" interface="false" size="7" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Player$ColonyValueCategory" sourceFile="Player.java" interface="false" size="30" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Player$GoingToPredicate" sourceFile="Player.java" interface="false" size="21" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Player$NoClaimReason" sourceFile="Player.java" interface="false" size="32" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Player$NoValueType" sourceFile="Player.java" interface="false" size="26" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Player$PlayerType" sourceFile="Player.java" interface="false" size="16" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Player$UnitIterator" sourceFile="Player.java" interface="false" size="48" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Player$UnitPredicate" sourceFile="Player.java" interface="false" size="5" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.PlayerExploredTile" sourceFile="PlayerExploredTile.java" interface="false" size="169" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.PlayerTest" sourceFile="PlayerTest.java" interface="false" size="221" bugs="2" priority_1="2"/>
+      <ClassStats class="net.sf.freecol.common.model.ProductionCache" sourceFile="ProductionCache.java" interface="false" size="114" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.ProductionInfo" sourceFile="ProductionInfo.java" interface="false" size="97" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.ProductionMap" sourceFile="ProductionMap.java" interface="false" size="56" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.ProductionMap$ProductionTree" sourceFile="ProductionMap.java" interface="false" size="63" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.ProductionType" sourceFile="ProductionType.java" interface="false" size="212" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.ProductionTypeTest" sourceFile="ProductionTypeTest.java" interface="false" size="785" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.RandomRange" sourceFile="RandomRange.java" interface="false" size="92" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.RandomRangeTest" sourceFile="RandomRangeTest.java" interface="false" size="20" bugs="1" priority_1="1"/>
+      <ClassStats class="net.sf.freecol.common.model.Region" sourceFile="Region.java" interface="false" size="209" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Region$RegionType" sourceFile="Region.java" interface="false" size="34" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Resource" sourceFile="Resource.java" interface="false" size="94" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.ResourceType" sourceFile="ResourceType.java" interface="false" size="38" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Role" sourceFile="Role.java" interface="false" size="185" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Role$RoleChange" sourceFile="Role.java" interface="false" size="12" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.RoleTest" sourceFile="RoleTest.java" interface="false" size="154" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.SchoolTest" sourceFile="SchoolTest.java" interface="false" size="150" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.SchoolTest$SchoolLevel" sourceFile="SchoolTest.java" interface="false" size="11" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Scope" sourceFile="Scope.java" interface="false" size="184" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.ScopeTest" sourceFile="ScopeTest.java" interface="false" size="140" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.SerializationTest" sourceFile="SerializationTest.java" interface="false" size="142" bugs="6" priority_2="3" priority_1="3"/>
+      <ClassStats class="net.sf.freecol.common.model.Settlement" sourceFile="Settlement.java" interface="false" size="247" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.SettlementTest" sourceFile="SettlementTest.java" interface="false" size="147" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.SettlementType" sourceFile="SettlementType.java" interface="false" size="181" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.SimpleCombatModel" sourceFile="SimpleCombatModel.java" interface="false" size="412" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.SoLTest" sourceFile="SoLTest.java" interface="false" size="19" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Specification" sourceFile="Specification.java" interface="false" size="1457" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Specification$ChildReader" sourceFile="Specification.java" interface="true" size="2" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Specification$ModifierReader" sourceFile="Specification.java" interface="false" size="11" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Specification$OptionReader" sourceFile="Specification.java" interface="false" size="26" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Specification$Source" sourceFile="Specification.java" interface="false" size="10" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Specification$TypeReader" sourceFile="Specification.java" interface="false" size="34" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.SpecificationTest" sourceFile="SpecificationTest.java" interface="false" size="324" bugs="6" priority_2="2" priority_1="4"/>
+      <ClassStats class="net.sf.freecol.common.model.Stance" sourceFile="Stance.java" interface="false" size="77" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.StanceTradeItem" sourceFile="StanceTradeItem.java" interface="false" size="64" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.StringTemplate" sourceFile="StringTemplate.java" interface="false" size="241" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.StringTemplate$TemplateType" sourceFile="StringTemplate.java" interface="false" size="12" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Tension" sourceFile="Tension.java" interface="false" size="57" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Tension$Level" sourceFile="Tension.java" interface="false" size="28" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Tile" sourceFile="Tile.java" interface="false" size="1027" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Tile$1" sourceFile="Tile.java" interface="false" size="9" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.Tile$IndianSettlementInternals" sourceFile="Tile.java" interface="false" size="23" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TileImprovement" sourceFile="TileImprovement.java" interface="false" size="259" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.TileImprovementStyle" sourceFile="TileImprovementStyle.java" interface="false" size="47" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TileImprovementTest" sourceFile="TileImprovementTest.java" interface="false" size="63" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TileImprovementType" sourceFile="TileImprovementType.java" interface="false" size="248" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TileItem" sourceFile="TileItem.java" interface="false" size="35" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TileItemContainer" sourceFile="TileItemContainer.java" interface="false" size="264" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TileItemContainer$1" sourceFile="TileItemContainer.java" interface="false" size="11" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TileItemContainerTest" sourceFile="TileItemContainerTest.java" interface="false" size="55" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TileTest" sourceFile="TileTest.java" interface="false" size="609" bugs="3" priority_2="3"/>
+      <ClassStats class="net.sf.freecol.common.model.TileTest$Work" sourceFile="TileTest.java" interface="false" size="11" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.TileType" sourceFile="TileType.java" interface="false" size="278" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TileType$RangeType" sourceFile="TileType.java" interface="false" size="11" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TileTypeChange" sourceFile="TileTypeChange.java" interface="false" size="75" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TradeItem" sourceFile="TradeItem.java" interface="false" size="78" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TradeLocation" sourceFile="TradeLocation.java" interface="true" size="4" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TradeRoute" sourceFile="TradeRoute.java" interface="false" size="146" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TradeRouteStop" sourceFile="TradeRouteStop.java" interface="false" size="123" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TradeRouteTest" sourceFile="TradeRouteTest.java" interface="false" size="106" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TransactionListener" sourceFile="TransactionListener.java" interface="true" size="3" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Turn" sourceFile="Turn.java" interface="false" size="86" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.TypeCountMap" sourceFile="TypeCountMap.java" interface="false" size="46" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Unit" sourceFile="Unit.java" interface="false" size="1710" bugs="2" priority_2="2"/>
+      <ClassStats class="net.sf.freecol.common.model.Unit$1" sourceFile="Unit.java" interface="false" size="30" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Unit$2" sourceFile="Unit.java" interface="false" size="30" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Unit$MoveType" sourceFile="Unit.java" interface="false" size="87" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Unit$UnitLabelType" sourceFile="Unit.java" interface="false" size="14" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.Unit$UnitState" sourceFile="Unit.java" interface="false" size="30" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.UnitLocation" sourceFile="UnitLocation.java" interface="false" size="169" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.UnitLocation$NoAddReason" sourceFile="UnitLocation.java" interface="false" size="51" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.UnitTest" sourceFile="UnitTest.java" interface="false" size="506" bugs="5" priority_2="2" priority_1="3"/>
+      <ClassStats class="net.sf.freecol.common.model.UnitTradeItem" sourceFile="UnitTradeItem.java" interface="false" size="54" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.UnitType" sourceFile="UnitType.java" interface="false" size="408" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.UnitTypeChange" sourceFile="UnitTypeChange.java" interface="false" size="138" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.UnitTypeChange$ChangeType" sourceFile="UnitTypeChange.java" interface="false" size="34" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.UnitTypeChangeTest" sourceFile="UnitTypeChangeTest.java" interface="false" size="66" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.UnitWas" sourceFile="UnitWas.java" interface="false" size="166" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.WorkLocation" sourceFile="WorkLocation.java" interface="false" size="297" bugs="1" priority_2="1"/>
+      <ClassStats class="net.sf.freecol.common.model.WorkLocation$Suggestion" sourceFile="WorkLocation.java" interface="false" size="19" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.WorkLocation$Suggestion$1" sourceFile="WorkLocation.java" interface="false" size="13" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="net.sf.freecol.common.model.mission" total_bugs="0" total_types="7" total_size="276">
+      <ClassStats class="net.sf.freecol.common.model.mission.AbstractMission" sourceFile="AbstractMission.java" interface="false" size="54" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.mission.CompoundMission" sourceFile="CompoundMission.java" interface="false" size="65" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.mission.GoToMission" sourceFile="GoToMission.java" interface="false" size="51" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.mission.ImprovementMission" sourceFile="ImprovementMission.java" interface="false" size="49" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.mission.Mission" sourceFile="Mission.java" interface="true" size="5" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.mission.Mission$MissionState" sourceFile="Mission.java" interface="false" size="20" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.mission.MissionManager" sourceFile="MissionManager.java" interface="false" size="32" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="net.sf.freecol.common.model.pathfinding" total_bugs="0" total_types="25" total_size="543">
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.BaseCostDecider" sourceFile="BaseCostDecider.java" interface="false" size="55" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.CostDecider" sourceFile="CostDecider.java" interface="true" size="5" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.CostDeciders" sourceFile="CostDeciders.java" interface="false" size="44" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.CostDeciders$1" sourceFile="CostDeciders.java" interface="false" size="13" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.CostDeciders$2" sourceFile="CostDeciders.java" interface="false" size="14" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.CostDeciders$3" sourceFile="CostDeciders.java" interface="false" size="25" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.CostDeciders$AvoidNavalDangerCostDecider" sourceFile="CostDeciders.java" interface="false" size="22" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.CostDeciders$AvoidSettlementsAndBlockingUnitsCostDecider" sourceFile="CostDeciders.java" interface="false" size="18" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.CostDeciders$AvoidSettlementsCostDecider" sourceFile="CostDeciders.java" interface="false" size="13" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.CostDeciders$ServerBaseCostDecider" sourceFile="CostDeciders.java" interface="false" size="11" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDecider" sourceFile="GoalDecider.java" interface="true" size="4" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDeciders" sourceFile="GoalDeciders.java" interface="false" size="29" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDeciders$1" sourceFile="GoalDeciders.java" interface="false" size="34" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDeciders$10" sourceFile="GoalDeciders.java" interface="false" size="22" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDeciders$11" sourceFile="GoalDeciders.java" interface="false" size="19" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDeciders$2" sourceFile="GoalDeciders.java" interface="false" size="23" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDeciders$3" sourceFile="GoalDeciders.java" interface="false" size="21" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDeciders$4" sourceFile="GoalDeciders.java" interface="false" size="17" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDeciders$5" sourceFile="GoalDeciders.java" interface="false" size="20" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDeciders$6" sourceFile="GoalDeciders.java" interface="false" size="17" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDeciders$7" sourceFile="GoalDeciders.java" interface="false" size="20" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDeciders$8" sourceFile="GoalDeciders.java" interface="false" size="48" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDeciders$9" sourceFile="GoalDeciders.java" interface="false" size="16" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDeciders$MultipleAdjacentDecider" sourceFile="GoalDeciders.java" interface="false" size="13" bugs="0"/>
+      <ClassStats class="net.sf.freecol.common.model.pathfinding.GoalDeciders$MultipleAdjacentDecider$1" sourceFile="GoalDeciders.java" interface="false" size="20" bugs="0"/>
+    </PackageStats>
+    <FindBugsProfile>
+      <ClassProfile name="edu.umd.cs.findbugs.ba.npe.NullDerefAndRedundantComparisonFinder" totalMilliseconds="701" invocations="4396" avgMicrosecondsPerInvocation="159" maxMicrosecondsPerInvocation="42014" standardDeviationMircosecondsPerInvocation="895"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.IsNullValueDataflowFactory" totalMilliseconds="689" invocations="4426" avgMicrosecondsPerInvocation="155" maxMicrosecondsPerInvocation="45057" standardDeviationMircosecondsPerInvocation="1181"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.ValueNumberDataflowFactory" totalMilliseconds="675" invocations="4585" avgMicrosecondsPerInvocation="147" maxMicrosecondsPerInvocation="63280" standardDeviationMircosecondsPerInvocation="1244"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.UnconditionalValueDerefDataflowFactory" totalMilliseconds="617" invocations="4422" avgMicrosecondsPerInvocation="139" maxMicrosecondsPerInvocation="40221" standardDeviationMircosecondsPerInvocation="909"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindRefComparison$SpecialTypeAnalysis" totalMilliseconds="418" invocations="3510" avgMicrosecondsPerInvocation="119" maxMicrosecondsPerInvocation="46050" standardDeviationMircosecondsPerInvocation="1141"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.TypeDataflowFactory" totalMilliseconds="380" invocations="4447" avgMicrosecondsPerInvocation="85" maxMicrosecondsPerInvocation="6481" standardDeviationMircosecondsPerInvocation="244"/>
+      <ClassProfile name="edu.umd.cs.findbugs.OpcodeStack$JumpInfoFactory" totalMilliseconds="279" invocations="5293" avgMicrosecondsPerInvocation="52" maxMicrosecondsPerInvocation="29100" standardDeviationMircosecondsPerInvocation="419"/>
+      <ClassProfile name="de.tobject.findbugs.builder.FindBugs2Eclipse" totalMilliseconds="270" invocations="2" avgMicrosecondsPerInvocation="135242" maxMicrosecondsPerInvocation="229910" standardDeviationMircosecondsPerInvocation="94668"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassInfoAnalysisEngine" totalMilliseconds="246" invocations="1398" avgMicrosecondsPerInvocation="176" maxMicrosecondsPerInvocation="25139" standardDeviationMircosecondsPerInvocation="737"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.CFGFactory" totalMilliseconds="244" invocations="4426" avgMicrosecondsPerInvocation="55" maxMicrosecondsPerInvocation="1920" standardDeviationMircosecondsPerInvocation="87"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.ConstantDataflowFactory" totalMilliseconds="178" invocations="4426" avgMicrosecondsPerInvocation="40" maxMicrosecondsPerInvocation="37236" standardDeviationMircosecondsPerInvocation="575"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.LoadOfKnownNullValue" totalMilliseconds="162" invocations="263" avgMicrosecondsPerInvocation="618" maxMicrosecondsPerInvocation="47442" standardDeviationMircosecondsPerInvocation="2997"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindNoSideEffectMethods" totalMilliseconds="162" invocations="463" avgMicrosecondsPerInvocation="350" maxMicrosecondsPerInvocation="9004" standardDeviationMircosecondsPerInvocation="735"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FieldItemSummary" totalMilliseconds="159" invocations="463" avgMicrosecondsPerInvocation="344" maxMicrosecondsPerInvocation="7757" standardDeviationMircosecondsPerInvocation="705"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindInconsistentSync2" totalMilliseconds="137" invocations="265" avgMicrosecondsPerInvocation="517" maxMicrosecondsPerInvocation="46243" standardDeviationMircosecondsPerInvocation="2965"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindSelfComparison" totalMilliseconds="136" invocations="265" avgMicrosecondsPerInvocation="515" maxMicrosecondsPerInvocation="67774" standardDeviationMircosecondsPerInvocation="4171"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassDataAnalysisEngine" totalMilliseconds="132" invocations="1400" avgMicrosecondsPerInvocation="94" maxMicrosecondsPerInvocation="602" standardDeviationMircosecondsPerInvocation="54"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindOpenStream" totalMilliseconds="118" invocations="265" avgMicrosecondsPerInvocation="448" maxMicrosecondsPerInvocation="9675" standardDeviationMircosecondsPerInvocation="1225"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.UnreadFields" totalMilliseconds="103" invocations="265" avgMicrosecondsPerInvocation="390" maxMicrosecondsPerInvocation="4878" standardDeviationMircosecondsPerInvocation="615"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.DefaultEncodingDetector" totalMilliseconds="99" invocations="265" avgMicrosecondsPerInvocation="375" maxMicrosecondsPerInvocation="9705" standardDeviationMircosecondsPerInvocation="1105"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindNullDeref$CheckCallSitesAndReturnInstructions" totalMilliseconds="98" invocations="4396" avgMicrosecondsPerInvocation="22" maxMicrosecondsPerInvocation="1114" standardDeviationMircosecondsPerInvocation="44"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindBadCast2" totalMilliseconds="96" invocations="263" avgMicrosecondsPerInvocation="365" maxMicrosecondsPerInvocation="10239" standardDeviationMircosecondsPerInvocation="1067"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.DumbMethods" totalMilliseconds="93" invocations="265" avgMicrosecondsPerInvocation="352" maxMicrosecondsPerInvocation="5153" standardDeviationMircosecondsPerInvocation="648"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.MethodReturnCheck" totalMilliseconds="83" invocations="265" avgMicrosecondsPerInvocation="315" maxMicrosecondsPerInvocation="4924" standardDeviationMircosecondsPerInvocation="612"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.RuntimeExceptionCapture" totalMilliseconds="82" invocations="265" avgMicrosecondsPerInvocation="310" maxMicrosecondsPerInvocation="4774" standardDeviationMircosecondsPerInvocation="577"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.RepeatedConditionals" totalMilliseconds="77" invocations="265" avgMicrosecondsPerInvocation="293" maxMicrosecondsPerInvocation="4667" standardDeviationMircosecondsPerInvocation="579"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindHEmismatch" totalMilliseconds="73" invocations="265" avgMicrosecondsPerInvocation="276" maxMicrosecondsPerInvocation="4118" standardDeviationMircosecondsPerInvocation="527"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.CrossSiteScripting" totalMilliseconds="70" invocations="265" avgMicrosecondsPerInvocation="265" maxMicrosecondsPerInvocation="4859" standardDeviationMircosecondsPerInvocation="538"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.SwitchFallthrough" totalMilliseconds="70" invocations="265" avgMicrosecondsPerInvocation="264" maxMicrosecondsPerInvocation="4909" standardDeviationMircosecondsPerInvocation="558"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindDoubleCheck" totalMilliseconds="70" invocations="265" avgMicrosecondsPerInvocation="264" maxMicrosecondsPerInvocation="3882" standardDeviationMircosecondsPerInvocation="524"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindPuzzlers" totalMilliseconds="69" invocations="265" avgMicrosecondsPerInvocation="260" maxMicrosecondsPerInvocation="4356" standardDeviationMircosecondsPerInvocation="528"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.LiveLocalStoreDataflowFactory" totalMilliseconds="68" invocations="4198" avgMicrosecondsPerInvocation="16" maxMicrosecondsPerInvocation="2939" standardDeviationMircosecondsPerInvocation="63"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.SynchronizationOnSharedBuiltinConstant" totalMilliseconds="66" invocations="265" avgMicrosecondsPerInvocation="252" maxMicrosecondsPerInvocation="3432" standardDeviationMircosecondsPerInvocation="475"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindBadForLoop" totalMilliseconds="66" invocations="265" avgMicrosecondsPerInvocation="251" maxMicrosecondsPerInvocation="3536" standardDeviationMircosecondsPerInvocation="490"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.BadSyntaxForRegularExpression" totalMilliseconds="65" invocations="265" avgMicrosecondsPerInvocation="247" maxMicrosecondsPerInvocation="3985" standardDeviationMircosecondsPerInvocation="489"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.InfiniteLoop" totalMilliseconds="65" invocations="265" avgMicrosecondsPerInvocation="247" maxMicrosecondsPerInvocation="3636" standardDeviationMircosecondsPerInvocation="499"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindFloatEquality" totalMilliseconds="63" invocations="265" avgMicrosecondsPerInvocation="241" maxMicrosecondsPerInvocation="3832" standardDeviationMircosecondsPerInvocation="475"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FormatStringChecker" totalMilliseconds="63" invocations="265" avgMicrosecondsPerInvocation="238" maxMicrosecondsPerInvocation="3787" standardDeviationMircosecondsPerInvocation="467"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindNonShortCircuit" totalMilliseconds="62" invocations="265" avgMicrosecondsPerInvocation="236" maxMicrosecondsPerInvocation="3623" standardDeviationMircosecondsPerInvocation="466"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.IntCast2LongAsInstant" totalMilliseconds="62" invocations="265" avgMicrosecondsPerInvocation="236" maxMicrosecondsPerInvocation="4381" standardDeviationMircosecondsPerInvocation="487"/>
+    </FindBugsProfile>
+  </FindBugsSummary>
+  <ClassFeatures></ClassFeatures>
+  <History>
+    <AppVersion sequence="0" timestamp="1525037944603" release="" codeSize="0" numClasses="0"/>
+  </History>
+</BugCollection>
