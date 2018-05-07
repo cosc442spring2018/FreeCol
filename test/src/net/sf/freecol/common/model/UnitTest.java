@@ -29,6 +29,7 @@ import javax.xml.parsers.DocumentBuilder;
 import net.sf.freecol.client.gui.panel.UnitLabel;
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.model.Role;
+import net.sf.freecol.common.model.Unit.MoveType;
 import net.sf.freecol.common.model.Unit.UnitState;
 import net.sf.freecol.server.model.ServerColony;
 import net.sf.freecol.server.model.ServerUnit;
@@ -108,7 +109,58 @@ public class UnitTest extends FreeColTestCase {
 //	public void testReadChildren() {
 //		fail("Not yet implemented");
 //	}
+    @Test
+	public void testSetTurnsOfTraining() {
+        Game game = getStandardGame();
+        Player dutch = game.getPlayerByNationId("model.nation.dutch");
+        Map map = getTestMap(plains, true);
+        game.setMap(map);
 
+        Tile tile1 = map.getTile(6, 8);
+        Unit i = new ServerUnit(game, tile1, dutch, veteranSoldierType);
+        i.setTurnsOfTraining(3);
+		assertEquals(3, i.getTurnsOfTraining());
+    }
+    
+    @Test
+	public void testGetAdjacentSettlementSafely() {
+        Game game = getStandardGame();
+        Player dutch = game.getPlayerByNationId("model.nation.dutch");
+        Map map = getTestMap(plains, true);
+        game.setMap(map);
+
+        Tile tile1 = map.getTile(6, 8);
+        Unit i = new ServerUnit(game, tile1, dutch, veteranSoldierType);
+//		assertNotNull(i.getAdjacentSettlementSafely(i.getSettlement().getId()));
+    }
+    
+    @Test
+	public void testToShortString() {
+        Game game = getStandardGame();
+        Player dutch = game.getPlayerByNationId("model.nation.dutch");
+        Map map = getTestMap(plains, true);
+        game.setMap(map);
+
+        Tile tile1 = map.getTile(6, 8);
+        Unit i = new ServerUnit(game, tile1, dutch, veteranSoldierType);
+		assertEquals("unit:775-veteranSoldier-soldier", i.toShortString());
+	}
+
+	@Test
+	public void testSetStudent() {
+        Game game = getStandardGame();
+        Player dutch = game.getPlayerByNationId("model.nation.dutch");
+        Map map = getTestMap(plains, true);
+        game.setMap(map);
+
+        Tile tile1 = map.getTile(6, 8);
+        Unit i = new ServerUnit(game, tile1, dutch, veteranSoldierType);
+        Unit i1 = new ServerUnit(game, tile1, dutch, colonistType);
+        i.student = i1;
+		i.setStudent(null);
+		assertEquals(null, i.getStudent());
+	}
+		
 	@Test
 	public void testCheckIntegrity() {
         Game game = getStandardGame();
@@ -245,11 +297,51 @@ public class UnitTest extends FreeColTestCase {
 //		assertEquals(new Role("Potato", new Specification()), i.getAutomaticRole());
 //	}
 
+	@Test
+	public void testGetPathStartLocation() {
+        Game game = getStandardGame();
+        Player dutch = game.getPlayerByNationId("model.nation.dutch");
+        Map map = getTestMap(plains, true);
+        game.setMap(map);
+        Unit i = new Unit(game);
+        i.setLocation(map.getTile(6, 6));
+        assertEquals(map.getTile(6, 6), i.getPathStartLocation());
+	}
+
+	@Test
+	public void testGetPathStartLocation2() {
+        Game game = getStandardGame();
+        Player dutch = game.getPlayerByNationId("model.nation.dutch");
+        Map map = getTestMap(plains, true);
+        game.setMap(map);
+        Unit i = new Unit(game);
+        i.setOwner(dutch);
+        assertEquals(null, i.getPathStartLocation());
+	}
+
+	@Test
+	public void testGetPathStartLocation3() {
+        Game game = getStandardGame();
+        Player dutch = game.getPlayerByNationId("model.nation.dutch");
+        Map map = getTestMap(plains, true);
+        game.setMap(map);
+        Unit i = new Unit(game);
+        dutch.settlements.add(getStandardColony());
+        i.setOwner(dutch);
+        assertNotNull(i.getPathStartLocation());
+	}
+
 //	@Test
-//	public void testGetPathStartLocation() {
-//		fail("Not yet implemented");
+//	public void testGetPathStartLocation4() {
+//        Game game = getStandardGame();
+//        Player dutch = game.getPlayerByNationId("model.nation.dutch");
+//        Map map = getTestMap(plains, true);
+//        game.setMap(map);
+//        Unit i = new Unit(game);
+//        i.addAbility(new Ability(Ability.NAVAL_UNIT));
+//        assertNull(i.getPathStartLocation());
 //	}
-//
+
 //	@Test
 //	public void testFindIntermediatePort() {
 //		fail("Not yet implemented");
@@ -863,5 +955,30 @@ public class UnitTest extends FreeColTestCase {
         for (UnitType type : spec().getUnitTypeList()) {
             assertNotNull(type.getDefaultRole());
         }
+    }
+    
+    //Testing MoveType
+    @Test
+    public void testMoveType(){
+    	Unit.MoveType mt = Unit.MoveType.ATTACK_SETTLEMENT;
+    	assertEquals(true, mt.isLegal());
+    }
+
+    @Test
+    public void testMoveType2(){
+    	Unit.MoveType mt = Unit.MoveType.ATTACK_SETTLEMENT;
+    	assertEquals(true, mt.isAttack());
+    }
+
+    @Test
+    public void testMoveType3(){
+    	Unit.MoveType mt = Unit.MoveType.MOVE;
+    	assertEquals(true, mt.isProgress());
+    }
+
+    @Test
+    public void testMoveType4(){
+    	Unit.MoveType mt = Unit.MoveType.MOVE_NO_ACCESS_WAR;
+    	assertEquals("Attempt to trade while at war", mt.whyIllegal());
     }
 }
