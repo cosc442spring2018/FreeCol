@@ -226,6 +226,7 @@ public class PathNode {
 	 */
 	public PathNode getFirstNode() {
 		PathNode path;
+		// This is just an unusual for loop for finding the first node in a linkedlist DO NOT DELETE ;
 		for (path = this; path.previous != null; path = path.previous) // $codepro.audit.disable
 			;
 		return path;
@@ -238,6 +239,7 @@ public class PathNode {
 	 */
 	public PathNode getLastNode() {
 		PathNode path;
+		// This is just an unusual for loop for finding the last node in a linkedlist DO NOT DELETE ;
 		for (path = this; path.next != null; path = path.next) // $codepro.audit.disable
 			;
 		return path;
