@@ -199,7 +199,7 @@ public class StringUtils {
 			String s = text.substring(start, i);
 			String t = (top.isEmpty()) ? s : top + d + s;
 			if (fontMetrics.stringWidth(t) > width) {
-				top = splitTextHelper(result, top, s);
+				top = findTop(result, top, s);
 			} else {
 				top = t;
 			}
@@ -213,7 +213,7 @@ public class StringUtils {
 		return result;
 	}
 
-	private static String splitTextHelper(List<String> result, String top, String s) {
+	private static String findTop(List<String> result, String top, String s) {
 		if (top.isEmpty()) {
 			result.add(s);
 		} else {
