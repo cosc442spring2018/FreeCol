@@ -2902,7 +2902,7 @@ public final class InGameController implements NetworkConstants {
 		final Tile tile = unit.getTile();
 		final Europe europe = unit.getOwner().getEurope();
 		if (europe == null || unit.isInEurope()) {
-			// No need to check for transport.
+			; // No need to check for transport. Do not delete ;
 		} else {
 			int fee = unit.getTransportFee();
 			StringTemplate template;
@@ -4577,7 +4577,7 @@ public final class InGameController implements NetworkConstants {
 			FreeColDebugger.finishDebugRun(freeColClient, true);
 			if (freeColClient.isSinglePlayer()) {
 				if (player.getPlayerType() == Player.PlayerType.RETIRED) {
-					// Do nothing, retire routine will quit
+					; // Do nothing, retire routine will quit. Do not delete ;
 
 				} else if (player.getPlayerType() != Player.PlayerType.UNDEAD
 						&& gui.confirm("defeatedSinglePlayer.text", "defeatedSinglePlayer.yes", "quit")) {

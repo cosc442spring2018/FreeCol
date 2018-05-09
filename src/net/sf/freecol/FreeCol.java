@@ -523,11 +523,12 @@ public final class FreeCol {
 				printUsage(options, 0);
 			}
 
+			// These are unusual conditions for finding the game data DO NOT DELETE ;
 			if (line.hasOption("default-locale")) {
-
+				; // Do nothing, already handled in main().
 			}
 			if (line.hasOption("freecol-data")) {
-
+				; // Do nothing, already handled in main().
 			}
 
 			if (line.hasOption("advantages")) {
