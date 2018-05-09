@@ -238,29 +238,44 @@ public class Introspector {
 				throw new IllegalArgumentException(setMethod.getName() + "(obj, " + value + ")", e);
 			}
 		} else {
-			Method convertMethod = getFromStringConverter(fieldType);
-			Object result = null;
-
-			if (fieldType.isEnum()) {
-				try {
-					result = convertMethod.invoke(null, fieldType, value);
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					throw new IllegalArgumentException(
-							convertMethod.getName() + "(null, " + fieldType.getName() + ", " + value + ")", e);
-				}
-			} else {
-				try {
-					result = convertMethod.invoke(null, value);
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					throw new IllegalArgumentException(convertMethod.getName() + "(null, " + value + ")", e);
-				}
-			}
+			Object result = getResult(fieldType, value);
 			try {
 				setMethod.invoke(obj, result);
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				throw new IllegalArgumentException(setMethod.getName() + "(result)", e);
 			}
 		}
+	}
+
+	private Object getResult(Class<?> fieldType, String value) {
+		Method convertMethod = getFromStringConverter(fieldType);
+		Object result = null;
+		if (fieldType.isEnum()) {
+			try {
+				result = convertMethod.invoke(null, fieldType, value);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				throw new IllegalArgumentException(
+						convertMethod.getName() + "(null, " + fieldType.getName() + ", " + value + ")", e);
+			}
+			try {
+				result = convertMethod.invoke(null, fieldType, value);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				throw new IllegalArgumentException(
+						convertMethod.getName() + "(null, " + fieldType.getName() + ", " + value + ")", e);
+			}
+			try {
+				result = convertMethod.invoke(null, value);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				throw new IllegalArgumentException(convertMethod.getName() + "(null, " + value + ")", e);
+			}
+		} else {
+			try {
+				result = convertMethod.invoke(null, value);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				throw new IllegalArgumentException(convertMethod.getName() + "(null, " + value + ")", e);
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -278,12 +293,19 @@ public class Introspector {
 	 *                wraps all exceptional conditions.
 	 */
 	public static Object instantiate(String tag, Class[] types, Object[] params) {
-		Class<?> messageClass;
+		Constructor<?> constructor = createMessageClass(tag, types);
+		Object instance;
 		try {
-			messageClass = Class.forName(tag);
-		} catch (ClassNotFoundException e) {
-			throw new IllegalArgumentException("Unable to find class " + tag, e);
+			instance = constructor.newInstance(params);
+		} catch (IllegalAccessException | IllegalArgumentException | InstantiationException
+				| InvocationTargetException e) {
+			throw new IllegalArgumentException("Failed to construct " + tag, e);
 		}
+		return instance;
+	}
+
+	private static Constructor<?> createMessageClass(String tag, Class[] types) {
+		Class<?> messageClass = findMessageClass(tag);
 		Constructor<?> constructor;
 		try {
 			constructor = messageClass.getDeclaredConstructor(types);
@@ -294,13 +316,16 @@ public class Introspector {
 			p += " )";
 			throw new IllegalArgumentException(p, e);
 		}
-		Object instance;
+		return constructor;
+	}
+
+	private static Class<?> findMessageClass(String tag) {
+		Class<?> messageClass;
 		try {
-			instance = constructor.newInstance(params);
-		} catch (IllegalAccessException | IllegalArgumentException | InstantiationException
-				| InvocationTargetException e) {
-			throw new IllegalArgumentException("Failed to construct " + tag, e);
+			messageClass = Class.forName(tag);
+		} catch (ClassNotFoundException e) {
+			throw new IllegalArgumentException("Unable to find class " + tag, e);
 		}
-		return instance;
+		return messageClass;
 	}
 }
