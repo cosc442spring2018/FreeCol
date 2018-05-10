@@ -59,8 +59,6 @@ import net.sf.freecol.server.control.ChangeSet;
 import net.sf.freecol.server.control.ChangeSet.See;
 import net.sf.freecol.server.model.ServerPlayer;
 
-
-// TODO: Auto-generated Javadoc
 /**
  * The server version of a colony.
  */
@@ -367,65 +365,70 @@ public class ServerColony extends Colony implements ServerModelObject {
         int adjustment = limit / GoodsContainer.CARGO_SIZE;
         for (Goods goods : getCompactGoods()) {
             GoodsType type = goods.getType();
-            if (!type.isStorable()) continue;
-            ExportData exportData = getExportData(type);
-            int low = exportData.getLowLevel() * adjustment;
-            int high = exportData.getHighLevel() * adjustment;
-            int amount = goods.getAmount();
-            int oldAmount = container.getOldGoodsCount(type);
-
-            if (amount < low && oldAmount >= low
-                && !(type == spec.getPrimaryFoodType() && newUnitBorn)) {
-                cs.addMessage(See.only(owner),
-                    new ModelMessage(ModelMessage.MessageType.WAREHOUSE_CAPACITY,
-                                     "model.colony.warehouseEmpty",
-                                     this, type)
-                              .addNamed("%goods%", type)
-                              .addAmount("%level%", low)
-                              .addName("%colony%", getName()));
-                continue;
-            }
-            if (type.limitIgnored()) continue;
-
-            String messageId = null;
-            int waste = 0;
-            if (amount > limit) {
-                // limit has been exceeded
-                waste = amount - limit;
-                container.removeGoods(type, waste);
-                messageId = "model.colony.warehouseWaste";
-            } else if (amount == limit && oldAmount < limit) {
-                // limit has been reached during this turn
-                messageId = "model.colony.warehouseOverfull";
-            } else if (amount > high && oldAmount <= high) {
-                // high-water-mark has been reached this turn
-                messageId = "model.colony.warehouseFull";
-            }
-            if (messageId != null) {
-                cs.addMessage(See.only(owner),
-                    new ModelMessage(ModelMessage.MessageType.WAREHOUSE_CAPACITY,
-                                     messageId, this, type)
-                        .addNamed("%goods%", type)
-                        .addAmount("%waste%", waste)
-                        .addAmount("%level%", high)
-                        .addName("%colony%", getName()));
-            }
-
-            // No problem this turn, but what about the next?
-            if (!(exportData.getExported()
-                  && hasAbility(Ability.EXPORT)
-                  && owner.canTrade(type, Market.Access.CUSTOM_HOUSE))
-                && amount <= limit) {
-                int loss = amount + getNetProductionOf(type) - limit;
-                if (loss > 0) {
-                    cs.addMessage(See.only(owner),
-                        new ModelMessage(ModelMessage.MessageType.WAREHOUSE_CAPACITY,
-                                         "model.colony.warehouseSoonFull",
-                                         this, type)
-                            .addNamed("%goods%", goods)
-                            .addName("%colony%", getName())
-                            .addAmount("%amount%", loss));
-                }
+            if (type.isStorable())
+            {
+	            ExportData exportData = getExportData(type);
+	            int low = exportData.getLowLevel() * adjustment;
+	            int high = exportData.getHighLevel() * adjustment;
+	            int amount = goods.getAmount();
+	            int oldAmount = container.getOldGoodsCount(type);
+	
+	            if (amount < low && oldAmount >= low
+	                && !(type == spec.getPrimaryFoodType() && newUnitBorn)) {
+	                cs.addMessage(See.only(owner),
+	                    new ModelMessage(ModelMessage.MessageType.WAREHOUSE_CAPACITY,
+	                                     "model.colony.warehouseEmpty",
+	                                     this, type)
+	                              .addNamed("%goods%", type)
+	                              .addAmount("%level%", low)
+	                              .addName("%colony%", getName()));
+	                
+	            }
+	            else
+	            {
+		            if (type.limitIgnored()) continue;
+		
+		            String messageId = null;
+		            int waste = 0;
+		            if (amount > limit) {
+		                // limit has been exceeded
+		                waste = amount - limit;
+		                container.removeGoods(type, waste);
+		                messageId = "model.colony.warehouseWaste";
+		            } else if (amount == limit && oldAmount < limit) {
+		                // limit has been reached during this turn
+		                messageId = "model.colony.warehouseOverfull";
+		            } else if (amount > high && oldAmount <= high) {
+		                // high-water-mark has been reached this turn
+		                messageId = "model.colony.warehouseFull";
+		            }
+		            if (messageId != null) {
+		                cs.addMessage(See.only(owner),
+		                    new ModelMessage(ModelMessage.MessageType.WAREHOUSE_CAPACITY,
+		                                     messageId, this, type)
+		                        .addNamed("%goods%", type)
+		                        .addAmount("%waste%", waste)
+		                        .addAmount("%level%", high)
+		                        .addName("%colony%", getName()));
+		            }
+		
+		            // No problem this turn, but what about the next?
+		            if (!(exportData.getExported()
+		                  && hasAbility(Ability.EXPORT)
+		                  && owner.canTrade(type, Market.Access.CUSTOM_HOUSE))
+		                && amount <= limit) {
+		                int loss = amount + getNetProductionOf(type) - limit;
+		                if (loss > 0) {
+		                    cs.addMessage(See.only(owner),
+		                        new ModelMessage(ModelMessage.MessageType.WAREHOUSE_CAPACITY,
+		                                         "model.colony.warehouseSoonFull",
+		                                         this, type)
+		                            .addNamed("%goods%", goods)
+		                            .addName("%colony%", getName())
+		                            .addAmount("%amount%", loss));
+		                }
+		            }
+	            }
             }
         }
 

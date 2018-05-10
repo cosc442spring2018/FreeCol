@@ -20,21 +20,14 @@
 package net.sf.freecol.server.model;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import net.sf.freecol.common.model.Goods;
 import net.sf.freecol.common.model.Unit;
-import net.sf.freecol.server.control.ChangeSet;
 
-
-// TODO: Auto-generated Javadoc
 /**
  * A type of session to handle looting of cargo.
  */
 public class LootSession extends TransactionSession {
-
-    /** The Constant logger. */
-    private static final Logger logger = Logger.getLogger(LootSession.class.getName());
 
     /** The goods that are available to be captured. */
     private final List<Goods> capture;
@@ -50,15 +43,6 @@ public class LootSession extends TransactionSession {
     public LootSession(Unit winner, Unit loser, List<Goods> capture) {
         super(makeSessionKey(LootSession.class, winner, loser));
         this.capture = capture;
-    }
-
-
-    /* (non-Javadoc)
-     * @see net.sf.freecol.server.model.TransactionSession#complete(net.sf.freecol.server.control.ChangeSet)
-     */
-    @Override
-    public void complete(ChangeSet cs) {
-        super.complete(cs);
     }
 
     /**

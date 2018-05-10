@@ -20,7 +20,6 @@
 package net.sf.freecol.server.model;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import net.sf.freecol.common.model.AbstractUnit;
 import net.sf.freecol.common.model.Goods;
@@ -28,14 +27,10 @@ import net.sf.freecol.common.model.Monarch.MonarchAction;
 import net.sf.freecol.server.control.ChangeSet;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * A type of session to handle monarch actions that require response.
  */
 public class MonarchSession extends TransactionSession {
-
-    /** The Constant logger. */
-    private static final Logger logger = Logger.getLogger(MonarchSession.class.getName());
 
     /** The player whose monarch is active. */
     private final ServerPlayer serverPlayer;

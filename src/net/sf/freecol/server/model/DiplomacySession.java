@@ -19,23 +19,16 @@
 
 package net.sf.freecol.server.model;
 
-import java.util.logging.Logger;
-
 import net.sf.freecol.common.model.DiplomaticTrade;
 import net.sf.freecol.common.model.Settlement;
 import net.sf.freecol.common.model.Unit;
 import net.sf.freecol.server.control.ChangeSet;
 import net.sf.freecol.server.control.ChangeSet.See;
 
-
-// TODO: Auto-generated Javadoc
 /**
  * A type of session to handle diplomacy.
  */
 public class DiplomacySession extends TransactionSession {
-
-    /** The Constant logger. */
-    private static final Logger logger = Logger.getLogger(DiplomacySession.class.getName());
 
     /** The agreement under consideration. */
     private DiplomaticTrade agreement;
