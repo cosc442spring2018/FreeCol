@@ -19,6 +19,8 @@
 
 package net.sf.freecol.tools;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Arrays;
 
@@ -120,58 +122,72 @@ public class ColonizationMapReader {
             int ROWS = 32;
             int COLUMNS = 8;
             int offset = header.length + width + 1;
-            for (int y = 0; y < ROWS; y++) {
-                for (int x = 0; x < COLUMNS; x++) {
-                    byte value = (byte) (COLUMNS * y + x);
-                    if ((value & 24) == 24 && x > 2) {
-                        // undefined
-                        value = 26;
-                    }
-                    layer1[offset + x] = value;
-                }
-                offset += width;
-            }
+            offset = iterateMap(width, ROWS, COLUMNS, offset);
             writer.write(layer1);
         } else {
-            RandomAccessFile reader = new RandomAccessFile(args[0], "r");
-            reader.read(header);
-
-            System.out.println(String.format("Map width:  %02d", (int) header[WIDTH]));
-            System.out.println(String.format("Map height: %02d", (int) header[HEIGHT]));
-
-            int size = header[WIDTH] * header[HEIGHT];
-            layer1 = new byte[size];
-            reader.read(layer1);
-
-            int index = 0;
-            for (int y = 0; y < header[HEIGHT]; y++) {
-                for (int x = 0; x < header[WIDTH]; x++) {
-                    int decimal = layer1[index] & 0xff;
-                    char terrain = tiletypes[decimal & 31];
-                    int overlay = decimal >> 5;
-                    switch(overlay) {
-                    case 1: terrain = '^'; // hill
-                        break;
-                    case 2: terrain = '~'; // minor river
-                        break;
-                    case 3: terrain = 'x'; // hill + minor river
-                        break;
-                    case 5: terrain = '*'; // mountain
-                        break;
-                    case 6: terrain = '='; // major river
-                        break;
-                    case 7: terrain = 'X'; // mountain + major river
-                        break;
-                    default:
-                        break;
-                    };
-                    System.out.print(terrain);
-                    index++;
-                }
-                System.out.println("\n");
-            }
+            readMap(args);
             System.out.println("\n");
         }
     }
+
+	private static int iterateMap(byte width, int ROWS, int COLUMNS, int offset) {
+		for (int y = 0; y < ROWS; y++) {
+		    for (int x = 0; x < COLUMNS; x++) {
+		        byte value = (byte) (COLUMNS * y + x);
+		        if ((value & 24) == 24 && x > 2) {
+		            // undefined
+		            value = 26;
+		        }
+		        layer1[offset + x] = value;
+		    }
+		    offset += width;
+		}
+		return offset;
+	}
+
+	private static void readMap(String[] args) throws FileNotFoundException, IOException {
+		RandomAccessFile reader = new RandomAccessFile(args[0], "r");
+		reader.read(header);
+
+		System.out.println(String.format("Map width:  %02d", (int) header[WIDTH]));
+		System.out.println(String.format("Map height: %02d", (int) header[HEIGHT]));
+
+		int size = header[WIDTH] * header[HEIGHT];
+		layer1 = new byte[size];
+		reader.read(layer1);
+
+		int index = 0;
+		index = traverseMap(index);
+	}
+
+	private static int traverseMap(int index) {
+		for (int y = 0; y < header[HEIGHT]; y++) {
+		    for (int x = 0; x < header[WIDTH]; x++) {
+		        int decimal = layer1[index] & 0xff;
+		        char terrain = tiletypes[decimal & 31];
+		        int overlay = decimal >> 5;
+		        switch(overlay) {
+		        case 1: terrain = '^'; // hill
+		            break;
+		        case 2: terrain = '~'; // minor river
+		            break;
+		        case 3: terrain = 'x'; // hill + minor river
+		            break;
+		        case 5: terrain = '*'; // mountain
+		            break;
+		        case 6: terrain = '='; // major river
+		            break;
+		        case 7: terrain = 'X'; // mountain + major river
+		            break;
+		        default:
+		            break;
+		        };
+		        System.out.print(terrain);
+		        index++;
+		    }
+		    System.out.println("\n");
+		}
+		return index;
+	}
 
 }
