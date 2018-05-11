@@ -166,6 +166,7 @@ public class Tension implements Named {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getNameKey() {
 		return Messages.nameKey("model." + getKey());
 	}

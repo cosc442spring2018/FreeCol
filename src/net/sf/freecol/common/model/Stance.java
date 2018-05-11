@@ -191,6 +191,7 @@ public enum Stance implements Named {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getNameKey() {
 		return Messages.nameKey("model." + getKey());
 	}

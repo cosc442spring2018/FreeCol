@@ -908,7 +908,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
 				amount = GoodsContainer.CARGO_SIZE;
 			}
 			if (unit != null) {
-				amount = Math.round(applyModifiers((float) amount, getGame().getTurn(),
+				amount = Math.round(applyModifiers(amount, getGame().getTurn(),
 						unit.getModifiers(Modifier.TRADE_VOLUME_PENALTY)));
 			}
 			if (amount < TRADE_MINIMUM_SIZE)
@@ -1277,6 +1277,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean hasContacted(Player player) {
 		return player != null && (player.isIndian() || getContactLevel(player) != ContactLevel.UNCONTACTED);
 	}
@@ -1284,6 +1285,7 @@ public class IndianSettlement extends Settlement implements TradeLocation {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public StringTemplate getAlarmLevelLabel(Player player) {
 		String key = (!player.hasContacted(owner)) ? "model.indianSettlement.tension.wary"
 				: (!hasContacted(player)) ? "model.indianSettlement.tension.unknown"

@@ -109,7 +109,7 @@ public class Player extends FreeColGameObject implements Nameable {
 		}
 
 		public double getDouble() {
-			return (double) value;
+			return value;
 		}
 
 		public static NoValueType fromValue(int i) {
@@ -1482,7 +1482,7 @@ public class Player extends FreeColGameObject implements Nameable {
 		int nextTurn = getColonies().stream()
 				.mapToInt(c -> spec.getLibertyGoodsTypeList().stream().mapToInt(gt -> c.getTotalProductionOf(gt)).sum())
 				.sum();
-		return (int) applyModifiers((float) nextTurn, getGame().getTurn(), Modifier.LIBERTY);
+		return (int) applyModifiers(nextTurn, getGame().getTurn(), Modifier.LIBERTY);
 	}
 
 	/**
@@ -3109,7 +3109,7 @@ public class Player extends FreeColGameObject implements Nameable {
 		if (ns == null)
 			return -1.0;
 		int strength = calculateStrength(naval);
-		return strengthRatio((double) strength, ns.getMilitaryStrength());
+		return strengthRatio(strength, ns.getMilitaryStrength());
 	}
 
 	/**
@@ -3163,6 +3163,7 @@ public class Player extends FreeColGameObject implements Nameable {
 		/**
 		 * {@inheritDoc}
 		 */
+		@Override
 		public String getNameKey() {
 			return Messages.nameKey("model." + getKey());
 		}
