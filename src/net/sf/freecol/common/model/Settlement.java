@@ -204,7 +204,7 @@ public abstract class Settlement extends GoodsLocation implements Nameable, Owna
 	 * @return The line of sight value.
 	 */
 	public int getLineOfSight() {
-		return (int) applyModifiers((float) getType().getVisibleRadius(), getGame().getTurn(),
+		return (int) applyModifiers(getType().getVisibleRadius(), getGame().getTurn(),
 				Modifier.LINE_OF_SIGHT_BONUS);
 	}
 
@@ -374,7 +374,7 @@ public abstract class Settlement extends GoodsLocation implements Nameable, Owna
 		return all(goods, ag -> {
 			int available = getGoodsCount(ag.getType());
 			int breedingNumber = ag.getType().getBreedingNumber();
-			if (breedingNumber != GoodsType.INFINITY) {
+			if (breedingNumber != FreeColObject.INFINITY) {
 				available -= breedingNumber;
 			}
 			return available >= ag.getAmount();

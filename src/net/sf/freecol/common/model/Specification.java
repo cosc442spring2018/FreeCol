@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,7 +59,6 @@ import net.sf.freecol.common.option.StringOption;
 import net.sf.freecol.common.option.TextOption;
 import net.sf.freecol.common.option.UnitListOption;
 import static net.sf.freecol.common.util.CollectionUtils.*;
-import static net.sf.freecol.common.util.StringUtils.*;
 
 /**
  * This class encapsulates any parts of the "specification" for FreeCol that are
@@ -698,7 +696,7 @@ public final class Specification {
 				spread.setMaximumValue(100);
 				prices.add(spread);
 				addAbstractOption(spread);
-			} else if (goodsType.getPrice() < FreeColGameObjectType.INFINITY) {
+			} else if (goodsType.getPrice() < FreeColObject.INFINITY) {
 				IntegerOption price = new IntegerOption(base + "price", this);
 				price.setValue(goodsType.getPrice());
 				price.setMinimumValue(1);

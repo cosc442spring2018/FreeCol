@@ -196,6 +196,7 @@ public final class Tile extends UnitLocation implements Named, Ownable {
 
 	/** A comparator to sort for best defence value. */
 	private final Comparator<Tile> defenceValueComparator = new Comparator<Tile>() {
+		@Override
 		public int compare(Tile t1, Tile t2) {
 			double f = t2.getDefenceValue() - t1.getDefenceValue();
 			return (f < 0.0) ? -1 : (f > 0.0) ? 1 : 0;
