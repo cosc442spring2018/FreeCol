@@ -110,6 +110,7 @@ public class GoodsTradeItem extends TradeItem {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int evaluateFor(Player player) {
 		final Market market = player.getMarket();
 		final Goods goods = getGoods();
