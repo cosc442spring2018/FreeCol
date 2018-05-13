@@ -111,7 +111,6 @@ public class UnitTradeItem extends TradeItem {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public int evaluateFor(Player player) {
 		final Unit unit = getUnit();
 		return (!isValid()) ? Integer.MIN_VALUE

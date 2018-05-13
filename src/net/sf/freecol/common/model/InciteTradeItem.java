@@ -105,7 +105,6 @@ public class InciteTradeItem extends TradeItem {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public int evaluateFor(Player player) {
 		final Player victim = getVictim();
 		switch (player.getStance(victim)) {

@@ -112,7 +112,6 @@ public class StanceTradeItem extends TradeItem {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
 	public int evaluateFor(Player player) {
 		final Stance stance = getStance();
 		final double ratio = player.getStrengthRatio(getOther(player), false);

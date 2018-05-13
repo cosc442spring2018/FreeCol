@@ -84,7 +84,6 @@ public class ModelMessage extends StringTemplate {
 		/**
 		 * {@inheritDoc}
 		 */
-		@Override
 		public String getNameKey() {
 			return Messages.nameKey("model." + getKey());
 		}

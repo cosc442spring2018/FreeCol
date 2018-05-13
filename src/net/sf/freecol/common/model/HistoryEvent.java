@@ -58,7 +58,6 @@ public class HistoryEvent extends StringTemplate {
 		/**
 		 * {@inheritDoc}
 		 */
-		@Override
 		public String getNameKey() {
 			return Messages.nameKey("model." + getKey());
 		}

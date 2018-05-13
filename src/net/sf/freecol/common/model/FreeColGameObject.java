@@ -202,7 +202,7 @@ public abstract class FreeColGameObject extends FreeColObject {
 			nextId.setAccessible(true);
 			int id = nextId.getInt(game);
 			nextId.setInt(game, id + 1);
-			xml = xml.replace(getId(), FreeColGameObject.getXMLElementTagName() + ":" + id);
+			xml = xml.replace(getId(), T.getXMLElementTagName() + ":" + id);
 
 			return game.unserialize(xml, returnClass);
 
