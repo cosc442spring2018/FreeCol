@@ -188,6 +188,10 @@ public class AbstractUnitOption extends AbstractOption<AbstractUnit> {
 	@Override
 	public void generateChoices() {
 		unitType.generateChoices();
+		setRoleChoices();
+	}
+
+	private void setRoleChoices() {
 		List<String> roles = new ArrayList<>();
 		for (Role r : getSpecification().getRoles()) {
 			roles.add(r.getId());
@@ -221,7 +225,10 @@ public class AbstractUnitOption extends AbstractOption<AbstractUnit> {
 	@Override
 	public void readChildren(FreeColXMLReader xr) throws XMLStreamException {
 		super.readChildren(xr);
+		setAbstractUnit();
+	}
 
+	private void setAbstractUnit() {
 		AbstractUnit au = null;
 		if (unitType != null && role != null && number != null) {
 			au = new AbstractUnit(unitType.getValue(), role.getValue(), number.getValue());
