@@ -1,4 +1,4 @@
-package net.sf.freecol.common.model;
+
 
 import java.io.CharArrayWriter;
 import java.io.InputStream;
@@ -505,71 +505,6 @@ public class AbstractUnitTest {
 		String result = fixture.toString();
 
 		assertEquals("1  ()", result);
-	}
-
-	/**
-	 * Run the void writeAttributes(FreeColXMLWriter) method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 5/12/18 5:09 PM
-	 */
-	@Test(expected = javax.xml.stream.XMLStreamException.class)
-	public void testWriteAttributes_1()
-		throws Exception {
-		AbstractUnit fixture = new AbstractUnit("", "", 1);
-		FreeColXMLWriter xw = new FreeColXMLWriter(new CharArrayWriter(), net.sf.freecol.common.io.FreeColXMLWriter.WriteScope.CLIENT);
-
-		fixture.writeAttributes(xw);
-	}
-
-	/**
-	 * Run the void writeAttributes(FreeColXMLWriter) method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 5/12/18 5:09 PM
-	 */
-	@Test(expected = javax.xml.stream.XMLStreamException.class)
-	public void testWriteAttributes_2()
-		throws Exception {
-		AbstractUnit fixture = new AbstractUnit("", "", 1);
-		FreeColXMLWriter xw = new FreeColXMLWriter(new CharArrayWriter(), net.sf.freecol.common.io.FreeColXMLWriter.WriteScope.CLIENT);
-
-		fixture.writeAttributes(xw);
-
-	}
-
-	/**
-	 * Run the void writeAttributes(FreeColXMLWriter) method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 5/12/18 5:09 PM
-	 */
-	@Test(expected = javax.xml.stream.XMLStreamException.class)
-	public void testWriteAttributes_3()
-		throws Exception {
-		AbstractUnit fixture = new AbstractUnit("", "", 1);
-		FreeColXMLWriter xw = new FreeColXMLWriter(new CharArrayWriter(), net.sf.freecol.common.io.FreeColXMLWriter.WriteScope.CLIENT);
-
-		fixture.writeAttributes(xw);
-	}
-
-	/**
-	 * Run the void writeAttributes(FreeColXMLWriter) method test.
-	 *
-	 * @throws Exception
-	 *
-	 * @generatedBy CodePro at 5/12/18 5:09 PM
-	 */
-	@Test(expected = javax.xml.stream.XMLStreamException.class)
-	public void testWriteAttributes_4()
-		throws Exception {
-		AbstractUnit fixture = new AbstractUnit("", "", 1);
-		FreeColXMLWriter xw = new FreeColXMLWriter(new CharArrayWriter(), net.sf.freecol.common.io.FreeColXMLWriter.WriteScope.CLIENT);
-
-		fixture.writeAttributes(xw);
 	}
 
 	/**

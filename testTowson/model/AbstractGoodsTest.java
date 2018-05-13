@@ -1,4 +1,3 @@
-package net.sf.freecol.common.model;
 
 import java.io.CharArrayWriter;
 import java.io.InputStream;

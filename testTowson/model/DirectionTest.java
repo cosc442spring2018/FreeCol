@@ -1,5 +1,3 @@
-package net.sf.freecol.common.model;
-
 import java.util.Random;
 import java.util.logging.Logger;
 import org.junit.*;

@@ -1,5 +1,3 @@
-package net.sf.freecol.common.model;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
