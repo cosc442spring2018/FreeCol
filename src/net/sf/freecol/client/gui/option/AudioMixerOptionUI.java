@@ -34,117 +34,114 @@ import net.sf.freecol.client.gui.panel.Utility;
 import net.sf.freecol.common.option.AudioMixerOption;
 import net.sf.freecol.common.option.AudioMixerOption.MixerWrapper;
 
-
 /**
  * This class provides visualization for an
- * {@link net.sf.freecol.common.option.AudioMixerOption}
- * in order to enable values to be both seen and changed.
+ * {@link net.sf.freecol.common.option.AudioMixerOption} in order to enable
+ * values to be both seen and changed.
  */
 public final class AudioMixerOptionUI extends OptionUI<AudioMixerOption> {
 
-    private final GUI gui;
-    private final JPanel panel = new JPanel();
-    private final JComboBox<MixerWrapper> cbox;
-    private final JButton button1;
-    private final JButton button2;
-    private final JLabel currentMixerLabel;
+	private final GUI gui;
+	private final JPanel panel = new JPanel();
+	private final JComboBox<MixerWrapper> cbox;
+	private final JButton button1;
+	private final JButton button2;
+	private final JLabel currentMixerLabel;
 
+	/**
+	 * Creates a new <code>AudioMixerOptionUI</code> for the given
+	 * <code>AudioMixerOption</code>.
+	 *
+	 * @param gui
+	 *            The GUI.
+	 * @param option
+	 *            The <code>AudioMixerOption</code> to make a user interface for.
+	 * @param editable
+	 *            boolean whether user can modify the setting
+	 */
+	public AudioMixerOptionUI(GUI gui, final AudioMixerOption option, boolean editable) {
+		super(option, editable);
 
-    /**
-     * Creates a new <code>AudioMixerOptionUI</code> for the given
-     * <code>AudioMixerOption</code>.
-     *
-     * @param gui The GUI.
-     * @param option The <code>AudioMixerOption</code> to make a user
-     *      interface for.
-     * @param editable boolean whether user can modify the setting
-     */
-    public AudioMixerOptionUI(GUI gui, final AudioMixerOption option,
-                              boolean editable) {
-        super(option, editable);
+		this.gui = gui;
 
-        this.gui = gui;
+		BorderLayout layout = new BorderLayout();
+		layout.setHgap(15);
+		panel.setLayout(layout);
 
-        BorderLayout layout = new BorderLayout();
-        layout.setHgap(15);
-        panel.setLayout(layout);
+		cbox = new JComboBox<>();
+		panel.add(cbox, BorderLayout.WEST);
 
-        cbox = new JComboBox<>();
-        panel.add(cbox, BorderLayout.WEST);
+		currentMixerLabel = new JLabel();
+		panel.add(currentMixerLabel, BorderLayout.EAST);
+		updateMixerLabel();
 
-        currentMixerLabel = new JLabel();
-        panel.add(currentMixerLabel, BorderLayout.EAST);
-        updateMixerLabel();
+		button1 = Utility.localizedButton("test");
+		panel.add(button1);
 
-        button1 = Utility.localizedButton("test");
-        panel.add(button1);
+		button2 = Utility.localizedButton("music");
+		panel.add(button2);
 
-        button2 = Utility.localizedButton("music");
-        panel.add(button2);
+		cbox.add(super.getJLabel());
+		cbox.setModel(new DefaultComboBoxModel<>(getOption().getChoices().toArray(new MixerWrapper[0])));
+		reset();
+		cbox.setEnabled(editable);
 
-        cbox.add(super.getJLabel());
-        cbox.setModel(new DefaultComboBoxModel<>(getOption().getChoices()
-                .toArray(new MixerWrapper[0])));
-        reset();
-        cbox.setEnabled(editable);
+		ActionListener aHandler = (ActionEvent ae) -> {
+			if (ae.getSource() == button1) {
+				gui.playSound("sound.event.buildingComplete");
+			} else if (ae.getSource() == button2) {
+				gui.playSound("sound.intro.general");
+			} else if (ae.getSource() == cbox) {
+				MixerWrapper value = (MixerWrapper) cbox.getSelectedItem();
+				if (getOption().getValue() != value) {
+					getOption().setValue(value);
+					updateMixerLabel();
+				}
+			}
+		};
+		button1.addActionListener(aHandler);
+		button2.addActionListener(aHandler);
+		cbox.addActionListener(aHandler);
 
-        ActionListener aHandler = (ActionEvent ae) -> {
-            if (ae.getSource() == button1) {
-                gui.playSound("sound.event.buildingComplete");
-            } else if (ae.getSource() == button2) {
-                gui.playSound("sound.intro.general");
-            } else if (ae.getSource() == cbox) {
-                MixerWrapper value = (MixerWrapper) cbox.getSelectedItem();
-                if (getOption().getValue() != value) {
-                    getOption().setValue(value);
-                    updateMixerLabel();
-                }
-            }
-        };
-        button1.addActionListener(aHandler);
-        button2.addActionListener(aHandler);
-        cbox.addActionListener(aHandler);
+		initialize();
+	}
 
-        initialize();
-    }
+	private void updateMixerLabel() {
+		currentMixerLabel.setText(gui.getSoundMixerLabelText());
+	}
 
-    private void updateMixerLabel() {
-        currentMixerLabel.setText(gui.getSoundMixerLabelText());
-    }
+	// Implement OptionUI
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final JLabel getJLabel() {
+		return null;
+	}
 
-    // Implement OptionUI
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public JPanel getComponent() {
+		return panel;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final JLabel getJLabel() {
-        return null;
-    }
+	/**
+	 * Updates the value of the {@link net.sf.freecol.common.option.Option} this
+	 * object keeps.
+	 */
+	@Override
+	public void updateOption() {
+		getOption().setValue((MixerWrapper) cbox.getSelectedItem());
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JPanel getComponent() {
-        return panel;
-    }
-
-    /**
-     * Updates the value of the
-     * {@link net.sf.freecol.common.option.Option} this object keeps.
-     */
-    @Override
-    public void updateOption() {
-        getOption().setValue((MixerWrapper)cbox.getSelectedItem());
-    }
-
-    /**
-     * Reset with the value from the option.
-     */
-    @Override
-    public void reset() {
-        cbox.setSelectedItem(getOption().getValue());
-    }
+	/**
+	 * Reset with the value from the option.
+	 */
+	@Override
+	public void reset() {
+		cbox.setSelectedItem(getOption().getValue());
+	}
 }

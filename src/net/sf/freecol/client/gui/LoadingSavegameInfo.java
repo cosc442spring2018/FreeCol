@@ -21,44 +21,44 @@ package net.sf.freecol.client.gui;
 
 /**
  * Used for transferring data for the savegame to be loaded.
-*/
+ */
 public class LoadingSavegameInfo {
 
-    private final boolean singlePlayer;
-    private final int port;
-    private final String serverName;
+	private final boolean singlePlayer;
+	private final int port;
+	private final String serverName;
 
-    public LoadingSavegameInfo(boolean singlePlayer, int port, String serverName) {
-        this.singlePlayer=singlePlayer;
-        this.port=port;
-        this.serverName=serverName;
-    }
+	public LoadingSavegameInfo(boolean singlePlayer, int port, String serverName) {
+		this.singlePlayer = singlePlayer;
+		this.port = port;
+		this.serverName = serverName;
+	}
 
-    /**
-     * Is a single player game selected?
-     *
-     * @return True if single player is selected.
-     */
-    public boolean isSinglePlayer() {
-        return singlePlayer;
-    }
+	/**
+	 * Is a single player game selected?
+	 *
+	 * @return True if single player is selected.
+	 */
+	public boolean isSinglePlayer() {
+		return singlePlayer;
+	}
 
-    /**
-     * Get the selected port number.
-     *
-     * @return The port number.
-     */
-    public int getPort() {
-        return port;
-    }
+	/**
+	 * Get the selected port number.
+	 *
+	 * @return The port number.
+	 */
+	public int getPort() {
+		return port;
+	}
 
-    /**
-     * Get the specified server name.
-     *
-     * @return The server name.
-     */
-    public String getServerName() {
-        return serverName;
-    }
+	/**
+	 * Get the specified server name.
+	 *
+	 * @return The server name.
+	 */
+	public String getServerName() {
+		return serverName;
+	}
 
 }

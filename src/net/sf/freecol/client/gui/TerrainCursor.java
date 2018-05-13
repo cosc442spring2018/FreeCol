@@ -25,86 +25,85 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 import javax.swing.event.EventListenerList;
 
-
 /**
  * The blinking cursor on the map.
  */
-public class TerrainCursor implements ActionListener  {
+public class TerrainCursor implements ActionListener {
 
-    public static final int OFF = 0;
-    public static final int ON = 1;
+	public static final int OFF = 0;
+	public static final int ON = 1;
 
-    private final Timer blinkTimer;
-    private boolean active;
-    private final EventListenerList listenerList;
+	private final Timer blinkTimer;
+	private boolean active;
+	private final EventListenerList listenerList;
 
+	/**
+	 * Creates a new <code>TerrainCursor</code> instance.
+	 */
+	public TerrainCursor() {
+		active = true;
 
-    /**
-     * Creates a new <code>TerrainCursor</code> instance.
-     */
-    public TerrainCursor() {
-        active = true;
-        
-        final int blinkDelay = 500; // Milliseconds
-        
-        blinkTimer = new Timer(blinkDelay,this);
-        
-        listenerList = new EventListenerList();
-    }
+		final int blinkDelay = 500; // Milliseconds
 
-    /**
-     * Returns whether this TerrainCursor is active.
-     *
-     * @return a <code>boolean</code> value
-     */
-    public boolean isActive() {
-        return active;
-    }
+		blinkTimer = new Timer(blinkDelay, this);
 
-    /**
-     * Sets the active state of the TerrainCursor.
-     *
-     * @param newState a <code>boolean</code> value
-     */
-    public void setActive(boolean newState) {
-        active = newState;
-    }
+		listenerList = new EventListenerList();
+	}
 
-    public void startBlinking() {
-        if (!blinkTimer.isRunning()) blinkTimer.start();
-    }
+	/**
+	 * Returns whether this TerrainCursor is active.
+	 *
+	 * @return a <code>boolean</code> value
+	 */
+	public boolean isActive() {
+		return active;
+	}
 
-    public void stopBlinking() {
-        if (blinkTimer.isRunning()) blinkTimer.stop();
-    }
+	/**
+	 * Sets the active state of the TerrainCursor.
+	 *
+	 * @param newState
+	 *            a <code>boolean</code> value
+	 */
+	public void setActive(boolean newState) {
+		active = newState;
+	}
 
-    public void addActionListener(ActionListener listener) {
-        listenerList.add(ActionListener.class, listener);
-    }
+	public void startBlinking() {
+		if (!blinkTimer.isRunning())
+			blinkTimer.start();
+	}
 
-    public void removeActionListener(ActionListener listener) {
-        listenerList.remove(ActionListener.class, listener);
-    }
+	public void stopBlinking() {
+		if (blinkTimer.isRunning())
+			blinkTimer.stop();
+	}
 
-    public void fireActionEvent(ActionEvent ae) {
-        for (ActionListener al
-                 : listenerList.getListeners(ActionListener.class)) {
-            al.actionPerformed(ae);
-        }
-    }
+	public void addActionListener(ActionListener listener) {
+		listenerList.add(ActionListener.class, listener);
+	}
 
+	public void removeActionListener(ActionListener listener) {
+		listenerList.remove(ActionListener.class, listener);
+	}
 
-    // Interface ActionListener
+	public void fireActionEvent(ActionEvent ae) {
+		for (ActionListener al : listenerList.getListeners(ActionListener.class)) {
+			al.actionPerformed(ae);
+		}
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void actionPerformed(ActionEvent ae) {
-        active = !active;
-        int eventId = active? ON : OFF;
-        ActionEvent blinkEvent = new ActionEvent(this,eventId,"blink");
-        
-        fireActionEvent(blinkEvent);
-    }
+	// Interface ActionListener
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		active = !active;
+		int eventId = active ? ON : OFF;
+		ActionEvent blinkEvent = new ActionEvent(this, eventId, "blink");
+
+		fireActionEvent(blinkEvent);
+	}
 }

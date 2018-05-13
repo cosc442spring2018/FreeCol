@@ -27,37 +27,35 @@ import javax.swing.plaf.basic.BasicTextFieldUI;
 
 import net.sf.freecol.client.gui.ImageLibrary;
 
-
 /**
- * Provides a tiled background image "image.background.FreeColTextField" to
- * text fields.
+ * Provides a tiled background image "image.background.FreeColTextField" to text
+ * fields.
  */
 public class FreeColTextFieldUI extends BasicTextFieldUI {
 
-    private final JComponent c;
+	private final JComponent c;
 
+	public FreeColTextFieldUI(JComponent c) {
+		this.c = c;
+	}
 
-    public FreeColTextFieldUI(JComponent c) {
-        this.c = c;
-    }
+	public static ComponentUI createUI(JComponent c) {
+		return new FreeColTextFieldUI(c);
+	}
 
-    public static ComponentUI createUI(JComponent c) {
-        return new FreeColTextFieldUI(c);
-    }
+	@Override
+	public void paintSafely(Graphics g) {
+		LAFUtilities.setProperties(g, c);
+		super.paintSafely(g);
+	}
 
-    @Override
-    public void paintSafely(Graphics g) {
-        LAFUtilities.setProperties(g, c);
-        super.paintSafely(g);
-    }
+	@Override
+	public void paintBackground(java.awt.Graphics g) {
+		JComponent c = getComponent();
 
-    @Override
-    public void paintBackground(java.awt.Graphics g) {
-        JComponent c = getComponent();
-
-        if (c.isOpaque()) {
-            ImageLibrary.drawTiledImage("image.background.FreeColTextField", g, c, null);
-        }
-    }
+		if (c.isOpaque()) {
+			ImageLibrary.drawTiledImage("image.background.FreeColTextField", g, c, null);
+		}
+	}
 
 }

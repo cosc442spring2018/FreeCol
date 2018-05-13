@@ -43,141 +43,130 @@ import net.sf.freecol.common.option.IntegerOption;
 import net.sf.freecol.common.option.StringOption;
 import net.sf.freecol.common.option.UnitTypeOption;
 
-
 /**
  * This class provides visualization for an
  * {@link net.sf.freecol.common.option.AbstractUnitOption} in order to enable
  * values to be both seen and changed.
  */
-public final class AbstractUnitOptionUI extends OptionUI<AbstractUnitOption>
-    implements ItemListener {
+public final class AbstractUnitOptionUI extends OptionUI<AbstractUnitOption> implements ItemListener {
 
-    private class AbstractUnitRenderer
-        extends FreeColComboBoxRenderer<AbstractUnitOption> {
+	private class AbstractUnitRenderer extends FreeColComboBoxRenderer<AbstractUnitOption> {
 
-        @Override
-        public void setLabelValues(JLabel label, AbstractUnitOption value) {
-            label.setText(Messages.message(value.getValue().getLabel()));
-        }
-    }
+		@Override
+		public void setLabelValues(JLabel label, AbstractUnitOption value) {
+			label.setText(Messages.message(value.getValue().getLabel()));
+		}
+	}
 
-    private class RoleRenderer
-        extends FreeColComboBoxRenderer<String> {
+	private class RoleRenderer extends FreeColComboBoxRenderer<String> {
 
-        @Override
-        public void setLabelValues(JLabel label, String value) {
-            label.setText(Messages.getName(value));
-        }
-    }
+		@Override
+		public void setLabelValues(JLabel label, String value) {
+			label.setText(Messages.getName(value));
+		}
+	}
 
-    private final JPanel panel;
-    private final IntegerOptionUI numberUI;
-    private final UnitTypeOptionUI typeUI;
-    private final StringOptionUI roleUI;
-    private final boolean roleEditable;
+	private final JPanel panel;
+	private final IntegerOptionUI numberUI;
+	private final UnitTypeOptionUI typeUI;
+	private final StringOptionUI roleUI;
+	private final boolean roleEditable;
 
+	/**
+	 * Creates a new <code>AbstractUnitOptionUI</code> for the given
+	 * <code>AbstractUnitOption</code>.
+	 *
+	 * @param option
+	 *            The <code>AbstractUnitOption</code> to make a user interface for
+	 * @param editable
+	 *            boolean whether user can modify the setting
+	 */
+	public AbstractUnitOptionUI(final AbstractUnitOption option, boolean editable) {
+		super(option, editable);
 
-    /**
-     * Creates a new <code>AbstractUnitOptionUI</code> for the given
-     * <code>AbstractUnitOption</code>.
-     *
-     * @param option The <code>AbstractUnitOption</code> to make a
-     *     user interface for
-     * @param editable boolean whether user can modify the setting
-     */
-    public AbstractUnitOptionUI(final AbstractUnitOption option, boolean editable) {
-        super(option, editable);
+		panel = new MigPanel();
+		panel.setLayout(new MigLayout());
 
-        panel = new MigPanel();
-        panel.setLayout(new MigLayout());
+		IntegerOption numberOption = option.getNumber();
+		UnitTypeOption typeOption = option.getUnitType();
+		StringOption roleOption = option.getRole();
 
-        IntegerOption numberOption = option.getNumber();
-        UnitTypeOption typeOption = option.getUnitType();
-        StringOption roleOption = option.getRole();
+		boolean numberEditable = editable && (numberOption.getMaximumValue() > numberOption.getMinimumValue());
+		numberUI = new IntegerOptionUI(numberOption, numberEditable);
+		Utility.localizeToolTip(numberUI.getComponent(), "report.numberOfUnits");
+		panel.add(numberUI.getComponent(), "width 30%");
 
-        boolean numberEditable = editable
-            && (numberOption.getMaximumValue() > numberOption.getMinimumValue());
-        numberUI = new IntegerOptionUI(numberOption, numberEditable);
-        Utility.localizeToolTip(numberUI.getComponent(), "report.numberOfUnits");
-        panel.add(numberUI.getComponent(), "width 30%");
+		boolean typeEditable = editable && typeOption.getChoices().size() > 1;
+		typeUI = new UnitTypeOptionUI(typeOption, typeEditable);
 
-        boolean typeEditable = editable
-            && typeOption.getChoices().size() > 1;
-        typeUI = new UnitTypeOptionUI(typeOption, typeEditable);
+		Utility.localizeToolTip(typeUI.getComponent(), "unitType");
+		typeUI.getComponent().addItemListener(this);
+		panel.add(typeUI.getComponent(), "width 35%");
 
-        Utility.localizeToolTip(typeUI.getComponent(), "unitType");
-        typeUI.getComponent().addItemListener(this);
-        panel.add(typeUI.getComponent(), "width 35%");
+		roleEditable = editable && roleOption.getChoices().size() > 1;
+		roleUI = new StringOptionUI(roleOption, roleEditable);
+		Utility.localizeToolTip(roleUI.getComponent(), "model.role.name");
+		roleUI.getComponent().setRenderer(new RoleRenderer());
+		panel.add(roleUI.getComponent(), "width 35%");
 
-        roleEditable = editable
-            && roleOption.getChoices().size() > 1;
-        roleUI = new StringOptionUI(roleOption, roleEditable);
-        Utility.localizeToolTip(roleUI.getComponent(), "model.role.name");
-        roleUI.getComponent().setRenderer(new RoleRenderer());
-        panel.add(roleUI.getComponent(), "width 35%");
+		initialize();
+	}
 
-        initialize();
-    }
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		JComboBox<String> box = roleUI.getComponent();
+		DefaultComboBoxModel<String> model;
+		boolean enable = false;
+		UnitType type = (UnitType) typeUI.getComponent().getSelectedItem();
+		if (type.hasAbility(Ability.CAN_BE_EQUIPPED)) {
+			model = new DefaultComboBoxModel<>(roleUI.getOption().getChoices().toArray(new String[0]));
+			enable = roleEditable;
+		} else {
+			model = new DefaultComboBoxModel<>(new String[] { Specification.DEFAULT_ROLE_ID });
+		}
+		box.setModel(model);
+		box.setEnabled(enable);
+	}
 
+	// Implement OptionUI
 
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-        JComboBox<String> box = roleUI.getComponent();
-        DefaultComboBoxModel<String> model;
-        boolean enable = false;
-        UnitType type = (UnitType)typeUI.getComponent().getSelectedItem();
-        if (type.hasAbility(Ability.CAN_BE_EQUIPPED)) {
-            model = new DefaultComboBoxModel<>(roleUI.getOption()
-                .getChoices().toArray(new String[0]));
-            enable = roleEditable;
-        } else {
-            model = new DefaultComboBoxModel<>(new String[] {
-                    Specification.DEFAULT_ROLE_ID });
-        }
-        box.setModel(model);
-        box.setEnabled(enable);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ListCellRenderer getListCellRenderer() {
+		return new AbstractUnitRenderer();
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public JPanel getComponent() {
+		return panel;
+	}
 
-    // Implement OptionUI
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void updateOption() {
+		typeUI.updateOption();
+		roleUI.updateOption();
+		numberUI.updateOption();
+		UnitType type = typeUI.getOption().getValue();
+		String roleId = roleUI.getOption().getValue();
+		int number = numberUI.getOption().getValue();
+		getOption().setValue(new AbstractUnit(type, roleId, number));
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ListCellRenderer getListCellRenderer() {
-        return new AbstractUnitRenderer();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JPanel getComponent() {
-        return panel;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void updateOption() {
-        typeUI.updateOption();
-        roleUI.updateOption();
-        numberUI.updateOption();
-        UnitType type = typeUI.getOption().getValue();
-        String roleId = roleUI.getOption().getValue();
-        int number = numberUI.getOption().getValue();
-        getOption().setValue(new AbstractUnit(type, roleId, number));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void reset() {
-        typeUI.reset();
-        roleUI.reset();
-        numberUI.reset();
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void reset() {
+		typeUI.reset();
+		roleUI.reset();
+		numberUI.reset();
+	}
 }
