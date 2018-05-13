@@ -25,25 +25,25 @@ import javax.swing.plaf.basic.BasicPanelUI;
 
 import net.sf.freecol.client.gui.ImageLibrary;
 
-
 /**
- * Draw the "image.background.FreeColPanel" resource as a tiled background image.
+ * Draw the "image.background.FreeColPanel" resource as a tiled background
+ * image.
  */
 public class FreeColPanelUI extends BasicPanelUI {
 
-    private static final FreeColPanelUI sharedInstance = new FreeColPanelUI();
+	private static final FreeColPanelUI sharedInstance = new FreeColPanelUI();
 
+	private FreeColPanelUI() {
+	}
 
-    private FreeColPanelUI() {}
+	public static ComponentUI createUI(@SuppressWarnings("unused") JComponent c) {
+		return sharedInstance;
+	}
 
-    public static ComponentUI createUI(@SuppressWarnings("unused") JComponent c) {
-        return sharedInstance;
-    }
-
-    @Override
-    public void paint(java.awt.Graphics g, javax.swing.JComponent c) {
-        if (c.isOpaque()) {
-            ImageLibrary.drawTiledImage("image.background.FreeColPanel", g, c, null);
-        }
-    }
+	@Override
+	public void paint(java.awt.Graphics g, javax.swing.JComponent c) {
+		if (c.isOpaque()) {
+			ImageLibrary.drawTiledImage("image.background.FreeColPanel", g, c, null);
+		}
+	}
 }

@@ -23,32 +23,30 @@ import java.awt.event.ActionEvent;
 
 import net.sf.freecol.client.FreeColClient;
 
-
 /**
  * An action for editing trade routes.
  */
 public class TradeRouteAction extends MapboardAction {
 
-    public static final String id = "tradeRouteAction";
+	public static final String id = "tradeRouteAction";
 
+	/**
+	 * Creates this action.
+	 *
+	 * @param freeColClient
+	 *            The <code>FreeColClient</code> for the game.
+	 */
+	public TradeRouteAction(FreeColClient freeColClient) {
+		super(freeColClient, id);
+	}
 
-    /**
-     * Creates this action.
-     *
-     * @param freeColClient The <code>FreeColClient</code> for the game.
-     */
-    public TradeRouteAction(FreeColClient freeColClient) {
-        super(freeColClient, id);
-    }
+	// Interface ActionListener
 
-
-    // Interface ActionListener
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void actionPerformed(ActionEvent ae) {
-        getGUI().showTradeRoutePanel(null);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		getGUI().showTradeRoutePanel(null);
+	}
 }

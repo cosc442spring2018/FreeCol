@@ -40,271 +40,273 @@ import javax.swing.Timer;
 import net.sf.freecol.client.gui.action.FreeColAction;
 import net.sf.freecol.client.gui.panel.Utility;
 
-
 /**
  * User interface for displaying/changing a keyboard accelerator for a
  * <code>FreeColAction</code>.
  */
-public final class FreeColActionUI extends OptionUI<FreeColAction>
-    implements ActionListener {
+public final class FreeColActionUI extends OptionUI<FreeColAction> implements ActionListener {
 
-    private OptionGroupUI optionGroupUI;
-    private KeyStroke keyStroke;
-    private final JButton recordButton;
-    private final JButton removeButton;
-    private final BlinkingLabel bl;
-    private final JPanel panel = new JPanel();
+	private OptionGroupUI optionGroupUI;
+	private KeyStroke keyStroke;
+	private final JButton recordButton;
+	private final JButton removeButton;
+	private final BlinkingLabel bl;
+	private final JPanel panel = new JPanel();
 
+	/**
+	 * Creates a new <code>FreeColActionUI</code> for the given
+	 * <code>FreeColAction</code>.
+	 *
+	 * @param option
+	 *            The <code>FreeColAction</code> to make a user interface for.
+	 * @param editable
+	 *            boolean whether user can modify the setting
+	 */
+	public FreeColActionUI(FreeColAction option, boolean editable) {
+		super(option, editable);
 
-    /**
-     * Creates a new <code>FreeColActionUI</code> for the
-     * given <code>FreeColAction</code>.
-     *
-     * @param option The <code>FreeColAction</code> to make a user
-     *       interface for.
-     * @param editable boolean whether user can modify the setting
-     */
-    public FreeColActionUI(FreeColAction option, boolean editable) {
-        super(option, editable);
+		this.optionGroupUI = null;
 
-        this.optionGroupUI = null;
+		keyStroke = option.getAccelerator();
 
-        keyStroke = option.getAccelerator();
+		panel.add(getJLabel());
 
-        panel.add(getJLabel());
+		bl = new BlinkingLabel();
+		panel.add(bl);
 
-        bl = new BlinkingLabel();
-        panel.add(bl);
+		recordButton = new JButton(getRecordImage());
+		recordButton.addActionListener(this);
+		panel.add(recordButton);
 
-        recordButton = new JButton(getRecordImage());
-        recordButton.addActionListener(this);
-        panel.add(recordButton);
+		removeButton = new JButton(getRemoveImage());
+		removeButton.addActionListener(this);
+		panel.add(removeButton);
 
-        removeButton = new JButton(getRemoveImage());
-        removeButton.addActionListener(this);
-        panel.add(removeButton);
+		initialize();
+	}
 
-        initialize();
-    }
+	/**
+	 * Creates an icon for symbolizing the recording of a <code>KeyStroke</code>.
+	 * 
+	 * @return The <code>ImageIcon</code>.
+	 */
+	public static ImageIcon getRecordImage() {
+		BufferedImage bi = new BufferedImage(9, 9, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = bi.createGraphics();
+		g.setColor(Color.RED);
+		g.fillOval(0, 0, 9, 9);
+		g.setColor(Color.BLACK);
+		g.drawOval(0, 0, 9, 9);
+		g.dispose();
+		return new ImageIcon(bi);
+	}
 
-    /**
-    * Creates an icon for symbolizing the recording of a <code>KeyStroke</code>.
-    * @return The <code>ImageIcon</code>.
-    */
-    public static ImageIcon getRecordImage() {
-        BufferedImage bi = new BufferedImage(9, 9, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = bi.createGraphics();
-        g.setColor(Color.RED);
-        g.fillOval(0, 0, 9, 9);
-        g.setColor(Color.BLACK);
-        g.drawOval(0, 0, 9, 9);
-        g.dispose();
-        return new ImageIcon(bi);
-    }
+	/**
+	 * Creates an icon to be used on the button that removes a keyboard accelerator.
+	 * 
+	 * @return The <code>ImageIcon</code>.
+	 */
+	public static ImageIcon getRemoveImage() {
+		BufferedImage bi = new BufferedImage(9, 9, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = bi.createGraphics();
+		/* g.fillRect(0, 0, 9, 9); */
+		g.setColor(Color.BLACK);
+		g.drawLine(1, 0, 8, 7);
+		g.drawLine(0, 1, 7, 8);
+		g.drawLine(7, 0, 0, 7);
+		g.drawLine(9, 0, 0, 9);
+		g.setColor(Color.RED);
+		g.drawLine(0, 0, 8, 8);
+		g.drawLine(8, 0, 0, 8);
+		g.dispose();
+		return new ImageIcon(bi);
+	}
 
+	/**
+	 * Gets a string to represent the given <code>KeyStroke</code> to the user.
+	 *
+	 * @param keyStroke
+	 *            <code>java.awt.event.KeyStroke</code>
+	 * @return String
+	 */
+	public static String getHumanKeyStrokeText(KeyStroke keyStroke) {
+		if (keyStroke == null) {
+			return " ";
+		}
 
-    /**
-    * Creates an icon to be used on the button that removes a keyboard accelerator.
-    * @return The <code>ImageIcon</code>.
-    */
-    public static ImageIcon getRemoveImage() {
-        BufferedImage bi = new BufferedImage(9, 9, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = bi.createGraphics();
-        /*g.fillRect(0, 0, 9, 9);*/
-        g.setColor(Color.BLACK);
-        g.drawLine(1, 0, 8, 7);
-        g.drawLine(0, 1, 7, 8);
-        g.drawLine(7, 0, 0, 7);
-        g.drawLine(9, 0, 0, 9);
-        g.setColor(Color.RED);
-        g.drawLine(0, 0, 8, 8);
-        g.drawLine(8, 0, 0, 8);
-        g.dispose();
-        return new ImageIcon(bi);
-    }
+		String s = KeyEvent.getKeyModifiersText(keyStroke.getModifiers());
+		if (!s.isEmpty())
+			s += "+";
+		return s + KeyEvent.getKeyText(keyStroke.getKeyCode());
+	}
 
-    /**
-    * Gets a string to represent the given <code>KeyStroke</code> to the user.
-    *
-    * @param keyStroke <code>java.awt.event.KeyStroke</code>
-    * @return String
-    */
-    public static String getHumanKeyStrokeText(KeyStroke keyStroke) {
-        if (keyStroke == null) {
-            return " ";
-        }
+	/**
+	 * Removes the given <code>KeyStroke</code>. That is: This action's
+	 * <code>KeyStroke</code> is set to <code>null</code> if it is the same as the
+	 * given <code>KeyStroke</code>.
+	 *
+	 * @param k
+	 *            The <code>KeyStroke</code> to be removed.
+	 */
+	public void removeKeyStroke(KeyStroke k) {
+		if (k != null && keyStroke != null && k.getKeyCode() == keyStroke.getKeyCode()
+				&& k.getModifiers() == keyStroke.getModifiers()) {
+			keyStroke = null;
+			bl.setText(" ");
+		}
+	}
 
-        String s = KeyEvent.getKeyModifiersText(keyStroke.getModifiers());
-        if (!s.isEmpty()) s += "+";
-        return s + KeyEvent.getKeyText(keyStroke.getKeyCode());
-    }
+	public void setOptionGroupUI(OptionGroupUI ui) {
+		this.optionGroupUI = ui;
+	}
 
+	// Interface ActionListener
 
-    /**
-    * Removes the given <code>KeyStroke</code>. That is:
-    * This action's <code>KeyStroke</code> is set to
-    * <code>null</code> if it is the same as the given
-    * <code>KeyStroke</code>.
-    *
-    * @param k The <code>KeyStroke</code> to be removed.
-    */
-    public void removeKeyStroke(KeyStroke k) {
-        if (k != null && keyStroke != null
-            && k.getKeyCode() == keyStroke.getKeyCode()
-            && k.getModifiers() == keyStroke.getModifiers()) {
-            keyStroke = null;
-            bl.setText(" ");
-        }
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		if (ae.getSource() == recordButton) {
+			bl.startBlinking();
+			bl.requestFocus();
+		} else if (ae.getSource() == removeButton) {
+			bl.stopBlinking();
+			bl.setText(" ");
+			keyStroke = null;
+		}
+	}
 
-    public void setOptionGroupUI(OptionGroupUI ui) {
-        this.optionGroupUI = ui;
-    }
+	/**
+	 * Label for displaying a <code>KeyStroke</code>.
+	 */
+	class BlinkingLabel extends JLabel implements ActionListener, KeyListener, MouseListener {
 
+		private final Timer blinkingTimer = new Timer(500, this);
+		private boolean blinkOn = false;
 
-    // Interface ActionListener
+		BlinkingLabel() {
+			super(getHumanKeyStrokeText(keyStroke), JLabel.CENTER);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void actionPerformed(ActionEvent ae) {
-        if (ae.getSource() == recordButton) {
-            bl.startBlinking();
-            bl.requestFocus();
-        } else if (ae.getSource() == removeButton) {
-            bl.stopBlinking();
-            bl.setText(" ");
-            keyStroke = null;
-        }
-    }
+			setOpaque(false);
+			setBorder(Utility.TRIVIAL_LINE_BORDER);
+			addKeyListener(this);
+			addMouseListener(this);
+		}
 
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if (e.getClickCount() > 1) {
+				startBlinking();
+				requestFocus();
+			}
+		}
 
-    /**
-     * Label for displaying a <code>KeyStroke</code>.
-     */
-    class BlinkingLabel extends JLabel implements ActionListener, KeyListener, MouseListener {
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			/* No such event */ }
 
-        private final Timer blinkingTimer = new Timer(500, this);
-        private boolean blinkOn = false;
+		@Override
+		public void mouseExited(MouseEvent e) {
+			/* No such event */ }
 
-        BlinkingLabel() {
-            super(getHumanKeyStrokeText(keyStroke), JLabel.CENTER);
+		@Override
+		public void mousePressed(MouseEvent e) {
+			/* No such event */ }
 
-            setOpaque(false);
-            setBorder(Utility.TRIVIAL_LINE_BORDER);
-            addKeyListener(this);
-            addMouseListener(this);
-        }
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			/* No such event */ }
 
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            if (e.getClickCount() > 1) {
-                startBlinking();
-                requestFocus();
-            }
-        }
+		@Override
+		public Dimension getMinimumSize() {
+			return new Dimension(80, super.getMinimumSize().height);
+		}
 
+		@Override
+		public Dimension getPreferredSize() {
+			return getMinimumSize();
+		}
 
-        @Override
-        public void mouseEntered(MouseEvent e) { /* No such event */ }
-        @Override
-        public void mouseExited(MouseEvent e) { /* No such event */ }
-        @Override
-        public void mousePressed(MouseEvent e) { /* No such event */ }
-        @Override
-        public void mouseReleased(MouseEvent e) { /* No such event */ }
+		public void startBlinking() {
+			blinkingTimer.start();
+		}
 
+		public void stopBlinking() {
+			blinkingTimer.stop();
+			setOpaque(false);
+			repaint();
+		}
 
-        @Override
-        public Dimension getMinimumSize() {
-            return new Dimension(80, super.getMinimumSize().height);
-        }
+		@Override
+		public void keyPressed(KeyEvent e) {
+			/* No such event */ }
 
-        @Override
-        public Dimension getPreferredSize() {
-            return getMinimumSize();
-        }
+		@Override
+		public void keyTyped(KeyEvent e) {
+			/* No such event */ }
 
+		@Override
+		public void keyReleased(KeyEvent e) {
+			KeyStroke ks = KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers());
+			if (FreeColActionUI.this.optionGroupUI != null) {
+				FreeColActionUI.this.optionGroupUI.removeKeyStroke(ks);
+			}
+			keyStroke = ks;
+			// keyStroke = KeyStroke.getKeyStroke(new Character(e.getKeyChar()),
+			// e.getModifiers());
+			stopBlinking();
+			setText(getHumanKeyStrokeText(keyStroke));
+			recordButton.requestFocus();
+		}
 
-        public void startBlinking() {
-            blinkingTimer.start();
-        }
+		// Interface ActionListener
 
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public void actionPerformed(ActionEvent ae) {
+			if (!hasFocus())
+				stopBlinking();
 
-        public void stopBlinking() {
-            blinkingTimer.stop();
-            setOpaque(false);
-            repaint();
-        }
+			if (blinkOn) {
+				setOpaque(false);
+				blinkOn = false;
+				repaint();
+			} else {
+				setOpaque(true);
+				setBackground(Color.RED);
+				blinkOn = true;
+				repaint();
+			}
+		}
+	}
 
-        @Override
-        public void keyPressed(KeyEvent e) { /* No such event */ }
+	// Implement OptionUI
 
-        @Override
-        public void keyTyped(KeyEvent e) { /* No such event */ }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public JPanel getComponent() {
+		return panel;
+	}
 
-        @Override
-        public void keyReleased(KeyEvent e) {
-            KeyStroke ks = KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers());
-            if (FreeColActionUI.this.optionGroupUI != null) {
-                FreeColActionUI.this.optionGroupUI.removeKeyStroke(ks);
-            }
-            keyStroke = ks;
-            //keyStroke = KeyStroke.getKeyStroke(new Character(e.getKeyChar()), e.getModifiers());
-            stopBlinking();
-            setText(getHumanKeyStrokeText(keyStroke));
-            recordButton.requestFocus();
-        }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void updateOption() {
+		getOption().setAccelerator(keyStroke);
+	}
 
-
-        // Interface ActionListener
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void actionPerformed(ActionEvent ae) {
-            if (!hasFocus()) stopBlinking();
-
-            if (blinkOn) {
-                setOpaque(false);
-                blinkOn = false;
-                repaint();
-            } else {
-                setOpaque(true);
-                setBackground(Color.RED);
-                blinkOn = true;
-                repaint();
-            }
-        }
-    }
-
-
-    // Implement OptionUI
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JPanel getComponent() {
-        return panel;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void updateOption() {
-        getOption().setAccelerator(keyStroke);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void reset() {
-        keyStroke = getOption().getAccelerator();
-        bl.setText(getHumanKeyStrokeText(keyStroke));
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void reset() {
+		keyStroke = getOption().getAccelerator();
+		bl.setText(getHumanKeyStrokeText(keyStroke));
+	}
 }

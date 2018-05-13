@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-
 /**
  * A map that incorporates a count.
  *
@@ -32,76 +31,74 @@ import java.util.Set;
  */
 public class TypeCountMap<T extends FreeColGameObjectType> {
 
-    private final Map<T, Integer> values = new HashMap<>();
+	private final Map<T, Integer> values = new HashMap<>();
 
-    public Map<T, Integer> getValues() {
-        return values;
-    }
+	public Map<T, Integer> getValues() {
+		return values;
+	}
 
-    public int getCount(T key) {
-        Integer value = values.get(key);
-        return value == null ? 0 : value;
-    }
+	public int getCount(T key) {
+		Integer value = values.get(key);
+		return value == null ? 0 : value;
+	}
 
-    public Integer incrementCount(T key, int newCount) {
-        Integer oldValue = values.get(key);
-        if (oldValue == null) {
-            return values.put(key, newCount);
-        } else if (oldValue == -newCount) {
-            values.remove(key);
-            return null;
-        } else {
-            return values.put(key, oldValue + newCount);
-        }
-    }
+	public Integer incrementCount(T key, int newCount) {
+		Integer oldValue = values.get(key);
+		if (oldValue == null) {
+			return values.put(key, newCount);
+		} else if (oldValue == -newCount) {
+			values.remove(key);
+			return null;
+		} else {
+			return values.put(key, oldValue + newCount);
+		}
+	}
 
-    public void add(TypeCountMap<T> other) {
-        for (Map.Entry<T, Integer> entry : other.values.entrySet()) {
-            incrementCount(entry.getKey(), entry.getValue());
-        }
-    }
+	public void add(TypeCountMap<T> other) {
+		for (Map.Entry<T, Integer> entry : other.values.entrySet()) {
+			incrementCount(entry.getKey(), entry.getValue());
+		}
+	}
 
-    public void clear() {
-        values.clear();
-    }
+	public void clear() {
+		values.clear();
+	}
 
-    public Set<T> keySet() {
-        return values.keySet();
-    }
+	public Set<T> keySet() {
+		return values.keySet();
+	}
 
-    public Collection<Integer> values() {
-        return values.values();
-    }
+	public Collection<Integer> values() {
+		return values.values();
+	}
 
-    public boolean containsKey(T key) {
-        return values.containsKey(key);
-    }
+	public boolean containsKey(T key) {
+		return values.containsKey(key);
+	}
 
-    public boolean isEmpty() {
-        return values.isEmpty();
-    }
+	public boolean isEmpty() {
+		return values.isEmpty();
+	}
 
-    public int size() {
-        return values.size();
-    }
+	public int size() {
+		return values.size();
+	}
 
-    public void putAll(TypeCountMap<T> other) {
-        values.putAll(other.values);
-    }
+	public void putAll(TypeCountMap<T> other) {
+		values.putAll(other.values);
+	}
 
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(64);
-        sb.append("[").append(getClass().getName());
-        for (Map.Entry<T, Integer> entry : values.entrySet()) {
-            sb.append(" [").append(entry.getKey().getIndex())
-                .append(",").append(entry.getValue()).append("]");
-        }
-        sb.append("]");
-        return sb.toString();
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(64);
+		sb.append('[').append(getClass().getName());
+		for (Map.Entry<T, Integer> entry : values.entrySet()) {
+			sb.append(" [").append(entry.getKey().getIndex()).append(',').append(entry.getValue()).append(']');
+		}
+		sb.append(']');
+		return sb.toString();
+	}
 }

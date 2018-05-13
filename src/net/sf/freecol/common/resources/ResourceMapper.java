@@ -24,57 +24,56 @@ package net.sf.freecol.common.resources;
  */
 public final class ResourceMapper implements ResourceFactory.ResourceSink {
 
-    private final ResourceMapping resourceMapping;
-    private String key;
+	private final ResourceMapping resourceMapping;
+	private String key;
 
-    public ResourceMapper(ResourceMapping resourceMapping) {
-        this.resourceMapping = resourceMapping;
-        key = null;
-    }
+	public ResourceMapper(ResourceMapping resourceMapping) {
+		this.resourceMapping = resourceMapping;
+		key = null;
+	}
 
-    public void setKey(String key) {
-        this.key = key;
-    }
+	public void setKey(String key) {
+		this.key = key;
+	}
 
+	@Override
+	public void add(ColorResource r) {
+		resourceMapping.add(key, r);
+	}
 
-    @Override
-    public void add(ColorResource r) {
-        resourceMapping.add(key, r);
-    }
+	@Override
+	public void add(FontResource r) {
+		resourceMapping.add(key, r);
+	}
 
-    @Override
-    public void add(FontResource r) {
-        resourceMapping.add(key, r);
-    }
+	@Override
+	public void add(StringResource r) {
+		resourceMapping.add(key, r);
+	}
 
-    @Override
-    public void add(StringResource r) {
-        resourceMapping.add(key, r);
-    }
+	@Override
+	public void add(FAFileResource r) {
+		resourceMapping.add(key, r);
+	}
 
-    @Override
-    public void add(FAFileResource r) {
-        resourceMapping.add(key, r);
-    }
+	@Override
+	public void add(SZAResource r) {
+		resourceMapping.add(key, r);
+	}
 
-    @Override
-    public void add(SZAResource r) {
-        resourceMapping.add(key, r);
-    }
+	@Override
+	public void add(AudioResource r) {
+		resourceMapping.add(key, r);
+	}
 
-    @Override
-    public void add(AudioResource r) {
-        resourceMapping.add(key, r);
-    }
+	@Override
+	public void add(VideoResource r) {
+		resourceMapping.add(key, r);
+	}
 
-    @Override
-    public void add(VideoResource r) {
-        resourceMapping.add(key, r);
-    }
-
-    @Override
-    public void add(ImageResource r) {
-        resourceMapping.add(key, r);
-    }
+	@Override
+	public void add(ImageResource r) {
+		resourceMapping.add(key, r);
+	}
 
 }
