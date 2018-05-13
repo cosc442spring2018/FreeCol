@@ -197,6 +197,12 @@ public class LanguageOption extends AbstractOption<LanguageOption.Language> {
 			throw new RuntimeException(
 					"No language files could be found" + " in the <" + i18nDirectory + "> directory.");
 		}
+		addLanguages(files);
+		Collections.sort(languages);
+		languages.add(0, DEFAULT_LANGUAGE);
+	}
+
+	private static void addLanguages(File[] files) {
 		for (File file : files) {
 			String nam = file.getName();
 			if (nam == null || !nam.startsWith(Messages.MESSAGE_FILE_PREFIX)
@@ -217,8 +223,6 @@ public class LanguageOption extends AbstractOption<LanguageOption.Language> {
 				logger.log(Level.WARNING, "Failed to add: " + languageId, e);
 			}
 		}
-		Collections.sort(languages);
-		languages.add(0, DEFAULT_LANGUAGE);
 	}
 
 	/**

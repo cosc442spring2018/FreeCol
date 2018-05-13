@@ -40,11 +40,8 @@ import net.sf.freecol.common.option.AudioMixerOption;
 import net.sf.freecol.common.option.AudioMixerOption.MixerWrapper;
 import net.sf.freecol.common.option.PercentageOption;
 
-/**
- * Stripped down class for playing sound.
- */
+/** Stripped down class for playing sound. */
 public class SoundPlayer {
-
 	private static final Logger logger = Logger.getLogger(SoundPlayer.class.getName());
 
 	private Mixer mixer;
@@ -137,29 +134,28 @@ public class SoundPlayer {
 	 *            The <code>File</code> to be played.
 	 */
 	public void playOnce(File file) {
-		if (getMixer() == null)
-			return; // Fail faster.
+		if (getMixer() == null) {
+			return;
+		} // Fail faster.
+		soundPlayerThread(file);
+	}
+
+	private void soundPlayerThread(File file) {
 		try {
 			soundPlayerThread.add(getAudioInputStream(file));
-			soundPlayerThread.awaken();
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Unable to play: " + file.getName(), e);
 		}
 	}
 
-	/**
-	 * Stops the current sound.
-	 */
+	/** Stops the current sound. */
 	public void stop() {
 		soundPlayerThread.stopPlaying();
 		soundPlayerThread.awaken();
 	}
 
-	/**
-	 * Thread for playing sound files.
-	 */
+	/** Thread for playing sound files. */
 	private class SoundPlayerThread extends Thread {
-
 		private static final int BUFSIZ = 8192;
 
 		private final byte[] data = new byte[BUFSIZ];
@@ -206,7 +202,7 @@ public class SoundPlayer {
 						continue;
 					}
 				} else {
-					try (AudioInputStream in = playList.remove(0);) {
+					try (AudioInputStream in = playList.remove(0)) {
 						playSound(in);
 					} catch (IOException e) {
 						logger.log(Level.WARNING, "Failure playing audio.", e);
@@ -223,26 +219,23 @@ public class SoundPlayer {
 		}
 
 		private void setVolume(SourceDataLine line, int vol) {
-			FloatControl.Type type = (line.isControlSupported(FloatControl.Type.VOLUME)) ? FloatControl.Type.VOLUME
-					: (line.isControlSupported(FloatControl.Type.MASTER_GAIN)) ? FloatControl.Type.MASTER_GAIN : null;
+			FloatControl control = setControl(line, vol);
+			FloatControl.Type type = line.isControlSupported(FloatControl.Type.VOLUME) ? FloatControl.Type.VOLUME
+					: line.isControlSupported(FloatControl.Type.MASTER_GAIN) ? FloatControl.Type.MASTER_GAIN : null;
 			if (type == null) {
 				logger.warning("No volume or master gain controls.");
 				return;
 			}
-			FloatControl control;
 			try {
-				control = (FloatControl) line.getControl(type);
 			} catch (IllegalArgumentException e) {
 				return; // Should not happen
 			}
-			//
 			// The units of MASTER_GAIN seem to consistently be dB, but
 			// in the case of VOLUME this is unclear (there is even a query
 			// to that effect in the source). getUnits() says "pulseaudio
 			// units" on my boxen, and the PulseAudio doco talks about dB
 			// so for now we are assuming that the controls we are using
 			// are both logarithmic:
-			//
 			// gain = A.log_10(k.vol)
 			// So scale vol <= 1 to gain_min and vol >= 100 to gain_max
 			// gain_min = A.log_10(k.1)
@@ -252,17 +245,32 @@ public class SoundPlayer {
 			// k = 10^(gain_min/A)
 			// =>
 			// gain = gain_min + (gain_max - gain_min)/2 * log_10(vol)
-			//
 			float min = control.getMinimum();
 			float max = control.getMaximum();
 			float gain = (vol <= 0) ? min : (vol >= 100) ? max : min + 0.5f * (max - min) * (float) Math.log10(vol);
 			try {
-				control.setValue(gain);
 				logger.finest("Using volume " + vol + "%, " + control.getUnits() + "=" + gain + " control=" + type);
 			} catch (Exception e) {
 				logger.log(Level.WARNING, "Could not set volume " + " (control=" + type + " in [" + min + "," + max
 						+ "])" + " to " + gain + control.getUnits(), e);
 			}
+		}
+
+		private FloatControl setControl(SourceDataLine line, int vol) {
+			FloatControl control = control(line);
+			float min = control.getMinimum();
+			float max = control.getMaximum();
+			float gain = (vol <= 0) ? min : (vol >= 100) ? max : min + 0.5f * (max - min) * (float) Math.log10(vol);
+			control.setValue(gain);
+			return control;
+		}
+
+		private FloatControl control(SourceDataLine line) {
+			FloatControl.Type type = line.isControlSupported(FloatControl.Type.VOLUME) ? FloatControl.Type.VOLUME
+					: line.isControlSupported(FloatControl.Type.MASTER_GAIN) ? FloatControl.Type.MASTER_GAIN : null;
+			FloatControl control;
+			control = (FloatControl) line.getControl(type);
+			return control;
 		}
 
 		private SourceDataLine openLine(AudioFormat audioFormat) {
@@ -295,8 +303,9 @@ public class SoundPlayer {
 			boolean ret = false;
 
 			SourceDataLine line = openLine(in.getFormat());
-			if (line == null)
+			if (line == null) {
 				return false;
+			}
 			try {
 				startPlaying();
 				int rd;

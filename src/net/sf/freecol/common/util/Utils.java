@@ -105,14 +105,7 @@ public class Utils {
 	public static synchronized Random restoreRandomState(String state) {
 		if (state == null || state.isEmpty())
 			return null;
-		byte[] bytes = new byte[state.length() / 2];
-		int pos = 0;
-		for (int i = 0; i < bytes.length; i++) {
-			bytes[i] = (byte) HEX_DIGITS.indexOf(state.charAt(pos++));
-			bytes[i] <<= 4;
-			bytes[i] |= (byte) HEX_DIGITS.indexOf(state.charAt(pos++));
-		}
-		ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+		ByteArrayInputStream bis = inputBytes(state);
 		try {
 			ObjectInputStream ois = new ObjectInputStream(bis);
 			return (Random) ois.readObject();
@@ -120,6 +113,23 @@ public class Utils {
 			logger.log(Level.WARNING, "Unable to restore random state.", e);
 		}
 		return null;
+	}
+
+	private static ByteArrayInputStream inputBytes(String state) {
+		byte[] bytes = assignBytes(state);
+		ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+		return bis;
+	}
+
+	private static byte[] assignBytes(String state) {
+		byte[] bytes = new byte[state.length() / 2];
+		int pos = 0;
+		for (int i = 0; i < bytes.length; i++) {
+			bytes[i] = (byte) HEX_DIGITS.indexOf(state.charAt(pos++));
+			bytes[i] <<= 4;
+			bytes[i] |= (byte) HEX_DIGITS.indexOf(state.charAt(pos++));
+		}
+		return bytes;
 	}
 
 	/**
@@ -130,13 +140,7 @@ public class Utils {
 	 * @return A <code>Writer</code> for this file.
 	 */
 	public static Writer getFileUTF8Writer(File file) {
-		FileOutputStream fos;
-		try {
-			fos = new FileOutputStream(file);
-		} catch (FileNotFoundException e) {
-			logger.log(Level.WARNING, "No FileOutputStream for " + file.getName(), e);
-			return null;
-		}
+		FileOutputStream fos = fileOutput(file);
 		OutputStreamWriter osw;
 		try {
 			osw = new OutputStreamWriter(fos, "UTF-8");
@@ -150,5 +154,16 @@ public class Utils {
 			return null;
 		}
 		return osw;
+	}
+
+	private static FileOutputStream fileOutput(File file) {
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(file);
+		} catch (FileNotFoundException e) {
+			logger.log(Level.WARNING, "No FileOutputStream for " + file.getName(), e);
+			return null;
+		}
+		return fos;
 	}
 }
