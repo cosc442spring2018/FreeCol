@@ -177,12 +177,17 @@ public class ResourceManager {
 	 * Creates a merged container containing all the resources.
 	 */
 	private static void createMergedContainer() {
+		ResourceMapping mc = addMappings();
+		mergedContainer = mc;
+	}
+
+	private static ResourceMapping addMappings() {
 		ResourceMapping mc = new ResourceMapping();
 		mc.addAll(baseMapping);
 		mc.addAll(tcMapping);
 		mc.addAll(scenarioMapping);
 		mc.addAll(modMapping);
-		mergedContainer = mc;
+		return mc;
 	}
 
 	/**
@@ -193,10 +198,13 @@ public class ResourceManager {
 			return; // Do not preload in headless mode
 		}
 
+		preloadThread();
+	}
+
+	private static void preloadThread() {
 		preloadThread = new Thread(FreeCol.CLIENT_THREAD + "-Resource loader") {
 			@Override
 			public void run() {
-				// Make a local list of the resources to load.
 				logger.info("Background thread started");
 				List<Resource> resources = new ArrayList<>(getResources().values());
 				int n = 0;
@@ -205,7 +213,6 @@ public class ResourceManager {
 						logger.info("Background thread cancelled after it preloaded " + n + " resources.");
 						return;
 					}
-					// TODO: Filter list before running thread?
 					if (r instanceof Resource.Preloadable) {
 						((Resource.Preloadable) r).preload();
 						n++;

@@ -20,7 +20,10 @@
 package net.sf.freecol.common.resources;
 
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.logging.Level;
@@ -54,23 +57,26 @@ public class FontResource extends Resource {
 		super(resourceLocator);
 		font = null;
 		try {
-			if (resourceLocator.getPath() != null && resourceLocator.getPath().endsWith(".ttf")) {
-				URL url = resourceLocator.toURL();
-				font = Font.createFont(Font.TRUETYPE_FONT, url.openStream());
-			} else {
-				String name = resourceLocator.getSchemeSpecificPart();
-				font = Font.decode(name.substring(SCHEME.length()));
-			}
-
-			if (font != null) {
-				GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
-			}
-
+			font = loadfont(resourceLocator);
 			logger.info("Loaded font: " + font.getFontName() + " from: " + resourceLocator);
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Failed loading font from: " + resourceLocator, e);
 			throw e;
 		}
+	}
+
+	private Font loadfont(URI resourceLocator) throws MalformedURLException, FontFormatException, IOException {
+		if (resourceLocator.getPath() != null && resourceLocator.getPath().endsWith(".ttf")) {
+			URL url = resourceLocator.toURL();
+			font = Font.createFont(Font.TRUETYPE_FONT, url.openStream());
+		} else {
+			String name = resourceLocator.getSchemeSpecificPart();
+			font = Font.decode(name.substring(SCHEME.length()));
+		}
+		if (font != null) {
+			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+		}
+		return font;
 	}
 
 	/**
