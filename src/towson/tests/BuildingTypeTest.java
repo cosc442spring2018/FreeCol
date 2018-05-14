@@ -1,3 +1,5 @@
+package towson.tests;
+
 import java.io.CharArrayWriter;
 import java.io.InputStream;
 import java.io.PipedInputStream;

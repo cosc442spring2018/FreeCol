@@ -1,3 +1,5 @@
+package towson.tests;
+
 import java.util.Random;
 import java.util.logging.Logger;
 import org.junit.*;

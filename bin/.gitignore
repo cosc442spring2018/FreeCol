@@ -1,16 +1,2 @@
 /net/
-/AbstractGoodsTest.class
-/AbstractUnitTest.class
-/BuildingTypeFactory.class
-/BuildingTypeTest.class
-/DirectionTest.class
-/DisasterTest.class
-/EquipmentTypeTest.class
-/EuropeanNationTypeTest.class
-/EventTest.class
-/FeatureContainerTest.class
-/FeatureTest.class
-/FoundingFatherTest.class
-/FreeColObjectTest.class
-/TestAll.class
-/README.txt
+/towson/
