@@ -65,6 +65,11 @@ public class AllTests {
         suite.addTestSuite(TradeRouteTest.class);
         suite.addTestSuite(UnitTest.class);
         suite.addTestSuite(UnitTypeChangeTest.class);
+        suite.addTestSuite(PlayerLibertyTest.class);
+        suite.addTestSuite(PlayerFoundingFatherTest.class);
+        suite.addTestSuite(PlayerMonetaryTest.class);
+        suite.addTestSuite(PlayerImmigrationTest.class);
+        suite.addTestSuite(PlayerUnitTest.class);
         //$JUnit-END$
         return suite;
     }
