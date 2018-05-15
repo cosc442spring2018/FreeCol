@@ -109,6 +109,7 @@ public class GoldTradeItem extends TradeItem {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int evaluateFor(Player player) {
 		int gold = getGold();
 		return (!isValid()) ? Integer.MIN_VALUE : (getSource() == player) ? -gold : gold;

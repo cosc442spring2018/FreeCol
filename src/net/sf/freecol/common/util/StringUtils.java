@@ -107,6 +107,11 @@ public class StringUtils {
 		final String base = value.toString().toLowerCase(Locale.US);
 		final int len = base.length();
 		StringBuilder sb = new StringBuilder(len);
+		convertToUpperCase(base, len, sb);
+		return sb.toString();
+	}
+
+	private static void convertToUpperCase(final String base, final int len, StringBuilder sb) {
 		int idx, from = 0;
 		for (;;) {
 			if ((idx = base.indexOf('_', from)) < 0) {
@@ -123,7 +128,6 @@ public class StringUtils {
 				from++;
 			}
 		}
-		return sb.toString();
 	}
 
 	/**
@@ -195,12 +199,7 @@ public class StringUtils {
 			String s = text.substring(start, i);
 			String t = (top.isEmpty()) ? s : top + d + s;
 			if (fontMetrics.stringWidth(t) > width) {
-				if (top.isEmpty()) {
-					result.add(s);
-				} else {
-					result.add(top);
-					top = s;
-				}
+				top = findTop(result, top, s);
 			} else {
 				top = t;
 			}
@@ -212,5 +211,15 @@ public class StringUtils {
 			d = text.charAt(i);
 		}
 		return result;
+	}
+
+	private static String findTop(List<String> result, String top, String s) {
+		if (top.isEmpty()) {
+			result.add(s);
+		} else {
+			result.add(top);
+			top = s;
+		}
+		return top;
 	}
 }

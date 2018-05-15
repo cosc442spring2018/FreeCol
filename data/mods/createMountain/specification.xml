@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<freecol-specification id="createMountain">
+  <tile-improvement-types>
+    <tile-improvement-type id="model.improvement.createMountain">
+      <scope method-name="isForested"      method-value="false" />
+      <scope method-name="isWater"         method-value="false" />
+      <scope type="model.tile.mountains"   match-negated="true" />
+	  <scope type="model.tile.marsh"       match-negated="true" />
+      <scope type="model.tile.swamp"       match-negated="true" />
+	  <scope type="model.tile.hills"       match-negated="true" />
+      <change from="model.tile.arctic"     to="model.tile.mountains"/>
+      <change from="model.tile.plains"     to="model.tile.mountains"/>
+      <change from="model.tile.grassland"  to="model.tile.mountains"/>
+      <change from="model.tile.prairie"    to="model.tile.mountains"/>
+      <change from="model.tile.savannah"   to="model.tile.mountains"/>
+      <change from="model.tile.desert"     to="model.tile.mountains"/>
+      <change from="model.tile.tundra"     to="model.tile.mountains"/>
+    </tile-improvement-type>
+  </tile-improvement-types>
+</freecol-specification>

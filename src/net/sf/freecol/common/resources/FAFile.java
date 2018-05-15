@@ -68,35 +68,46 @@ public class FAFile {
 			return new Dimension(fn.width, fn.height);
 		}
 
+		int width = getWidth(text);
+		return new Dimension(width, maxHeight);
+	}
+
+	private int getWidth(String text) {
 		int width = 0;
 		for (int i = 0; i < text.length(); i++) {
 			FALetter fl = getLetter(text.charAt(i));
 			width += fl.advance;
 		}
-
-		int firstMinX = Integer.MAX_VALUE;
 		FALetter letter = getLetter(text.charAt(0));
+		int firstMinX = getfirstMin(text);
+		width += firstMinX;
+		int lastMaxX = getLastMax(text, letter);
+		width += lastMaxX;
+		return width;
+	}
+
+	private int getfirstMin(String text) {
+		FALetter letter = getLetter(text.charAt(0));
+		int firstMinX = Integer.MAX_VALUE;
 		for (int i = 0; i < letter.points.length; i++) {
 			Point p = letter.points[i];
 			if (p.x < firstMinX) {
 				firstMinX = p.x;
 			}
 		}
+		return firstMinX;
+	}
 
-		width += firstMinX;
+	private int getLastMax(String text, FAFile.FALetter letter) {
 		int lastMaxX = 0;
 		letter = getLetter(text.charAt(text.length() - 1));
-
 		for (int i = 0; i < letter.points.length; i++) {
 			Point p = letter.points[i];
 			if (p.x > lastMaxX) {
 				lastMaxX = p.x;
 			}
 		}
-
-		width += lastMaxX;
-
-		return new Dimension(width, maxHeight);
+		return lastMaxX;
 	}
 
 	/**
@@ -155,25 +166,13 @@ public class FAFile {
 
 			if ((line = in.readLine()) == null)
 				break;
-			st = new StringTokenizer(line);
-			for (int i = 0; i < numberOfPoints; i++) {
-				xs[i] = Integer.parseInt(st.nextToken());
-			}
+			st = parseInts(line, numberOfPoints, xs);
 
 			if ((line = in.readLine()) == null)
 				break;
-			st = new StringTokenizer(line);
-			for (int i = 0; i < numberOfPoints; i++) {
-				ys[i] = Integer.parseInt(st.nextToken());
-			}
+			st = parseInts(line, numberOfPoints, ys);
 
-			FAName newLetter = new FAName();
-			newLetter.width = width;
-			newLetter.height = height;
-			newLetter.points = new Point[numberOfPoints];
-			for (int i = 0; i < numberOfPoints; i++) {
-				newLetter.points[i] = new Point(xs[i], ys[i]);
-			}
+			FAFile.FAName newLetter = initializeLetter(width, height, numberOfPoints, xs, ys);
 			letters.put(name, newLetter);
 			line = in.readLine();
 		}
@@ -187,27 +186,46 @@ public class FAFile {
 			int[] xs = new int[numberOfPoints];
 			int[] ys = new int[numberOfPoints];
 			line = in.readLine();
-			st = new StringTokenizer(line);
-			for (int i = 0; i < numberOfPoints; i++) {
-				xs[i] = Integer.parseInt(st.nextToken());
-			}
+			st = parseInts(line, numberOfPoints, xs);
 
 			if ((line = in.readLine()) == null)
 				break;
-			st = new StringTokenizer(line);
-			for (int i = 0; i < numberOfPoints; i++) {
-				ys[i] = Integer.parseInt(st.nextToken());
-			}
+			st = parseInts(line, numberOfPoints, ys);
 
-			FALetter newLetter = new FALetter();
-			newLetter.advance = advance;
-			newLetter.points = new Point[numberOfPoints];
-			for (int i = 0; i < numberOfPoints; i++) {
-				newLetter.points[i] = new Point(xs[i], ys[i]);
-			}
+			FAFile.FALetter newLetter = getLetter2(advance, numberOfPoints, xs, ys);
 			letters.put(letter, newLetter);
 			line = in.readLine();
 		}
+	}
+
+	private StringTokenizer parseInts(String line, int numberOfPoints, int[] xs) {
+		StringTokenizer st;
+		st = new StringTokenizer(line);
+		for (int i = 0; i < numberOfPoints; i++) {
+			xs[i] = Integer.parseInt(st.nextToken());
+		}
+		return st;
+	}
+
+	private FAFile.FALetter getLetter2(int advance, int numberOfPoints, int[] xs, int[] ys) {
+		FALetter newLetter = new FALetter();
+		newLetter.advance = advance;
+		newLetter.points = new Point[numberOfPoints];
+		for (int i = 0; i < numberOfPoints; i++) {
+			newLetter.points[i] = new Point(xs[i], ys[i]);
+		}
+		return newLetter;
+	}
+
+	private FAFile.FAName initializeLetter(int width, int height, int numberOfPoints, int[] xs, int[] ys) {
+		FAName newLetter = new FAName();
+		newLetter.width = width;
+		newLetter.height = height;
+		newLetter.points = new Point[numberOfPoints];
+		for (int i = 0; i < numberOfPoints; i++) {
+			newLetter.points[i] = new Point(xs[i], ys[i]);
+		}
+		return newLetter;
 	}
 
 	private FALetter getLetter(char letter) {

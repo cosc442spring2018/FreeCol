@@ -259,7 +259,7 @@ public class StringTemplate extends FreeColObject {
 			throw new IllegalArgumentException("Cannot add key-value pair" + " to StringTemplate." + this.templateType);
 		}
 		addKey(key);
-		addReplacement(this.key(value));
+		addReplacement(StringTemplate.key(value));
 		return this;
 	}
 
@@ -277,7 +277,7 @@ public class StringTemplate extends FreeColObject {
 			throw new IllegalArgumentException(
 					"Cannot add a single string" + " to StringTemplate." + this.templateType);
 		}
-		addReplacement(this.key(value));
+		addReplacement(StringTemplate.key(value));
 		return this;
 	}
 
@@ -297,7 +297,7 @@ public class StringTemplate extends FreeColObject {
 			throw new IllegalArgumentException("Cannot add key-name pair" + " to StringTemplate." + this.templateType);
 		}
 		addKey(key);
-		addReplacement(this.name(value));
+		addReplacement(StringTemplate.name(value));
 		return this;
 	}
 
@@ -318,7 +318,7 @@ public class StringTemplate extends FreeColObject {
 					"Cannot add key-object pair" + " to StringTemplate." + this.templateType);
 		}
 		addKey(key);
-		addReplacement(this.key(Messages.nameKey(object.getId())));
+		addReplacement(StringTemplate.key(Messages.nameKey(object.getId())));
 		return this;
 	}
 
@@ -336,7 +336,7 @@ public class StringTemplate extends FreeColObject {
 			throw new IllegalArgumentException(
 					"Cannot add a single string" + " to StringTemplate." + this.templateType);
 		}
-		addReplacement(this.name(value));
+		addReplacement(StringTemplate.name(value));
 		return this;
 	}
 

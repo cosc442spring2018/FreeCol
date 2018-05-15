@@ -114,6 +114,7 @@ public class ColonyTradeItem extends TradeItem {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int evaluateFor(Player player) {
 		final Colony colony = getColony(player.getGame());
 		if (colony == null || !getSource().owns(colony))

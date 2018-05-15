@@ -72,13 +72,17 @@ public class LogBuilder {
 	 */
 	private static void add(StringBuilder sb, Object... objects) {
 		for (Object o : objects) {
-			if (o instanceof Object[]) {
-				for (Object o2 : (Object[]) o) {
-					sb.append(o2s(o2));
-				}
-			} else {
-				sb.append(o2s(o));
+			sbAppend(sb, o);
+		}
+	}
+
+	private static void sbAppend(StringBuilder sb, Object o) {
+		if (o instanceof Object[]) {
+			for (Object o2 : (Object[]) o) {
+				sb.append(o2s(o2));
 			}
+		} else {
+			sb.append(o2s(o));
 		}
 	}
 
@@ -105,9 +109,13 @@ public class LogBuilder {
 		if (sb != null) {
 			for (T t : c)
 				add(sb, t, delim);
-			if (!c.isEmpty())
-				shrink(delim);
+				sbShrink(delim, c);
 		}
+	}
+
+	private <T> void sbShrink(String delim, Collection<T> c) {
+		if (!c.isEmpty())
+			shrink(delim);
 	}
 
 	/**
@@ -152,10 +160,14 @@ public class LogBuilder {
 		int p = this.points.remove(0);
 		if (sb.length() <= p)
 			return false;
+		sbInsert(objects, p);
+		return true;
+	}
+
+	private void sbInsert(Object[] objects, int p) {
 		StringBuilder sb2 = new StringBuilder(64);
 		add(sb2, objects);
 		this.sb.insert(p, sb2.toString());
-		return true;
 	}
 
 	/**

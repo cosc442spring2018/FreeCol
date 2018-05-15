@@ -71,6 +71,11 @@ public class RandomUtils {
 		int[] ret = new int[n];
 		for (int i = 0; i < n; i++)
 			ret[i] = random.nextInt(range);
+		buildString(logger, logMe, range, n, ret);
+		return ret;
+	}
+
+	private static void buildString(Logger logger, String logMe, int range, int n, int[] ret) {
 		if (logger != null && logger.isLoggable(Level.FINEST)) {
 			StringBuilder sb = new StringBuilder(64);
 			sb.append(logMe).append(" random(").append(range).append(") = [");
@@ -79,7 +84,6 @@ public class RandomUtils {
 			sb.append(" ]");
 			logger.finest(sb.toString());
 		}
-		return ret;
 	}
 
 	/**

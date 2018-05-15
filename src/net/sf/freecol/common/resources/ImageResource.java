@@ -150,15 +150,26 @@ public class ImageResource extends Resource implements Resource.Preloadable, Res
 		while (wNew * 2 <= w && hNew * 2 <= h) {
 			w = (w + 1) / 2;
 			h = (h + 1) / 2;
-			BufferedImage halved = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = halved.createGraphics();
-			// For halving bilinear should most correctly average 2x2 pixels.
-			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-			g.drawImage(im, 0, 0, w, h, null);
-			g.dispose();
-			im = halved;
+			im = halfImageSize(im, w, h);
 		}
 
+		im = scaleImage(im, wNew, hNew, w, h);
+		scaledImages.put(d, im);
+		return im;
+	}
+
+	private BufferedImage halfImageSize(BufferedImage im, int w, int h) {
+		BufferedImage halved = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = halved.createGraphics();
+		// For halving bilinear should most correctly average 2x2 pixels.
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.drawImage(im, 0, 0, w, h, null);
+		g.dispose();
+		im = halved;
+		return im;
+	}
+
+	private BufferedImage scaleImage(BufferedImage im, int wNew, int hNew, int w, int h) {
 		if (wNew != w || hNew != h) {
 			BufferedImage scaled = new BufferedImage(wNew, hNew, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = scaled.createGraphics();
@@ -168,7 +179,6 @@ public class ImageResource extends Resource implements Resource.Preloadable, Res
 			g.dispose();
 			im = scaled;
 		}
-		scaledImages.put(d, im);
 		return im;
 	}
 
