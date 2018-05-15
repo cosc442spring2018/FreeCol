@@ -228,27 +228,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
         boolean unitDirty = false;
 
         // Attrition.  Do it first as the unit might die.
-        if (loc instanceof Tile && !((Tile)loc).hasSettlement()) {
-            int attrition = getAttrition() + 1;
-            setAttrition(attrition);
-            if (attrition > getType().getMaximumAttrition()) {
-                cs.addMessage(See.only(owner),
-                    new ModelMessage(ModelMessage.MessageType.UNIT_LOST,
-                        "model.unit.attrition", this)
-                    .addStringTemplate("%unit%", getLabel())
-                    .addStringTemplate("%location%",
-                        loc.getLocationLabelFor(owner)));
-                cs.add(See.perhaps(), (Tile)loc);
-                cs.addRemove(See.perhaps().always(owner), loc, 
-                             this);//-vis(owner)
-                this.dispose();
-                owner.invalidateCanSeeTiles();//+vis(owner)
-                lb.add(", ");
-                return;
-            }
-        } else {
-            setAttrition(0);
-        }
+        processAttrition(lb, cs, owner, loc);
 
         // Check for experience-promotion.
         GoodsType produce;
@@ -258,23 +238,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
             && (learn = spec.getExpertForProducing(produce)) != null
             && learn != getType()
             && getType().canBeUpgraded(learn, ChangeType.EXPERIENCE)) {
-            int maximumExperience = getType().getMaximumExperience();
-            int maxValue = (100 * maximumExperience) /
-                getType().getUnitTypeChange(learn).getProbability(ChangeType.EXPERIENCE);
-            if (maxValue > 0
-                && randomInt(logger, "Experience", random, maxValue)
-                < Math.min(getExperience(), maximumExperience)) {
-                StringTemplate oldName = getLabel();
-                changeType(learn);//-vis: safe within colony
-                cs.addMessage(See.only(owner),
-                    new ModelMessage(ModelMessage.MessageType.UNIT_IMPROVED,
-                        "model.unit.experience", getColony(), this)
-                    .addStringTemplate("%oldName%", oldName)
-                    .addStringTemplate("%unit%", getLabel())
-                    .addName("%colony%", getColony().getName()));
-                lb.add(" experience upgrade to ", getType());
-                unitDirty = true;
-            }
+            unitDirty = processPromotion(random, lb, cs, owner, unitDirty, learn);
         }
 
         // Update moves left.
@@ -289,35 +253,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
 
         if (getWorkLeft() > 0) {
             unitDirty = true;
-            switch (getState()) {
-            case IMPROVING:
-                // Has the improvement been completed already? Do nothing.
-                TileImprovement ti = getWorkImprovement();
-                if (ti == null // Another unit on the tile completed it first
-                    || ti.isComplete()) {
-                    setState(UnitState.ACTIVE);
-                    setWorkLeft(-1);
-                } else {
-                    // Otherwise do work
-                    int amount = (getType().hasAbility(Ability.EXPERT_PIONEER))
-                        ? 2 : 1;
-                    int turns = ti.getTurnsToComplete();
-                    if ((turns -= amount) < 0) turns = 0;
-                    ti.setTurnsToComplete(turns);
-                    setWorkLeft(turns);
-                    if (ti.isRoad() && ti.isComplete()) {
-                        ti.updateRoadConnections(true);
-                        for (Tile t : loc.getTile().getSurroundingTiles(1)) {
-                            if (t.hasRoad()) cs.add(See.perhaps(), t);
-                        }
-                        locDirty = true;
-                    }
-                }
-                break;
-            default:
-                setWorkLeft(getWorkLeft() - 1);
-                break;
-            }
+            locDirty = processRemainingWork(cs, loc, locDirty);
 
             if (loc instanceof HighSeas && getOwner().isREF()) {
                 // Swift travel to America for the REF
@@ -330,7 +266,10 @@ public class ServerUnit extends Unit implements ServerModelObject {
             unitDirty = true;
         }
 
+
         if (getWorkLeft() <= 0) {
+        	unitDirty = unitDirty; 
+        	locDirty = locDirty;
             if (getLocation() instanceof HighSeas) {
                 final Europe europe = owner.getEurope();
                 final Location dst = getDestination();
@@ -338,12 +277,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
                 if (result == europe) {
                     lb.add(" arrives in Europe");
                     if (getTradeRoute() == null) {
-                        setDestination(null);
-                        cs.addMessage(See.only(owner),
-                            new ModelMessage(ModelMessage.MessageType.DEFAULT,
-                                "model.unit.arriveInEurope",
-                                europe, this)
-                            .addNamed("%europe%", europe));
+                        processEmptytTradeRoute(cs, owner, europe);
                     }
                     setState(UnitState.ACTIVE);
                     setLocation(europe);//-vis: safe/Europe
@@ -351,17 +285,9 @@ public class ServerUnit extends Unit implements ServerModelObject {
                     locDirty = true;
                 } else {
                     if (!(result instanceof Tile)) {
-                        logger.warning("Unit has unsupported destination: "
-                            + dst + " -> " + result);
-                        result = getEntryLocation().getTile();
+                        result = processUnsupportedDestination(dst, result);
                     }
-                    Tile tile = result.getTile().getSafeTile(owner, random);
-                    lb.add(" arrives in America at ", tile);
-                    if (dst != null) {
-                        lb.add(" sailing for ", dst);
-                        if (dst instanceof Map) setDestination(null);
-                    }
-                    csMove(tile, random, cs);
+                    adjustTileAmerica(random, lb, cs, owner, dst, result);
                     locDirty = unitDirty = false; // loc update present
                 }
             } else {
@@ -396,6 +322,117 @@ public class ServerUnit extends Unit implements ServerModelObject {
         lb.add(", ");
     }
 
+	private void adjustTileAmerica(Random random, LogBuilder lb, ChangeSet cs, ServerPlayer owner, final Location dst,
+			Location result) {
+		Tile tile = result.getTile().getSafeTile(owner, random);
+		lb.add(" arrives in America at ", tile);
+		if (dst != null) {
+		    lb.add(" sailing for ", dst);
+		    if (dst instanceof Map) setDestination(null);
+		}
+		csMove(tile, random, cs);
+	}
+
+	private Location processUnsupportedDestination(final Location dst, Location result) {
+		logger.warning("Unit has unsupported destination: "
+		    + dst + " -> " + result);
+		result = getEntryLocation().getTile();
+		return result;
+	}
+
+	private void processEmptytTradeRoute(ChangeSet cs, ServerPlayer owner, final Europe europe) {
+		setDestination(null);
+		cs.addMessage(See.only(owner),
+		    new ModelMessage(ModelMessage.MessageType.DEFAULT,
+		        "model.unit.arriveInEurope",
+		        europe, this)
+		    .addNamed("%europe%", europe));
+	}
+
+	private boolean processRemainingWork(ChangeSet cs, Location loc, boolean locDirty) {
+		switch (getState()) {
+		case IMPROVING:
+		    // Has the improvement been completed already? Do nothing.
+		    TileImprovement ti = getWorkImprovement();
+		    if (ti == null // Another unit on the tile completed it first
+		        || ti.isComplete()) {
+		        setState(UnitState.ACTIVE);
+		        setWorkLeft(-1);
+		    } else {
+		        // Otherwise do work
+		        locDirty = processWork(cs, loc, locDirty, ti);
+		    }
+		    break;
+		default:
+		    setWorkLeft(getWorkLeft() - 1);
+		    break;
+		}
+		return locDirty;
+	}
+
+	private boolean processWork(ChangeSet cs, Location loc, boolean locDirty, TileImprovement ti) {
+		int amount = (getType().hasAbility(Ability.EXPERT_PIONEER))
+		    ? 2 : 1;
+		int turns = ti.getTurnsToComplete();
+		if ((turns -= amount) < 0) turns = 0;
+		ti.setTurnsToComplete(turns);
+		setWorkLeft(turns);
+		if (ti.isRoad() && ti.isComplete()) {
+		    ti.updateRoadConnections(true);
+		    for (Tile t : loc.getTile().getSurroundingTiles(1)) {
+		        if (t.hasRoad()) cs.add(See.perhaps(), t);
+		    }
+		    locDirty = true;
+		}
+		return locDirty;
+	}
+
+	private boolean processPromotion(Random random, LogBuilder lb, ChangeSet cs, ServerPlayer owner, boolean unitDirty,
+			UnitType learn) {
+		int maximumExperience = getType().getMaximumExperience();
+		int maxValue = (100 * maximumExperience) /
+		    getType().getUnitTypeChange(learn).getProbability(ChangeType.EXPERIENCE);
+		if (maxValue > 0
+		    && randomInt(logger, "Experience", random, maxValue)
+		    < Math.min(getExperience(), maximumExperience)) {
+		    StringTemplate oldName = getLabel();
+		    changeType(learn);//-vis: safe within colony
+		    cs.addMessage(See.only(owner),
+		        new ModelMessage(ModelMessage.MessageType.UNIT_IMPROVED,
+		            "model.unit.experience", getColony(), this)
+		        .addStringTemplate("%oldName%", oldName)
+		        .addStringTemplate("%unit%", getLabel())
+		        .addName("%colony%", getColony().getName()));
+		    lb.add(" experience upgrade to ", getType());
+		    unitDirty = true;
+		}
+		return unitDirty;
+	}
+
+	private void processAttrition(LogBuilder lb, ChangeSet cs, ServerPlayer owner, Location loc) {
+		if (loc instanceof Tile && !((Tile)loc).hasSettlement()) {
+            int attrition = getAttrition() + 1;
+            setAttrition(attrition);
+            if (attrition > getType().getMaximumAttrition()) {
+                cs.addMessage(See.only(owner),
+                    new ModelMessage(ModelMessage.MessageType.UNIT_LOST,
+                        "model.unit.attrition", this)
+                    .addStringTemplate("%unit%", getLabel())
+                    .addStringTemplate("%location%",
+                        loc.getLocationLabelFor(owner)));
+                cs.add(See.perhaps(), (Tile)loc);
+                cs.addRemove(See.perhaps().always(owner), loc, 
+                             this);//-vis(owner)
+                this.dispose();
+                owner.invalidateCanSeeTiles();//+vis(owner)
+                lb.add(", ");
+                return;
+            }
+        } else {
+            setAttrition(0);
+        }
+	}
+
     /**
      * Completes a tile improvement.
      *
@@ -410,20 +447,39 @@ public class ServerUnit extends Unit implements ServerModelObject {
         AbstractGoods deliver = getWorkImprovement().getType()
             .getProduction(tile.getType());
         if (deliver != null) { // Deliver goods if any
-            final Turn turn = getGame().getTurn();
-            int amount = deliver.getAmount();
-            amount = (int)this.applyModifiers(amount, turn,
-                Modifier.TILE_TYPE_CHANGE_PRODUCTION, deliver.getType());
-            Settlement settlement = tile.getOwningSettlement();
-            if (settlement != null && owner.owns(settlement)) {
-                amount = (int)settlement.applyModifiers(amount, turn,
-                    Modifier.TILE_TYPE_CHANGE_PRODUCTION, deliver.getType());
-                settlement.addGoods(deliver.getType(), amount);
-            }
+            deliverGoods(tile, deliver);
         }
 
         // Finish up
-        TileImprovement ti = getWorkImprovement();
+        TileImprovement ti = cleanTIles(tile);
+
+        // Does a resource get exposed?
+        checkExposedResource(random, tile, ti);
+
+        // Expend equipment.
+        if (changeRoleCount(-ti.getType().getExpendedAmount())) {
+            expendMethod(cs);
+        }
+
+        // Cancel other co-located improvements of the same type
+        processCoImprovment(tile, ti);
+    }
+
+	private void processCoImprovment(Tile tile, TileImprovement ti) {
+		for (Unit unit : tile.getUnitList()) {
+            if (unit.getWorkImprovement() != null
+                && unit.getWorkImprovement().getType() == ti.getType()
+                && unit.getState() == UnitState.IMPROVING) {
+                unit.setWorkLeft(-1);
+                unit.setWorkImprovement(null);
+                unit.setState(UnitState.ACTIVE);
+                unit.setMovesLeft(0);
+            }
+        }
+	}
+
+	private TileImprovement cleanTIles(Tile tile) {
+		TileImprovement ti = getWorkImprovement();
         TileType changeType = ti.getChange(tile.getType());
         if (changeType != null) {
             // Changes like clearing a forest need to be completed,
@@ -431,9 +487,28 @@ public class ServerUnit extends Unit implements ServerModelObject {
             // is already added and now complete.
             tile.changeType(changeType);//-til
         }
+		return ti;
+	}
 
-        // Does a resource get exposed?
-        TileImprovementType tileImprovementType = ti.getType();
+	private void expendMethod(ChangeSet cs) {
+		// FIXME: assumes tools, make more generic, use
+		// ti.getType().getRequiredRole().getRequiredGoods()
+		ServerPlayer owner = (ServerPlayer)getOwner();
+		StringTemplate locName
+		    = getLocation().getLocationLabelFor(owner);
+		String messageId = getType() + ".noMoreTools";
+		if (!Messages.containsKey(messageId)) {
+		    messageId = "model.unit.noMoreTools";
+		}
+		cs.addMessage(See.only(owner),
+		    new ModelMessage(ModelMessage.MessageType.WARNING,
+		        messageId, this)
+		    .addStringTemplate("%unit%", getLabel())
+		    .addStringTemplate("%location%", locName));
+	}
+
+	private void checkExposedResource(Random random, Tile tile, TileImprovement ti) {
+		TileImprovementType tileImprovementType = ti.getType();
         int exposeResource = tileImprovementType.getExposeResourcePercent();
         if (exposeResource > 0 && !tile.hasResource()) {
             if (randomInt(logger, "Expose resource", random, 100)
@@ -451,37 +526,20 @@ public class ServerUnit extends Unit implements ServerModelObject {
                                               resType, value));//-til
             }
         }
+	}
 
-        // Expend equipment.
-        if (changeRoleCount(-ti.getType().getExpendedAmount())) {
-            // FIXME: assumes tools, make more generic, use
-            // ti.getType().getRequiredRole().getRequiredGoods()
-            ServerPlayer owner = (ServerPlayer)getOwner();
-            StringTemplate locName
-                = getLocation().getLocationLabelFor(owner);
-            String messageId = getType() + ".noMoreTools";
-            if (!Messages.containsKey(messageId)) {
-                messageId = "model.unit.noMoreTools";
-            }
-            cs.addMessage(See.only(owner),
-                new ModelMessage(ModelMessage.MessageType.WARNING,
-                    messageId, this)
-                .addStringTemplate("%unit%", getLabel())
-                .addStringTemplate("%location%", locName));
-        }
-
-        // Cancel other co-located improvements of the same type
-        for (Unit unit : tile.getUnitList()) {
-            if (unit.getWorkImprovement() != null
-                && unit.getWorkImprovement().getType() == ti.getType()
-                && unit.getState() == UnitState.IMPROVING) {
-                unit.setWorkLeft(-1);
-                unit.setWorkImprovement(null);
-                unit.setState(UnitState.ACTIVE);
-                unit.setMovesLeft(0);
-            }
-        }
-    }
+	private void deliverGoods(Tile tile, AbstractGoods deliver) {
+		final Turn turn = getGame().getTurn();
+		int amount = deliver.getAmount();
+		amount = (int)this.applyModifiers(amount, turn,
+		    Modifier.TILE_TYPE_CHANGE_PRODUCTION, deliver.getType());
+		Settlement settlement = tile.getOwningSettlement();
+		if (settlement != null && owner.owns(settlement)) {
+		    amount = (int)settlement.applyModifiers(amount, turn,
+		        Modifier.TILE_TYPE_CHANGE_PRODUCTION, deliver.getType());
+		    settlement.addGoods(deliver.getType(), amount);
+		}
+	}
 
     /**
      * Embark a unit.
@@ -708,113 +766,27 @@ public class ServerUnit extends Unit implements ServerModelObject {
                 lostCity.getNothingMessage(serverPlayer, mounds, random));
             break;
         case LEARN:
-            StringTemplate oldName = getLabel();
-            List<UnitType> learnTypes = getType().getUnitTypesLearntInLostCity();
-            unitType = getRandomMember(logger, "Choose learn",
-                                       learnTypes, random);
-            changeType(unitType);//-vis(serverPlayer)
-            serverPlayer.invalidateCanSeeTiles();//+vis(serverPlayer)
-            cs.addMessage(See.only(serverPlayer),
-                new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
-                                 key, serverPlayer, this)
-                    .addStringTemplate("%unit%", oldName)
-                    .addNamed("%type%", getType()));
+            processCaseLearn(random, cs, serverPlayer, key);
             break;
         case TRIBAL_CHIEF:
-            int chiefAmount = randomInt(logger, "Chief base amount",
-                                        random, dx * 10) + dx * 5;
-            serverPlayer.modifyGold(chiefAmount);
-            cs.addPartial(See.only(serverPlayer), serverPlayer, "gold", "score");
-            cs.addMessage(See.only(serverPlayer),
-                new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
-                    ((mounds) ? rumour.getAlternateDescriptionKey("mounds")
-                        : key),
-                    serverPlayer, this)
-                .addAmount("%money%", chiefAmount));
-            serverPlayer.invalidateCanSeeTiles();//+vis(serverPlayer)
+            processCaseCheif(random, cs, serverPlayer, dx, rumour, mounds, key);
             break;
         case COLONIST:
-            List<UnitType> foundTypes
-                = spec.getUnitTypesWithAbility(Ability.FOUND_IN_LOST_CITY);
-            unitType = getRandomMember(logger, "Choose found",
-                                       foundTypes, random);
-            newUnit = new ServerUnit(game, tile, serverPlayer,
-                                     unitType);//-vis: safe, scout on tile
-            cs.addMessage(See.only(serverPlayer),
-                new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
-                                 key, serverPlayer, newUnit));
+            processCaseColonist(random, cs, serverPlayer, tile, game, spec, key);
             break;
         case CIBOLA:
             String cityName = NameCache.getNextCityOfCibola();
             if (cityName != null) {
-                int treasureAmount = randomInt(logger,
-                    "Base treasure amount", random, dx * 600) + dx * 300;
-                unitType = getRandomMember(logger, "Choose train",
-                                           treasureUnitTypes, random);
-                newUnit = new ServerUnit(game, tile, serverPlayer,
-                                         unitType);//-vis: safe, scout on tile
-                newUnit.setTreasureAmount(treasureAmount);
-                cs.addMessage(See.only(serverPlayer),
-                    new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
-                                     key, serverPlayer, newUnit)
-                    .addName("%city%", cityName)
-                    .addAmount("%money%", treasureAmount));
-                cs.addGlobalHistory(game,
-                    new HistoryEvent(game.getTurn(),
-                        HistoryEvent.HistoryEventType.CITY_OF_GOLD, serverPlayer)
-                    .addStringTemplate("%nation%", serverPlayer.getNationLabel())
-                    .addName("%city%", cityName)
-                    .addAmount("%treasure%", treasureAmount));
+                processCaseCibola(random, cs, serverPlayer, tile, game, dx, treasureUnitTypes, key, cityName);
                 break;
             }
             // Fall through, found all the cities of gold.
         case RUINS:
-            int ruinsAmount = randomInt(logger, "Base ruins amount", random,
-                                        dx * 2) * 300 + 50;
-            if (ruinsAmount < 500) { // FIXME: remove magic number
-                serverPlayer.modifyGold(ruinsAmount);
-                cs.addPartial(See.only(serverPlayer), serverPlayer,
-                              "gold", "score");
-            } else {
-                unitType = getRandomMember(logger, "Choose train",
-                                           treasureUnitTypes, random);
-                newUnit = new ServerUnit(game, tile, serverPlayer,
-                                         unitType);//-vis: safe, scout on tile
-                newUnit.setTreasureAmount(ruinsAmount);
-            }
-            cs.addMessage(See.only(serverPlayer),
-                new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
-                    ((mounds) ? rumour.getAlternateDescriptionKey("mounds")
-                        : key),
-                    serverPlayer, ((newUnit != null) ? newUnit : this))
-                    .addAmount("%money%", ruinsAmount));
+            processCaseRuins(random, cs, serverPlayer, tile, game, dx, newUnit, treasureUnitTypes, rumour, mounds, key);
             break;
         case FOUNTAIN_OF_YOUTH:
             ServerEurope europe = (ServerEurope)serverPlayer.getEurope();
-            if (europe == null) {
-                // FoY should now be disabled for non-colonial
-                // players, but leave this in for now as it is harmless.
-                cs.addMessage(See.only(serverPlayer),
-                    new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
-                        rumour.getAlternateDescriptionKey("noEurope"),
-                        serverPlayer, this));
-            } else {
-                if (serverPlayer.isAI()) { // FIXME: let the AI select
-                    europe.generateFountainRecruits(dx, random);
-                    cs.add(See.only(serverPlayer), europe);
-                } else {
-                    // Remember, and ask player to select
-                    serverPlayer.setRemainingEmigrants(dx);
-                    cs.addTrivial(See.only(serverPlayer), "fountainOfYouth",
-                                  ChangeSet.ChangePriority.CHANGE_LATE,
-                                  "migrants", Integer.toString(dx));
-                }
-                cs.addMessage(See.only(serverPlayer),
-                     new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
-                                      key, serverPlayer, this));
-                cs.addAttribute(See.only(serverPlayer),
-                                "sound", "sound.event.fountainOfYouth");
-            }
+            processCaseEurope(random, cs, serverPlayer, dx, rumour, key, europe);
             break;
         case NO_SUCH_RUMOUR: case MOUNDS:
         default:
@@ -825,6 +797,127 @@ public class ServerUnit extends Unit implements ServerModelObject {
         tile.removeLostCityRumour();//-til
         return result;
     }
+
+	private void processCaseEurope(Random random, ChangeSet cs, ServerPlayer serverPlayer, int dx, RumourType rumour,
+			String key, ServerEurope europe) {
+		if (europe == null) {
+		    // FoY should now be disabled for non-colonial
+		    // players, but leave this in for now as it is harmless.
+		    cs.addMessage(See.only(serverPlayer),
+		        new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
+		            rumour.getAlternateDescriptionKey("noEurope"),
+		            serverPlayer, this));
+		} else {
+		    if (serverPlayer.isAI()) { // FIXME: let the AI select
+		        europe.generateFountainRecruits(dx, random);
+		        cs.add(See.only(serverPlayer), europe);
+		    } else {
+		        // Remember, and ask player to select
+		        serverPlayer.setRemainingEmigrants(dx);
+		        cs.addTrivial(See.only(serverPlayer), "fountainOfYouth",
+		                      ChangeSet.ChangePriority.CHANGE_LATE,
+		                      "migrants", Integer.toString(dx));
+		    }
+		    cs.addMessage(See.only(serverPlayer),
+		         new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
+		                          key, serverPlayer, this));
+		    cs.addAttribute(See.only(serverPlayer),
+		                    "sound", "sound.event.fountainOfYouth");
+		}
+	}
+
+	private void processCaseRuins(Random random, ChangeSet cs, ServerPlayer serverPlayer, Tile tile, Game game, int dx,
+			Unit newUnit, List<UnitType> treasureUnitTypes, RumourType rumour, boolean mounds, String key) {
+		UnitType unitType;
+		int ruinsAmount = randomInt(logger, "Base ruins amount", random,
+		                            dx * 2) * 300 + 50;
+		if (ruinsAmount < 500) { // FIXME: remove magic number
+		    serverPlayer.modifyGold(ruinsAmount);
+		    cs.addPartial(See.only(serverPlayer), serverPlayer,
+		                  "gold", "score");
+		} else {
+		    unitType = getRandomMember(logger, "Choose train",
+		                               treasureUnitTypes, random);
+		    newUnit = new ServerUnit(game, tile, serverPlayer,
+		                             unitType);//-vis: safe, scout on tile
+		    newUnit.setTreasureAmount(ruinsAmount);
+		}
+		cs.addMessage(See.only(serverPlayer),
+		    new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
+		        ((mounds) ? rumour.getAlternateDescriptionKey("mounds")
+		            : key),
+		        serverPlayer, ((newUnit != null) ? newUnit : this))
+		        .addAmount("%money%", ruinsAmount));
+	}
+
+	private void processCaseCibola(Random random, ChangeSet cs, ServerPlayer serverPlayer, Tile tile, Game game, int dx,
+			List<UnitType> treasureUnitTypes, String key, String cityName) {
+		UnitType unitType;
+		Unit newUnit;
+		int treasureAmount = randomInt(logger,
+		    "Base treasure amount", random, dx * 600) + dx * 300;
+		unitType = getRandomMember(logger, "Choose train",
+		                           treasureUnitTypes, random);
+		newUnit = new ServerUnit(game, tile, serverPlayer,
+		                         unitType);//-vis: safe, scout on tile
+		newUnit.setTreasureAmount(treasureAmount);
+		cs.addMessage(See.only(serverPlayer),
+		    new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
+		                     key, serverPlayer, newUnit)
+		    .addName("%city%", cityName)
+		    .addAmount("%money%", treasureAmount));
+		cs.addGlobalHistory(game,
+		    new HistoryEvent(game.getTurn(),
+		        HistoryEvent.HistoryEventType.CITY_OF_GOLD, serverPlayer)
+		    .addStringTemplate("%nation%", serverPlayer.getNationLabel())
+		    .addName("%city%", cityName)
+		    .addAmount("%treasure%", treasureAmount));
+	}
+
+	private void processCaseColonist(Random random, ChangeSet cs, ServerPlayer serverPlayer, Tile tile, Game game,
+			Specification spec, String key) {
+		UnitType unitType;
+		Unit newUnit;
+		List<UnitType> foundTypes
+		    = spec.getUnitTypesWithAbility(Ability.FOUND_IN_LOST_CITY);
+		unitType = getRandomMember(logger, "Choose found",
+		                           foundTypes, random);
+		newUnit = new ServerUnit(game, tile, serverPlayer,
+		                         unitType);//-vis: safe, scout on tile
+		cs.addMessage(See.only(serverPlayer),
+		    new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
+		                     key, serverPlayer, newUnit));
+	}
+
+	private void processCaseCheif(Random random, ChangeSet cs, ServerPlayer serverPlayer, int dx, RumourType rumour,
+			boolean mounds, String key) {
+		int chiefAmount = randomInt(logger, "Chief base amount",
+		                            random, dx * 10) + dx * 5;
+		serverPlayer.modifyGold(chiefAmount);
+		cs.addPartial(See.only(serverPlayer), serverPlayer, "gold", "score");
+		cs.addMessage(See.only(serverPlayer),
+		    new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
+		        ((mounds) ? rumour.getAlternateDescriptionKey("mounds")
+		            : key),
+		        serverPlayer, this)
+		    .addAmount("%money%", chiefAmount));
+		serverPlayer.invalidateCanSeeTiles();//+vis(serverPlayer)
+	}
+
+	private void processCaseLearn(Random random, ChangeSet cs, ServerPlayer serverPlayer, String key) {
+		UnitType unitType;
+		StringTemplate oldName = getLabel();
+		List<UnitType> learnTypes = getType().getUnitTypesLearntInLostCity();
+		unitType = getRandomMember(logger, "Choose learn",
+		                           learnTypes, random);
+		changeType(unitType);//-vis(serverPlayer)
+		serverPlayer.invalidateCanSeeTiles();//+vis(serverPlayer)
+		cs.addMessage(See.only(serverPlayer),
+		    new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
+		                     key, serverPlayer, this)
+		        .addStringTemplate("%unit%", oldName)
+		        .addNamed("%type%", getType()));
+	}
 
     /**
      * Activate sentried units on a tile.
@@ -880,14 +973,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
         } else if (oldLocation instanceof Unit) {
             setMovesLeft(0); // Disembark always consumes all moves.
         } else {
-            if (getMoveCost(newTile) <= 0) {
-                logger.warning("Move of unit: " + getId()
-                    + " from: " + ((oldLocation == null) ? "null"
-                        : oldLocation.getTile().getId())
-                    + " to: " + newTile.getId()
-                    + " has bogus cost: " + getMoveCost(newTile));
-                setMovesLeft(0);
-            }
+            consumeMove(newTile, oldLocation);
             setMovesLeft(getMovesLeft() - getMoveCost(newTile));
         }
 
@@ -944,19 +1030,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
                 newTile.changeOwnership(serverPlayer, settlement);//-til
             }
 
-            // Check for first landing
-            String newLand = null;
-            boolean firstLanding = !serverPlayer.isNewLandNamed();
-            if (serverPlayer.isEuropean() && firstLanding) {
-                newLand = serverPlayer.getNameForNewLand();
-                // Set the default value now to prevent multiple attempts.
-                // The user setNewLandName can override.
-                serverPlayer.setNewLandName(newLand);
-                cs.add(See.only(serverPlayer), ChangePriority.CHANGE_LATE,
-                    new NewLandNameMessage(this, newLand));
-                logger.finest("First landing for " + serverPlayer
-                    + " at " + newTile + " with " + this);
-            }
+            boolean firstLanding = processFirstLanding(newTile, cs, serverPlayer);
 
             // Check for new contacts.
             List<ServerPlayer> pending = new ArrayList<>();
@@ -981,15 +1055,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
                     // state.
                     pending.add(other);
                     if (serverPlayer.isEuropean()) {
-                        if (other.isIndian()) {
-                            Tile offer = (firstLanding && other.owns(newTile))
-                                ? newTile
-                                : null;
-                            serverPlayer.csNativeFirstContact(other, offer, cs);
-                        } else {
-                            serverPlayer.csEuropeanFirstContact(this,
-                                settlement, unit, cs);
-                        }
+                        processEuropean(newTile, cs, serverPlayer, settlement, unit, firstLanding, other);
                     } else {
                         if (other.isIndian()) {
                             ; // Do nothing
@@ -1015,32 +1081,13 @@ public class ServerUnit extends Unit implements ServerModelObject {
                         && is.getTile() != null)) {
                     Tile copied = is.getTile().getTileToCache();
                     if (contactPlayer.hasExplored(is.getTile())
-                        && is.setContacted(contactPlayer)) {//-til
-                        is.getTile().cacheUnseen(copied);//+til
-                        cs.add(See.only(contactPlayer), is);
-                        // First European contact with native settlement.
-                        StringTemplate nation = is.getOwner().getNationLabel();
-                        cs.addMessage(See.only(contactPlayer),
-                            new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
-                                             "model.unit.nativeSettlementContact",
-                                             this, is)
-                                .addStringTemplate("%nation%", nation)
-                                .addName("%settlement%", is.getName()));
-                        logger.finest("First contact between "
-                            + contactPlayer.getId()
-                            + " and " + is + " at " + newTile);
+                        && is.setContacted(contactPlayer)) {processContact(newTile, cs, contactPlayer, is, copied);
                     }                   
                 }
                 csActivateSentries(t, cs);
             }
         } else { // water
-            for (Tile t : newTile.getSurroundingTiles(1, 1)) {
-                if (t == null || t.isLand() || t.getFirstUnit() == null) {
-                    continue;
-                }
-                if (t.getFirstUnit().getOwner()
-                    != serverPlayer) csActivateSentries(t, cs);
-            }
+            processWater(newTile, cs, serverPlayer);
         }
 
         // Disembark in colony.
@@ -1055,13 +1102,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
         // Check for slowing units.
         Unit slowedBy = getSlowedBy(newTile, random);
         if (slowedBy != null) {
-            StringTemplate enemy = slowedBy.getApparentOwnerName();
-            cs.addMessage(See.only(serverPlayer),
-                new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
-                    "model.unit.slowed", this, slowedBy)
-                .addStringTemplate("%unit%", getLabel(UnitLabelType.NATIONAL))
-                .addStringTemplate("%enemyUnit%", slowedBy.getLabel(UnitLabelType.NATIONAL))
-                .addStringTemplate("%enemyNation%", enemy));
+            processSlowedBy(cs, serverPlayer, slowedBy);
         }
 
         // Check for region discovery
@@ -1074,6 +1115,85 @@ public class ServerUnit extends Unit implements ServerModelObject {
             region.setDiscoverer(getId());
         }
     }
+
+	private void processEuropean(Tile newTile, ChangeSet cs, final ServerPlayer serverPlayer, Settlement settlement,
+			Unit unit, boolean firstLanding, ServerPlayer other) {
+		if (other.isIndian()) {
+		    Tile offer = (firstLanding && other.owns(newTile))
+		        ? newTile
+		        : null;
+		    serverPlayer.csNativeFirstContact(other, offer, cs);
+		} else {
+		    serverPlayer.csEuropeanFirstContact(this,
+		        settlement, unit, cs);
+		}
+	}
+
+	private void processContact(Tile newTile, ChangeSet cs, ServerPlayer contactPlayer, IndianSettlement is,
+			Tile copied) {
+		//-til
+		is.getTile().cacheUnseen(copied);//+til
+		cs.add(See.only(contactPlayer), is);
+		// First European contact with native settlement.
+		StringTemplate nation = is.getOwner().getNationLabel();
+		cs.addMessage(See.only(contactPlayer),
+		    new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
+		                     "model.unit.nativeSettlementContact",
+		                     this, is)
+		        .addStringTemplate("%nation%", nation)
+		        .addName("%settlement%", is.getName()));
+		logger.finest("First contact between "
+		    + contactPlayer.getId()
+		    + " and " + is + " at " + newTile);
+	}
+
+	private void processSlowedBy(ChangeSet cs, final ServerPlayer serverPlayer, Unit slowedBy) {
+		StringTemplate enemy = slowedBy.getApparentOwnerName();
+		cs.addMessage(See.only(serverPlayer),
+		    new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
+		        "model.unit.slowed", this, slowedBy)
+		    .addStringTemplate("%unit%", getLabel(UnitLabelType.NATIONAL))
+		    .addStringTemplate("%enemyUnit%", slowedBy.getLabel(UnitLabelType.NATIONAL))
+		    .addStringTemplate("%enemyNation%", enemy));
+	}
+
+	private void processWater(Tile newTile, ChangeSet cs, final ServerPlayer serverPlayer) {
+		for (Tile t : newTile.getSurroundingTiles(1, 1)) {
+		    if (t == null || t.isLand() || t.getFirstUnit() == null) {
+		        continue;
+		    }
+		    if (t.getFirstUnit().getOwner()
+		        != serverPlayer) csActivateSentries(t, cs);
+		}
+	}
+
+	private boolean processFirstLanding(Tile newTile, ChangeSet cs, final ServerPlayer serverPlayer) {
+		// Check for first landing
+		String newLand = null;
+		boolean firstLanding = !serverPlayer.isNewLandNamed();
+		if (serverPlayer.isEuropean() && firstLanding) {
+		    newLand = serverPlayer.getNameForNewLand();
+		    // Set the default value now to prevent multiple attempts.
+		    // The user setNewLandName can override.
+		    serverPlayer.setNewLandName(newLand);
+		    cs.add(See.only(serverPlayer), ChangePriority.CHANGE_LATE,
+		        new NewLandNameMessage(this, newLand));
+		    logger.finest("First landing for " + serverPlayer
+		        + " at " + newTile + " with " + this);
+		}
+		return firstLanding;
+	}
+
+	private void consumeMove(Tile newTile, final Location oldLocation) {
+		if (getMoveCost(newTile) <= 0) {
+		    logger.warning("Move of unit: " + getId()
+		        + " from: " + ((oldLocation == null) ? "null"
+		            : oldLocation.getTile().getId())
+		        + " to: " + newTile.getId()
+		        + " has bogus cost: " + getMoveCost(newTile));
+		    setMovesLeft(0);
+		}
+	}
 
 
     // Serialization

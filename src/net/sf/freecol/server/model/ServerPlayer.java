@@ -223,27 +223,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
                 error.printStackTrace();
             }
             if (nationType.isEuropean()) {
-                /*
-                 * Setting the amount of gold to
-                 * "getGameOptions().getInteger(GameOptions.STARTING_MONEY)"
-                 *
-                 * just before starting the game. See
-                 * "net.sf.freecol.server.control.PreGameController".
-                 */
-                this.playerType = (nationType.isREF()) ? PlayerType.ROYAL
-                    : PlayerType.COLONIAL;
-                this.europe = new ServerEurope(game, this);
-                initializeHighSeas();
-                if (this.playerType == PlayerType.COLONIAL) {
-                    this.monarch = new Monarch(game, this);
-                    // In BR#2615 misiulo reports that Col1 players start
-                    // with 2 crosses.  This is surprising, but you could
-                    // argue that some level of religious unrest might
-                    // contribute to the fact there is an expedition to
-                    // the new world underway.
-                    this.immigration = spec.getInteger(GameOptions.PLAYER_IMMIGRATION_BONUS);
-                }
-                this.gold = 0;
+                processEuropean(game, spec);
             } else { // indians
                 this.playerType = PlayerType.NATIVE;
                 this.gold = Player.GOLD_NOT_ACCOUNTED;
@@ -259,6 +239,30 @@ public class ServerPlayer extends Player implements ServerModelObject {
         this.connection = connection;
         connected = connection != null;
     }
+
+	private void processEuropean(Game game, final Specification spec) {
+		/*
+		 * Setting the amount of gold to
+		 * "getGameOptions().getInteger(GameOptions.STARTING_MONEY)"
+		 *
+		 * just before starting the game. See
+		 * "net.sf.freecol.server.control.PreGameController".
+		 */
+		this.playerType = (nationType.isREF()) ? PlayerType.ROYAL
+		    : PlayerType.COLONIAL;
+		this.europe = new ServerEurope(game, this);
+		initializeHighSeas();
+		if (this.playerType == PlayerType.COLONIAL) {
+		    this.monarch = new Monarch(game, this);
+		    // In BR#2615 misiulo reports that Col1 players start
+		    // with 2 crosses.  This is surprising, but you could
+		    // argue that some level of religious unrest might
+		    // contribute to the fact there is an expedition to
+		    // the new world underway.
+		    this.immigration = spec.getInteger(GameOptions.PLAYER_IMMIGRATION_BONUS);
+		}
+		this.gold = 0;
+	}
 
 
     /**
@@ -406,7 +410,16 @@ public class ServerPlayer extends Player implements ServerModelObject {
         Market market = getMarket();
         StringBuilder sb = new StringBuilder();
         boolean changed = false;
-        for (GoodsType type : spec.getGoodsTypeList()) {
+        changed = processGoodChanged(random, spec, market, sb, changed);
+        if (changed) {
+            logger.finest("randomizeGame(" + getId() + ") initial prices: "
+                + sb.toString().substring(2));
+        }
+    }
+
+	private boolean processGoodChanged(Random random, final Specification spec, Market market, StringBuilder sb,
+			boolean changed) {
+		for (GoodsType type : spec.getGoodsTypeList()) {
             String prefix = "model.option."
                 + type.getSuffix("model.goods.");
             // these options are not available for all goods types
@@ -430,11 +443,8 @@ public class ServerPlayer extends Player implements ServerModelObject {
                 }
             }
         }
-        if (changed) {
-            logger.finest("randomizeGame(" + getId() + ") initial prices: "
-                + sb.toString().substring(2));
-        }
-    }
+		return changed;
+	}
 
     /**
      * Checks if this player has died.
@@ -874,25 +884,30 @@ public class ServerPlayer extends Player implements ServerModelObject {
         int bonus = 0;
         for (HistoryEvent h : getHistory()) {
             if (getId().equals(h.getPlayerId())) {
-                switch (h.getEventType()) {
-                case INDEPENDENCE:
-                    switch (h.getScore()) {
-                    case 0: bonus = SCORE_INDEPENDENCE_BONUS_FIRST; break;
-                    case 1: bonus = SCORE_INDEPENDENCE_BONUS_SECOND; break;
-                    case 2: bonus = SCORE_INDEPENDENCE_BONUS_THIRD; break;
-                    default: bonus = 0; break;
-                    }
-                    break;
-                default:
-                    score += h.getScore();
-                    break;
-                }
+                bonus = checkEven(bonus, h);
             }
         }
         score += (score * bonus) / 100;
 
         return score != oldScore;
     }
+
+	private int checkEven(int bonus, HistoryEvent h) {
+		switch (h.getEventType()) {
+		case INDEPENDENCE:
+		    switch (h.getScore()) {
+		    case 0: bonus = SCORE_INDEPENDENCE_BONUS_FIRST; break;
+		    case 1: bonus = SCORE_INDEPENDENCE_BONUS_SECOND; break;
+		    case 2: bonus = SCORE_INDEPENDENCE_BONUS_THIRD; break;
+		    default: bonus = 0; break;
+		    }
+		    break;
+		default:
+		    score += h.getScore();
+		    break;
+		}
+		return bonus;
+	}
 
     /**
      * Checks if this <code>Player</code> has explored the given
@@ -1013,31 +1028,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
             if (tile.isOccupied()) continue;
             votes.clear();
             for (Tile t : tile.getSurroundingTiles(1)) {
-                claimant = t.getOwningSettlement();
-                if (claimant != null
-                    // BR#3375773 found a case where tiles were
-                    // still owned by a settlement that had been
-                    // previously destroyed.  These should be gone, but...
-                    && !claimant.isDisposed()
-                    && claimant.getOwner() != null
-                    && claimant.getOwner().canOwnTile(tile)
-                    && (claimant.getOwner().isIndian()
-                        || claimant.getTile().getDistanceTo(tile)
-                        <= claimant.getRadius())) {
-                    // Weight claimant settlements:
-                    //   settlements owned by the same player
-                    //     > settlements owned by same type of player
-                    //     > other settlements
-                    int value = (prefer == null) ? 1
-                        : (claimant.getOwner() == prefer) ? 3
-                        : (claimant.getOwner().isEuropean()
-                            == prefer.isEuropean()) ? 2
-                        : 1;
-                    if (votes.get(claimant) != null) {
-                        value += votes.get(claimant);
-                    }
-                    votes.put(claimant, value);
-                }
+                claimant = modCliamint(prefer, votes, tile, t);
             }
             boolean lastResort = false;
             int bestValue = 0;
@@ -1066,6 +1057,36 @@ public class ServerPlayer extends Player implements ServerModelObject {
             }
         }
     }
+
+	private static Settlement modCliamint(Player prefer, HashMap<Settlement, Integer> votes, Tile tile, Tile t) {
+		Settlement claimant;
+		claimant = t.getOwningSettlement();
+		if (claimant != null
+		    // BR#3375773 found a case where tiles were
+		    // still owned by a settlement that had been
+		    // previously destroyed.  These should be gone, but...
+		    && !claimant.isDisposed()
+		    && claimant.getOwner() != null
+		    && claimant.getOwner().canOwnTile(tile)
+		    && (claimant.getOwner().isIndian()
+		        || claimant.getTile().getDistanceTo(tile)
+		        <= claimant.getRadius())) {
+		    // Weight claimant settlements:
+		    //   settlements owned by the same player
+		    //     > settlements owned by same type of player
+		    //     > other settlements
+		    int value = (prefer == null) ? 1
+		        : (claimant.getOwner() == prefer) ? 3
+		        : (claimant.getOwner().isEuropean()
+		            == prefer.isEuropean()) ? 2
+		        : 1;
+		    if (votes.get(claimant) != null) {
+		        value += votes.get(claimant);
+		    }
+		    votes.put(claimant, value);
+		}
+		return claimant;
+	}
 
     /**
      * Create units from a list of abstract units.  Only used by
@@ -1421,16 +1442,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
 
         int numberOfColonies = settlements.size();
         if (numberOfColonies > 0) {
-            newSoL = newSoL / numberOfColonies;
-            if (oldSoL / 10 != newSoL / 10) {
-                cs.addMessage(See.only(this),
-                    new ModelMessage(ModelMessage.MessageType.SONS_OF_LIBERTY,
-                                     (newSoL > oldSoL)
-                                     ? "model.player.soLIncrease"
-                                     : "model.player.soLDecrease", this)
-                              .addAmount("%oldSoL%", oldSoL)
-                              .addAmount("%newSoL%", newSoL));
-            }
+            newSoL = processPositiveColonies(cs, newSoL, numberOfColonies);
             oldSoL = newSoL; // Remember SoL for check changes at next turn.
         }
 
@@ -1449,99 +1461,126 @@ public class ServerPlayer extends Player implements ServerModelObject {
         }
 
         if (isEuropean()) { // Update liberty and immigration
-            // Auto-emigrate if selection not allowed.
-            if (hasAbility(Ability.SELECT_RECRUIT)) {
-                cs.addPartial(See.only(this), this, "immigration");
-            } else {
-                while (checkEmigrate()) {
-                    csEmigrate(MigrationType.getUnspecificSlot(),
-                               MigrationType.NORMAL, random, cs);
-                }
-            }
-            cs.addPartial(See.only(this), this, "liberty");
-
-            if (getSpecification().getBoolean(GameOptions.ENABLE_UPKEEP)) {
-                csPayUpkeep(random, cs);
-            }
-
-            int probability = getSpecification().getInteger(GameOptions.NATURAL_DISASTERS);
-            if (probability > 0) {
-                csNaturalDisasters(random, cs, probability);
-            }
-
-            if (isRebel() && interventionBells
-                >= getSpecification().getInteger(GameOptions.INTERVENTION_BELLS)) {
-                interventionBells = Integer.MIN_VALUE;
-                
-                // Enter near a port.
-                List<Colony> ports = getPorts();
-                Colony port = getRandomMember(logger, "Intervention port",
-                                              ports, random);
-                Tile portTile = port.getTile();
-                Tile entry = getGame().getMap().searchCircle(portTile,
-                    GoalDeciders.getSimpleHighSeasGoalDecider(),
-                    portTile.getHighSeasCount()+1).getSafeTile(this, random);
-                
-                // Create the force.
-                // @compat 0.10.5
-                // We used to nullify the monarch when declaring independence.
-                // There are saved games out there where this happened
-                // (see BR#2435).  Defend against NPE.
-                Monarch.Force ivf = null;
-                if (getMonarch() != null
-                // end @compat 0.10.5
-                    && (ivf = getMonarch().getInterventionForce()) != null) {
-                    List<Unit> landUnits = createUnits(ivf.getLandUnits(),
-                                                       entry);//-vis(this)
-                    List<Unit> navalUnits = createUnits(ivf.getNavalUnits(),
-                                                        entry);//-vis(this)
-                    List<Unit> leftOver = loadShips(landUnits, navalUnits,
-                                                    random);//-vis(this)
-                    for (Unit unit : leftOver) {
-                        // no use for left over units
-                        logger.warning("Disposing of left over unit " + unit);
-                        unit.setLocationNoUpdate(null);//-vis: safe, off map
-                        unit.dispose();//-vis: safe, never sighted
-                    }
-                    Set<Tile> tiles = exploreForUnit(navalUnits.get(0));
-                    if (!tiles.contains(entry)) tiles.add(entry);
-                    invalidateCanSeeTiles();//+vis(this)
-                    cs.add(See.perhaps(), tiles);
-                    cs.addMessage(See.only(this),
-                        new ModelMessage(ModelMessage.MessageType.DEFAULT,
-                            "model.player.interventionForceArrives",
-                            this));
-                    logger.info("Intervention force ("
-                        + navalUnits.size() + " naval, "
-                        + landUnits.size() + " land, "
-                        + leftOver.size() + " left over) arrives at " + entry
-                        + "(for " + port.getName() + ")");
-                }
-            }
+            processIsEuropean(random, cs);
         }
 
         // Update stances
         while (!stanceDirty.isEmpty()) {
-            ServerPlayer s = stanceDirty.remove(0);
-            Stance sta = getStance(s);
-            boolean war = sta == Stance.WAR;
-            if (sta == Stance.UNCONTACTED) continue;
-            for (Player p : getGame().getLiveEuropeanPlayers(this)) {
-                ServerPlayer sp = (ServerPlayer) p;
-                if (p == s || !p.hasContacted(this)
-                    || !p.hasContacted(s)) continue;
-                if (p.hasAbility(Ability.BETTER_FOREIGN_AFFAIRS_REPORT)
-                    || war) {
-                    cs.addStance(See.only(sp), this, sta, s);
-                    cs.addMessage(See.only(sp),
-                        new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
-                            sta.getOtherStanceChangeKey(), this)
-                        .addStringTemplate("%attacker%", getNationLabel())
-                        .addStringTemplate("%defender%", s.getNationLabel()));
-                }
-            }
+            updateStance(cs);
         }
     }
+
+	private int processPositiveColonies(ChangeSet cs, int newSoL, int numberOfColonies) {
+		newSoL = newSoL / numberOfColonies;
+		if (oldSoL / 10 != newSoL / 10) {
+		    cs.addMessage(See.only(this),
+		        new ModelMessage(ModelMessage.MessageType.SONS_OF_LIBERTY,
+		                         (newSoL > oldSoL)
+		                         ? "model.player.soLIncrease"
+		                         : "model.player.soLDecrease", this)
+		                  .addAmount("%oldSoL%", oldSoL)
+		                  .addAmount("%newSoL%", newSoL));
+		}
+		return newSoL;
+	}
+
+	private void processIsEuropean(Random random, ChangeSet cs) {
+		// Auto-emigrate if selection not allowed.
+		if (hasAbility(Ability.SELECT_RECRUIT)) {
+		    cs.addPartial(See.only(this), this, "immigration");
+		} else {
+		    while (checkEmigrate()) {
+		        csEmigrate(MigrationType.getUnspecificSlot(),
+		                   MigrationType.NORMAL, random, cs);
+		    }
+		}
+		cs.addPartial(See.only(this), this, "liberty");
+
+		if (getSpecification().getBoolean(GameOptions.ENABLE_UPKEEP)) {
+		    csPayUpkeep(random, cs);
+		}
+
+		int probability = getSpecification().getInteger(GameOptions.NATURAL_DISASTERS);
+		if (probability > 0) {
+		    csNaturalDisasters(random, cs, probability);
+		}
+
+		if (isRebel() && interventionBells
+		    >= getSpecification().getInteger(GameOptions.INTERVENTION_BELLS)) {
+		    interventionBells = Integer.MIN_VALUE;
+		    
+		    // Enter near a port.
+		    List<Colony> ports = getPorts();
+		    Colony port = getRandomMember(logger, "Intervention port",
+		                                  ports, random);
+		    Tile portTile = port.getTile();
+		    Tile entry = getGame().getMap().searchCircle(portTile,
+		        GoalDeciders.getSimpleHighSeasGoalDecider(),
+		        portTile.getHighSeasCount()+1).getSafeTile(this, random);
+		    
+		    // Create the force.
+		    // @compat 0.10.5
+		    // We used to nullify the monarch when declaring independence.
+		    // There are saved games out there where this happened
+		    // (see BR#2435).  Defend against NPE.
+		    Monarch.Force ivf = null;
+		    if (getMonarch() != null
+		    // end @compat 0.10.5
+		        && (ivf = getMonarch().getInterventionForce()) != null) {
+		        cleanUnits(random, cs, port, entry, ivf);
+		    }
+		}
+	}
+
+	private void cleanUnits(Random random, ChangeSet cs, Colony port, Tile entry, Monarch.Force ivf) {
+		List<Unit> landUnits = createUnits(ivf.getLandUnits(),
+		                                   entry);//-vis(this)
+		List<Unit> navalUnits = createUnits(ivf.getNavalUnits(),
+		                                    entry);//-vis(this)
+		List<Unit> leftOver = loadShips(landUnits, navalUnits,
+		                                random);//-vis(this)
+		for (Unit unit : leftOver) {
+		    // no use for left over units
+		    logger.warning("Disposing of left over unit " + unit);
+		    unit.setLocationNoUpdate(null);//-vis: safe, off map
+		    unit.dispose();//-vis: safe, never sighted
+		}
+		Set<Tile> tiles = exploreForUnit(navalUnits.get(0));
+		if (!tiles.contains(entry)) tiles.add(entry);
+		invalidateCanSeeTiles();//+vis(this)
+		cs.add(See.perhaps(), tiles);
+		cs.addMessage(See.only(this),
+		    new ModelMessage(ModelMessage.MessageType.DEFAULT,
+		        "model.player.interventionForceArrives",
+		        this));
+		logger.info("Intervention force ("
+		    + navalUnits.size() + " naval, "
+		    + landUnits.size() + " land, "
+		    + leftOver.size() + " left over) arrives at " + entry
+		    + "(for " + port.getName() + ")");
+	}
+
+	private void updateStance(ChangeSet cs) {
+		ServerPlayer s = stanceDirty.remove(0);
+		Stance sta = getStance(s);
+		boolean war = sta == Stance.WAR;
+		if (sta == Stance.UNCONTACTED)
+			return;
+		for (Player p : getGame().getLiveEuropeanPlayers(this)) {
+		    ServerPlayer sp = (ServerPlayer) p;
+		    if (p == s || !p.hasContacted(this)
+		        || !p.hasContacted(s)) continue;
+		    if (p.hasAbility(Ability.BETTER_FOREIGN_AFFAIRS_REPORT)
+		        || war) {
+		        cs.addStance(See.only(sp), this, sta, s);
+		        cs.addMessage(See.only(sp),
+		            new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
+		                sta.getOtherStanceChangeKey(), this)
+		            .addStringTemplate("%attacker%", getNationLabel())
+		            .addStringTemplate("%defender%", s.getNationLabel()));
+		    }
+		}
+	}
 
     /**
      * Cs pay upkeep.
@@ -1557,35 +1596,45 @@ public class ServerPlayer extends Player implements ServerModelObject {
         int upkeep = getSettlements().stream()
             .mapToInt(s -> s.getUpkeep()).sum();
         if (checkGold(upkeep)) {
-            modifyGold(-upkeep);
-            if (getBankrupt()) {
-                setBankrupt(false);
-                changed = true;
-                // the only effects of a disaster that can be reversed
-                // are the modifiers
-                for (RandomChoice<Effect> effect: bankruptcy.getEffects()) {
-                    for (Modifier modifier : effect.getObject().getModifiers()) {
-                        cs.addFeatureChange(this, this, modifier, false);
-                    }
-                }
-                cs.addMessage(See.only(this),
-                    new ModelMessage(ModelMessage.MessageType.GOVERNMENT_EFFICIENCY,
-                                     "model.player.disaster.bankruptcy.stop", this));
-            }
+            changed = checkGold(cs, bankruptcy, changed, upkeep);
         } else {
-            modifyGold(-getGold());
-            if (!getBankrupt()) {
-                setBankrupt(true);
-                changed = true;
-                csApplyDisaster(random, null, bankruptcy, cs);
-                cs.addMessage(See.only(this),
-                    new ModelMessage(ModelMessage.MessageType.GOVERNMENT_EFFICIENCY,
-                                     "model.player.disaster.bankruptcy.start", this));
-            }
+            changed = modifyGold(random, cs, bankruptcy, changed);
         }
         if (upkeep > 0) cs.addPartial(See.only(this), this, "gold");
         if (changed) cs.addPartial(See.only(this), this, "bankrupt");
     }
+
+	private boolean modifyGold(Random random, ChangeSet cs, final Disaster bankruptcy, boolean changed) {
+		modifyGold(-getGold());
+		if (!getBankrupt()) {
+		    setBankrupt(true);
+		    changed = true;
+		    csApplyDisaster(random, null, bankruptcy, cs);
+		    cs.addMessage(See.only(this),
+		        new ModelMessage(ModelMessage.MessageType.GOVERNMENT_EFFICIENCY,
+		                         "model.player.disaster.bankruptcy.start", this));
+		}
+		return changed;
+	}
+
+	private boolean checkGold(ChangeSet cs, final Disaster bankruptcy, boolean changed, int upkeep) {
+		modifyGold(-upkeep);
+		if (getBankrupt()) {
+		    setBankrupt(false);
+		    changed = true;
+		    // the only effects of a disaster that can be reversed
+		    // are the modifiers
+		    for (RandomChoice<Effect> effect: bankruptcy.getEffects()) {
+		        for (Modifier modifier : effect.getObject().getModifiers()) {
+		            cs.addFeatureChange(this, this, modifier, false);
+		        }
+		    }
+		    cs.addMessage(See.only(this),
+		        new ModelMessage(ModelMessage.MessageType.GOVERNMENT_EFFICIENCY,
+		                         "model.player.disaster.bankruptcy.stop", this));
+		}
+		return changed;
+	}
 
     /**
      * Cs natural disasters.
@@ -1602,31 +1651,35 @@ public class ServerPlayer extends Player implements ServerModelObject {
             // randomly select a colony to start with, then generate
             // an appropriate disaster if possible, else continue with
             // the next colony
-            int start = randomInt(logger, "select colony", random, size);
-            for (int index = 0; index < size; index++) {
-                Colony colony = getColonies().get((start + index) % size);
-                List<RandomChoice<Disaster>> disasters = colony.getDisasters();
-                if (!disasters.isEmpty()) {
-                    Disaster disaster = RandomChoice
-                        .getWeightedRandom(logger, "select disaster", disasters,
-                                           random);
-                    List<ModelMessage> messages = csApplyDisaster(random,
-                        colony, disaster, cs);
-                    if (!messages.isEmpty()) {
-                        cs.addMessage(See.only(this),
-                                      new ModelMessage(ModelMessage.MessageType.DEFAULT,
-                                                       "model.player.disaster.strikes", colony)
-                                      .addName("%colony%", colony.getName())
-                                      .addName("%disaster%", disaster));
-                        for (ModelMessage message : messages) {
-                            cs.addMessage(See.only(this), message);
-                        }
-                        return;
-                    }
-                }
-            }
+            naturalDisaterLoop(random, cs, size);
         }
     }
+
+	private void naturalDisaterLoop(Random random, ChangeSet cs, int size) {
+		int start = randomInt(logger, "select colony", random, size);
+		for (int index = 0; index < size; index++) {
+		    Colony colony = getColonies().get((start + index) % size);
+		    List<RandomChoice<Disaster>> disasters = colony.getDisasters();
+		    if (!disasters.isEmpty()) {
+		        Disaster disaster = RandomChoice
+		            .getWeightedRandom(logger, "select disaster", disasters,
+		                               random);
+		        List<ModelMessage> messages = csApplyDisaster(random,
+		            colony, disaster, cs);
+		        if (!messages.isEmpty()) {
+		            cs.addMessage(See.only(this),
+		                          new ModelMessage(ModelMessage.MessageType.DEFAULT,
+		                                           "model.player.disaster.strikes", colony)
+		                          .addName("%colony%", colony.getName())
+		                          .addName("%disaster%", disaster));
+		            for (ModelMessage message : messages) {
+		                cs.addMessage(See.only(this), message);
+		            }
+		            return;
+		        }
+		    }
+		}
+	}
 
     /**
      * Apply the effects of the given <code>Disaster</code> to the
@@ -1681,49 +1734,19 @@ public class ServerPlayer extends Player implements ServerModelObject {
         for (Effect effect : effects) {
             if (colony == null) {
                 for (Modifier modifier : effect.getModifiers()) {
-                    if (modifier.getDuration() > 0) {
-                        Modifier timedModifier = Modifier
-                            .makeTimedModifier(modifier.getId(), modifier, getGame().getTurn());
-                        modifier.setModifierIndex(Modifier.DISASTER_PRODUCTION_INDEX);
-                        cs.addFeatureChange(this, this, timedModifier, true);
-                    } else {
-                        cs.addFeatureChange(this, this, modifier, true);
-                    }
+                    processModifiers(cs, modifier);
                 }
             } else {
                 if (null != effect.getId()) {
                     switch (effect.getId()) {
                     case Effect.LOSS_OF_MONEY:
-                        int plunder = Math.max(1, colony.getPlunder(null, random) / 5);
-                        modifyGold(-plunder);
-                        cs.addPartial(See.only(this), this, "gold");
-                        messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
-                                effect.getId(), this)
-                            .addAmount("%amount%", plunder));
+                        processLostMoney(random, colony, cs, messages, effect);
                         break;
                     case Effect.LOSS_OF_BUILDING:
-                        Building building = getBuildingForEffect(colony, effect, random);
-                        if (building != null) {
-                            // Add message before damaging building
-                            messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
-                                    effect.getId(), colony)
-                                .addNamed("%building%", building.getType()));
-                            csDamageBuilding(building, cs);
-                            colonyDirty = true;
-                        }
+                        colonyDirty = processLostBuilding(random, colony, cs, colonyDirty, messages, effect);
                         break;
                     case Effect.LOSS_OF_GOODS:
-                        Goods goods = getRandomMember(logger, "select goods",
-                            colony.getLootableGoodsList(),
-                            random);
-                        if (goods != null) {
-                            goods.setAmount(Math.min(goods.getAmount() / 2, 50));
-                            colony.removeGoods(goods);
-                            messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
-                                    effect.getId(), colony)
-                                .addStringTemplate("%goods%", goods.getLabel(true)));
-                            colonyDirty = true;
-                        }
+                        colonyDirty = processGoodsLoss(random, colony, colonyDirty, messages, effect);
                         break;
                     case Effect.LOSS_OF_UNIT:
                         {
@@ -1749,22 +1772,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
                         }
                     case Effect.DAMAGED_UNIT:
                         {
-                            Unit unit = getUnitForEffect(colony, effect, random);
-                            if (unit != null && unit.isNaval()) {
-                                Location repairLocation = unit.getRepairLocation();
-                                if (repairLocation == null) {
-                                    messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
-                                            effect.getId(), colony)
-                                        .addStringTemplate("%unit%", unit.getLabel()));
-                                    csSinkShip(unit, null, cs);
-                                } else {
-                                    messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
-                                            effect.getId(), colony)
-                                        .addStringTemplate("%unit%", unit.getLabel()));
-                                    csDamageShip(unit, repairLocation, cs);
-                                }
-                                colonyDirty = true;
-                            }
+                            colonyDirty = processDamage(random, colony, cs, colonyDirty, messages, effect);
                             break;
                         }
                     default:
@@ -1789,6 +1797,78 @@ public class ServerPlayer extends Player implements ServerModelObject {
         if (colonyDirty) cs.add(See.perhaps(), colony);
         return messages;
     }
+
+	private void processModifiers(ChangeSet cs, Modifier modifier) {
+		if (modifier.getDuration() > 0) {
+		    Modifier timedModifier = Modifier
+		        .makeTimedModifier(modifier.getId(), modifier, getGame().getTurn());
+		    modifier.setModifierIndex(Modifier.DISASTER_PRODUCTION_INDEX);
+		    cs.addFeatureChange(this, this, timedModifier, true);
+		} else {
+		    cs.addFeatureChange(this, this, modifier, true);
+		}
+	}
+
+	private boolean processLostBuilding(Random random, Colony colony, ChangeSet cs, boolean colonyDirty,
+			List<ModelMessage> messages, Effect effect) {
+		Building building = getBuildingForEffect(colony, effect, random);
+		if (building != null) {
+		    // Add message before damaging building
+		    messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
+		            effect.getId(), colony)
+		        .addNamed("%building%", building.getType()));
+		    csDamageBuilding(building, cs);
+		    colonyDirty = true;
+		}
+		return colonyDirty;
+	}
+
+	private void processLostMoney(Random random, Colony colony, ChangeSet cs, List<ModelMessage> messages,
+			Effect effect) {
+		int plunder = Math.max(1, colony.getPlunder(null, random) / 5);
+		modifyGold(-plunder);
+		cs.addPartial(See.only(this), this, "gold");
+		messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
+		        effect.getId(), this)
+		    .addAmount("%amount%", plunder));
+	}
+
+	private boolean processGoodsLoss(Random random, Colony colony, boolean colonyDirty, List<ModelMessage> messages,
+			Effect effect) {
+		Goods goods = getRandomMember(logger, "select goods",
+		    colony.getLootableGoodsList(),
+		    random);
+		if (goods != null) {
+		    goods.setAmount(Math.min(goods.getAmount() / 2, 50));
+		    colony.removeGoods(goods);
+		    messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
+		            effect.getId(), colony)
+		        .addStringTemplate("%goods%", goods.getLabel(true)));
+		    colonyDirty = true;
+		}
+		return colonyDirty;
+	}
+
+	private boolean processDamage(Random random, Colony colony, ChangeSet cs, boolean colonyDirty,
+			List<ModelMessage> messages, Effect effect) {
+		Unit unit = getUnitForEffect(colony, effect, random);
+		if (unit != null && unit.isNaval()) {
+		    Location repairLocation = unit.getRepairLocation();
+		    if (repairLocation == null) {
+		        messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
+		                effect.getId(), colony)
+		            .addStringTemplate("%unit%", unit.getLabel()));
+		        csSinkShip(unit, null, cs);
+		    } else {
+		        messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
+		                effect.getId(), colony)
+		            .addStringTemplate("%unit%", unit.getLabel()));
+		        csDamageShip(unit, repairLocation, cs);
+		    }
+		    colonyDirty = true;
+		}
+		return colonyDirty;
+	}
 
     /**
      * Gets the building for effect.
@@ -1934,138 +2014,162 @@ public class ServerPlayer extends Player implements ServerModelObject {
             }
 
         } else if (isIndian()) {
-            // We do not have to worry about Player level stance
-            // changes driving Stance, as that is delegated to the AI.
-            //
-            // However we want to notify of individual settlements
-            // that change tension level, but there are complex
-            // interactions between settlement and player tensions.
-            // The simple way to do it is just to save all old tension
-            // levels and check if they have changed after applying
-            // all the changes.
-            List<IndianSettlement> allSettlements = getIndianSettlements();
-            java.util.Map<IndianSettlement,
-                java.util.Map<Player, Tension.Level>> oldLevels = new HashMap<>();
-            for (IndianSettlement settlement : allSettlements) {
-                java.util.Map<Player, Tension.Level> oldLevel = new HashMap<>();
-                oldLevels.put(settlement, oldLevel);
-                for (Player enemy : game.getLiveEuropeanPlayers(this)) {
-                    Tension alarm = settlement.getAlarm(enemy);
-                    oldLevel.put(enemy,
-                        (alarm == null) ? null : alarm.getLevel());
-                }
-            }
-
-            // Do the settlement alarms first.
-            for (IndianSettlement settlement : allSettlements) {
-                java.util.Map<Player, Integer> extra = new HashMap<>();
-                for (Player enemy : game.getLiveEuropeanPlayers(this)) {
-                    extra.put(enemy, 0);
-                }
-
-                // Look at the uses of tiles surrounding the settlement.
-                int alarmRadius = settlement.getRadius() + ALARM_RADIUS;
-                for (Tile tile: settlement.getTile()
-                         .getSurroundingTiles(alarmRadius)) {
-                    Colony colony = tile.getColony();
-                    if (tile.getFirstUnit() != null) { // Military units
-                        Player enemy =  tile.getFirstUnit().getOwner();
-                        if (enemy.isEuropean()) {
-                            Integer alarm = extra.get(enemy);
-                            if (alarm == null) continue;
-                            alarm += (int)tile.getUnitList().stream()
-                                .filter(u -> u.isOffensiveUnit() && !u.isNaval())
-                                .mapToDouble(u -> u.getType().getOffence()).sum();
-                            extra.put(enemy, alarm);
-                        }
-                    } else if (colony != null) { // Colonies
-                        Player enemy = colony.getOwner();
-                        extra.put(enemy, extra.get(enemy)
-                                  + ALARM_TILE_IN_USE
-                                  + colony.getUnitCount());
-                    } else if (tile.getOwningSettlement() != null) { // Control
-                        Player enemy = tile.getOwningSettlement().getOwner();
-                        if (enemy != null && enemy.isEuropean()) {
-                            extra.put(enemy, extra.get(enemy)
-                                      + ALARM_TILE_IN_USE);
-                        }
-                    }
-                }
-                // Missionary helps reducing alarm a bit
-                if (settlement.hasMissionary()) {
-                    Unit missionary = settlement.getMissionary();
-                    int missionAlarm = getGame().getSpecification()
-                        .getInteger(GameOptions.MISSION_INFLUENCE);
-                    if (missionary.hasAbility(Ability.EXPERT_MISSIONARY)) {
-                        missionAlarm *= 2;
-                    }
-                    Player enemy = missionary.getOwner();
-                    extra.put(enemy,
-                              extra.get(enemy) + missionAlarm);
-                }
-                // Apply modifiers, and commit the total change.
-                for (Entry<Player, Integer> entry : extra.entrySet()) {
-                    Player player = entry.getKey();
-                    int change = entry.getValue();
-                    if (change != 0) {
-                        change = (int)player.applyModifiers((float)change,
-                            game.getTurn(), Modifier.NATIVE_ALARM_MODIFIER);
-                        ServerIndianSettlement sis
-                            = (ServerIndianSettlement)settlement;
-                        sis.csModifyAlarm(player, change,
-                                          true, cs);//+til
-                    }
-                }
-            }
-
-            // Calm down a bit at the whole-tribe level.
-            for (Player enemy : game.getLiveEuropeanPlayers(this)) {
-                if (getTension(enemy).getValue() > 0) {
-                    int change = -getTension(enemy).getValue()/100 - 4;
-                    csModifyTension(enemy, change, cs);//+til
-                }
-            }
-
-            // Now collect the settlements that changed.
-            // Update those that changed, and add messages for selected
-            // worsening relation transitions.
-            for (IndianSettlement settlement : allSettlements) {
-                java.util.Map<Player, Tension.Level> oldLevel
-                    = oldLevels.get(settlement);
-                for (Entry<Player, Tension.Level> entry : oldLevel.entrySet()) {
-                    Player enemy = entry.getKey();
-                    Tension newTension = settlement.getAlarm(enemy);
-                    Tension.Level newLevel = (newTension == null) ? null
-                        : newTension.getLevel();
-                    if (entry.getValue() == null
-                        || entry.getValue() == newLevel
-                        || !settlement.hasContacted(enemy)
-                        || !enemy.hasExplored(settlement.getTile()))
-                        continue;
-                    cs.add(See.only(null).perhaps((ServerPlayer)enemy),
-                           settlement);
-                    // No messages about improving tension
-                    if (newLevel == null
-                        || (entry.getValue() != null 
-                            && entry.getValue().getLimit()
-                            > newLevel.getLimit())) continue;
-                    String key = "model.player.alarmIncrease."
-                        + settlement.getAlarm(enemy).getKey();
-                    if (!Messages.containsKey(key)) continue;
-                    cs.addMessage(See.only((ServerPlayer)enemy),
-                        new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
-                                         key, settlement)
-                            .addStringTemplate("%nation%", getNationLabel())
-                            .addStringTemplate("%enemy%", enemy.getNationLabel())
-                            .addName("%settlement%", settlement.getName()));
-                }
-            }
-
-            for (IndianSettlement settlement : allSettlements) {
-                ((ServerIndianSettlement)settlement).csStartTurn(random, cs);
-            }
+            processIsIndian(random, cs, game);
         }
     }
+
+	private void processIsIndian(Random random, ChangeSet cs, Game game) {
+		// We do not have to worry about Player level stance
+		// changes driving Stance, as that is delegated to the AI.
+		//
+		// However we want to notify of individual settlements
+		// that change tension level, but there are complex
+		// interactions between settlement and player tensions.
+		// The simple way to do it is just to save all old tension
+		// levels and check if they have changed after applying
+		// all the changes.
+		List<IndianSettlement> allSettlements = getIndianSettlements();
+		java.util.Map<IndianSettlement,
+		    java.util.Map<Player, Tension.Level>> oldLevels = new HashMap<>();
+		for (IndianSettlement settlement : allSettlements) {
+		    loopIndians(game, oldLevels, settlement);
+		}
+
+		// Do the settlement alarms first.
+		for (IndianSettlement settlement : allSettlements) {
+		    java.util.Map<Player, Integer> extra = new HashMap<>();
+		    for (Player enemy : game.getLiveEuropeanPlayers(this)) {
+		        extra.put(enemy, 0);
+		    }
+
+		    // Look at the uses of tiles surrounding the settlement.
+		    int alarmRadius = settlement.getRadius() + ALARM_RADIUS;
+		    for (Tile tile: settlement.getTile()
+		             .getSurroundingTiles(alarmRadius)) {
+		        processSurroundingSettlements(extra, tile);
+		    }
+		    // Missionary helps reducing alarm a bit
+		    if (settlement.hasMissionary()) {
+		        Unit missionary = settlement.getMissionary();
+		        int missionAlarm = getGame().getSpecification()
+		            .getInteger(GameOptions.MISSION_INFLUENCE);
+		        if (missionary.hasAbility(Ability.EXPERT_MISSIONARY)) {
+		            missionAlarm *= 2;
+		        }
+		        Player enemy = missionary.getOwner();
+		        extra.put(enemy,
+		                  extra.get(enemy) + missionAlarm);
+		    }
+		    // Apply modifiers, and commit the total change.
+		    for (Entry<Player, Integer> entry : extra.entrySet()) {
+		        commitPlayerEntry(cs, game, settlement, entry);
+		    }
+		}
+
+		// Calm down a bit at the whole-tribe level.
+		for (Player enemy : game.getLiveEuropeanPlayers(this)) {
+		    if (getTension(enemy).getValue() > 0) {
+		        int change = -getTension(enemy).getValue()/100 - 4;
+		        csModifyTension(enemy, change, cs);//+til
+		    }
+		}
+
+		// Now collect the settlements that changed.
+		// Update those that changed, and add messages for selected
+		// worsening relation transitions.
+		for (IndianSettlement settlement : allSettlements) {
+		    processSettleMent(cs, oldLevels, settlement);
+		}
+
+		for (IndianSettlement settlement : allSettlements) {
+		    ((ServerIndianSettlement)settlement).csStartTurn(random, cs);
+		}
+	}
+
+	private void loopIndians(Game game, java.util.Map<IndianSettlement, java.util.Map<Player, Tension.Level>> oldLevels,
+			IndianSettlement settlement) {
+		java.util.Map<Player, Tension.Level> oldLevel = new HashMap<>();
+		oldLevels.put(settlement, oldLevel);
+		for (Player enemy : game.getLiveEuropeanPlayers(this)) {
+		    Tension alarm = settlement.getAlarm(enemy);
+		    oldLevel.put(enemy,
+		        (alarm == null) ? null : alarm.getLevel());
+		}
+	}
+
+	private void processSurroundingSettlements(java.util.Map<Player, Integer> extra, Tile tile) {
+		Colony colony = tile.getColony();
+		if (tile.getFirstUnit() != null) { // Military units
+		    Player enemy =  tile.getFirstUnit().getOwner();
+		    if (enemy.isEuropean()) {
+		        Integer alarm = extra.get(enemy);
+		        if (alarm == null)
+					return;
+		        alarm += (int)tile.getUnitList().stream()
+		            .filter(u -> u.isOffensiveUnit() && !u.isNaval())
+		            .mapToDouble(u -> u.getType().getOffence()).sum();
+		        extra.put(enemy, alarm);
+		    }
+		} else if (colony != null) { // Colonies
+		    Player enemy = colony.getOwner();
+		    extra.put(enemy, extra.get(enemy)
+		              + ALARM_TILE_IN_USE
+		              + colony.getUnitCount());
+		} else if (tile.getOwningSettlement() != null) { // Control
+		    Player enemy = tile.getOwningSettlement().getOwner();
+		    if (enemy != null && enemy.isEuropean()) {
+		        extra.put(enemy, extra.get(enemy)
+		                  + ALARM_TILE_IN_USE);
+		    }
+		}
+	}
+
+	private void commitPlayerEntry(ChangeSet cs, Game game, IndianSettlement settlement, Entry<Player, Integer> entry) {
+		Player player = entry.getKey();
+		int change = entry.getValue();
+		if (change != 0) {
+		    change = (int)player.applyModifiers((float)change,
+		        game.getTurn(), Modifier.NATIVE_ALARM_MODIFIER);
+		    ServerIndianSettlement sis
+		        = (ServerIndianSettlement)settlement;
+		    sis.csModifyAlarm(player, change,
+		                      true, cs);//+til
+		}
+	}
+
+	private void processSettleMent(ChangeSet cs,
+			java.util.Map<IndianSettlement, java.util.Map<Player, Tension.Level>> oldLevels,
+			IndianSettlement settlement) {
+		java.util.Map<Player, Tension.Level> oldLevel
+		    = oldLevels.get(settlement);
+		for (Entry<Player, Tension.Level> entry : oldLevel.entrySet()) {
+		    Player enemy = entry.getKey();
+		    Tension newTension = settlement.getAlarm(enemy);
+		    Tension.Level newLevel = (newTension == null) ? null
+		        : newTension.getLevel();
+		    if (entry.getValue() == null
+		        || entry.getValue() == newLevel
+		        || !settlement.hasContacted(enemy)
+		        || !enemy.hasExplored(settlement.getTile()))
+		        continue;
+		    cs.add(See.only(null).perhaps((ServerPlayer)enemy),
+		           settlement);
+		    // No messages about improving tension
+		    if (newLevel == null
+		        || (entry.getValue() != null 
+		            && entry.getValue().getLimit()
+		            > newLevel.getLimit())) continue;
+		    String key = "model.player.alarmIncrease."
+		        + settlement.getAlarm(enemy).getKey();
+		    if (!Messages.containsKey(key)) continue;
+		    cs.addMessage(See.only((ServerPlayer)enemy),
+		        new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
+		                         key, settlement)
+		            .addStringTemplate("%nation%", getNationLabel())
+		            .addStringTemplate("%enemy%", enemy.getNationLabel())
+		            .addName("%settlement%", settlement.getName()));
+		}
+	}
 
     /**
      * All player colonies bombard all available targets.
@@ -2174,35 +2278,12 @@ public class ServerPlayer extends Player implements ServerModelObject {
         for (Event event : father.getEvents()) {
             String eventId = event.getId();
             if ("model.event.resetBannedMissions".equals(eventId)) {
-                for (Player p : game.getLiveNativePlayers(null)) {
-                    if (p.missionsBanned(this)) {
-                        p.removeMissionBan(this);
-                        cs.add(See.only(this), p);
-                    }
-                }
+                resetBannedMissions(cs, game);
             } else if ("model.event.resetNativeAlarm".equals(eventId)) {
-                for (Player p : game.getLiveNativePlayers(null)) {
-                    if (!p.hasContacted(this)) continue;
-                    p.setTension(this, new Tension(Tension.TENSION_MIN));
-                    for (IndianSettlement is : p.getIndianSettlements()) {
-                        if (is.hasContacted(this)) {
-                            is.getTile().cacheUnseen();//+til
-                            is.setAlarm(this,
-                                new Tension(Tension.TENSION_MIN));//-til
-                            cs.add(See.only(this), is);
-                        }
-                    }
-                    csChangeStance(Stance.PEACE, (ServerPlayer)p, true, cs);
-                }
+                resetNativeAlarm(cs, game);
 
             } else if ("model.event.boycottsLifted".equals(eventId)) {
-                Market market = getMarket();
-                for (GoodsType goodsType : spec.getGoodsTypeList()) {
-                    if (market.getArrears(goodsType) > 0) {
-                        market.setArrears(goodsType, 0);
-                        cs.add(See.only(this), market.getMarketData(goodsType));
-                    }
-                }
+                processBoyCotts(cs, spec);
 
             } else if ("model.event.freeBuilding".equals(eventId)) {
                 BuildingType type = spec.getBuildingType(event.getValue());
@@ -2211,30 +2292,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
                 }
 
             } else if ("model.event.seeAllColonies".equals(eventId)) {
-                visibilityChange = true;//-vis(this), can now see other colonies
-                for (Tile t : game.getMap().getAllTiles()) {
-                    Colony colony = t.getColony();
-                    if (colony == null) continue;
-                    Set<Tile> tiles = new HashSet<>();
-                    if (exploreTile(t)) {
-                        if (!hasAbility(Ability.SEE_ALL_COLONIES)) {
-                            // FreeCol ruleset adds this ability
-                            // allowing full visibility of colony,
-                            // whereas Col1 showed colonies as size 1.
-                            Tile c = t.copy(game, Tile.class);
-                            c.getColony().setDisplayUnitCount(1);
-                            t.setCachedTile(this, c);
-                        }
-                        tiles.add(t);
-                    }
-                    // Revealed tiles in 11x11 block in Col1
-                    final int fullRadius = (int)father
-                        .applyModifiers((float)colony.getLineOfSight(),
-                                        turn, Modifier.EXPOSED_TILES_RADIUS);
-                    tiles.addAll(exploreTiles(t.getSurroundingTiles(1,
-                                fullRadius)));
-                    cs.add(See.only(this), tiles);
-                }
+                visibilityChange = processSeeAllColonies(father, cs, game, turn);
 
             } else if ("model.event.newRecruits".equals(eventId)
                        && europe != null) {
@@ -2253,6 +2311,70 @@ public class ServerPlayer extends Player implements ServerModelObject {
         if (europeDirty) cs.add(See.only(this), europe);
         if (visibilityChange) invalidateCanSeeTiles(); //+vis(this)
     }
+
+	private void processBoyCotts(ChangeSet cs, final Specification spec) {
+		Market market = getMarket();
+		for (GoodsType goodsType : spec.getGoodsTypeList()) {
+		    if (market.getArrears(goodsType) > 0) {
+		        market.setArrears(goodsType, 0);
+		        cs.add(See.only(this), market.getMarketData(goodsType));
+		    }
+		}
+	}
+
+	private void resetBannedMissions(ChangeSet cs, final Game game) {
+		for (Player p : game.getLiveNativePlayers(null)) {
+		    if (p.missionsBanned(this)) {
+		        p.removeMissionBan(this);
+		        cs.add(See.only(this), p);
+		    }
+		}
+	}
+
+	private void resetNativeAlarm(ChangeSet cs, final Game game) {
+		for (Player p : game.getLiveNativePlayers(null)) {
+		    if (!p.hasContacted(this)) continue;
+		    p.setTension(this, new Tension(Tension.TENSION_MIN));
+		    for (IndianSettlement is : p.getIndianSettlements()) {
+		        if (is.hasContacted(this)) {
+		            is.getTile().cacheUnseen();//+til
+		            is.setAlarm(this,
+		                new Tension(Tension.TENSION_MIN));//-til
+		            cs.add(See.only(this), is);
+		        }
+		    }
+		    csChangeStance(Stance.PEACE, (ServerPlayer)p, true, cs);
+		}
+	}
+
+	private boolean processSeeAllColonies(FoundingFather father, ChangeSet cs, final Game game, final Turn turn) {
+		boolean visibilityChange;
+		visibilityChange = true;//-vis(this), can now see other colonies
+		for (Tile t : game.getMap().getAllTiles()) {
+		    Colony colony = t.getColony();
+		    if (colony == null) continue;
+		    Set<Tile> tiles = new HashSet<>();
+		    if (exploreTile(t)) {
+		        if (!hasAbility(Ability.SEE_ALL_COLONIES)) {
+		            // FreeCol ruleset adds this ability
+		            // allowing full visibility of colony,
+		            // whereas Col1 showed colonies as size 1.
+		            Tile c = t.copy(game, Tile.class);
+		            c.getColony().setDisplayUnitCount(1);
+		            t.setCachedTile(this, c);
+		        }
+		        tiles.add(t);
+		    }
+		    // Revealed tiles in 11x11 block in Col1
+		    final int fullRadius = (int)father
+		        .applyModifiers((float)colony.getLineOfSight(),
+		                        turn, Modifier.EXPOSED_TILES_RADIUS);
+		    tiles.addAll(exploreTiles(t.getSurroundingTiles(1,
+		                fullRadius)));
+		    cs.add(See.only(this), tiles);
+		}
+		return visibilityChange;
+	}
 
     /**
      * Get a list of free building types this player has access to
@@ -2336,7 +2458,12 @@ public class ServerPlayer extends Player implements ServerModelObject {
         Unit unit = new ServerUnit(game, europe, this,
                                    recruitType, role);//-vis: safe/Europe
 
-        // Handle migration type specific changes.
+        handleMigrations(slot, type, cs, europe, unit);
+        cs.add(See.only(this), europe);
+    }
+
+	private void handleMigrations(int slot, MigrationType type, ChangeSet cs, ServerEurope europe, Unit unit) {
+		// Handle migration type specific changes.
         switch (type) {
         case FOUNTAIN:
             setRemainingEmigrants(getRemainingEmigrants() - 1);
@@ -2367,8 +2494,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         default:
             throw new IllegalArgumentException("Bogus migration type");
         }
-        cs.add(See.only(this), europe);
-    }
+	}
 
     /**
      * Combat.

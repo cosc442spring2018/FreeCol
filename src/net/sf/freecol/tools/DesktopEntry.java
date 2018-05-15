@@ -21,9 +21,11 @@ package net.sf.freecol.tools;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
+import java.io.IOException;
 
 
 /**
@@ -61,57 +63,61 @@ public class DesktopEntry {
                 }
             });
             
-            for (String name : sourceFiles) {
-                
-                System.out.println("Processing source file: " + name);
-                
-                String languageCode = null;
-                if (name.startsWith("FreeColMessages_")) {
-                    int index = name.indexOf('.', 16);
-                    languageCode = name.substring(16, index)
-                            .replace('-', '@');
-                }
-                
-                boolean foundGenericName = false;
-                boolean foundComment = false;
-                File sourceFile = new File(SOURCE_DIRECTORY, name);
-                FileReader fileReader = new FileReader(sourceFile);
-                BufferedReader bufferedReader = new BufferedReader(fileReader);
-                String line = bufferedReader.readLine();
-                while (line != null) {
-                    int index = line.indexOf('=');
-                    if (index >= 0) {
-                        String key = line.substring(0, index).trim();
-                        if (null != key) switch (key) {
-                            case GENERIC_NAME:
-                                result.append("GenericName");
-                                foundGenericName = true;
-                                break;
-                            case COMMENT:
-                                result.append("Comment");
-                                foundComment = true;
-                                break;
-                            default:
-                                line = bufferedReader.readLine();
-                                continue;
-                        }
-                        if (languageCode != null) {
-                            result.append("[" + languageCode + "]");
-                        }
-                        result.append("=");
-                        result.append(line.substring(index + 1).trim());
-                        result.append("\n");
-                        if (foundGenericName && foundComment) {
-                            break;
-                        }
-                    }
-                    line = bufferedReader.readLine();
-                }
-            }
+            readFIles(result, sourceFiles);
             
             result.flush();
         }
 
     }
+
+	private static void readFIles(FileWriter result, String[] sourceFiles) throws FileNotFoundException, IOException {
+		for (String name : sourceFiles) {
+		    
+		    System.out.println("Processing source file: " + name);
+		    
+		    String languageCode = null;
+		    if (name.startsWith("FreeColMessages_")) {
+		        int index = name.indexOf('.', 16);
+		        languageCode = name.substring(16, index)
+		                .replace('-', '@');
+		    }
+		    
+		    boolean foundGenericName = false;
+		    boolean foundComment = false;
+		    File sourceFile = new File(SOURCE_DIRECTORY, name);
+		    FileReader fileReader = new FileReader(sourceFile);
+		    BufferedReader bufferedReader = new BufferedReader(fileReader);
+		    String line = bufferedReader.readLine();
+		    while (line != null) {
+		        int index = line.indexOf('=');
+		        if (index >= 0) {
+		            String key = line.substring(0, index).trim();
+		            if (null != key) switch (key) {
+		                case GENERIC_NAME:
+		                    result.append("GenericName");
+		                    foundGenericName = true;
+		                    break;
+		                case COMMENT:
+		                    result.append("Comment");
+		                    foundComment = true;
+		                    break;
+		                default:
+		                    line = bufferedReader.readLine();
+		                    continue;
+		            }
+		            if (languageCode != null) {
+		                result.append("[" + languageCode + "]");
+		            }
+		            result.append("=");
+		            result.append(line.substring(index + 1).trim());
+		            result.append("\n");
+		            if (foundGenericName && foundComment) {
+		                break;
+		            }
+		        }
+		        line = bufferedReader.readLine();
+		    }
+		}
+	}
 }
 

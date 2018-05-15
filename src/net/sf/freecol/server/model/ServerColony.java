@@ -95,21 +95,9 @@ public class ServerColony extends Colony implements ServerModelObject {
         oldSonsOfLiberty = 0;
         established = game.getTurn();
 
-        ColonyTile colonyTile = new ServerColonyTile(game, this, tile);
-        colonyTiles.add(colonyTile);
-        for (Tile t : tile.getSurroundingTiles(getRadius())) {
-            colonyTiles.add(new ServerColonyTile(game, this, t));
-        }
+        initTiles(game, tile);
 
-        Building building;
-        List<BuildingType> buildingTypes = spec.getBuildingTypeList();
-        for (BuildingType buildingType : buildingTypes) {
-            if (buildingType.isAutomaticBuild()
-                || isAutomaticBuild(buildingType)) {
-                building = new ServerBuilding(getGame(), this, buildingType);
-                addBuilding(building);
-            }
-        }
+        initBuildings(spec);
         // Set up default production queues.  Do this after calling
         // addBuilding because that will check build queue integrity,
         // and these might fail the population check.
@@ -126,6 +114,26 @@ public class ServerColony extends Colony implements ServerModelObject {
             }
         }
     }
+
+	private void initBuildings(Specification spec) {
+		Building building;
+        List<BuildingType> buildingTypes = spec.getBuildingTypeList();
+        for (BuildingType buildingType : buildingTypes) {
+            if (buildingType.isAutomaticBuild()
+                || isAutomaticBuild(buildingType)) {
+                building = new ServerBuilding(getGame(), this, buildingType);
+                addBuilding(building);
+            }
+        }
+	}
+
+	private void initTiles(Game game, Tile tile) {
+		ColonyTile colonyTile = new ServerColonyTile(game, this, tile);
+        colonyTiles.add(colonyTile);
+        for (Tile t : tile.getSurroundingTiles(getRadius())) {
+            colonyTiles.add(new ServerColonyTile(game, this, t));
+        }
+	}
 
     /**
      * New turn for this colony.
@@ -159,29 +167,7 @@ public class ServerColony extends Colony implements ServerModelObject {
         GoodsContainer container = getGoodsContainer();
         container.saveState();
 
-        // Check for learning by experience
-        for (WorkLocation workLocation : getCurrentWorkLocations()) {
-            ((ServerModelObject)workLocation).csNewTurn(random, lb, cs);
-            ProductionInfo productionInfo = getProductionInfo(workLocation);
-            if (productionInfo == null) continue;
-            if (!workLocation.isEmpty()) {
-                for (AbstractGoods goods : productionInfo.getProduction()) {
-                    UnitType expert = spec.getExpertForProducing(goods.getType());
-                    int experience = goods.getAmount() / workLocation.getUnitCount();
-                    for (Unit unit : workLocation.getUnitList()) {
-                        if (goods.getType() == unit.getExperienceType()
-                            && unit.getType().canBeUpgraded(expert, ChangeType.EXPERIENCE)) {
-                            unit.setExperience(unit.getExperience() + experience);
-                            cs.addPartial(See.only(owner), unit, "experience");
-                        }
-                    }
-                }
-            }
-            if (workLocation instanceof ServerBuilding) {
-                // FIXME: generalize to other WorkLocations?
-                ((ServerBuilding)workLocation).csCheckMissingInput(productionInfo, cs);
-            }
-        }
+        checkByLearning(random, lb, cs, spec, owner);
 
         // Check the build queues and build new stuff.  If a queue
         // does a build add it to the built list, so that we can
@@ -192,23 +178,7 @@ public class ServerColony extends Colony implements ServerModelObject {
             ProductionInfo info = getProductionInfo(queue);
             if (info == null) continue;
             if (info.getConsumption().isEmpty()) {
-                BuildableType build = queue.getCurrentlyBuilding();
-                if (build != null) {
-                    AbstractGoods needed = new AbstractGoods();
-                    int complete = getTurnsToComplete(build, needed);
-                    // Warn if about to fail, or if no useful progress
-                    // towards completion is possible.
-                    if (complete == -2 || complete == -1) {
-                        cs.addMessage(See.only(owner),
-                            new ModelMessage(ModelMessage.MessageType.MISSING_GOODS,
-                                             "model.colony.buildableNeedsGoods",
-                                             this, build)
-                                .addName("%colony%", getName())
-                                .addNamed("%buildable%", build)
-                                .addAmount("%amount%", needed.getAmount())
-                                .addNamed("%goodsType%", needed.getType()));
-                    }
-                }
+                processEmptyConsumption(cs, owner, queue);
             } else {
                 // Ready to build something.  FIXME: OO!
                 BuildableType buildable = csNextBuildable(queue, cs);
@@ -243,7 +213,65 @@ public class ServerColony extends Colony implements ServerModelObject {
         // recalculated one will see the build as incomplete due to
         // missing the goods just updated.
         // Hence the need for a copy of the current production map.
-        TypeCountMap<GoodsType> productionMap = getProductionMap();
+        applyProductionChanges(random, lb, cs, spec, owner, newUnitBorn);
+        invalidateCache();
+
+        // Now that the goods have been updated it is safe to remove the
+        // built item from its build queue.
+        if (!built.isEmpty()) {
+            tileDirty = clearBuildQueue(random, cs, built);
+        }
+
+        // Export goods if custom house is built.
+        // Do not flush price changes yet, as any price change may change
+        // yet again in csYearlyGoodsAdjust.
+        if (hasAbility(Ability.EXPORT)) {
+            exportLog(lb, cs, owner, container);
+        }
+
+        // Throw away goods there is no room for, and warn about
+        // levels that will be exceeded next turn
+        int limit = getWarehouseCapacity();
+        int adjustment = limit / GoodsContainer.CARGO_SIZE;
+        adjustGoods(cs, spec, owner, newUnitBorn, container, limit, adjustment);
+
+        // Check for free buildings
+        checkFreeBuildings(spec);
+        checkBuildQueueIntegrity(true);
+
+        // If a build queue is empty, check that we are not producing
+        // any goods types useful for BuildableTypes, except if that
+        // type is the input to some other form of production.  (Note:
+        // isBuildingMaterial is also true for goods used to produce
+        // role-equipment, hence neededForBuildableType).  Such
+        // production probably means we forgot to reset the build
+        // queue.  Thus, if hammers are being produced it is worth
+        // warning about, but not if producing tools.
+        validateBuildQueue(cs, spec, owner, queues);
+
+        // Update SoL.
+        updateSoL();
+        updateSonsOfLiberty(cs, spec, owner);
+        updateProductionBonus();
+        // We have to wait for the production bonus to stabilize
+        // before checking for completion of training.  This is a rare
+        // case so it is not worth reordering the work location calls
+        // to csNewTurn.
+        checkWorkLocation(cs);
+
+        // Try to update minimally.
+        boolean tileDirty2 = tileDirty;
+		if (tileDirty2) {
+            cs.add(See.perhaps(), tile);
+        } else {
+            cs.add(See.only(owner), this);
+        }
+        lb.add(", ");
+    }
+
+	private void applyProductionChanges(Random random, LogBuilder lb, ChangeSet cs, final Specification spec,
+			final ServerPlayer owner, boolean newUnitBorn) {
+		TypeCountMap<GoodsType> productionMap = getProductionMap();
         for (GoodsType goodsType : productionMap.keySet()) {
             int net = productionMap.getCount(goodsType);
             int stored = getGoodsCount(goodsType);
@@ -255,115 +283,135 @@ public class ServerColony extends Colony implements ServerModelObject {
 
             // Handle the food situation
             if (goodsType == spec.getPrimaryFoodType()) {
-                // Check for famine when total primary food goes negative.
-                if (net + stored < 0) {
-                    if (getUnitCount() > 1) {
-                        Unit victim = getRandomMember(logger, "Starver",
-                                                      getUnitList(), random);
-                        cs.addRemove(See.only(owner), null,
-                                     victim);//-vis: safe, all within colony
-                        victim.dispose();
-                        cs.addMessage(See.only(owner),
-                            new ModelMessage(ModelMessage.MessageType.UNIT_LOST,
-                                             "model.colony.colonistStarved",
-                                             this)
-                                .addName("%colony%", getName()));
-                    } else { // Its dead, Jim.
-                        cs.addMessage(See.only(owner),
-                            new ModelMessage(ModelMessage.MessageType.UNIT_LOST,
-                                             "model.colony.colonyStarved",
-                                             this)
-                                .addName("%colony%", getName()));
-                        owner.csDisposeSettlement(this, cs);
-                        return;
-                    }
-                } else if (net < 0) {
-                    int turns = stored / -net;
-                    if (turns <= Colony.FAMINE_TURNS && !newUnitBorn) {
-                        cs.addMessage(See.only(owner),
-                            new ModelMessage(ModelMessage.MessageType.WARNING,
-                                             "model.colony.famineFeared",
-                                             this)
-                                .addName("%colony%", getName())
-                                .addAmount("%number%", turns));
-                        lb.add(" famine in ", turns,
-                               " food=", stored, " production=", net);
-                    }
-                }
+                processFood(random, lb, cs, owner, newUnitBorn, net, stored);
             }
         }
-        invalidateCache();
+	}
 
-        // Now that the goods have been updated it is safe to remove the
-        // built item from its build queue.
-        if (!built.isEmpty()) {
-            for (BuildQueue<? extends BuildableType> queue : built) {
-                switch (queue.getCompletionAction()) {
-                case SHUFFLE:
-                    if (queue.size() > 1) {
-                        randomShuffle(logger, "Build queue",
-                                      queue.getValues(), random);
-                    }
-                    break;
-                case REMOVE_EXCEPT_LAST:
-                    if (queue.size() == 1
-                        && queue.getCurrentlyBuilding() instanceof UnitType) {
-                        // Repeat last unit
-                        break;
-                    }
-                    // Fall through
-                case REMOVE:
-                default:
-                    queue.remove(0);
-                    break;
-                }
-                csNextBuildable(queue, cs);
-            }
-            tileDirty = true;
-        }
+	private void processEmptyConsumption(ChangeSet cs, final ServerPlayer owner, BuildQueue<?> queue) {
+		BuildableType build = queue.getCurrentlyBuilding();
+		if (build != null) {
+		    AbstractGoods needed = new AbstractGoods();
+		    int complete = getTurnsToComplete(build, needed);
+		    // Warn if about to fail, or if no useful progress
+		    // towards completion is possible.
+		    if (complete == -2 || complete == -1) {
+		        cs.addMessage(See.only(owner),
+		            new ModelMessage(ModelMessage.MessageType.MISSING_GOODS,
+		                             "model.colony.buildableNeedsGoods",
+		                             this, build)
+		                .addName("%colony%", getName())
+		                .addNamed("%buildable%", build)
+		                .addAmount("%amount%", needed.getAmount())
+		                .addNamed("%goodsType%", needed.getType()));
+		    }
+		}
+	}
 
-        // Export goods if custom house is built.
-        // Do not flush price changes yet, as any price change may change
-        // yet again in csYearlyGoodsAdjust.
-        if (hasAbility(Ability.EXPORT)) {
-            LogBuilder lb2 = new LogBuilder(64);
-            lb2.add(" ");
-            lb2.mark();
-            for (Goods goods : getCompactGoods()) {
-                GoodsType type = goods.getType();
-                ExportData data = getExportData(type);
-                if (!data.getExported()
-                    || !owner.canTrade(goods.getType(), Market.Access.CUSTOM_HOUSE)) continue;
-                int amount = goods.getAmount() - data.getExportLevel();
-                if (amount <= 0) continue;
-                int oldGold = owner.getGold();
-                int marketAmount = owner.sell(container, type, amount);
-                if (marketAmount > 0) {
-                    owner.addExtraTrade(new AbstractGoods(type, marketAmount));
-                }
-                StringTemplate st = StringTemplate.template("model.colony.customs.saleData")
-                    .addAmount("%amount%", amount)
-                    .addNamed("%goods%", type)
-                    .addAmount("%gold%", (owner.getGold() - oldGold));
-                lb2.add(Messages.message(st), ", ");
-            }
-            if (lb2.grew()) {
-                lb2.shrink(", ");
-                cs.addMessage(See.only(owner),
-                    new ModelMessage(ModelMessage.MessageType.GOODS_MOVEMENT,
-                                     "model.colony.customs.sale", this)
-                        .addName("%colony%", getName())
-                        .addName("%data%", lb2.toString()));
-                cs.addPartial(See.only(owner), owner, "gold");
-                lb.add(lb2.toString());
-            }
-        }
+	private void processFood(Random random, LogBuilder lb, ChangeSet cs, final ServerPlayer owner, boolean newUnitBorn,
+			int net, int stored) {
+		// Check for famine when total primary food goes negative.
+		if (net + stored < 0) {
+		    if (getUnitCount() > 1) {
+		        Unit victim = getRandomMember(logger, "Starver",
+		                                      getUnitList(), random);
+		        cs.addRemove(See.only(owner), null,
+		                     victim);//-vis: safe, all within colony
+		        victim.dispose();
+		        cs.addMessage(See.only(owner),
+		            new ModelMessage(ModelMessage.MessageType.UNIT_LOST,
+		                             "model.colony.colonistStarved",
+		                             this)
+		                .addName("%colony%", getName()));
+		    } else { // Its dead, Jim.
+		        cs.addMessage(See.only(owner),
+		            new ModelMessage(ModelMessage.MessageType.UNIT_LOST,
+		                             "model.colony.colonyStarved",
+		                             this)
+		                .addName("%colony%", getName()));
+		        owner.csDisposeSettlement(this, cs);
+		        return;
+		    }
+		} else if (net < 0) {
+		    int turns = stored / -net;
+		    if (turns <= Colony.FAMINE_TURNS && !newUnitBorn) {
+		        cs.addMessage(See.only(owner),
+		            new ModelMessage(ModelMessage.MessageType.WARNING,
+		                             "model.colony.famineFeared",
+		                             this)
+		                .addName("%colony%", getName())
+		                .addAmount("%number%", turns));
+		        lb.add(" famine in ", turns,
+		               " food=", stored, " production=", net);
+		    }
+		}
+	}
 
-        // Throw away goods there is no room for, and warn about
-        // levels that will be exceeded next turn
-        int limit = getWarehouseCapacity();
-        int adjustment = limit / GoodsContainer.CARGO_SIZE;
-        for (Goods goods : getCompactGoods()) {
+	private boolean clearBuildQueue(Random random, ChangeSet cs, List<BuildQueue<? extends BuildableType>> built) {
+		boolean tileDirty;
+		for (BuildQueue<? extends BuildableType> queue : built) {
+		    switch (queue.getCompletionAction()) {
+		    case SHUFFLE:
+		        if (queue.size() > 1) {
+		            randomShuffle(logger, "Build queue",
+		                          queue.getValues(), random);
+		        }
+		        break;
+		    case REMOVE_EXCEPT_LAST:
+		        if (queue.size() == 1
+		            && queue.getCurrentlyBuilding() instanceof UnitType) {
+		            // Repeat last unit
+		            break;
+		        }
+		        // Fall through
+		    case REMOVE:
+		    default:
+		        queue.remove(0);
+		        break;
+		    }
+		    csNextBuildable(queue, cs);
+		}
+		tileDirty = true;
+		return tileDirty;
+	}
+
+	private void exportLog(LogBuilder lb, ChangeSet cs, final ServerPlayer owner, GoodsContainer container) {
+		LogBuilder lb2 = new LogBuilder(64);
+		lb2.add(" ");
+		lb2.mark();
+		for (Goods goods : getCompactGoods()) {
+		    GoodsType type = goods.getType();
+		    ExportData data = getExportData(type);
+		    if (!data.getExported()
+		        || !owner.canTrade(goods.getType(), Market.Access.CUSTOM_HOUSE)) continue;
+		    int amount = goods.getAmount() - data.getExportLevel();
+		    if (amount <= 0) continue;
+		    int oldGold = owner.getGold();
+		    int marketAmount = owner.sell(container, type, amount);
+		    if (marketAmount > 0) {
+		        owner.addExtraTrade(new AbstractGoods(type, marketAmount));
+		    }
+		    StringTemplate st = StringTemplate.template("model.colony.customs.saleData")
+		        .addAmount("%amount%", amount)
+		        .addNamed("%goods%", type)
+		        .addAmount("%gold%", (owner.getGold() - oldGold));
+		    lb2.add(Messages.message(st), ", ");
+		}
+		if (lb2.grew()) {
+		    lb2.shrink(", ");
+		    cs.addMessage(See.only(owner),
+		        new ModelMessage(ModelMessage.MessageType.GOODS_MOVEMENT,
+		                         "model.colony.customs.sale", this)
+		            .addName("%colony%", getName())
+		            .addName("%data%", lb2.toString()));
+		    cs.addPartial(See.only(owner), owner, "gold");
+		    lb.add(lb2.toString());
+		}
+	}
+
+	private void adjustGoods(ChangeSet cs, final Specification spec, final ServerPlayer owner, boolean newUnitBorn,
+			GoodsContainer container, int limit, int adjustment) {
+		for (Goods goods : getCompactGoods()) {
             GoodsType type = goods.getType();
             if (type.isStorable())
             {
@@ -431,25 +479,41 @@ public class ServerColony extends Colony implements ServerModelObject {
 	            }
             }
         }
+	}
 
-        // Check for free buildings
-        for (BuildingType buildingType : spec.getBuildingTypeList()) {
-            if (isAutomaticBuild(buildingType)) {
-                buildBuilding(new ServerBuilding(getGame(), this,
-                                                 buildingType));//-til
+	private void checkWorkLocation(ChangeSet cs) {
+		for (WorkLocation workLocation : getCurrentWorkLocations()) {
+            if (workLocation.canTeach()) {
+                ServerBuilding building = (ServerBuilding)workLocation;
+                for (Unit teacher : building.getUnitList()) {
+                    building.csCheckTeach(teacher, cs);
+                }
             }
         }
-        checkBuildQueueIntegrity(true);
+	}
 
-        // If a build queue is empty, check that we are not producing
-        // any goods types useful for BuildableTypes, except if that
-        // type is the input to some other form of production.  (Note:
-        // isBuildingMaterial is also true for goods used to produce
-        // role-equipment, hence neededForBuildableType).  Such
-        // production probably means we forgot to reset the build
-        // queue.  Thus, if hammers are being produced it is worth
-        // warning about, but not if producing tools.
-        for (BuildQueue<?> queue : queues) {
+	private void updateSonsOfLiberty(ChangeSet cs, final Specification spec, final ServerPlayer owner) {
+		if (sonsOfLiberty / 10 != oldSonsOfLiberty / 10) {
+            cs.addMessage(See.only(owner),
+                new ModelMessage(ModelMessage.MessageType.SONS_OF_LIBERTY,
+                                 (sonsOfLiberty > oldSonsOfLiberty)
+                                 ? "model.colony.soLIncrease"
+                                 : "model.colony.soLDecrease",
+                                 this, spec.getGoodsType("model.goods.bells"))
+                    .addAmount("%oldSoL%", oldSonsOfLiberty)
+                    .addAmount("%newSoL%", sonsOfLiberty)
+                    .addName("%colony%", getName()));
+
+            ModelMessage govMgtMessage = checkForGovMgtChangeMessage();
+            if (govMgtMessage != null) {
+                cs.addMessage(See.only(owner), govMgtMessage);
+            }
+        }
+	}
+
+	private void validateBuildQueue(ChangeSet cs, final Specification spec, final ServerPlayer owner,
+			BuildQueue<?>[] queues) {
+		for (BuildQueue<?> queue : queues) {
             if (queue.isEmpty()) {
                 for (GoodsType g : spec.getGoodsTypeList()) {
                     if (g.isBuildingMaterial()
@@ -467,47 +531,43 @@ public class ServerColony extends Colony implements ServerModelObject {
                 }
             }
         }
+	}
 
-        // Update SoL.
-        updateSoL();
-        if (sonsOfLiberty / 10 != oldSonsOfLiberty / 10) {
-            cs.addMessage(See.only(owner),
-                new ModelMessage(ModelMessage.MessageType.SONS_OF_LIBERTY,
-                                 (sonsOfLiberty > oldSonsOfLiberty)
-                                 ? "model.colony.soLIncrease"
-                                 : "model.colony.soLDecrease",
-                                 this, spec.getGoodsType("model.goods.bells"))
-                    .addAmount("%oldSoL%", oldSonsOfLiberty)
-                    .addAmount("%newSoL%", sonsOfLiberty)
-                    .addName("%colony%", getName()));
-
-            ModelMessage govMgtMessage = checkForGovMgtChangeMessage();
-            if (govMgtMessage != null) {
-                cs.addMessage(See.only(owner), govMgtMessage);
+	private void checkFreeBuildings(final Specification spec) {
+		for (BuildingType buildingType : spec.getBuildingTypeList()) {
+            if (isAutomaticBuild(buildingType)) {
+                buildBuilding(new ServerBuilding(getGame(), this,
+                                                 buildingType));//-til
             }
         }
-        updateProductionBonus();
-        // We have to wait for the production bonus to stabilize
-        // before checking for completion of training.  This is a rare
-        // case so it is not worth reordering the work location calls
-        // to csNewTurn.
+	}
+
+	private void checkByLearning(Random random, LogBuilder lb, ChangeSet cs, final Specification spec,
+			final ServerPlayer owner) {
+		// Check for learning by experience
         for (WorkLocation workLocation : getCurrentWorkLocations()) {
-            if (workLocation.canTeach()) {
-                ServerBuilding building = (ServerBuilding)workLocation;
-                for (Unit teacher : building.getUnitList()) {
-                    building.csCheckTeach(teacher, cs);
+            ((ServerModelObject)workLocation).csNewTurn(random, lb, cs);
+            ProductionInfo productionInfo = getProductionInfo(workLocation);
+            if (productionInfo == null) continue;
+            if (!workLocation.isEmpty()) {
+                for (AbstractGoods goods : productionInfo.getProduction()) {
+                    UnitType expert = spec.getExpertForProducing(goods.getType());
+                    int experience = goods.getAmount() / workLocation.getUnitCount();
+                    for (Unit unit : workLocation.getUnitList()) {
+                        if (goods.getType() == unit.getExperienceType()
+                            && unit.getType().canBeUpgraded(expert, ChangeType.EXPERIENCE)) {
+                            unit.setExperience(unit.getExperience() + experience);
+                            cs.addPartial(See.only(owner), unit, "experience");
+                        }
+                    }
                 }
             }
+            if (workLocation instanceof ServerBuilding) {
+                // FIXME: generalize to other WorkLocations?
+                ((ServerBuilding)workLocation).csCheckMissingInput(productionInfo, cs);
+            }
         }
-
-        // Try to update minimally.
-        if (tileDirty) {
-            cs.add(See.perhaps(), tile);
-        } else {
-            cs.add(See.only(owner), this);
-        }
-        lb.add(", ");
-    }
+	}
 
     /**
      * Is a goods type needed for a buildable that this colony could

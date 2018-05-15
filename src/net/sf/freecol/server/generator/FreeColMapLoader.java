@@ -75,53 +75,7 @@ public class FreeColMapLoader implements MapLoader {
                 }
             }
         } else {
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    Tile template = importMap.getTile(x, y);
-                    Tile tile = new Tile(game, null, x, y);
-                    map.setTile(tile, x, y);
-
-                    // import tile types
-                    tile.setType(game.getSpecification().getTileType(template.getType().getId()));
-                    tile.setMoveToEurope(template.getMoveToEurope());
-                    if (highestLayer.compareTo(Layer.REGIONS) >= 0) {
-                        // import regions
-                        Region region = template.getRegion();
-                        if (region != null) {
-                            ServerRegion ours = regions.get(region.getId());
-                            if (ours == null) {
-                                ours = new ServerRegion(game, region);
-                                regions.put(region.getId(), ours);
-                            }
-                            tile.setRegion(ours);
-                            ours.addTile(tile);
-                        }
-                        if (highestLayer.compareTo(Layer.RIVERS) >= 0) {
-                            // import tile improvements
-                            tile.setTileItemContainer(new TileItemContainer(game, tile, template
-                                                                            .getTileItemContainer(), layer));
-                            if (layer.compareTo(Layer.NATIVES) >= 0) {
-                                // import native settlements
-                                if (template.getOwner() != null) {
-                                    String nationId = template.getOwner().getNationId();
-                                    Player player = game.getPlayerByNationId(nationId);
-                                    if (player == null) {
-                                        Nation nation = game.getSpecification().getNation(nationId);
-                                        player = new ServerPlayer(game, false, nation, null, null);
-                                        game.addPlayer(player);
-                                    }
-                                    tile.setOwner(player);
-                                    if (template.getOwningSettlement() != null) {
-                                        IndianSettlement settlement = (IndianSettlement) template.getOwningSettlement();
-                                        tile.setOwningSettlement(new ServerIndianSettlement(game,
-                                            player, tile, settlement));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            iterateThroughMap(game, layer, importMap, highestLayer, width, height, regions, map);
         }
         for (Region region : regions.values()) {
             map.addRegion(region);
@@ -130,6 +84,58 @@ public class FreeColMapLoader implements MapLoader {
         game.setMap(map);
         return highestLayer;
     }
+
+
+	private void iterateThroughMap(Game game, Layer layer, Map importMap, Layer highestLayer, int width, int height,
+			java.util.Map<String, ServerRegion> regions, Map map) {
+		for (int x = 0; x < width; x++) {
+		    for (int y = 0; y < height; y++) {
+		        Tile template = importMap.getTile(x, y);
+		        Tile tile = new Tile(game, null, x, y);
+		        map.setTile(tile, x, y);
+
+		        // import tile types
+		        tile.setType(game.getSpecification().getTileType(template.getType().getId()));
+		        tile.setMoveToEurope(template.getMoveToEurope());
+		        if (highestLayer.compareTo(Layer.REGIONS) >= 0) {
+		            // import regions
+		            Region region = template.getRegion();
+		            if (region != null) {
+		                ServerRegion ours = regions.get(region.getId());
+		                if (ours == null) {
+		                    ours = new ServerRegion(game, region);
+		                    regions.put(region.getId(), ours);
+		                }
+		                tile.setRegion(ours);
+		                ours.addTile(tile);
+		            }
+		            if (highestLayer.compareTo(Layer.RIVERS) >= 0) {
+		                // import tile improvements
+		                tile.setTileItemContainer(new TileItemContainer(game, tile, template
+		                                                                .getTileItemContainer(), layer));
+		                if (layer.compareTo(Layer.NATIVES) >= 0) {
+		                    // import native settlements
+		                    if (template.getOwner() != null) {
+		                        String nationId = template.getOwner().getNationId();
+		                        Player player = game.getPlayerByNationId(nationId);
+		                        if (player == null) {
+		                            Nation nation = game.getSpecification().getNation(nationId);
+		                            player = new ServerPlayer(game, false, nation, null, null);
+		                            game.addPlayer(player);
+		                        }
+		                        tile.setOwner(player);
+		                        if (template.getOwningSettlement() != null) {
+		                            IndianSettlement settlement = (IndianSettlement) template.getOwningSettlement();
+		                            tile.setOwningSettlement(new ServerIndianSettlement(game,
+		                                player, tile, settlement));
+		                        }
+		                    }
+		                }
+		            }
+		        }
+		    }
+		}
+	}
 
 
     @Override
