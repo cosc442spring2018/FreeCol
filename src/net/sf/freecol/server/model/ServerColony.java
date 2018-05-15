@@ -67,6 +67,9 @@ public class ServerColony extends Colony implements ServerModelObject {
     /** The Constant logger. */
     private static final Logger logger = Logger.getLogger(ServerColony.class.getName());
 
+    private String amountPercentString = "%amount%";
+    private String colonyPercentString = "%colony%";
+    private String goodsPercentString = "%goods%";
 
     /**
      * Trivial constructor required for all ServerModelObjects.
@@ -183,7 +186,7 @@ public class ServerColony extends Colony implements ServerModelObject {
                 // Ready to build something.  FIXME: OO!
                 BuildableType buildable = csNextBuildable(queue, cs);
                 if (buildable == null) {
-                    ; // It was invalid, ignore.
+                    // It was invalid, ignore.
                 } else if (buildable instanceof UnitType) {
                     Unit newUnit = csBuildUnit(queue, random, cs);
                     if (newUnit.hasAbility(Ability.BORN_IN_COLONY)) {
@@ -300,9 +303,9 @@ public class ServerColony extends Colony implements ServerModelObject {
 		            new ModelMessage(ModelMessage.MessageType.MISSING_GOODS,
 		                             "model.colony.buildableNeedsGoods",
 		                             this, build)
-		                .addName("%colony%", getName())
+		                .addName(colonyPercentString, getName())
 		                .addNamed("%buildable%", build)
-		                .addAmount("%amount%", needed.getAmount())
+		                .addAmount(amountPercentString, needed.getAmount())
 		                .addNamed("%goodsType%", needed.getType()));
 		    }
 		}
@@ -322,13 +325,13 @@ public class ServerColony extends Colony implements ServerModelObject {
 		            new ModelMessage(ModelMessage.MessageType.UNIT_LOST,
 		                             "model.colony.colonistStarved",
 		                             this)
-		                .addName("%colony%", getName()));
+		                .addName(colonyPercentString, getName()));
 		    } else { // Its dead, Jim.
 		        cs.addMessage(See.only(owner),
 		            new ModelMessage(ModelMessage.MessageType.UNIT_LOST,
 		                             "model.colony.colonyStarved",
 		                             this)
-		                .addName("%colony%", getName()));
+		                .addName(colonyPercentString, getName()));
 		        owner.csDisposeSettlement(this, cs);
 		        return;
 		    }
@@ -339,7 +342,7 @@ public class ServerColony extends Colony implements ServerModelObject {
 		            new ModelMessage(ModelMessage.MessageType.WARNING,
 		                             "model.colony.famineFeared",
 		                             this)
-		                .addName("%colony%", getName())
+		                .addName(colonyPercentString, getName())
 		                .addAmount("%number%", turns));
 		        lb.add(" famine in ", turns,
 		               " food=", stored, " production=", net);
@@ -392,8 +395,8 @@ public class ServerColony extends Colony implements ServerModelObject {
 		        owner.addExtraTrade(new AbstractGoods(type, marketAmount));
 		    }
 		    StringTemplate st = StringTemplate.template("model.colony.customs.saleData")
-		        .addAmount("%amount%", amount)
-		        .addNamed("%goods%", type)
+		        .addAmount(amountPercentString, amount)
+		        .addNamed(goodsPercentString, type)
 		        .addAmount("%gold%", (owner.getGold() - oldGold));
 		    lb2.add(Messages.message(st), ", ");
 		}
@@ -402,7 +405,7 @@ public class ServerColony extends Colony implements ServerModelObject {
 		    cs.addMessage(See.only(owner),
 		        new ModelMessage(ModelMessage.MessageType.GOODS_MOVEMENT,
 		                         "model.colony.customs.sale", this)
-		            .addName("%colony%", getName())
+		            .addName(colonyPercentString, getName())
 		            .addName("%data%", lb2.toString()));
 		    cs.addPartial(See.only(owner), owner, "gold");
 		    lb.add(lb2.toString());
@@ -427,9 +430,9 @@ public class ServerColony extends Colony implements ServerModelObject {
 	                    new ModelMessage(ModelMessage.MessageType.WAREHOUSE_CAPACITY,
 	                                     "model.colony.warehouseEmpty",
 	                                     this, type)
-	                              .addNamed("%goods%", type)
+	                              .addNamed(goodsPercentString, type)
 	                              .addAmount("%level%", low)
-	                              .addName("%colony%", getName()));
+	                              .addName(colonyPercentString, getName()));
 	                
 	            }
 	            else
@@ -454,31 +457,36 @@ public class ServerColony extends Colony implements ServerModelObject {
 		                cs.addMessage(See.only(owner),
 		                    new ModelMessage(ModelMessage.MessageType.WAREHOUSE_CAPACITY,
 		                                     messageId, this, type)
-		                        .addNamed("%goods%", type)
+		                        .addNamed(goodsPercentString, type)
 		                        .addAmount("%waste%", waste)
 		                        .addAmount("%level%", high)
-		                        .addName("%colony%", getName()));
+		                        .addName(colonyPercentString, getName()));
 		            }
 		
-		            // No problem this turn, but what about the next?
-		            if (!(exportData.getExported()
-		                  && hasAbility(Ability.EXPORT)
-		                  && owner.canTrade(type, Market.Access.CUSTOM_HOUSE))
-		                && amount <= limit) {
-		                int loss = amount + getNetProductionOf(type) - limit;
-		                if (loss > 0) {
-		                    cs.addMessage(See.only(owner),
-		                        new ModelMessage(ModelMessage.MessageType.WAREHOUSE_CAPACITY,
-		                                         "model.colony.warehouseSoonFull",
-		                                         this, type)
-		                            .addNamed("%goods%", goods)
-		                            .addName("%colony%", getName())
-		                            .addAmount("%amount%", loss));
-		                }
-		            }
+		            checkNextTurn(cs, owner, limit, goods, type, exportData, amount);
 	            }
             }
         }
+	}
+
+	private void checkNextTurn(ChangeSet cs, final ServerPlayer owner, int limit, Goods goods, GoodsType type,
+			ExportData exportData, int amount) {
+		// No problem this turn, but what about the next?
+		if (!(exportData.getExported()
+		      && hasAbility(Ability.EXPORT)
+		      && owner.canTrade(type, Market.Access.CUSTOM_HOUSE))
+		    && amount <= limit) {
+		    int loss = amount + getNetProductionOf(type) - limit;
+		    if (loss > 0) {
+		        cs.addMessage(See.only(owner),
+		            new ModelMessage(ModelMessage.MessageType.WAREHOUSE_CAPACITY,
+		                             "model.colony.warehouseSoonFull",
+		                             this, type)
+		                .addNamed(goodsPercentString, goods)
+		                .addName(colonyPercentString, getName())
+		                .addAmount(amountPercentString, loss));
+		    }
+		}
 	}
 
 	private void checkWorkLocation(ChangeSet cs) {
@@ -502,7 +510,7 @@ public class ServerColony extends Colony implements ServerModelObject {
                                  this, spec.getGoodsType("model.goods.bells"))
                     .addAmount("%oldSoL%", oldSonsOfLiberty)
                     .addAmount("%newSoL%", sonsOfLiberty)
-                    .addName("%colony%", getName()));
+                    .addName(colonyPercentString, getName()));
 
             ModelMessage govMgtMessage = checkForGovMgtChangeMessage();
             if (govMgtMessage != null) {
@@ -525,7 +533,7 @@ public class ServerColony extends Colony implements ServerModelObject {
                             new ModelMessage(ModelMessage.MessageType.BUILDING_COMPLETED,
                                              "model.colony.notBuildingAnything",
                                              this)
-                                .addName("%colony%", getName()));
+                                .addName(colonyPercentString, getName()));
                         break;
                     }
                 }
@@ -549,24 +557,29 @@ public class ServerColony extends Colony implements ServerModelObject {
             ((ServerModelObject)workLocation).csNewTurn(random, lb, cs);
             ProductionInfo productionInfo = getProductionInfo(workLocation);
             if (productionInfo == null) continue;
-            if (!workLocation.isEmpty()) {
-                for (AbstractGoods goods : productionInfo.getProduction()) {
-                    UnitType expert = spec.getExpertForProducing(goods.getType());
-                    int experience = goods.getAmount() / workLocation.getUnitCount();
-                    for (Unit unit : workLocation.getUnitList()) {
-                        if (goods.getType() == unit.getExperienceType()
-                            && unit.getType().canBeUpgraded(expert, ChangeType.EXPERIENCE)) {
-                            unit.setExperience(unit.getExperience() + experience);
-                            cs.addPartial(See.only(owner), unit, "experience");
-                        }
-                    }
-                }
-            }
+            setExperience(cs, spec, owner, workLocation, productionInfo);
             if (workLocation instanceof ServerBuilding) {
                 // FIXME: generalize to other WorkLocations?
                 ((ServerBuilding)workLocation).csCheckMissingInput(productionInfo, cs);
             }
         }
+	}
+
+	private void setExperience(ChangeSet cs, final Specification spec, final ServerPlayer owner,
+			WorkLocation workLocation, ProductionInfo productionInfo) {
+		if (!workLocation.isEmpty()) {
+		    for (AbstractGoods goods : productionInfo.getProduction()) {
+		        UnitType expert = spec.getExpertForProducing(goods.getType());
+		        int experience = goods.getAmount() / workLocation.getUnitCount();
+		        for (Unit unit : workLocation.getUnitList()) {
+		            if (goods.getType() == unit.getExperienceType()
+		                && unit.getType().canBeUpgraded(expert, ChangeType.EXPERIENCE)) {
+		                unit.setExperience(unit.getExperience() + experience);
+		                cs.addPartial(See.only(owner), unit, "experience");
+		            }
+		        }
+		    }
+		}
 	}
 
     /**
@@ -603,14 +616,14 @@ public class ServerColony extends Colony implements ServerModelObject {
                           new ModelMessage(ModelMessage.MessageType.UNIT_ADDED,
                                            "model.colony.newColonist",
                                            this, unit)
-                          .addName("%colony%", getName()));
+                          .addName(colonyPercentString, getName()));
         } else {
             unit.setName(owner.getNameForUnit(type, random));
             cs.addMessage(See.only((ServerPlayer) owner),
                           new ModelMessage(ModelMessage.MessageType.UNIT_ADDED,
                                            "model.colony.unitReady",
                                            this, unit)
-                          .addName("%colony%", getName())
+                          .addName(colonyPercentString, getName())
                           .addStringTemplate("%unit%", unit.getLabel()));
         }
 
@@ -634,9 +647,10 @@ public class ServerColony extends Colony implements ServerModelObject {
         if (units == null || units.isEmpty()) return false;
         unit: for (Unit u : units) {
             for (WorkLocation wl : getAvailableWorkLocations()) {
-                if (wl == workLocation || !wl.canAdd(u)) continue;
-                u.setLocation(wl);//-vis: safe/colony
-                continue unit;
+                if (!(wl == workLocation || !wl.canAdd(u))) {
+                		u.setLocation(wl);//-vis: safe/colony
+                		continue unit;
+                }
             }
             u.setLocation(getTile());//-vis: safe/colony
         }
@@ -677,7 +691,7 @@ public class ServerColony extends Colony implements ServerModelObject {
             cs.addMessage(See.only((ServerPlayer) owner),
                 new ModelMessage(ModelMessage.MessageType.BUILDING_COMPLETED,
                                  "model.colony.buildingReady", this)
-                    .addName("%colony%", getName())
+                    .addName(colonyPercentString, getName())
                     .addNamed("%building%", type));
             if (owner.isAI()) {
                 firePropertyChange(REARRANGE_WORKERS, true, false);
@@ -721,7 +735,7 @@ public class ServerColony extends Colony implements ServerModelObject {
                             new ModelMessage(ModelMessage.MessageType.WARNING,
                                              "model.colony.cannotBuild",
                                              this)
-                                .addName("%colony%", getName()));
+                                .addName(colonyPercentString, getName()));
                     }
                 }
                 return null;
@@ -731,7 +745,7 @@ public class ServerColony extends Colony implements ServerModelObject {
                     new ModelMessage(ModelMessage.MessageType.WARNING,
                                      "model.colony.buildNeedPop",
                                      this)
-                        .addName("%colony%", getName())
+                        .addName(colonyPercentString, getName())
                         .addNamed("%building%", buildable));
                 break;
             default: // Are there other warnings to send?
@@ -768,7 +782,7 @@ public class ServerColony extends Colony implements ServerModelObject {
         cs.addMessage(See.only(serverPlayer),
             new ModelMessage(ModelMessage.MessageType.WARNING,
                              "model.colony.workersEvicted", this, this)
-                .addName("%colony%", getName())
+                .addName(colonyPercentString, getName())
                 .addStringTemplate("%location%", tile.getLocationLabel())
                 .addStringTemplate("%enemyUnit%", enemyUnit.getLabel()));
         cs.add(See.only(serverPlayer), ct);
@@ -903,7 +917,7 @@ net.sf.freecol.common.debug.FreeColDebugger.debugLog("BUILD " + building + "\n" 
                 new ModelMessage(ModelMessage.MessageType.UNIT_ADDED,
                                 "model.colony.newConvert", brave)
                     .addStringTemplate("%nation%", nation)
-                    .addName("%colony%", getName()));
+                    .addName(colonyPercentString, getName()));
             newOwner.invalidateCanSeeTiles();//+vis(other)
             logger.fine("Convert at " + getName() + " for " + getName());
         }
