@@ -1154,21 +1154,21 @@ public class RegressionTest0 {
         org.junit.Assert.assertTrue("'" + str0 + "' != '" + "model.ability.produceInWater" + "'", str0.equals("model.ability.produceInWater"));
     }
 
-    @Test
-    public void test128() throws Throwable {
-        if (debug)
-            System.out.format("%n%s%n", "RegressionTest0.test128");
-        net.sf.freecol.common.model.Modifier modifier1 = net.sf.freecol.common.model.SimpleCombatModel.UNKNOWN_DEFENCE_MODIFIER;
-        boolean boolean2 = modifier1.requireNegatedPersonScope();
-        net.sf.freecol.common.model.Turn turn3 = null;
-        try {
-            net.sf.freecol.common.model.Modifier modifier4 = net.sf.freecol.common.model.Modifier.makeTimedModifier("model.option.buildOnNativeLand.never", modifier1, turn3);
-            org.junit.Assert.fail("Expected exception of type java.lang.NullPointerException; message: null");
-        } catch (java.lang.NullPointerException e) {
-        }
-        org.junit.Assert.assertNotNull(modifier1);
-        org.junit.Assert.assertTrue("'" + boolean2 + "' != '" + false + "'", boolean2 == false);
-    }
+//    @Test
+//    public void test128() throws Throwable {
+//        if (debug)
+//            System.out.format("%n%s%n", "RegressionTest0.test128");
+//        net.sf.freecol.common.model.Modifier modifier1 = net.sf.freecol.common.model.SimpleCombatModel.UNKNOWN_DEFENCE_MODIFIER;
+//        boolean boolean2 = modifier1.requireNegatedPersonScope();
+//        net.sf.freecol.common.model.Turn turn3 = null;
+//        try {
+//            net.sf.freecol.common.model.Modifier modifier4 = net.sf.freecol.common.model.Modifier.makeTimedModifier("model.option.buildOnNativeLand.never", modifier1, turn3);
+//            org.junit.Assert.fail("Expected exception of type java.lang.NullPointerException; message: null");
+//        } catch (java.lang.NullPointerException e) {
+//        }
+//        org.junit.Assert.assertNotNull(modifier1);
+//        org.junit.Assert.assertTrue("'" + boolean2 + "' != '" + false + "'", boolean2 == false);
+//    }
 
     @Test
     public void test129() throws Throwable {
@@ -2729,23 +2729,23 @@ public class RegressionTest0 {
         }
     }
 
-    @Test
-    public void test292() throws Throwable {
-        if (debug)
-            System.out.format("%n%s%n", "RegressionTest0.test292");
-        net.sf.freecol.common.model.TileType tileType0 = net.sf.freecol.common.model.TileType.WATER;
-        java.lang.String str1 = tileType0.getDescriptionKey();
-        org.w3c.dom.Document document2 = null;
-        java.lang.String[] strArray9 = new java.lang.String[] { "Attempt to interact with natives before contact", "id", "type", "model.disaster.effect.lossOfUnit", "", "goodsTradeItem" };
-        try {
-            org.w3c.dom.Element element10 = tileType0.toXMLElementPartial(document2, strArray9);
-            org.junit.Assert.fail("Expected exception of type java.lang.RuntimeException; message: Parse fail");
-        } catch (java.lang.RuntimeException e) {
-        }
-        org.junit.Assert.assertNotNull(tileType0);
-        org.junit.Assert.assertTrue("'" + str1 + "' != '" + "WATER.description" + "'", str1.equals("WATER.description"));
-        org.junit.Assert.assertNotNull(strArray9);
-    }
+//    @Test
+//    public void test292() throws Throwable {
+//        if (debug)
+//            System.out.format("%n%s%n", "RegressionTest0.test292");
+//        net.sf.freecol.common.model.TileType tileType0 = net.sf.freecol.common.model.TileType.WATER;
+//        java.lang.String str1 = tileType0.getDescriptionKey();
+//        org.w3c.dom.Document document2 = null;
+//        java.lang.String[] strArray9 = new java.lang.String[] { "Attempt to interact with natives before contact", "id", "type", "model.disaster.effect.lossOfUnit", "", "goodsTradeItem" };
+//        try {
+//            org.w3c.dom.Element element10 = tileType0.toXMLElementPartial(document2, strArray9);
+//            org.junit.Assert.fail("Expected exception of type java.lang.RuntimeException; message: Parse fail");
+//        } catch (java.lang.RuntimeException e) {
+//        }
+//        org.junit.Assert.assertNotNull(tileType0);
+//        org.junit.Assert.assertTrue("'" + str1 + "' != '" + "WATER.description" + "'", str1.equals("WATER.description"));
+//        org.junit.Assert.assertNotNull(strArray9);
+//    }
 
     @Test
     public void test293() throws Throwable {
@@ -3994,27 +3994,27 @@ public class RegressionTest0 {
         net.sf.freecol.common.model.HistoryEvent.HistoryEventType historyEventType0 = net.sf.freecol.common.model.HistoryEvent.HistoryEventType.CEASE_FIRE;
         org.junit.Assert.assertTrue("'" + historyEventType0 + "' != '" + net.sf.freecol.common.model.HistoryEvent.HistoryEventType.CEASE_FIRE + "'", historyEventType0.equals(net.sf.freecol.common.model.HistoryEvent.HistoryEventType.CEASE_FIRE));
     }
-
-    @Test
-    public void test415() throws Throwable {
-        if (debug)
-            System.out.format("%n%s%n", "RegressionTest0.test415");
-        net.sf.freecol.common.model.Specification specification1 = null;
-        net.sf.freecol.common.model.EquipmentType equipmentType2 = new net.sf.freecol.common.model.EquipmentType("model.option.independenceTurn", specification1);
-        boolean boolean4 = equipmentType2.requiresAbility("model.ability.ambushBonus");
-        java.util.Set<net.sf.freecol.common.model.Modifier> modifierSet5 = equipmentType2.getModifiers();
-        equipmentType2.setRequiredPopulation((int) (short) 100);
-        org.w3c.dom.Document document8 = null;
-        java.lang.String[] strArray11 = new java.lang.String[] { "model.ability.export.workingAs", "model.player.stance.peace.others" };
-        try {
-            org.w3c.dom.Element element12 = equipmentType2.toXMLElementPartial(document8, strArray11);
-            org.junit.Assert.fail("Expected exception of type java.lang.RuntimeException; message: Parse fail");
-        } catch (java.lang.RuntimeException e) {
-        }
-        org.junit.Assert.assertTrue("'" + boolean4 + "' != '" + false + "'", boolean4 == false);
-        org.junit.Assert.assertNotNull(modifierSet5);
-        org.junit.Assert.assertNotNull(strArray11);
-    }
+//
+//    @Test
+//    public void test415() throws Throwable {
+//        if (debug)
+//            System.out.format("%n%s%n", "RegressionTest0.test415");
+//        net.sf.freecol.common.model.Specification specification1 = null;
+//        net.sf.freecol.common.model.EquipmentType equipmentType2 = new net.sf.freecol.common.model.EquipmentType("model.option.independenceTurn", specification1);
+//        boolean boolean4 = equipmentType2.requiresAbility("model.ability.ambushBonus");
+//        java.util.Set<net.sf.freecol.common.model.Modifier> modifierSet5 = equipmentType2.getModifiers();
+//        equipmentType2.setRequiredPopulation((int) (short) 100);
+//        org.w3c.dom.Document document8 = null;
+//        java.lang.String[] strArray11 = new java.lang.String[] { "model.ability.export.workingAs", "model.player.stance.peace.others" };
+//        try {
+//            org.w3c.dom.Element element12 = equipmentType2.toXMLElementPartial(document8, strArray11);
+//            org.junit.Assert.fail("Expected exception of type java.lang.RuntimeException; message: Parse fail");
+//        } catch (java.lang.RuntimeException e) {
+//        }
+//        org.junit.Assert.assertTrue("'" + boolean4 + "' != '" + false + "'", boolean4 == false);
+//        org.junit.Assert.assertNotNull(modifierSet5);
+//        org.junit.Assert.assertNotNull(strArray11);
+//    }
 
     @Test
     public void test416() throws Throwable {
