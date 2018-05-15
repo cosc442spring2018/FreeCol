@@ -1,5 +1,6 @@
 package net.sf.freecol.common.model;
 
+import net.sf.freecol.server.model.ServerColony;
 import net.sf.freecol.server.model.ServerPlayer;
 import net.sf.freecol.util.test.FreeColTestCase;
 
@@ -36,5 +37,24 @@ public class PlayerLibertyTest extends FreeColTestCase{
         dutchPlayer.modifyLiberty(libertyAmt);
         assertEquals(dutchPlayer.getLiberty(), libertyAmt * 2);
         assertEquals(dutchPlayer.interventionBells, libertyAmt);
+    }
+
+    public void testGetLibertyProductionNextTurn() {
+        game.setMap(getTestMap());
+        GoodsType liberty = game.getSpecification().getLibertyGoodsTypeList().get(0);
+        assertEquals(0, dutchPlayer.getLibertyProductionNextTurn());
+
+        String colonyName = "AnthonyAsimNoobville";
+        int goodsAmt = 100;
+
+        Colony newColony = new ServerColony(getGame(), dutchPlayer, colonyName, getTestMap().getTile(0, 0));
+        Building newBuilding = new Building(getGame(), newColony, new BuildingType("model.building.church", getGame().getSpecification()));
+        Goods goods = new Goods(game, newColony, liberty, goodsAmt);
+        newColony.addBuilding(newBuilding);
+        newBuilding.getProductionInfo().addProduction(goods);
+        dutchPlayer.addSettlement(newColony);
+
+        assertEquals(dutchPlayer.getLibertyProductionNextTurn(), (int)dutchPlayer.applyModifiers((float)newColony.getTotalProductionOf(liberty), game.getTurn(),
+                Modifier.LIBERTY));
     }
 }

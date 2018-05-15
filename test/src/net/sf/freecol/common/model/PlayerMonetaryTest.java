@@ -99,5 +99,22 @@ public class PlayerMonetaryTest extends FreeColTestCase {
 
         assertEquals(dutchPlayer.getMostValuableGoods().getType(), type);
     }
+
+    /**Test if a good can be traded to Europe*/
+    public void testCanTradeEurope() {
+        GoodsType type = game.getSpecification().getGoodsType("model.goods.food");
+        assertTrue(dutchPlayer.canTrade(type));
+        dutchPlayer.getMarket().setArrears(type, 100);
+        assertFalse(dutchPlayer.canTrade(type));
+    }
+
+    public void testGetClosestPortForEurope() {
+        game.setMap(getTestMap(game.getSpecification().getTileType("model.tile.ocean")));
+        Tile tile = game.getMap().getTile(0,0);
+        tile.setHighSeasCount(100);
+        Colony colony = new ServerColony(game, dutchPlayer, "New Amsterdam", tile);
+        dutchPlayer.addSettlement(colony);
+        assertEquals(dutchPlayer.getClosestPortForEurope(), colony);
+    }
 }
 

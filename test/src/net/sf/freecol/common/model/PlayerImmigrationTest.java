@@ -3,6 +3,7 @@ package net.sf.freecol.common.model;
 
 import net.sf.freecol.common.i18n.Messages;
 import net.sf.freecol.common.networking.Message;
+import net.sf.freecol.server.model.ServerColony;
 import net.sf.freecol.server.model.ServerPlayer;
 import net.sf.freecol.server.model.ServerUnit;
 import net.sf.freecol.util.test.FreeColTestCase;
@@ -117,33 +118,41 @@ public class PlayerImmigrationTest extends FreeColTestCase {
 	}
 	
 	public void testGetTotalImmigrationProduction() {
+		game.setMap(getTestMap());
 		ServerPlayer nativeAmericanPlayer = (ServerPlayer) game.getPlayerByNationId("model.nation.inca");
 		assertEquals(0, nativeAmericanPlayer.getTotalImmigrationProduction());
 
 		String colonyName = "AnthonyAsimNoobville";
-		int numImmigrationGoods = 100;
+		int goodsAmt = 100;
 
 		final List<GoodsType> immigrationGoodsTypes = getGame().getSpecification().getImmigrationGoodsTypeList();
 		if (immigrationGoodsTypes.size() > 0) {
 
-			Colony newColony = new Colony(getGame(), dutchPlayer, colonyName, getTestMap().getTile(0, 0));
+			Colony newColony = new ServerColony(getGame(), dutchPlayer, colonyName, getTestMap().getTile(0, 0));
 			Building newBuilding = new Building(getGame(), newColony, new BuildingType("model.building.church", getGame().getSpecification()));
-			newBuilding.getProductionInfo().addProduction(new AbstractGoods(immigrationGoodsTypes.get(0), 100));
+			Goods goods = new Goods(game, newColony, immigrationGoodsTypes.get(0), goodsAmt);
+			newColony.addBuilding(newBuilding);
+			newBuilding.getProductionInfo().addProduction(goods);
+
+			assertEquals(dutchPlayer.getTotalImmigrationProduction(), dutchPlayer.europe.getImmigration(0));
 
 			newColony.addBuilding(newBuilding);
-			dutchPlayer.addSettlement(new Colony(getGame(), dutchPlayer, colonyName, getTestMap().getTile(0, 0)));
 
+			dutchPlayer.addSettlement(newColony);
 
 			Europe eu = dutchPlayer.getEurope();
-			if (eu != null) {
-				assertEquals(dutchPlayer.getTotalImmigrationProduction(), numImmigrationGoods + eu.getImmigration(20));
+			int production = newColony.getTotalProductionOf(immigrationGoodsTypes.get(0));
 
-			} else {
-				assertEquals(dutchPlayer.getTotalImmigrationProduction(), numImmigrationGoods);
-				dutchPlayer.setEurope(new Europe(getGame(), dutchPlayer));
+			if (eu != null) {
+				assertEquals(dutchPlayer.getTotalImmigrationProduction(), newColony.getTotalProductionOf(immigrationGoodsTypes.get(0)) + eu.getImmigration(production));
 			}
+
+			dutchPlayer.setEurope(null);
+			assertEquals(dutchPlayer.getTotalImmigrationProduction(), newColony.getTotalProductionOf(immigrationGoodsTypes.get(0)));
+			;
 		}
-		fail("No immigration good types found in this game mode");
+		else
+			fail("No immigration good types found in this game mode");
 	}
 	
 	public void testGetEmigrationMessage() {

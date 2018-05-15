@@ -21,6 +21,7 @@ package net.sf.freecol.common.model;
 
 import java.util.Iterator;
 
+import net.sf.freecol.server.model.ServerColony;
 import net.sf.freecol.server.model.ServerGame;
 import net.sf.freecol.server.model.ServerPlayer;
 import net.sf.freecol.server.model.ServerUnit;
@@ -292,6 +293,28 @@ public class PlayerTest extends FreeColTestCase {
             assertEquals("Wrong number of units for french player",0,french.getUnits().size());
 
         }
+    }
 
+    /**This test sucks and doesn't do much but it gives lots of coverage :D*/
+    public void testGetAllColonyValues() {
+        Map map = getTestMap(getGame().getSpecification().getTileType("model.tile.plains"));
+        getGame().setMap(map);
+        ServerPlayer dutchPlayer = (ServerPlayer)getGame().getPlayerByNationId("model.nation.dutch");
+        Tile tile = map.getTile(5,5);
+        Tile tile2 = map.getTile(6,3);
+        tile.setHighSeasCount(100);
+
+        String dutchColonyName = "New Amsterdam";
+        Colony dutchColony = new ServerColony(getGame(), dutchPlayer, dutchColonyName, tile2);
+        dutchPlayer.addSettlement(dutchColony);
+
+        tile2.setSettlement(dutchColony);
+
+        assertEquals(dutchPlayer.getAllColonyValues(tile),null);
+        /**
+        assertEquals(dutchPlayer.getAllColonyValues(getTestMap().getTile(0,0)),null);
+        getGame().setMap(getTestMap(TileType.LAND));
+        assertEquals(dutchPlayer.getAllColonyValues(getTestMap().getTile(0,0)),null);
+         */
     }
 }

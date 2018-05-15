@@ -23,7 +23,7 @@ public class PlayerFoundingFatherTest extends FreeColTestCase {
         dutchPlayer = (ServerPlayer) game.getPlayerByNationId("model.nation.dutch");
     }
 
-    public void testHasFather() {
+    public void testGetFatherCount() {
         dutchPlayer.addFather(new FoundingFather("father" + 0, getGame().getSpecification()));
         assertEquals(dutchPlayer.getFatherCount(), 1);
     }
@@ -55,7 +55,7 @@ public class PlayerFoundingFatherTest extends FreeColTestCase {
         FoundingFather father1 = new FoundingFather("father" + 0, getGame().getSpecification());
         dutchPlayer.addFather(father1);
 
-        assertEquals(dutchPlayer.getTotalFoundingFatherCost(),dutchPlayer.getTotalFoundingFatherCost() - dutchPlayer.getLiberty());
+        assertEquals(dutchPlayer.getRemainingFoundingFatherCost(),dutchPlayer.getTotalFoundingFatherCost() - dutchPlayer.getLiberty());
     }
 
     public void testGetTotalFoundingFatherCost() {
@@ -71,5 +71,13 @@ public class PlayerFoundingFatherTest extends FreeColTestCase {
 
         int foundingFatherCost = 2 * (dutchPlayer.getFatherCount() + 1) * foundingFatherBaseCost + 1;
         assertEquals(dutchPlayer.getTotalFoundingFatherCost(), foundingFatherCost);
+    }
+
+    public void testHasFather() {
+        FoundingFather father = new FoundingFather("father1", getGame().getSpecification());
+        FoundingFather father2 = new FoundingFather("father2", getGame().getSpecification());
+        dutchPlayer.addFather(father);
+        assertTrue(dutchPlayer.hasFather(father));
+        assertFalse(dutchPlayer.hasFather(father2));
     }
 }

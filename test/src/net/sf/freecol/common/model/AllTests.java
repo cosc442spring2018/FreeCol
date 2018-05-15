@@ -70,6 +70,7 @@ public class AllTests {
         suite.addTestSuite(PlayerMonetaryTest.class);
         suite.addTestSuite(PlayerImmigrationTest.class);
         suite.addTestSuite(PlayerUnitTest.class);
+        suite.addTestSuite(PlayerColonyTest.class);
         //$JUnit-END$
         return suite;
     }
