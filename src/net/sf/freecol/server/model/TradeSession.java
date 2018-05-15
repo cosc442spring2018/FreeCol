@@ -19,21 +19,15 @@
 
 package net.sf.freecol.server.model;
 
-import java.util.logging.Logger;
 
 import net.sf.freecol.common.model.Settlement;
 import net.sf.freecol.common.model.Unit;
-import net.sf.freecol.server.control.ChangeSet;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * A type of session to handle trading.
  */
 public class TradeSession extends TransactionSession {
-
-    /** The Constant logger. */
-    private static final Logger logger = Logger.getLogger(TradeSession.class.getName());
 
     /** The moves the trading unit has left at start of session. */
     private final int movesLeft;
@@ -66,15 +60,7 @@ public class TradeSession extends TransactionSession {
         canSell = !atWar && unit.hasGoodsCargo();
         canGift = unit.hasGoodsCargo();
     }
-
-    /* (non-Javadoc)
-     * @see net.sf.freecol.server.model.TransactionSession#complete(net.sf.freecol.server.control.ChangeSet)
-     */
-    @Override
-    public void complete(ChangeSet cs) {
-        super.complete(cs);
-    }
-
+    
     /**
      * Gets the moves left.
      *

@@ -27,7 +27,6 @@ import net.sf.freecol.common.model.FreeColGameObject;
 import net.sf.freecol.server.control.ChangeSet;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * Root class for sessions.
  */

@@ -78,13 +78,15 @@ import net.sf.freecol.server.control.ChangeSet.ChangePriority;
 import net.sf.freecol.server.control.ChangeSet.See;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * Server version of a unit.
  */
 public class ServerUnit extends Unit implements ServerModelObject {
 
-    /** The Constant logger. */
+    private static String unitPercentString = "%unit%";
+	private static String nationPercentString = "%nation%";
+	private static String moneyPercentString = "%money%";
+	/** The Constant logger. */
     private static final Logger logger = Logger.getLogger(ServerUnit.class.getName());
 
 
@@ -268,8 +270,6 @@ public class ServerUnit extends Unit implements ServerModelObject {
 
 
         if (getWorkLeft() <= 0) {
-        	unitDirty = unitDirty; 
-        	locDirty = locDirty;
             if (getLocation() instanceof HighSeas) {
                 final Europe europe = owner.getEurope();
                 final Location dst = getDestination();
@@ -401,7 +401,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
 		        new ModelMessage(ModelMessage.MessageType.UNIT_IMPROVED,
 		            "model.unit.experience", getColony(), this)
 		        .addStringTemplate("%oldName%", oldName)
-		        .addStringTemplate("%unit%", getLabel())
+		        .addStringTemplate(unitPercentString, getLabel())
 		        .addName("%colony%", getColony().getName()));
 		    lb.add(" experience upgrade to ", getType());
 		    unitDirty = true;
@@ -417,7 +417,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
                 cs.addMessage(See.only(owner),
                     new ModelMessage(ModelMessage.MessageType.UNIT_LOST,
                         "model.unit.attrition", this)
-                    .addStringTemplate("%unit%", getLabel())
+                    .addStringTemplate(unitPercentString, getLabel())
                     .addStringTemplate("%location%",
                         loc.getLocationLabelFor(owner)));
                 cs.add(See.perhaps(), (Tile)loc);
@@ -503,15 +503,14 @@ public class ServerUnit extends Unit implements ServerModelObject {
 		cs.addMessage(See.only(owner),
 		    new ModelMessage(ModelMessage.MessageType.WARNING,
 		        messageId, this)
-		    .addStringTemplate("%unit%", getLabel())
+		    .addStringTemplate(unitPercentString, getLabel())
 		    .addStringTemplate("%location%", locName));
 	}
 
 	private void checkExposedResource(Random random, Tile tile, TileImprovement ti) {
 		TileImprovementType tileImprovementType = ti.getType();
         int exposeResource = tileImprovementType.getExposeResourcePercent();
-        if (exposeResource > 0 && !tile.hasResource()) {
-            if (randomInt(logger, "Expose resource", random, 100)
+        if ((exposeResource > 0 && !tile.hasResource()) && (randomInt(logger, "Expose resource", random, 100))
                 < exposeResource) {
                 ResourceType resType = RandomChoice
                     .getWeightedRandom(logger, "Resource type",
@@ -524,7 +523,6 @@ public class ServerUnit extends Unit implements ServerModelObject {
                                 random, maxValue - minValue + 1));
                 tile.addResource(new Resource(getGame(), tile,
                                               resType, value));//-til
-            }
         }
 	}
 
@@ -585,7 +583,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
             cs.addMessage(See.only(owner),
                 new ModelMessage("model.unit.unitRepaired",
                     this, (FreeColGameObject)loc)
-                .addStringTemplate("%unit%", getLabel())
+                .addStringTemplate(unitPercentString, getLabel())
                 .addStringTemplate("%repairLocation%",
                     loc.getLocationLabelFor(owner)));
             setState(UnitState.ACTIVE);
@@ -607,7 +605,8 @@ public class ServerUnit extends Unit implements ServerModelObject {
         CombatModel combatModel = game.getCombatModel();
         boolean pirate = hasAbility(Ability.PIRACY);
         Unit attacker = null;
-        double attackPower = 0, totalAttackPower = 0;
+        double attackPower = 0;
+        double totalAttackPower = 0;
 
         if (!isNaval() || getMovesLeft() <= 0) return null;
         for (Tile tile : newTile.getSurroundingTiles(1)) {
@@ -663,7 +662,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
         cs.addMessage(See.only(serverPlayer),
             new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
                 RumourType.BURIAL_GROUND.getDescriptionKey(), serverPlayer, this)
-            .addStringTemplate("%nation%", indianPlayer.getNationLabel()));
+            .addStringTemplate(nationPercentString, indianPlayer.getNationLabel()));
     }
 
     /**
@@ -683,7 +682,6 @@ public class ServerUnit extends Unit implements ServerModelObject {
         Specification spec = game.getSpecification();
         int difficulty = spec.getInteger(GameOptions.RUMOUR_DIFFICULTY);
         int dx = 10 - difficulty;
-        UnitType unitType;
         Unit newUnit = null;
         List<UnitType> treasureUnitTypes
             = spec.getUnitTypesWithAbility(Ability.CARRY_TREASURE);
@@ -743,7 +741,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
                     done = true;
                     break;
                 default:
-                    ; // unacceptable result for mounds
+                     // unacceptable result for mounds
                 }
             }
         }
@@ -847,7 +845,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
 		        ((mounds) ? rumour.getAlternateDescriptionKey("mounds")
 		            : key),
 		        serverPlayer, ((newUnit != null) ? newUnit : this))
-		        .addAmount("%money%", ruinsAmount));
+		        .addAmount(moneyPercentString, ruinsAmount));
 	}
 
 	private void processCaseCibola(Random random, ChangeSet cs, ServerPlayer serverPlayer, Tile tile, Game game, int dx,
@@ -865,11 +863,11 @@ public class ServerUnit extends Unit implements ServerModelObject {
 		    new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
 		                     key, serverPlayer, newUnit)
 		    .addName("%city%", cityName)
-		    .addAmount("%money%", treasureAmount));
+		    .addAmount(moneyPercentString, treasureAmount));
 		cs.addGlobalHistory(game,
 		    new HistoryEvent(game.getTurn(),
 		        HistoryEvent.HistoryEventType.CITY_OF_GOLD, serverPlayer)
-		    .addStringTemplate("%nation%", serverPlayer.getNationLabel())
+		    .addStringTemplate(nationPercentString, serverPlayer.getNationLabel())
 		    .addName("%city%", cityName)
 		    .addAmount("%treasure%", treasureAmount));
 	}
@@ -900,7 +898,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
 		        ((mounds) ? rumour.getAlternateDescriptionKey("mounds")
 		            : key),
 		        serverPlayer, this)
-		    .addAmount("%money%", chiefAmount));
+		    .addAmount(moneyPercentString, chiefAmount));
 		serverPlayer.invalidateCanSeeTiles();//+vis(serverPlayer)
 	}
 
@@ -915,7 +913,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
 		cs.addMessage(See.only(serverPlayer),
 		    new ModelMessage(ModelMessage.MessageType.LOST_CITY_RUMOUR,
 		                     key, serverPlayer, this)
-		        .addStringTemplate("%unit%", oldName)
+		        .addStringTemplate(unitPercentString, oldName)
 		        .addNamed("%type%", getType()));
 	}
 
@@ -969,7 +967,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
         setState(UnitState.ACTIVE);
         setStateToAllChildren(UnitState.SENTRY);
         if (oldLocation instanceof HighSeas) {
-            ; // Do not try to calculate move cost from Europe!
+             // Do not try to calculate move cost from Europe!
         } else if (oldLocation instanceof Unit) {
             setMovesLeft(0); // Disembark always consumes all moves.
         } else {
@@ -1058,7 +1056,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
                         processEuropean(newTile, cs, serverPlayer, settlement, unit, firstLanding, other);
                     } else {
                         if (other.isIndian()) {
-                            ; // Do nothing
+                             // Do nothing
                         } else {
                             other.csNativeFirstContact(serverPlayer, null, cs);
                         }
@@ -1140,7 +1138,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
 		    new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
 		                     "model.unit.nativeSettlementContact",
 		                     this, is)
-		        .addStringTemplate("%nation%", nation)
+		        .addStringTemplate(nationPercentString, nation)
 		        .addName("%settlement%", is.getName()));
 		logger.finest("First contact between "
 		    + contactPlayer.getId()
@@ -1152,7 +1150,7 @@ public class ServerUnit extends Unit implements ServerModelObject {
 		cs.addMessage(See.only(serverPlayer),
 		    new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
 		        "model.unit.slowed", this, slowedBy)
-		    .addStringTemplate("%unit%", getLabel(UnitLabelType.NATIONAL))
+		    .addStringTemplate(unitPercentString, getLabel(UnitLabelType.NATIONAL))
 		    .addStringTemplate("%enemyUnit%", slowedBy.getLabel(UnitLabelType.NATIONAL))
 		    .addStringTemplate("%enemyNation%", enemy));
 	}
