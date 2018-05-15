@@ -47,7 +47,6 @@ import net.sf.freecol.server.control.ChangeSet;
 import net.sf.freecol.server.control.ChangeSet.See;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * The server version of an Indian Settlement.
  */
@@ -149,7 +148,6 @@ public class ServerIndianSettlement extends IndianSettlement
      * @param cs A <code>ChangeSet</code> to update.
      */
     public void csStartTurn(Random random, ChangeSet cs) {
-        final Specification spec = getSpecification();
         final Unit missionary = getMissionary();
         if (missionary == null) return;
         final ServerPlayer other = (ServerPlayer)missionary.getOwner();

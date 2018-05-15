@@ -103,7 +103,6 @@ import net.sf.freecol.server.control.ChangeSet.See;
 import org.w3c.dom.Element;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * A <code>Player</code> with additional (server specific) information.
  *
@@ -112,7 +111,35 @@ import org.w3c.dom.Element;
  */
 public class ServerPlayer extends Player implements ServerModelObject {
 
-    /** The Constant logger. */
+    private static String soundString = "sound";
+
+	private static String combatUnitSlaughteredString = "combat.unitSlaughtered";
+
+	private static String combatUnitDemotedString = "combat.unitDemoted";
+
+	private static String enemyPercentString = "%enemy%";
+
+	private static String settlementPercentString = "%settlement%";
+
+	private static String unitPercentString = "%unit%";
+
+	private static String oldNamePercentString = "%oldName%";
+
+	private static String nationPercentString = "%nation%";
+
+	private static String locationPercentString = "%location%";
+
+	private static String goodsPercentString = "%goods%";
+
+	private static String enemyUnitPercentString = "%enemyUnit%";
+
+	private static String enemyNationPercentString = "%enemyNation%";
+
+	private static String colonyPercentString = "%colony%";
+
+	private static String amountPercentString = "%amount%";
+
+	/** The Constant logger. */
     private static final Logger logger = Logger.getLogger(ServerPlayer.class.getName());
 
     /** The Constant ALARM_RADIUS. */
@@ -456,13 +483,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
     public int checkForDeath() {
         if (isUnknownEnemy()) return IS_ALIVE;
         final Specification spec = getGame().getSpecification();
-        /*
-         * Die if: (isNative && (no colonies or units))
-         *      || ((rebel or independent) && !(has coastal colony))
-         *      || (isREF && !(rebel nation left) && (all units in Europe))
-         *      || ((no units in New World)
-         *         && ((year > 1600) || (cannot get a unit from Europe)))
-         */
+
         switch (getPlayerType()) {
         case NATIVE: // All natives units are viable
             return (getUnits().isEmpty()) ? IS_DEAD : IS_ALIVE;
@@ -496,8 +517,10 @@ public class ServerPlayer extends Player implements ServerModelObject {
 
         // Traverse player units, look for valid carriers, colonists,
         // carriers with units, carriers with goods.
-        boolean hasCarrier = false, hasColonist = false, hasEmbarked = false,
-            hasGoods = false;
+        boolean hasCarrier = false;
+        boolean hasColonist = false;
+        boolean hasEmbarked = false;
+        boolean hasGoods = false;
         for (Unit unit : getUnits()) {
             if (unit.isCarrier()) {
                 if (unit.hasGoodsCargo()) hasGoods = true;
@@ -572,7 +595,6 @@ public class ServerPlayer extends Player implements ServerModelObject {
             logger.info(getName() + " dead, can not recruit.");
             return IS_DEAD;
         }
-        UnitType unitType = null;
         int price = europe.getRecruitPrice();
         for (UnitType type : spec.getUnitTypesWithAbility(Ability.FOUND_COLONY)) {
             int p = europe.getUnitPrice(type);
@@ -632,10 +654,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
                 .filter(u -> !u.isNaval())
                 .mapToDouble(u -> cm.getOffencePower(u, null)).sum();
         }
-        if (power > rebelPower) return false;
-
-        // REF is defeated
-        return true;
+        return (power <= rebelPower);
     }
 
     /**
@@ -729,12 +748,12 @@ public class ServerPlayer extends Player implements ServerModelObject {
                     ? "model.player.dead.european"
                     : "model.player.dead.native"),
                 this)
-            .addStringTemplate("%nation%", getNationLabel()));
+            .addStringTemplate(nationPercentString, getNationLabel()));
         Game game = getGame();
         cs.addGlobalHistory(game,
             new HistoryEvent(game.getTurn(),
                 HistoryEvent.HistoryEventType.NATION_DESTROYED, null)
-            .addStringTemplate("%nation%", getNationLabel()));
+            .addStringTemplate(nationPercentString, getNationLabel()));
         csKill(cs);
     }
 
@@ -1014,12 +1033,10 @@ public class ServerPlayer extends Player implements ServerModelObject {
      * a large advantage.
      *
      * @param tiles The collection of <code>Tile</code>s to reassign.
-     * @param prefer An optional <code>Player</code> to prefer to reassign to.
      * @param avoid An optional <code>Settlement</code> to consider last
      *     when making claims.
      */
     private static void reassignTiles(Collection<Tile> tiles,
-                                      Player prefer,
                                       Settlement avoid) {
         HashMap<Settlement, Integer> votes = new HashMap<>();
         HashMap<Tile, Settlement> claims = new HashMap<>();
@@ -1027,9 +1044,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         for (Tile tile : tiles) {
             if (tile.isOccupied()) continue;
             votes.clear();
-            for (Tile t : tile.getSurroundingTiles(1)) {
-                claimant = modCliamint(prefer, votes, tile, t);
-            }
+
             boolean lastResort = false;
             int bestValue = 0;
             claimant = null;
@@ -1057,36 +1072,6 @@ public class ServerPlayer extends Player implements ServerModelObject {
             }
         }
     }
-
-	private static Settlement modCliamint(Player prefer, HashMap<Settlement, Integer> votes, Tile tile, Tile t) {
-		Settlement claimant;
-		claimant = t.getOwningSettlement();
-		if (claimant != null
-		    // BR#3375773 found a case where tiles were
-		    // still owned by a settlement that had been
-		    // previously destroyed.  These should be gone, but...
-		    && !claimant.isDisposed()
-		    && claimant.getOwner() != null
-		    && claimant.getOwner().canOwnTile(tile)
-		    && (claimant.getOwner().isIndian()
-		        || claimant.getTile().getDistanceTo(tile)
-		        <= claimant.getRadius())) {
-		    // Weight claimant settlements:
-		    //   settlements owned by the same player
-		    //     > settlements owned by same type of player
-		    //     > other settlements
-		    int value = (prefer == null) ? 1
-		        : (claimant.getOwner() == prefer) ? 3
-		        : (claimant.getOwner().isEuropean()
-		            == prefer.isEuropean()) ? 2
-		        : 1;
-		    if (votes.get(claimant) != null) {
-		        value += votes.get(claimant);
-		    }
-		    votes.put(claimant, value);
-		}
-		return claimant;
-	}
 
     /**
      * Create units from a list of abstract units.  Only used by
@@ -1121,14 +1106,16 @@ public class ServerPlayer extends Player implements ServerModelObject {
             // Drop the isREF() branch when the compatibility code
             // goes away.
             if (isREF()) {
-                if (!role.isAvailableTo(this, type)) {
-                    if (null != role.getId()) switch (role.getId()) {
+                if ((!role.isAvailableTo(this, type)) && (null != role.getId())) {
+                    	switch (role.getId()) {
                         case "model.role.soldier":
                             role = spec.getRole("model.role.infantry");
                             break;
                         case "model.role.dragoon":
                             role = spec.getRole("model.role.cavalry");
                             break;
+                        default:
+                        	break;
                     }
                 }
             } else {
@@ -1336,7 +1323,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
             }
             cs.addHistory(this, new HistoryEvent(getGame().getTurn(),
                     HistoryEvent.getEventTypeFromStance(stance), otherPlayer)
-                .addStringTemplate("%nation%", otherPlayer.getNationLabel()));
+                .addStringTemplate(nationPercentString, otherPlayer.getNationLabel()));
             logger.info("Stance modification " + getName()
                 + " " + old + " -> " + stance + " wrt " + otherPlayer.getName());
             this.addStanceChange(other);
@@ -1344,7 +1331,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
                 cs.addMessage(See.only(other),
                     new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
                         stance.getStanceChangeKey(), this)
-                    .addStringTemplate("%nation%", getNationLabel()));
+                    .addStringTemplate(nationPercentString, getNationLabel()));
             }
             cs.addStance(See.only(this), this, stance, otherPlayer);
             cs.addStance(See.only(other), this, stance, otherPlayer);
@@ -1358,7 +1345,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
             }
             cs.addHistory(otherPlayer, new HistoryEvent(getGame().getTurn(),
                     HistoryEvent.getEventTypeFromStance(stance), this)
-                .addStringTemplate("%nation%", this.getNationLabel()));
+                .addStringTemplate(nationPercentString, this.getNationLabel()));
             logger.info("Stance modification " + otherPlayer.getName()
                 + " " + old + " -> " + stance
                 + " wrt " + getName() + " (symmetric)");
@@ -1367,7 +1354,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
                 cs.addMessage(See.only(this),
                     new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
                         stance.getStanceChangeKey(), otherPlayer)
-                    .addStringTemplate("%nation%", otherPlayer.getNationLabel()));
+                    .addStringTemplate(nationPercentString, otherPlayer.getNationLabel()));
             }
             cs.addStance(See.only(this), otherPlayer, stance, this);
             cs.addStance(See.only(other), otherPlayer, stance, this);
@@ -1433,7 +1420,8 @@ public class ServerPlayer extends Player implements ServerModelObject {
 
         // Settlements
         List<Settlement> settlements = new ArrayList<>(getSettlements());
-        int newSoL = 0, newImmigration = getImmigration();
+        int newSoL = 0;
+        int newImmigration = getImmigration();
         for (Settlement settlement : settlements) {
             ((ServerModelObject)settlement).csNewTurn(random, lb, cs);
             newSoL += settlement.getSoL();
@@ -1670,7 +1658,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
 		            cs.addMessage(See.only(this),
 		                          new ModelMessage(ModelMessage.MessageType.DEFAULT,
 		                                           "model.player.disaster.strikes", colony)
-		                          .addName("%colony%", colony.getName())
+		                          .addName(colonyPercentString, colony.getName())
 		                          .addName("%disaster%", disaster));
 		            for (ModelMessage message : messages) {
 		                cs.addMessage(See.only(this), message);
@@ -1749,32 +1737,30 @@ public class ServerPlayer extends Player implements ServerModelObject {
                         colonyDirty = processGoodsLoss(random, colony, colonyDirty, messages, effect);
                         break;
                     case Effect.LOSS_OF_UNIT:
-                        {
                             Unit unit = getUnitForEffect(colony, effect, random);
                             if (unit != null) {
                                 if (colony.getUnitCount() == 1) {
                                     messages.clear();
                                     messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
                                             "model.player.disaster.effect.colonyDestroyed", this)
-                                        .addName("%colony%", colony.getName()));
+                                        .addName(colonyPercentString, colony.getName()));
                                     csDisposeSettlement(colony, cs);
                                     colonyDirty = false;
                                     break OUTER; // No point proceeding
                                 }
                                 messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
                                         effect.getId(), colony)
-                                    .addStringTemplate("%unit%", unit.getLabel()));
+                                    .addStringTemplate(unitPercentString, unit.getLabel()));
                                 cs.addRemove(See.only(this), null, unit);
                                 unit.dispose();//-vis: Safe, entirely within colony
                                 colonyDirty = true;
                             }
                             break;
-                        }
+                        
                     case Effect.DAMAGED_UNIT:
-                        {
                             colonyDirty = processDamage(random, colony, cs, colonyDirty, messages, effect);
                             break;
-                        }
+                        
                     default:
                         messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
                                 effect.getId(), colony));
@@ -1830,7 +1816,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
 		cs.addPartial(See.only(this), this, "gold");
 		messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
 		        effect.getId(), this)
-		    .addAmount("%amount%", plunder));
+		    .addAmount(amountPercentString, plunder));
 	}
 
 	private boolean processGoodsLoss(Random random, Colony colony, boolean colonyDirty, List<ModelMessage> messages,
@@ -1843,7 +1829,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
 		    colony.removeGoods(goods);
 		    messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
 		            effect.getId(), colony)
-		        .addStringTemplate("%goods%", goods.getLabel(true)));
+		        .addStringTemplate(goodsPercentString, goods.getLabel(true)));
 		    colonyDirty = true;
 		}
 		return colonyDirty;
@@ -1857,12 +1843,12 @@ public class ServerPlayer extends Player implements ServerModelObject {
 		    if (repairLocation == null) {
 		        messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
 		                effect.getId(), colony)
-		            .addStringTemplate("%unit%", unit.getLabel()));
+		            .addStringTemplate(unitPercentString, unit.getLabel()));
 		        csSinkShip(unit, null, cs);
 		    } else {
 		        messages.add(new ModelMessage(ModelMessage.MessageType.DEFAULT,
 		                effect.getId(), colony)
-		            .addStringTemplate("%unit%", unit.getLabel()));
+		            .addStringTemplate(unitPercentString, unit.getLabel()));
 		        csDamageShip(unit, repairLocation, cs);
 		    }
 		    colonyDirty = true;
@@ -2165,9 +2151,9 @@ public class ServerPlayer extends Player implements ServerModelObject {
 		    cs.addMessage(See.only((ServerPlayer)enemy),
 		        new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
 		                         key, settlement)
-		            .addStringTemplate("%nation%", getNationLabel())
-		            .addStringTemplate("%enemy%", enemy.getNationLabel())
-		            .addName("%settlement%", settlement.getName()));
+		            .addStringTemplate(nationPercentString, getNationLabel())
+		            .addStringTemplate(enemyPercentString, enemy.getNationLabel())
+		            .addName(settlementPercentString, settlement.getName()));
 		}
 	}
 
@@ -2208,7 +2194,8 @@ public class ServerPlayer extends Player implements ServerModelObject {
         final Specification spec = game.getSpecification();
         final ServerEurope europe = (ServerEurope)getEurope();
         final Turn turn = game.getTurn();
-        boolean europeDirty = false, visibilityChange = false;
+        boolean europeDirty = false;
+        boolean visibilityChange = false;
 
         // FIXME: We do not want to have to update the whole player
         // just to get the FF into the client.  Use this hack until
@@ -2268,9 +2255,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
                 }
             } else {
                 boolean recache = false;
-                for (Modifier m : father.getModifiers()) {
-                    recache |= m.getId().startsWith("model.goods.");
-                }
+
                 for (Colony c : getColonies()) c.invalidateCache();
             }                
         }
@@ -2489,7 +2474,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
                                  "model.player.autoRecruit",
                                  this, unit)
                     .addNamed("%europe%", europe)
-                    .addStringTemplate("%unit%", unit.getLabel()));
+                    .addStringTemplate(unitPercentString, unit.getLabel()));
             break;
         default:
             throw new IllegalArgumentException("Bogus migration type");
@@ -2510,7 +2495,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
                          FreeColGameObject defender,
                          List<CombatResult> crs,
                          Random random,
-                         ChangeSet cs) throws IllegalStateException {
+                         ChangeSet cs) {
         CombatModel combatModel = getGame().getCombatModel();
         boolean isAttack = combatModel.combatIsAttack(attacker, defender);
         boolean isBombard = combatModel.combatIsBombard(attacker, defender);
@@ -2518,18 +2503,16 @@ public class ServerPlayer extends Player implements ServerModelObject {
         Settlement attackerSettlement = null;
         Tile attackerTile = null;
         Unit defenderUnit = null;
-        //ServerPlayer attackerPlayer = null;
         ServerPlayer defenderPlayer = null;
         Tile defenderTile = null;
         if (isAttack) {
             attackerUnit = (Unit)attacker;
-            //attackerPlayer = (ServerPlayer)attackerUnit.getOwner();
             attackerTile = attackerUnit.getTile();
             defenderUnit = (Unit)defender;
             defenderPlayer = (ServerPlayer)defenderUnit.getOwner();
             defenderTile = defenderUnit.getTile();
             boolean bombard = attackerUnit.hasAbility(Ability.BOMBARD);
-            cs.addAttribute(See.only(this), "sound",
+            cs.addAttribute(See.only(this), soundString,
                 (attackerUnit.isNaval()) ? "sound.attack.naval"
                 : (bombard) ? "sound.attack.artillery"
                 : (attackerUnit.isMounted()) ? "sound.attack.mounted"
@@ -2544,17 +2527,16 @@ public class ServerPlayer extends Player implements ServerModelObject {
                 cs.addMessage(See.only(defenderPlayer),
                     new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                         "combat.indianSurprise", colony)
-                    .addStringTemplate("%nation%", attackerNation)
-                    .addName("%colony%", colony.getName()));
+                    .addStringTemplate(nationPercentString, attackerNation)
+                    .addName(colonyPercentString, colony.getName()));
             }
         } else if (isBombard) {
             attackerSettlement = (Settlement)attacker;
-            //attackerPlayer = (ServerPlayer)attackerSettlement.getOwner();
             attackerTile = attackerSettlement.getTile();
             defenderUnit = (Unit)defender;
             defenderPlayer = (ServerPlayer)defenderUnit.getOwner();
             defenderTile = defenderUnit.getTile();
-            cs.addAttribute(See.only(this), "sound", "sound.attack.bombard");
+            cs.addAttribute(See.only(this), soundString, "sound.attack.bombard");
         } else {
             throw new IllegalStateException("Bogus combat");
         }
@@ -2900,7 +2882,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
                               "attackedByPrivateers");
             }
         } else if (defender.hasAbility(Ability.PIRACY)) {
-            ; // do nothing
+            // do nothing
         } else if (burnedNativeCapital) {
             defenderPlayer.getTension(this).setValue(Tension.SURRENDERED);
             // FIXME: just the tension
@@ -3027,8 +3009,8 @@ public class ServerPlayer extends Player implements ServerModelObject {
         cs.addMessage(See.only(player),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.automaticDefence", unit)
-            .addStringTemplate("%unit%", unit.getLabel())
-            .addName("%colony%", settlement.getName()));
+            .addStringTemplate(unitPercentString, unit.getLabel())
+            .addName(colonyPercentString, settlement.getName()));
     }
 
     /**
@@ -3049,8 +3031,8 @@ public class ServerPlayer extends Player implements ServerModelObject {
         cs.addMessage(See.only(attackerPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.burnMissions", attacker, settlement)
-                      .addStringTemplate("%nation%", attackerNation)
-                      .addStringTemplate("%enemyNation%", nativeNation));
+                      .addStringTemplate(nationPercentString, attackerNation)
+                      .addStringTemplate(enemyNationPercentString, nativeNation));
 
         // Burn down the missions
         boolean here = settlement.hasMissionary(attackerPlayer);
@@ -3102,23 +3084,23 @@ public class ServerPlayer extends Player implements ServerModelObject {
         cs.addHistory(attackerPlayer,
             new HistoryEvent(game.getTurn(),
                 HistoryEvent.HistoryEventType.CONQUER_COLONY, attackerPlayer)
-                .addStringTemplate("%nation%", colonyNation)
-                .addName("%colony%", colony.getName()));
+                .addStringTemplate(nationPercentString, colonyNation)
+                .addName(colonyPercentString, colony.getName()));
         cs.addHistory(colonyPlayer,
             new HistoryEvent(game.getTurn(),
                 HistoryEvent.HistoryEventType.COLONY_CONQUERED, attackerPlayer)
-                      .addStringTemplate("%nation%", attackerNation)
-                      .addName("%colony%", colony.getName()));
+                      .addStringTemplate(nationPercentString, attackerNation)
+                      .addName(colonyPercentString, colony.getName()));
         cs.addMessage(See.only(attackerPlayer),
                       new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                        "combat.colonyCaptured", colony)
-                      .addName("%colony%", colony.getName())
-                      .addAmount("%amount%", plunder));
+                      .addName(colonyPercentString, colony.getName())
+                      .addAmount(amountPercentString, plunder));
         cs.addMessage(See.only(colonyPlayer),
                       new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                        "combat.colonyCapturedBy", tile)
-                      .addName("%colony%", colony.getName())
-                      .addAmount("%amount%", plunder)
+                      .addName(colonyPercentString, colony.getName())
+                      .addAmount(amountPercentString, plunder)
                       .addStringTemplate("%player%", attackerNation));
         colonyPlayer.csLoseLocation(colony, cs);
 
@@ -3147,7 +3129,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
             t.cacheUnseen();
             t.changeOwnership(null, null);//-til
         }
-        reassignTiles(tiles, colonyPlayer, colony);//-til
+        reassignTiles(tiles, colony);//-til
         for (Tile t : tiles) {
             if (t.getOwningSettlement() != colony) {
                 ColonyTile ct = colony.getColonyTile(t);
@@ -3169,7 +3151,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
 
         // Inform the former owner of loss of units, and add sound.
         cs.addRemoves(See.only(colonyPlayer), null, units);
-        cs.addAttribute(See.only(attackerPlayer), "sound",
+        cs.addAttribute(See.only(attackerPlayer), soundString,
                         "sound.event.captureColony");
 
         // Ready to reset visibility
@@ -3206,8 +3188,8 @@ public class ServerPlayer extends Player implements ServerModelObject {
             cs.addMessage(See.only(attackerPlayer),
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                  "combat.newConvertFromAttack", convert)
-                    .addStringTemplate("%nation%", convertNation)
-                    .addStringTemplate("%unit%", convert.getLabel()));
+                    .addStringTemplate(nationPercentString, convertNation)
+                    .addStringTemplate(unitPercentString, convert.getLabel()));
             attackerPlayer.invalidateCanSeeTiles();//+vis(attackerPlayer)
         }
     }
@@ -3253,7 +3235,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
                               new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                                                "combat.equipmentCaptured",
                                                winnerPlayer)
-                              .addStringTemplate("%nation%", winnerNation)
+                              .addStringTemplate(nationPercentString, winnerNation)
                               .addNamed("%equipment%", goodsType));
 
                 // CHEAT: Immediately transferring the captured goods
@@ -3309,20 +3291,20 @@ public class ServerPlayer extends Player implements ServerModelObject {
             cs.addMessage(See.only(winnerPlayer),
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                     messageId, "combat.unitCaptured", loser)
-                    .addStringTemplate("%nation%", loserNation)
-                    .addStringTemplate("%unit%", oldName)
-                    .addStringTemplate("%enemyNation%", winnerNation)
-                    .addStringTemplate("%enemyUnit%", winner.getLabel())
-                    .addStringTemplate("%location%", winnerLocation));
+                    .addStringTemplate(nationPercentString, loserNation)
+                    .addStringTemplate(unitPercentString, oldName)
+                    .addStringTemplate(enemyNationPercentString, winnerNation)
+                    .addStringTemplate(enemyUnitPercentString, winner.getLabel())
+                    .addStringTemplate(locationPercentString, winnerLocation));
         }
         cs.addMessage(See.only(loserPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 messageId, "combat.unitCaptured", loser.getTile())
-                .addStringTemplate("%nation%", loserNation)
-                .addStringTemplate("%unit%", oldName)
-                .addStringTemplate("%enemyNation%", winnerNation)
-                .addStringTemplate("%enemyUnit%", winner.getLabel())
-               .addStringTemplate("%location%", loserLocation));
+                .addStringTemplate(nationPercentString, loserNation)
+                .addStringTemplate(unitPercentString, oldName)
+                .addStringTemplate(enemyNationPercentString, winnerNation)
+                .addStringTemplate(enemyUnitPercentString, winner.getLabel())
+               .addStringTemplate(locationPercentString, loserLocation));
         winnerPlayer.invalidateCanSeeTiles();//+vis(winnerPlayer)
         loserPlayer.invalidateCanSeeTiles();//+vis(loserPlayer)
     }
@@ -3365,15 +3347,15 @@ public class ServerPlayer extends Player implements ServerModelObject {
         cs.addMessage(See.only(attackerPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.enemyShipDamaged", attacker)
-            .addStringTemplate("%unit%", attacker.getLabel())
-            .addStringTemplate("%enemyNation%", shipNation)
-            .addStringTemplate("%enemyUnit%", ship.getLabel()));
+            .addStringTemplate(unitPercentString, attacker.getLabel())
+            .addStringTemplate(enemyNationPercentString, shipNation)
+            .addStringTemplate(enemyUnitPercentString, ship.getLabel()));
         cs.addMessage(See.only(shipPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.shipDamaged", ship)
-            .addStringTemplate("%unit%", ship.getLabel())
-            .addStringTemplate("%enemyUnit%", attacker.getLabel())
-            .addStringTemplate("%enemyNation%", attackerNation)
+            .addStringTemplate(unitPercentString, ship.getLabel())
+            .addStringTemplate(enemyUnitPercentString, attacker.getLabel())
+            .addStringTemplate(enemyNationPercentString, attackerNation)
             .addStringTemplate("%repairLocation%", repairLoc));
 
         csDamageShip(ship, repair, cs);
@@ -3397,14 +3379,14 @@ public class ServerPlayer extends Player implements ServerModelObject {
         cs.addMessage(See.only(attackerPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.enemyShipDamagedByBombardment", settlement)
-            .addName("%colony%", settlement.getName())
-            .addStringTemplate("%nation%", shipNation)
-            .addStringTemplate("%unit%", ship.getLabel()));
+            .addName(colonyPercentString, settlement.getName())
+            .addStringTemplate(nationPercentString, shipNation)
+            .addStringTemplate(unitPercentString, ship.getLabel()));
         cs.addMessage(See.only(shipPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.shipDamagedByBombardment", ship)
-            .addName("%colony%", settlement.getName())
-            .addStringTemplate("%unit%", ship.getLabel())
+            .addName(colonyPercentString, settlement.getName())
+            .addStringTemplate(unitPercentString, ship.getLabel())
             .addStringTemplate("%repairLocation%", repairLoc));
 
         csDamageShip(ship, repair, cs);
@@ -3472,22 +3454,22 @@ public class ServerPlayer extends Player implements ServerModelObject {
 
         cs.addMessage(See.only(winnerPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
-                messageId, "combat.unitDemoted", winner)
-            .addStringTemplate("%nation%", loserNation)
-            .addStringTemplate("%oldName%", oldName)
-            .addStringTemplate("%unit%", loser.getLabel())
-            .addStringTemplate("%enemyNation%", winnerPlayer.getNationLabel())
-            .addStringTemplate("%enemyUnit%", winner.getLabel())
-            .addStringTemplate("%location%", winnerLocation));
+                messageId, combatUnitDemotedString, winner)
+            .addStringTemplate(nationPercentString, loserNation)
+            .addStringTemplate(oldNamePercentString, oldName)
+            .addStringTemplate(unitPercentString, loser.getLabel())
+            .addStringTemplate(enemyNationPercentString, winnerPlayer.getNationLabel())
+            .addStringTemplate(enemyUnitPercentString, winner.getLabel())
+            .addStringTemplate(locationPercentString, winnerLocation));
         cs.addMessage(See.only(loserPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
-                messageId, "combat.unitDemoted", loser)
-            .addStringTemplate("%nation%", loserPlayer.getNationLabel())
-            .addStringTemplate("%oldName%", oldName)
-            .addStringTemplate("%unit%", loser.getLabel())
-            .addStringTemplate("%enemyNation%", winnerNation)
-            .addStringTemplate("%enemyUnit%", winner.getLabel())
-            .addStringTemplate("%location%", loserLocation));
+                messageId, combatUnitDemotedString, loser)
+            .addStringTemplate(nationPercentString, loserPlayer.getNationLabel())
+            .addStringTemplate(oldNamePercentString, oldName)
+            .addStringTemplate(unitPercentString, loser.getLabel())
+            .addStringTemplate(enemyNationPercentString, winnerNation)
+            .addStringTemplate(enemyUnitPercentString, winner.getLabel())
+            .addStringTemplate(locationPercentString, loserLocation));
     }
 
     /**
@@ -3511,20 +3493,20 @@ public class ServerPlayer extends Player implements ServerModelObject {
         cs.addHistory(colonyPlayer,
             new HistoryEvent(game.getTurn(),
                 HistoryEvent.HistoryEventType.COLONY_DESTROYED, attackerPlayer)
-            .addStringTemplate("%nation%", attackerNation)
-            .addName("%colony%", colony.getName()));
+            .addStringTemplate(nationPercentString, attackerNation)
+            .addName(colonyPercentString, colony.getName()));
         cs.addMessage(See.only(colonyPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.colonyBurning", colony.getTile())
-            .addName("%colony%", colony.getName())
-            .addAmount("%amount%", plunder)
-            .addStringTemplate("%nation%", attackerNation)
-            .addStringTemplate("%unit%", attacker.getLabel()));
+            .addName(colonyPercentString, colony.getName())
+            .addAmount(amountPercentString, plunder)
+            .addStringTemplate(nationPercentString, attackerNation)
+            .addStringTemplate(unitPercentString, attacker.getLabel()));
         cs.addMessage(See.all().except(colonyPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.enemyColonyBurning", colonyPlayer)
-            .addName("%colony%", colony.getName())
-            .addStringTemplate("%nation%", colonyNation)
+            .addName(colonyPercentString, colony.getName())
+            .addStringTemplate(nationPercentString, colonyNation)
             .addStringTemplate("%attackerNation%", attackerNation));
         colonyPlayer.csLoseLocation(colony, cs);
 
@@ -3586,8 +3568,8 @@ public class ServerPlayer extends Player implements ServerModelObject {
         int score = spec.getInteger(GameOptions.DESTROY_SETTLEMENT_SCORE);
         HistoryEvent h = new HistoryEvent(game.getTurn(),
             HistoryEvent.HistoryEventType.DESTROY_SETTLEMENT, this)
-            .addStringTemplate("%nation%", nativeNation)
-            .addName("%settlement%", settlementName);
+            .addStringTemplate(nationPercentString, nativeNation)
+            .addName(settlementPercentString, settlementName);
         h.setScore(score);
         cs.addHistory(attackerPlayer, h);
 
@@ -3595,24 +3577,24 @@ public class ServerPlayer extends Player implements ServerModelObject {
         cs.addMessage(See.only(attackerPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                              "combat.indianTreasure", attacker)
-                .addName("%settlement%", settlementName)
-                .addAmount("%amount%", plunder));
+                .addName(settlementPercentString, settlementName)
+                .addAmount(amountPercentString, plunder));
         if (capital) {
             cs.addMessage(See.only(attackerPlayer),
                 new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
                                  "combat.nativeCapitalBurned", attacker)
                     .addName("%name%", settlementName)
-                    .addStringTemplate("%nation%", nativeNation));
+                    .addStringTemplate(nationPercentString, nativeNation));
         }
         if (nativePlayer.checkForDeath() == IS_DEAD) {
             h = new HistoryEvent(game.getTurn(),
                 HistoryEvent.HistoryEventType.DESTROY_NATION, this)
-                .addStringTemplate("%nation%", attackerNation)
+                .addStringTemplate(nationPercentString, attackerNation)
                 .addStringTemplate("%nativeNation%", nativeNation);
             h.setScore(SCORE_NATION_DESTROYED);
             cs.addGlobalHistory(game, h);
         }
-        cs.addAttribute(See.only(attackerPlayer), "sound",
+        cs.addAttribute(See.only(attackerPlayer), soundString,
             "sound.event.destroySettlement");
     }
 
@@ -3652,7 +3634,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         }
 
         // Reassign the tiles owned by the settlement, if possible
-        reassignTiles(owned, owner, null);
+        reassignTiles(owned, null);
 
         See vis = See.perhaps().always(owner);
         if (missionaryOwner != null) vis.except(missionaryOwner);
@@ -3700,15 +3682,15 @@ public class ServerPlayer extends Player implements ServerModelObject {
         cs.addMessage(See.only(attackerPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.enemyShipEvaded", attacker)
-            .addStringTemplate("%unit%", attacker.getLabel())
-            .addStringTemplate("%enemyUnit%", defender.getLabel())
-            .addStringTemplate("%enemyNation%", defenderNation));
+            .addStringTemplate(unitPercentString, attacker.getLabel())
+            .addStringTemplate(enemyUnitPercentString, defender.getLabel())
+            .addStringTemplate(enemyNationPercentString, defenderNation));
         cs.addMessage(See.only(defenderPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.shipEvaded", defender)
-            .addStringTemplate("%unit%", defender.getLabel())
-            .addStringTemplate("%enemyUnit%", attacker.getLabel())
-            .addStringTemplate("%enemyNation%", attackerNation));
+            .addStringTemplate(unitPercentString, defender.getLabel())
+            .addStringTemplate(enemyUnitPercentString, attacker.getLabel())
+            .addStringTemplate(enemyNationPercentString, attackerNation));
     }
 
     /**
@@ -3727,15 +3709,15 @@ public class ServerPlayer extends Player implements ServerModelObject {
         cs.addMessage(See.only(attackerPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.shipEvadedBombardment", settlement)
-            .addName("%colony%", settlement.getName())
-            .addStringTemplate("%unit%", defender.getLabel())
-            .addStringTemplate("%nation%", defenderNation));
+            .addName(colonyPercentString, settlement.getName())
+            .addStringTemplate(unitPercentString, defender.getLabel())
+            .addStringTemplate(nationPercentString, defenderNation));
         cs.addMessage(See.only(defenderPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.shipEvadedBombardment", defender)
-            .addName("%colony%", settlement.getName())
-            .addStringTemplate("%unit%", defender.getLabel())
-            .addStringTemplate("%nation%", defenderNation));
+            .addName(colonyPercentString, settlement.getName())
+            .addStringTemplate(unitPercentString, defender.getLabel())
+            .addStringTemplate(nationPercentString, defenderNation));
     }
 
     /**
@@ -3786,23 +3768,23 @@ public class ServerPlayer extends Player implements ServerModelObject {
         cs.addMessage(See.only(attackerPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.unitWinColony", attacker)
-            .addStringTemplate("%location%", attackerLocation)
-            .addStringTemplate("%nation%", attackerPlayer.getNationLabel())
-            .addStringTemplate("%unit%", attacker.getLabel())
-            .addStringTemplate("%settlement%",
+            .addStringTemplate(locationPercentString, attackerLocation)
+            .addStringTemplate(nationPercentString, attackerPlayer.getNationLabel())
+            .addStringTemplate(unitPercentString, attacker.getLabel())
+            .addStringTemplate(settlementPercentString,
                 settlement.getLocationLabelFor(attackerPlayer))
-            .addStringTemplate("%enemyNation%", defenderNation)
-            .addStringTemplate("%enemyUnit%", defender.getLabel()));
+            .addStringTemplate(enemyNationPercentString, defenderNation)
+            .addStringTemplate(enemyUnitPercentString, defender.getLabel()));
         cs.addMessage(See.only(defenderPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.unitLoseAutoEquip", defender)
-            .addStringTemplate("%location%", defenderLocation)
-            .addStringTemplate("%nation%", defenderNation)
-            .addStringTemplate("%unit%", defender.getLabel())
-            .addStringTemplate("%settlement%",
+            .addStringTemplate(locationPercentString, defenderLocation)
+            .addStringTemplate(nationPercentString, defenderNation)
+            .addStringTemplate(unitPercentString, defender.getLabel())
+            .addStringTemplate(settlementPercentString,
                 settlement.getLocationLabelFor(defenderPlayer))
-            .addStringTemplate("%enemyNation%", attackerNation)
-            .addStringTemplate("%enemyUnit%", attacker.getLabel()));
+            .addStringTemplate(enemyNationPercentString, attackerNation)
+            .addStringTemplate(enemyUnitPercentString, attacker.getLabel()));
     }
 
     /**
@@ -3846,22 +3828,22 @@ public class ServerPlayer extends Player implements ServerModelObject {
 
         cs.addMessage(See.only(winnerPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
-                messageId, "combat.unitDemoted", winner)
-            .addStringTemplate("%nation%", loserNation)
-            .addStringTemplate("%oldName%", oldName)
-            .addStringTemplate("%unit%", loser.getLabel())
-            .addStringTemplate("%enemyNation%", winnerPlayer.getNationLabel())
-            .addStringTemplate("%enemyUnit%", winner.getLabel())
-            .addStringTemplate("%location%", winnerLocation));
+                messageId, combatUnitDemotedString, winner)
+            .addStringTemplate(nationPercentString, loserNation)
+            .addStringTemplate(oldNamePercentString, oldName)
+            .addStringTemplate(unitPercentString, loser.getLabel())
+            .addStringTemplate(enemyNationPercentString, winnerPlayer.getNationLabel())
+            .addStringTemplate(enemyUnitPercentString, winner.getLabel())
+            .addStringTemplate(locationPercentString, winnerLocation));
         cs.addMessage(See.only(loserPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
-                messageId, "combat.unitDemoted", loser)
-            .addStringTemplate("%nation%", loserNation)
-            .addStringTemplate("%oldName%", oldName)
-            .addStringTemplate("%unit%", loser.getLabel())
-            .addStringTemplate("%enemyNation%", winnerNation)
-            .addStringTemplate("%enemyUnit%", winner.getLabel())
-            .addStringTemplate("%location%", loserLocation));
+                messageId, combatUnitDemotedString, loser)
+            .addStringTemplate(nationPercentString, loserNation)
+            .addStringTemplate(oldNamePercentString, oldName)
+            .addStringTemplate(unitPercentString, loser.getLabel())
+            .addStringTemplate(enemyNationPercentString, winnerNation)
+            .addStringTemplate(enemyUnitPercentString, winner.getLabel())
+            .addStringTemplate(locationPercentString, loserLocation));
     }
 
     /**
@@ -3928,9 +3910,9 @@ public class ServerPlayer extends Player implements ServerModelObject {
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                     "combat.buildingDamaged", colony)
                 .addNamed("%building%", building)
-                .addName("%colony%", colony.getName())
-                .addStringTemplate("%enemyNation%", attackerNation)
-                .addStringTemplate("%enemyUnit%", attacker.getLabel()));
+                .addName(colonyPercentString, colony.getName())
+                .addStringTemplate(enemyNationPercentString, attackerNation)
+                .addStringTemplate(enemyUnitPercentString, attacker.getLabel()));
         } else if (pillage < buildingList.size() + shipList.size()) {
             Unit ship = shipList.get(pillage - buildingList.size());
             if (ship.getRepairLocation() == null) {
@@ -3948,11 +3930,11 @@ public class ServerPlayer extends Player implements ServerModelObject {
             cs.addMessage(See.only(colonyPlayer),
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                     "combat.goodsStolen", colony, goods)
-                .addAmount("%amount%", goods.getAmount())
-                .addNamed("%goods%", goods.getType())
-                .addName("%colony%", colony.getName())
-                .addStringTemplate("%enemyNation%", attackerNation)
-                .addStringTemplate("%enemyUnit%", attacker.getLabel()));
+                .addAmount(amountPercentString, goods.getAmount())
+                .addNamed(goodsPercentString, goods.getType())
+                .addName(colonyPercentString, colony.getName())
+                .addStringTemplate(enemyNationPercentString, attackerNation)
+                .addStringTemplate(enemyUnitPercentString, attacker.getLabel()));
 
         } else {
             int plunder = Math.max(1, colony.getPlunder(attacker, random) / 5);
@@ -3962,16 +3944,16 @@ public class ServerPlayer extends Player implements ServerModelObject {
             cs.addMessage(See.only(colonyPlayer),
                 new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                     "combat.indianPlunder", colony)
-                .addAmount("%amount%", plunder)
-                .addName("%colony%", colony.getName())
-                .addStringTemplate("%enemyNation%", attackerNation)
-                .addStringTemplate("%enemyUnit%", attacker.getLabel()));
+                .addAmount(amountPercentString, plunder)
+                .addName(colonyPercentString, colony.getName())
+                .addStringTemplate(enemyNationPercentString, attackerNation)
+                .addStringTemplate(enemyUnitPercentString, attacker.getLabel()));
         }
         cs.addMessage(See.all().except(colonyPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.indianRaid", colonyPlayer)
-            .addStringTemplate("%nation%", attackerNation)
-            .addName("%colony%", colony.getName())
+            .addStringTemplate(nationPercentString, attackerNation)
+            .addName(colonyPercentString, colony.getName())
             .addStringTemplate("%colonyNation%", colonyNation));
     }
 
@@ -4044,9 +4026,9 @@ public class ServerPlayer extends Player implements ServerModelObject {
         cs.addMessage(See.only(winnerPlayer),
                       new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                           "combat.unitPromoted", winner)
-            .addStringTemplate("%oldName%", oldName)
-            .addStringTemplate("%unit%", winner.getLabel())
-            .addStringTemplate("%nation%", winnerNation));
+            .addStringTemplate(oldNamePercentString, oldName)
+            .addStringTemplate(unitPercentString, winner.getLabel())
+            .addStringTemplate(nationPercentString, winnerNation));
     }
 
     /**
@@ -4085,15 +4067,15 @@ public class ServerPlayer extends Player implements ServerModelObject {
         cs.addMessage(See.only(attackerPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.enemyShipSunk", attackerUnit)
-            .addStringTemplate("%unit%", attackerUnit.getLabel())
-            .addStringTemplate("%enemyUnit%", ship.getLabel())
-            .addStringTemplate("%enemyNation%", shipNation));
+            .addStringTemplate(unitPercentString, attackerUnit.getLabel())
+            .addStringTemplate(enemyUnitPercentString, ship.getLabel())
+            .addStringTemplate(enemyNationPercentString, shipNation));
         cs.addMessage(See.only(shipPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.shipSunk", ship.getTile())
-            .addStringTemplate("%unit%", ship.getLabel())
-            .addStringTemplate("%enemyUnit%", attackerUnit.getLabel())
-            .addStringTemplate("%enemyNation%", attackerNation));
+            .addStringTemplate(unitPercentString, ship.getLabel())
+            .addStringTemplate(enemyUnitPercentString, attackerUnit.getLabel())
+            .addStringTemplate(enemyNationPercentString, attackerNation));
 
         csSinkShip(ship, attackerPlayer, cs);
     }
@@ -4114,14 +4096,14 @@ public class ServerPlayer extends Player implements ServerModelObject {
         cs.addMessage(See.only(attackerPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.shipSunkByBombardment", settlement)
-            .addName("%colony%", settlement.getName())
-            .addStringTemplate("%unit%", ship.getLabel())
-            .addStringTemplate("%nation%", shipNation));
+            .addName(colonyPercentString, settlement.getName())
+            .addStringTemplate(unitPercentString, ship.getLabel())
+            .addStringTemplate(nationPercentString, shipNation));
         cs.addMessage(See.only(shipPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
                 "combat.shipSunkByBombardment", ship.getTile())
-            .addName("%colony%", settlement.getName())
-            .addStringTemplate("%unit%", ship.getLabel()));
+            .addName(colonyPercentString, settlement.getName())
+            .addStringTemplate(unitPercentString, ship.getLabel()));
 
         csSinkShip(ship, attackerPlayer, cs);
     }
@@ -4142,7 +4124,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         ship.dispose();
         shipPlayer.invalidateCanSeeTiles();//+vis(shipPlayer)
         if (attackerPlayer != null) {
-            cs.addAttribute(See.only(attackerPlayer), "sound",
+            cs.addAttribute(See.only(attackerPlayer), soundString,
                             "sound.event.shipSunk");
         }
     }
@@ -4167,31 +4149,31 @@ public class ServerPlayer extends Player implements ServerModelObject {
             : loser.getLocation();
         StringTemplate loserLocation
             = loserLoc.getLocationLabelFor(loserPlayer);
-        String messageId = "combat.unitSlaughtered"
+        String messageId = combatUnitSlaughteredString
             + loser.getType().getSuffix();
 
         cs.addMessage(See.only(winnerPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
-                messageId, "combat.unitSlaughtered", winner)
-            .addStringTemplate("%nation%", loserNation)
-            .addStringTemplate("%unit%", loser.getLabel())
-            .addStringTemplate("%enemyNation%", winnerPlayer.getNationLabel())
-            .addStringTemplate("%enemyUnit%", winner.getLabel())
-            .addStringTemplate("%location%", winnerLocation));
+                messageId, combatUnitSlaughteredString, winner)
+            .addStringTemplate(nationPercentString, loserNation)
+            .addStringTemplate(unitPercentString, loser.getLabel())
+            .addStringTemplate(enemyNationPercentString, winnerPlayer.getNationLabel())
+            .addStringTemplate(enemyUnitPercentString, winner.getLabel())
+            .addStringTemplate(locationPercentString, winnerLocation));
         cs.addMessage(See.only(loserPlayer),
             new ModelMessage(ModelMessage.MessageType.COMBAT_RESULT,
-                messageId, "combat.unitSlaughtered", loser.getTile())
-            .addStringTemplate("%nation%", loserPlayer.getNationLabel())
-            .addStringTemplate("%unit%", loser.getLabel())
-            .addStringTemplate("%enemyNation%", winnerNation)
-            .addStringTemplate("%enemyUnit%", winner.getLabel())
-            .addStringTemplate("%location%", loserLocation));
+                messageId, combatUnitSlaughteredString, loser.getTile())
+            .addStringTemplate(nationPercentString, loserPlayer.getNationLabel())
+            .addStringTemplate(unitPercentString, loser.getLabel())
+            .addStringTemplate(enemyNationPercentString, winnerNation)
+            .addStringTemplate(enemyUnitPercentString, winner.getLabel())
+            .addStringTemplate(locationPercentString, loserLocation));
         if (loserPlayer.isIndian() && loserPlayer.checkForDeath() == IS_DEAD) {
             StringTemplate nativeNation = loserPlayer.getNationLabel();
             cs.addGlobalHistory(getGame(),
                 new HistoryEvent(getGame().getTurn(),
                     HistoryEvent.HistoryEventType.DESTROY_NATION, winnerPlayer)
-                .addStringTemplate("%nation%", winnerNation)
+                .addStringTemplate(nationPercentString, winnerNation)
                 .addStringTemplate("%nativeNation%", nativeNation));
         }
 
@@ -4266,7 +4248,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
             cs.add(See.only(this), ChangePriority.CHANGE_NORMAL,
                 new MonarchActionMessage(Monarch.MonarchAction.FORCE_TAX,
                     StringTemplate.template(Monarch.MonarchAction.FORCE_TAX.getTextKey())
-                    .addAmount("%amount%", tax + extraTax),
+                    .addAmount(amountPercentString, tax + extraTax),
                     monarchKey));
             logger.info("Forced tax raise to: " + (tax + extraTax));
         } else { // Tea party
@@ -4294,9 +4276,9 @@ public class ServerPlayer extends Player implements ServerModelObject {
             cs.addMessage(See.only(this),
                 new ModelMessage(ModelMessage.MessageType.FOREIGN_DIPLOMACY,
                     messageId, this)
-                .addName("%colony%", colony.getName())
-                .addAmount("%amount%", amount)
-                .addNamed("%goods%", goodsType));
+                .addName(colonyPercentString, colony.getName())
+                .addAmount(amountPercentString, amount)
+                .addNamed(goodsPercentString, goodsType));
             cs.addAttribute(See.only(this), "flush", Boolean.TRUE.toString());
             logger.info("Goods party at " + colony.getName()
                 + " with: " + goods + " arrears: " + arrears);
@@ -4319,7 +4301,7 @@ public class ServerPlayer extends Player implements ServerModelObject {
         csRaiseTax(tax, goods, true, cs);
         cs.addMessage(See.only(this),
             new ModelMessage("model.player.ignoredTax", this)
-                .addAmount("%amount%", tax));
+                .addAmount(amountPercentString, tax));
     }
 
     /**
@@ -4393,12 +4375,12 @@ public class ServerPlayer extends Player implements ServerModelObject {
             } else {
                 cs.addHistory(other, new HistoryEvent(turn,
                         HistoryEvent.HistoryEventType.MEET_NATION, other)
-                    .addStringTemplate("%nation%", getNationLabel()));
+                    .addStringTemplate(nationPercentString, getNationLabel()));
             }
         } else { // (serverPlayer.isEuropean)
             cs.addHistory(this, new HistoryEvent(turn,
                     HistoryEvent.HistoryEventType.MEET_NATION, other)
-                .addStringTemplate("%nation%", other.getNationLabel()));
+                .addStringTemplate(nationPercentString, other.getNationLabel()));
         }
 
         logger.finest("First contact between " + this.getId()
