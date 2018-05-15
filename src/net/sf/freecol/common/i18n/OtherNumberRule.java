@@ -19,16 +19,15 @@
 
 package net.sf.freecol.common.i18n;
 
-
 /**
- * Number optimized for languages that do not distinguish any number
- * categories. The category returned is always other.
+ * Number optimized for languages that do not distinguish any number categories.
+ * The category returned is always other.
  */
 public class OtherNumberRule extends Number {
 
-    @Override
-    public Category getCategory(double input) {
-        return Category.other;
-    }
+	@Override
+	public Category getCategory(double input) {
+		return Category.other;
+	}
 
 }

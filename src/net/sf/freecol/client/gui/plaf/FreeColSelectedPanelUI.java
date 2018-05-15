@@ -29,31 +29,29 @@ import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicPanelUI;
 
-
 /**
- * Draws with partial transparency.  Used in Europe.
+ * Draws with partial transparency. Used in Europe.
  */
 public class FreeColSelectedPanelUI extends BasicPanelUI {
 
-    private static final FreeColSelectedPanelUI sharedInstance = new FreeColSelectedPanelUI();
+	private static final FreeColSelectedPanelUI sharedInstance = new FreeColSelectedPanelUI();
 
+	public static ComponentUI createUI(@SuppressWarnings("unused") JComponent c) {
+		return sharedInstance;
+	}
 
-    public static ComponentUI createUI(@SuppressWarnings("unused") JComponent c) {
-        return sharedInstance;
-    }
+	@Override
+	public void paint(Graphics g, JComponent c) {
+		Graphics2D g2d = (Graphics2D) g;
+		Composite oldComposite = g2d.getComposite();
+		Color oldColor = g2d.getColor();
+		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f));
+		g2d.setColor(Color.BLACK);
+		g2d.fillRect(0, 0, c.getWidth(), c.getHeight());
+		g2d.setComposite(oldComposite);
+		g2d.setColor(oldColor);
 
-    @Override
-    public void paint(Graphics g, JComponent c) {
-        Graphics2D g2d = (Graphics2D) g;
-        Composite oldComposite = g2d.getComposite();
-        Color oldColor = g2d.getColor();
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.1f));
-        g2d.setColor(Color.BLACK);
-        g2d.fillRect(0, 0, c.getWidth(), c.getHeight());
-        g2d.setComposite(oldComposite);
-        g2d.setColor(oldColor);
-
-        //super.paintComponent(g);
-    }
+		// super.paintComponent(g);
+	}
 
 }

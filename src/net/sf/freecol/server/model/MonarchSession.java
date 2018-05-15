@@ -27,103 +27,104 @@ import net.sf.freecol.common.model.Goods;
 import net.sf.freecol.common.model.Monarch.MonarchAction;
 import net.sf.freecol.server.control.ChangeSet;
 
-
 /**
  * A type of session to handle monarch actions that require response.
  */
 public class MonarchSession extends TransactionSession {
 
-    private static final Logger logger = Logger.getLogger(MonarchSession.class.getName());
+	private static final Logger logger = Logger.getLogger(MonarchSession.class.getName());
 
-    /** The player whose monarch is active. */
-    private final ServerPlayer serverPlayer;
+	/** The player whose monarch is active. */
+	private final ServerPlayer serverPlayer;
 
-    /** The action to be considered. */
-    private final MonarchAction action;
+	/** The action to be considered. */
+	private final MonarchAction action;
 
-    /** The amount of tax to raise. */
-    private final int tax;
+	/** The amount of tax to raise. */
+	private final int tax;
 
-    /** The goods for the goods party. */
-    private Goods goods = null;
+	/** The goods for the goods party. */
+	private Goods goods = null;
 
-    /** Mercenaries on offer. */
-    private List<AbstractUnit> mercenaries = null;
+	/** Mercenaries on offer. */
+	private List<AbstractUnit> mercenaries = null;
 
-    /** Mercenary price. */
-    private final int price;
+	/** Mercenary price. */
+	private final int price;
 
+	public MonarchSession(ServerPlayer serverPlayer, MonarchAction action, int tax, Goods goods) {
+		super(makeSessionKey(MonarchSession.class, serverPlayer.getId(), ""));
 
-    public MonarchSession(ServerPlayer serverPlayer, MonarchAction action,
-                          int tax, Goods goods) {
-        super(makeSessionKey(MonarchSession.class, serverPlayer.getId(), ""));
+		this.serverPlayer = serverPlayer;
+		this.action = action;
+		this.tax = tax;
+		this.goods = goods;
+		this.mercenaries = null;
+		this.price = 0;
+	}
 
-        this.serverPlayer = serverPlayer;
-        this.action = action;
-        this.tax = tax;
-        this.goods = goods;
-        this.mercenaries = null;
-        this.price = 0;
-    }
+	public MonarchSession(ServerPlayer serverPlayer, MonarchAction action, List<AbstractUnit> mercenaries, int price) {
+		super(makeSessionKey(MonarchSession.class, serverPlayer.getId(), ""));
 
-    public MonarchSession(ServerPlayer serverPlayer, MonarchAction action,
-                          List<AbstractUnit> mercenaries, int price) {
-        super(makeSessionKey(MonarchSession.class, serverPlayer.getId(), ""));
+		this.serverPlayer = serverPlayer;
+		this.action = action;
+		this.tax = 0;
+		this.goods = null;
+		this.mercenaries = mercenaries;
+		this.price = price;
+	}
 
-        this.serverPlayer = serverPlayer;
-        this.action = action;
-        this.tax = 0;
-        this.goods = null;
-        this.mercenaries = mercenaries;
-        this.price = price;
-    }
+	public void complete(boolean result, ChangeSet cs) {
+		switch (action) {
+		case RAISE_TAX_ACT:
+		case RAISE_TAX_WAR:
+			serverPlayer.csRaiseTax(tax, goods, result, cs);
+			break;
+		case MONARCH_MERCENARIES:
+		case HESSIAN_MERCENARIES:
+			if (result)
+				serverPlayer.csAddMercenaries(mercenaries, price, cs);
+			break;
+		default:
+			break;
+		}
+		super.complete(cs);
+	}
 
-    public void complete(boolean result, ChangeSet cs) {
-        switch (action) {
-        case RAISE_TAX_ACT: case RAISE_TAX_WAR:
-            serverPlayer.csRaiseTax(tax, goods, result, cs);
-            break;
-        case MONARCH_MERCENARIES: case HESSIAN_MERCENARIES:
-            if (result) serverPlayer.csAddMercenaries(mercenaries, price, cs);
-            break;
-        default:
-            break;
-        }
-        super.complete(cs);
-    }
+	@Override
+	public void complete(ChangeSet cs) {
+		switch (action) {
+		case RAISE_TAX_ACT:
+		case RAISE_TAX_WAR:
+			serverPlayer.ignoreTax(tax, goods, cs);
+			break;
+		case MONARCH_MERCENARIES:
+		case HESSIAN_MERCENARIES:
+			serverPlayer.ignoreMercenaries(cs);
+			break;
+		default:
+			break;
+		}
+		super.complete(cs);
+	}
 
-    @Override
-    public void complete(ChangeSet cs) {
-        switch (action) {
-        case RAISE_TAX_ACT: case RAISE_TAX_WAR:
-            serverPlayer.ignoreTax(tax, goods, cs);
-            break;
-        case MONARCH_MERCENARIES: case HESSIAN_MERCENARIES:
-            serverPlayer.ignoreMercenaries(cs);
-            break;
-        default:
-            break;
-        }
-        super.complete(cs);
-    }
+	public MonarchAction getAction() {
+		return this.action;
+	}
 
-    public MonarchAction getAction() {
-        return this.action;
-    }
+	public int getTax() {
+		return this.tax;
+	}
 
-    public int getTax() {
-        return this.tax;
-    }
+	public Goods getGoods() {
+		return this.goods;
+	}
 
-    public Goods getGoods() {
-        return this.goods;
-    }
+	public List<AbstractUnit> getMercenaries() {
+		return this.mercenaries;
+	}
 
-    public List<AbstractUnit> getMercenaries() {
-        return this.mercenaries;
-    }
-
-    public int getPrice() {
-        return this.price;
-    }
+	public int getPrice() {
+		return this.price;
+	}
 }

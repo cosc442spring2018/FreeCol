@@ -36,113 +36,106 @@ import javax.swing.plaf.basic.BasicToolTipUI;
 
 import net.sf.freecol.client.gui.ImageLibrary;
 
-
 /**
  * Draw the "image.background.FreeColToolTip" resource as a tiled background
  * image on tool tip popups.
  */
 public class FreeColToolTipUI extends BasicToolTipUI {
 
-    private static final FreeColToolTipUI sharedInstance = new FreeColToolTipUI();
+	private static final FreeColToolTipUI sharedInstance = new FreeColToolTipUI();
 
-    // FIXME: find out why we can't use the FontRenderContext of the
-    // component.  And should we use fractional metrics?
-    private static final FontRenderContext frc
-        = new FontRenderContext(null, true, false);
+	// FIXME: find out why we can't use the FontRenderContext of the
+	// component. And should we use fractional metrics?
+	private static final FontRenderContext frc = new FontRenderContext(null, true, false);
 
-    private static final int margin = 5;
-    private static int maximumWidth = 300;
-    private static final int LEADING = 5;
+	private static final int margin = 5;
+	private static int maximumWidth = 300;
+	private static final int LEADING = 5;
 
-    private static final Pattern lineBreak = Pattern.compile("\n");
+	private static final Pattern lineBreak = Pattern.compile("\n");
 
+	private FreeColToolTipUI() {
+		super();
+	}
 
-    private FreeColToolTipUI() {
-        super();
-    }
+	public static ComponentUI createUI(@SuppressWarnings("unused") JComponent c) {
+		return sharedInstance;
+	}
 
-    public static ComponentUI createUI(@SuppressWarnings("unused") JComponent c) {
-        return sharedInstance;
-    }
+	public static void setMaximumWidth(int width) {
+		maximumWidth = width;
+	}
 
-    public static void setMaximumWidth(int width) {
-        maximumWidth = width;
-    }
+	@Override
+	public void paint(Graphics g, JComponent c) {
+		if (c.isOpaque()) {
+			ImageLibrary.drawTiledImage("image.background.FreeColToolTip", g, c, null);
+		}
 
-    @Override
-    public void paint(Graphics g, JComponent c) {
-        if (c.isOpaque()) {
-            ImageLibrary.drawTiledImage("image.background.FreeColToolTip", g, c, null);
-        }
+		g.setColor(Color.BLACK); // FIXME: find out why this is necessary
 
-        g.setColor(Color.BLACK); // FIXME: find out why this is necessary
+		Graphics2D graphics = (Graphics2D) g;
+		float x = margin;
+		float y = margin;
+		for (String line : lineBreak.split(((JToolTip) c).getTipText())) {
+			if (line.isEmpty()) {
+				y += LEADING;
+				continue;
+			}
+			AttributedCharacterIterator styledText = new AttributedString(line).getIterator();
 
-        Graphics2D graphics = (Graphics2D)g;
-        float x = margin;
-        float y = margin;
-        for (String line : lineBreak.split(((JToolTip) c).getTipText())) {
-            if (line.isEmpty()) {
-                y += LEADING;
-                continue;
-            }
-            AttributedCharacterIterator styledText =
-                new AttributedString(line).getIterator();
+			LineBreakMeasurer measurer = new LineBreakMeasurer(styledText, frc);
 
-            LineBreakMeasurer measurer = new LineBreakMeasurer(styledText, frc);
+			while (measurer.getPosition() < styledText.getEndIndex()) {
 
-            while (measurer.getPosition() < styledText.getEndIndex()) {
+				TextLayout layout = measurer.nextLayout(maximumWidth);
 
-                TextLayout layout = measurer.nextLayout(maximumWidth);
+				y += (layout.getAscent());
+				float dx = layout.isLeftToRight() ? 0 : (maximumWidth - layout.getAdvance());
 
-                y += (layout.getAscent());
-                float dx = layout.isLeftToRight() ?
-                    0 : (maximumWidth - layout.getAdvance());
+				layout.draw(graphics, x + dx, y);
+				y += layout.getDescent() + layout.getLeading();
+			}
+		}
+	}
 
-                layout.draw(graphics, x + dx, y);
-                y += layout.getDescent() + layout.getLeading();
-            }
-        }
-     }
+	@Override
+	public Dimension getPreferredSize(JComponent c) {
+		String tipText = ((JToolTip) c).getTipText();
+		if (tipText == null || tipText.isEmpty()) {
+			return new Dimension(0, 0);
+		}
 
-    @Override
-    public Dimension getPreferredSize(JComponent c) {
-        String tipText = ((JToolTip)c).getTipText();
-        if (tipText == null || tipText.isEmpty()) {
-            return new Dimension(0, 0);
-        }
+		float x = 0f;
+		float y = 0f;
+		for (String line : lineBreak.split(tipText)) {
+			if (line.isEmpty()) {
+				y += LEADING;
+				continue;
+			}
+			AttributedCharacterIterator styledText = new AttributedString(line).getIterator();
+			LineBreakMeasurer measurer = new LineBreakMeasurer(styledText, frc);
 
-        float x = 0f;
-        float y = 0f;
-        for (String line : lineBreak.split(tipText)) {
-            if (line.isEmpty()) {
-                y += LEADING;
-                continue;
-            }
-            AttributedCharacterIterator styledText
-                = new AttributedString(line).getIterator();
-            LineBreakMeasurer measurer = new LineBreakMeasurer(styledText, frc);
+			while (measurer.getPosition() < styledText.getEndIndex()) {
 
-            while (measurer.getPosition() < styledText.getEndIndex()) {
+				TextLayout layout = measurer.nextLayout(maximumWidth);
 
-                TextLayout layout = measurer.nextLayout(maximumWidth);
+				x = Math.max(x, layout.getVisibleAdvance());
+				y += layout.getAscent() + layout.getDescent() + layout.getLeading();
 
-                x = Math.max(x, layout.getVisibleAdvance());
-                y += layout.getAscent() + layout.getDescent() + layout.getLeading();
+			}
+		}
+		return new Dimension((int) (x + 2 * margin), (int) (y + 2 * margin));
 
-            }
-        }
-        return new Dimension((int) (x + 2 * margin),
-                             (int) (y + 2 * margin));
+	}
 
-    }
+	@Override
+	public Dimension getMinimumSize(JComponent c) {
+		return getPreferredSize(c);
+	}
 
-    @Override
-    public Dimension getMinimumSize(JComponent c) {
-        return getPreferredSize(c);
-    }
-
-    @Override
-    public Dimension getMaximumSize(JComponent c) {
-        return getPreferredSize(c);
-    }
+	@Override
+	public Dimension getMaximumSize(JComponent c) {
+		return getPreferredSize(c);
+	}
 }

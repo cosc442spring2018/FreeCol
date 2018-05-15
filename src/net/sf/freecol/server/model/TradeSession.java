@@ -25,83 +25,83 @@ import net.sf.freecol.common.model.Settlement;
 import net.sf.freecol.common.model.Unit;
 import net.sf.freecol.server.control.ChangeSet;
 
-
 /**
  * A type of session to handle trading.
  */
 public class TradeSession extends TransactionSession {
 
-    private static final Logger logger = Logger.getLogger(TradeSession.class.getName());
+	private static final Logger logger = Logger.getLogger(TradeSession.class.getName());
 
-    /** The moves the trading unit has left at start of session. */
-    private final int movesLeft;
+	/** The moves the trading unit has left at start of session. */
+	private final int movesLeft;
 
-    /** Whether any action has been taken in this session. */
-    private boolean actionTaken;
+	/** Whether any action has been taken in this session. */
+	private boolean actionTaken;
 
-    /** Whether buying is still valid in this session. */
-    private boolean canBuy;
+	/** Whether buying is still valid in this session. */
+	private boolean canBuy;
 
-    /** Whether selling is still valid in this session. */
-    private boolean canSell;
+	/** Whether selling is still valid in this session. */
+	private boolean canSell;
 
-    /** Whether giving a gift is still valid in this session. */
-    private boolean canGift;
+	/** Whether giving a gift is still valid in this session. */
+	private boolean canGift;
 
+	/**
+	 * Creates a new <code>TradeSession</code>.
+	 *
+	 * @param unit
+	 *            The <code>Unit</code> that is trading.
+	 * @param settlement
+	 *            The <code>Settlement</code> to trade with.
+	 */
+	public TradeSession(Unit unit, Settlement settlement) {
+		super(makeSessionKey(TradeSession.class, unit, settlement));
+		movesLeft = unit.getMovesLeft();
+		actionTaken = false;
+		boolean atWar = settlement.getOwner().atWarWith(unit.getOwner());
+		canBuy = !atWar;
+		canSell = !atWar && unit.hasGoodsCargo();
+		canGift = unit.hasGoodsCargo();
+	}
 
-    /**
-     * Creates a new <code>TradeSession</code>.
-     *
-     * @param unit The <code>Unit</code> that is trading.
-     * @param settlement The <code>Settlement</code> to trade with.
-     */
-    public TradeSession(Unit unit, Settlement settlement) {
-        super(makeSessionKey(TradeSession.class, unit, settlement));
-        movesLeft = unit.getMovesLeft();
-        actionTaken = false;
-        boolean atWar = settlement.getOwner().atWarWith(unit.getOwner());
-        canBuy = !atWar;
-        canSell = !atWar && unit.hasGoodsCargo();
-        canGift = unit.hasGoodsCargo();
-    }
+	@Override
+	public void complete(ChangeSet cs) {
+		super.complete(cs);
+	}
 
-    @Override
-    public void complete(ChangeSet cs) {
-        super.complete(cs);
-    }
+	public int getMovesLeft() {
+		return movesLeft;
+	}
 
-    public int getMovesLeft() {
-        return movesLeft;
-    }
+	public boolean getActionTaken() {
+		return actionTaken;
+	}
 
-    public boolean getActionTaken() {
-        return actionTaken;
-    }
+	public boolean getBuy() {
+		return canBuy;
+	}
 
-    public boolean getBuy() {
-        return canBuy;
-    }
+	public boolean getSell() {
+		return canSell;
+	}
 
-    public boolean getSell() {
-        return canSell;
-    }
+	public boolean getGift() {
+		return canGift;
+	}
 
-    public boolean getGift() {
-        return canGift;
-    }
+	public void setBuy() {
+		actionTaken = true;
+		canBuy = false;
+	}
 
-    public void setBuy() {
-        actionTaken = true;
-        canBuy = false;
-    }
+	public void setSell() {
+		actionTaken = true;
+		canSell = false;
+	}
 
-    public void setSell() {
-        actionTaken = true;
-        canSell = false;
-    }
-
-    public void setGift() {
-        actionTaken = true;
-        canGift = false;
-    }
+	public void setGift() {
+		actionTaken = true;
+		canGift = false;
+	}
 }

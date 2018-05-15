@@ -41,192 +41,181 @@ import net.sf.freecol.common.i18n.Messages;
 
 import static net.sf.freecol.common.util.CollectionUtils.*;
 
-
 /**
  * Display the current game statistics.
  */
 public final class StatisticsPanel extends FreeColPanel {
 
-    @SuppressWarnings("unused")
-    private static final Logger logger = Logger.getLogger(StatisticsPanel.class.getName());
+	@SuppressWarnings("unused")
+	private static final Logger logger = Logger.getLogger(StatisticsPanel.class.getName());
 
-    private static final String[] memoryKeys = {
-        "freeMemory", "totalMemory", "maxMemory"
-    };
+	private static final String[] memoryKeys = { "freeMemory", "totalMemory", "maxMemory" };
 
-    private static class StatisticsModel extends AbstractTableModel {
+	private static class StatisticsModel extends AbstractTableModel {
 
-        private static final int NAME_COLUMN = 0, VALUE_COLUMN = 1;
-        private final String[] columnNames = { "name", "value" };
+		private static final int NAME_COLUMN = 0, VALUE_COLUMN = 1;
+		private final String[] columnNames = { "name", "value" };
 
-        private Object data[][] = null;
+		private Object data[][] = null;
 
+		/**
+		 * A standard constructor.
+		 */
+		public StatisticsModel() {
+		}
 
-        /**
-         * A standard constructor.
-         */
-        public StatisticsModel() {}
+		/**
+		 * Gives this table model the data that is being used in the table. This method
+		 * should only be called to initialize the data set. To modify or extend the
+		 * data set use other methods.
+		 */
+		public void setData(java.util.Map<String, String> statsData) {
+			this.data = new Object[2][statsData.size()];
+			int i = 0;
+			for (Entry<String, String> e : mapEntriesByKey(statsData)) {
+				data[NAME_COLUMN][i] = e.getKey();
+				data[VALUE_COLUMN][i] = e.getValue();
+				i++;
+			}
+		}
 
-        /**
-         * Gives this table model the data that is being used in the
-         * table. This method should only be called to initialize the
-         * data set. To modify or extend the data set use other
-         * methods.
-         */
-        public void setData(java.util.Map<String, String> statsData) {
-            this.data = new Object[2][statsData.size()];
-            int i = 0;
-            for (Entry<String, String> e : mapEntriesByKey(statsData)) {
-                data[NAME_COLUMN][i] = e.getKey();
-                data[VALUE_COLUMN][i] = e.getValue();
-                i++;
-            }
-        }
+		// AbstractTableModel
 
-        // AbstractTableModel
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Class<?> getColumnClass(int column) {
+			return String.class;
+		}
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Class<?> getColumnClass(int column) {
-            return String.class;
-        }
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public String getColumnName(int column) {
+			return Messages.message(columnNames[column]);
+		}
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getColumnName(int column) {
-            return Messages.message(columnNames[column]);
-        }
+		/// **
+		// * {@inheritDoc}
+		// */
+		// @Override
+		// public boolean isCellEditable(int row, int column) {
+		// return false;
+		// }
 
-        ///**
-        // * {@inheritDoc}
-        // */
-        //@Override
-        //public boolean isCellEditable(int row, int column) {
-        //    return false;
-        //}
+		// Interface TableModel
 
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int getColumnCount() {
+			return columnNames.length;
+		}
 
-        // Interface TableModel
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int getRowCount() {
+			return data[NAME_COLUMN].length;
+		}
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public int getColumnCount() {
-            return columnNames.length;
-        }
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Object getValueAt(int row, int column) {
+			if ((row < getRowCount()) && (column < getColumnCount()) && (row >= 0) && (column >= 0)) {
+				switch (column) {
+				case StatisticsModel.NAME_COLUMN:
+					return data[NAME_COLUMN][row];
+				case StatisticsModel.VALUE_COLUMN:
+					return data[VALUE_COLUMN][row];
+				}
+			}
+			return null;
+		}
+	}
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public int getRowCount() {
-            return data[NAME_COLUMN].length;
-        }
+	/**
+	 * Creates the statistics panel.
+	 *
+	 * @param freeColClient
+	 *            The <code>FreeColClient</code> for the game.
+	 */
+	public StatisticsPanel(FreeColClient freeColClient) {
+		super(freeColClient, new BorderLayout());
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Object getValueAt(int row, int column) {
-            if ((row < getRowCount()) && (column < getColumnCount())
-                && (row >= 0) && (column >= 0)) {
-                switch (column) {
-                case StatisticsModel.NAME_COLUMN:
-                    return data[NAME_COLUMN][row];
-                case StatisticsModel.VALUE_COLUMN:
-                    return data[VALUE_COLUMN][row];
-                }
-            }
-            return null;
-        }
-    }
+		// Retrieve the client and server data
+		Map<String, String> serverStatistics = igc().getServerStatistics();
+		Map<String, String> clientStatistics = freeColClient.getGame().getStatistics();
 
+		// Title
+		JPanel header = new JPanel();
+		this.add(header, BorderLayout.NORTH);
+		header.add(Utility.localizedLabel("statistics"), JPanel.CENTER_ALIGNMENT);
 
-    /**
-     * Creates the statistics panel.
-     *
-     * @param freeColClient The <code>FreeColClient</code> for the game.
-     */
-    public StatisticsPanel(FreeColClient freeColClient) {
-        super(freeColClient, new BorderLayout());
+		// Actual stats panel
+		JPanel statsPanel = new JPanel(new GridLayout(1, 2));
+		JScrollPane scrollPane = new JScrollPane(statsPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		// correct way to make scroll pane opaque
+		scrollPane.getViewport().setOpaque(false);
+		scrollPane.setBorder(null);
 
-        // Retrieve the client and server data
-        Map<String, String> serverStatistics = igc().getServerStatistics();
-        Map<String, String> clientStatistics = freeColClient.getGame()
-            .getStatistics();
+		this.add(scrollPane, BorderLayout.CENTER);
+		statsPanel.add(displayStatsMessage("client", clientStatistics));
+		statsPanel.add(displayStatsMessage("server", serverStatistics));
 
-        // Title
-        JPanel header = new JPanel();
-        this.add(header, BorderLayout.NORTH);
-        header.add(Utility.localizedLabel("statistics"), JPanel.CENTER_ALIGNMENT);
+		add(okButton, BorderLayout.SOUTH);
 
-        // Actual stats panel
-        JPanel statsPanel = new JPanel(new GridLayout(1,2));
-        JScrollPane scrollPane = new JScrollPane(statsPanel,
-            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        // correct way to make scroll pane opaque
-        scrollPane.getViewport().setOpaque(false);
-        scrollPane.setBorder(null);
+		setSize(getPreferredSize());
+	}
 
-        this.add(scrollPane,BorderLayout.CENTER);
-        statsPanel.add(displayStatsMessage("client", clientStatistics));
-        statsPanel.add(displayStatsMessage("server", serverStatistics));
+	private JPanel displayStatsMessage(String title, Map<String, String> stats) {
+		JPanel panel = new JPanel();
+		panel.setBorder(Utility.localizedBorder(title));
+		Box b = new Box(BoxLayout.Y_AXIS);
+		panel.add(b);
+		Map<String, String> memory = new HashMap<>();
+		Map<String, String> ai = new HashMap<>();
+		for (String k : memoryKeys) {
+			memory.put(Messages.message("memoryManager." + k), stats.remove(k));
+		}
+		for (String k : new ArrayList<>(stats.keySet())) {
+			if (k.startsWith("AI")) { // FIXME: AIMain.aiStatisticsPrefix
+				ai.put(k, stats.remove(k));
+			}
+		}
+		b.add(createStatsTable("Memory", memory));
+		b.add(createStatsTable("Game", stats));
+		if (ai.isEmpty()) {
+			b.add(new JLabel());
+		} else {
+			b.add(createStatsTable("AI", ai));
+		}
+		return panel;
+	}
 
-        add(okButton, BorderLayout.SOUTH);
-
-        setSize(getPreferredSize());
-    }
-
-
-    private JPanel displayStatsMessage(String title,
-                                       Map<String, String> stats) {
-        JPanel panel = new JPanel();
-        panel.setBorder(Utility.localizedBorder(title));
-        Box b = new Box(BoxLayout.Y_AXIS);
-        panel.add(b);
-        Map<String, String> memory = new HashMap<>();
-        Map<String, String> ai = new HashMap<>();
-        for (String k : memoryKeys) {
-            memory.put(Messages.message("memoryManager." + k),
-                       stats.remove(k));
-        }
-        for (String k : new ArrayList<>(stats.keySet())) {
-            if (k.startsWith("AI")) { // FIXME: AIMain.aiStatisticsPrefix
-                ai.put(k, stats.remove(k));
-            }
-        }
-        b.add(createStatsTable("Memory", memory));
-        b.add(createStatsTable("Game", stats));
-        if (ai.isEmpty()) {
-            b.add(new JLabel());
-        } else {
-            b.add(createStatsTable("AI", ai));
-        }
-        return panel;
-    }
-
-    private JPanel createStatsTable(String title, Map<String, String> data) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        panel.add(new JLabel(title), BorderLayout.NORTH);
-        StatisticsModel model = new StatisticsModel();
-        model.setData(data);
-        JTable table = new JTable(model);
-        table.setAutoCreateColumnsFromModel(true);
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        table.setAutoCreateRowSorter(true);
-        JScrollPane scrollPane = new JScrollPane(table);
-        table.addNotify();
-        scrollPane.getViewport().setOpaque(false);
-        scrollPane.getColumnHeader().setOpaque(false);
-        panel.add(scrollPane, BorderLayout.CENTER);
-        panel.setPreferredSize(new Dimension(300, (data.size()+2)*17));
-        return panel;
-    }
+	private JPanel createStatsTable(String title, Map<String, String> data) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.add(new JLabel(title), BorderLayout.NORTH);
+		StatisticsModel model = new StatisticsModel();
+		model.setData(data);
+		JTable table = new JTable(model);
+		table.setAutoCreateColumnsFromModel(true);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		table.setAutoCreateRowSorter(true);
+		JScrollPane scrollPane = new JScrollPane(table);
+		table.addNotify();
+		scrollPane.getViewport().setOpaque(false);
+		scrollPane.getColumnHeader().setOpaque(false);
+		panel.add(scrollPane, BorderLayout.CENTER);
+		panel.setPreferredSize(new Dimension(300, (data.size() + 2) * 17));
+		return panel;
+	}
 }

@@ -25,196 +25,188 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-
 /**
  * A map of goods types and their production.
  */
 public class ProductionMap {
 
-    public static class ProductionTree {
+	public static class ProductionTree {
 
-        /**
-         * The abstract goods all other types of goods in this tree are
-         * finally stored as.
-         */
-        private AbstractGoods root;
+		/**
+		 * The abstract goods all other types of goods in this tree are finally stored
+		 * as.
+		 */
+		private AbstractGoods root;
 
-        /**
-         * The abstract goods that are actually produced.
-         */
-        private List<AbstractGoods> leafs;
+		/**
+		 * The abstract goods that are actually produced.
+		 */
+		private List<AbstractGoods> leafs;
 
+		public ProductionTree(AbstractGoods root, AbstractGoods... leafs) {
+			if (leafs.length > 0) {
+				this.leafs = new ArrayList<>();
+				int amount = root.getAmount();
+				for (AbstractGoods leaf : leafs) {
+					this.leafs.add(new AbstractGoods(leaf));
+					amount += leaf.getAmount();
+				}
+				this.root = new AbstractGoods(root.getType(), amount);
+			} else {
+				this.root = new AbstractGoods(root);
+			}
+		}
 
-        public ProductionTree(AbstractGoods root, AbstractGoods... leafs) {
-            if (leafs.length > 0) {
-                this.leafs = new ArrayList<>();
-                int amount = root.getAmount();
-                for (AbstractGoods leaf : leafs) {
-                    this.leafs.add(new AbstractGoods(leaf));
-                    amount += leaf.getAmount();
-                }
-                this.root = new AbstractGoods(root.getType(), amount);
-            } else {
-                this.root = new AbstractGoods(root);
-            }
-        }
+		public final AbstractGoods getRoot() {
+			return root;
+		}
 
+		public final void setRoot(final AbstractGoods newRoot) {
+			this.root = newRoot;
+		}
 
-        public final AbstractGoods getRoot() {
-            return root;
-        }
+		public final List<AbstractGoods> getLeafs() {
+			return leafs;
+		}
 
-        public final void setRoot(final AbstractGoods newRoot) {
-            this.root = newRoot;
-        }
+		public final void setLeafs(final List<AbstractGoods> newLeafs) {
+			this.leafs = newLeafs;
+		}
 
-        public final List<AbstractGoods> getLeafs() {
-            return leafs;
-        }
+		public void add(AbstractGoods goods) {
+			if (goods.getType().getStoredAs() != root.getType()) {
+				throw new IllegalArgumentException(goods.getType().getId() + " is not stored as " + root.getType());
+			} else {
+				AbstractGoods leaf = AbstractGoods.findByType(goods.getType(), leafs);
+				if (leaf != null) {
+					leaf.setAmount(leaf.getAmount() + goods.getAmount());
+					root.setAmount(root.getAmount() + goods.getAmount());
+					return;
+				}
+				leafs.add(new AbstractGoods(goods));
+				root.setAmount(root.getAmount() + goods.getAmount());
+			}
+		}
 
-        public final void setLeafs(final List<AbstractGoods> newLeafs) {
-            this.leafs = newLeafs;
-        }
+		public int remove(AbstractGoods goods) {
+			int consumed = goods.getAmount();
+			if (goods.getType() == root.getType()) {
+				root.setAmount(root.getAmount() - consumed);
+				for (AbstractGoods leaf : leafs) {
+					leaf.setAmount(Math.min(leaf.getAmount(), root.getAmount()));
+				}
+			} else {
+				AbstractGoods leaf = AbstractGoods.findByType(goods.getType(), leafs);
+				if (leaf != null) {
+					leaf.setAmount(leaf.getAmount() - consumed);
+					root.setAmount(root.getAmount() - consumed);
+				}
+			}
+			return consumed;
+		}
 
-        public void add(AbstractGoods goods) {
-            if (goods.getType().getStoredAs() != root.getType()) {
-                throw new IllegalArgumentException(goods.getType().getId() + " is not stored as "
-                                                   + root.getType());
-            } else {
-                AbstractGoods leaf = AbstractGoods.findByType(goods.getType(), leafs);
-                if (leaf != null) {
-                    leaf.setAmount(leaf.getAmount() + goods.getAmount());
-                    root.setAmount(root.getAmount() + goods.getAmount());
-                    return;
-                }
-                leafs.add(new AbstractGoods(goods));
-                root.setAmount(root.getAmount() + goods.getAmount());
-            }
-        }
+		public AbstractGoods get(GoodsType type) {
+			if (root.getType() == type) {
+				return root;
+			} else {
+				AbstractGoods leaf = AbstractGoods.findByType(type, leafs);
+				if (leaf != null) {
+					return new AbstractGoods(type, leaf.getAmount());
+				}
+			}
+			return null;
+		}
 
-        public int remove(AbstractGoods goods) {
-            int consumed = goods.getAmount();
-            if (goods.getType() == root.getType()) {
-                root.setAmount(root.getAmount() - consumed);
-                for (AbstractGoods leaf : leafs) {
-                    leaf.setAmount(Math.min(leaf.getAmount(), root.getAmount()));
-                }
-            } else {
-                AbstractGoods leaf = AbstractGoods.findByType(goods.getType(), leafs);
-                if (leaf != null) {
-                    leaf.setAmount(leaf.getAmount() - consumed);
-                    root.setAmount(root.getAmount() - consumed);
-                }
-            }
-            return consumed;
-        }
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder(32);
+			sb.append('[').append(root.getSuffix()).append(':');
+			for (AbstractGoods ag : leafs) {
+				sb.append(' ').append(ag.toString());
+			}
+			sb.append(" ]");
+			return sb.toString();
+		}
+	}
 
-        public AbstractGoods get(GoodsType type) {
-            if (root.getType() == type) {
-                return root;
-            } else {
-                AbstractGoods leaf = AbstractGoods.findByType(type, leafs);
-                if (leaf != null) {
-                    return new AbstractGoods(type, leaf.getAmount());
-                }
-            }
-            return null;
-        }
+	private final Map<GoodsType, Object> cache = new HashMap<>();
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder(32);
-            sb.append("[").append(root.getSuffix()).append(":");
-            for (AbstractGoods ag : leafs) {
-                sb.append(" ").append(ag.toString());
-            }
-            sb.append(" ]");
-            return sb.toString();
-        }
-    }
+	public AbstractGoods get(GoodsType type) {
+		Object value = cache.get(type);
+		if (value == null) {
+			return new AbstractGoods(type, 0);
+		} else if (value instanceof Integer) {
+			return new AbstractGoods(type, (Integer) value);
+		} else {
+			return ((ProductionTree) value).get(type);
+		}
+	}
 
+	public void add(AbstractGoods goods) {
+		GoodsType goodsType = goods.getType();
+		Object value = cache.get(goodsType);
+		if (value == null) {
+			// no entry yet
+			GoodsType rootType = goodsType.getStoredAs();
+			if (rootType == goodsType) {
+				cache.put(goodsType, goods.getAmount());
+			} else {
+				// is leaf of production tree
+				value = cache.get(rootType);
+				if (value instanceof ProductionTree) {
+					// entry is already present
+					((ProductionTree) value).add(goods);
+				} else {
+					// add new root entry
+					int amount = (value == null) ? 0 : (Integer) value;
+					value = new ProductionTree(new AbstractGoods(rootType, amount), goods);
+					cache.put(rootType, value);
+				}
+				// add the same entry for the goods type itself
+				cache.put(goodsType, value);
+			}
+		} else if (value instanceof Integer) {
+			cache.put(goodsType, (Integer) value + goods.getAmount());
+		} else {
+			((ProductionTree) value).add(goods);
+		}
+	}
 
-    private final Map<GoodsType, Object> cache = new HashMap<>();
+	public void remove(AbstractGoods goods) {
+		Object value = cache.get(goods.getType());
+		if (value instanceof ProductionTree) {
+			((ProductionTree) value).remove(goods);
+		} else {
+			add(new AbstractGoods(goods.getType(), -goods.getAmount()));
+		}
+	}
 
+	public void add(List<AbstractGoods> goods) {
+		for (AbstractGoods g : goods) {
+			add(g);
+		}
+	}
 
-    public AbstractGoods get(GoodsType type) {
-        Object value = cache.get(type);
-        if (value == null) {
-            return new AbstractGoods(type, 0);
-        } else if (value instanceof Integer) {
-            return new AbstractGoods(type, (Integer) value);
-        } else {
-            return ((ProductionTree) value).get(type);
-        }
-    }
+	public void remove(List<AbstractGoods> goods) {
+		for (AbstractGoods g : goods) {
+			remove(g);
+		}
+	}
 
-    public void add(AbstractGoods goods) {
-        GoodsType goodsType = goods.getType();
-        Object value = cache.get(goodsType);
-        if (value == null) {
-            // no entry yet
-            GoodsType rootType = goodsType.getStoredAs();
-            if (rootType == goodsType) {
-                cache.put(goodsType, goods.getAmount());
-            } else {
-                // is leaf of production tree
-                value = cache.get(rootType);
-                if (value instanceof ProductionTree) {
-                    // entry is already present
-                    ((ProductionTree) value).add(goods);
-                } else {
-                    // add new root entry
-                    int amount = (value == null) ? 0 : (Integer)value;
-                    value = new ProductionTree(new AbstractGoods(rootType, amount), goods);
-                    cache.put(rootType, value);
-                }
-                // add the same entry for the goods type itself
-                cache.put(goodsType, value);
-            }
-        } else if (value instanceof Integer) {
-            cache.put(goodsType, (Integer) value + goods.getAmount());
-        } else {
-            ((ProductionTree) value).add(goods);
-        }
-    }
-
-    public void remove(AbstractGoods goods) {
-        Object value = cache.get(goods.getType());
-        if (value instanceof ProductionTree) {
-            ((ProductionTree) value).remove(goods);
-        } else {
-            add(new AbstractGoods(goods.getType(), -goods.getAmount()));
-        }
-    }
-
-
-    public void add(List<AbstractGoods> goods) {
-        for (AbstractGoods g : goods) {
-            add(g);
-        }
-    }
-
-    public void remove(List<AbstractGoods> goods) {
-        for (AbstractGoods g : goods) {
-            remove(g);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(64);
-        sb.append("[");
-        for (Entry<GoodsType, Object> e : cache.entrySet()) {
-            sb.append(" ").append(e.getKey().getSuffix())
-                .append(":").append(e.getValue().toString());
-        }
-        sb.append(" ]");
-        return sb.toString();
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(64);
+		sb.append('[');
+		for (Entry<GoodsType, Object> e : cache.entrySet()) {
+			sb.append(' ').append(e.getKey().getSuffix()).append(':').append(e.getValue().toString());
+		}
+		sb.append(" ]");
+		return sb.toString();
+	}
 }

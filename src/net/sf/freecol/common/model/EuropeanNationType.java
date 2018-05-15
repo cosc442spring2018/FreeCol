@@ -29,252 +29,248 @@ import javax.xml.stream.XMLStreamException;
 import net.sf.freecol.common.io.FreeColXMLReader;
 import net.sf.freecol.common.io.FreeColXMLWriter;
 
-
 /**
- * Represents one of the European nations present in the game,
- * i.e. both REFs and possible human players.
+ * Represents one of the European nations present in the game, i.e. both REFs
+ * and possible human players.
  */
 public class EuropeanNationType extends NationType {
 
-    /** Whether this is an REF Nation. */
-    private boolean ref = false;
+	/** Whether this is an REF Nation. */
+	private boolean ref = false;
 
-    /**
-     * Stores the starting units of this Nation at various
-     * difficulties.
-     */
-    private final Map<String, Map<String, AbstractUnit>> startingUnitMap = new HashMap<>();
+	/**
+	 * Stores the starting units of this Nation at various difficulties.
+	 */
+	private final Map<String, Map<String, AbstractUnit>> startingUnitMap = new HashMap<>();
 
+	/**
+	 * Create a new European nation type.
+	 *
+	 * @param id
+	 *            The object identifier.
+	 * @param specification
+	 *            The <code>Specification</code> to refer to.
+	 */
+	public EuropeanNationType(String id, Specification specification) {
+		super(id, specification);
+	}
 
-    /**
-     * Create a new European nation type.
-     *
-     * @param id The object identifier.
-     * @param specification The <code>Specification</code> to refer to.
-     */
-    public EuropeanNationType(String id, Specification specification) {
-        super(id, specification);
-    }
+	/**
+	 * Is this a REF nation type?
+	 *
+	 * @return True if this is a REF nation type.
+	 */
+	@Override
+	public final boolean isREF() {
+		return ref;
+	}
 
+	/**
+	 * Is this a European nation type?
+	 *
+	 * @return True.
+	 */
+	@Override
+	public boolean isEuropean() {
+		return true;
+	}
 
-    /**
-     * Is this a REF nation type?
-     *
-     * @return True if this is a REF nation type.
-     */
-    @Override
-    public final boolean isREF() {
-        return ref;
-    }
+	/**
+	 * Is this a native nation type?
+	 *
+	 * @return False.
+	 */
+	@Override
+	public boolean isIndian() {
+		return false;
+	}
 
-    /**
-     * Is this a European nation type?
-     *
-     * @return True.
-     */
-    @Override
-    public boolean isEuropean() {
-        return true;
-    }
+	/**
+	 * Gets the starting units for this nation type.
+	 *
+	 * @return A list of <code>AbstractUnit</code>s to start with.
+	 */
+	public List<AbstractUnit> getStartingUnits() {
+		boolean ex = getSpecification().getBoolean(GameOptions.EXPERT_STARTING_UNITS);
+		return getStartingUnits(String.valueOf(ex));
+	}
 
-    /**
-     * Is this a native nation type?
-     *
-     * @return False.
-     */
-    @Override
-    public boolean isIndian() {
-        return false;
-    }
+	/**
+	 * Gets a list of this Nation's starting units at the given difficulty.
+	 *
+	 * @param key
+	 *            The value of the expert-starting-units field.
+	 * @return A list of <code>AbstractUnit</code>s to start with.
+	 */
+	public List<AbstractUnit> getStartingUnits(String key) {
+		Map<String, AbstractUnit> result = new HashMap<>();
+		Map<String, AbstractUnit> defaultMap = startingUnitMap.get(null);
+		Map<String, AbstractUnit> difficultyMap = startingUnitMap.get(key);
+		if (defaultMap != null) {
+			result.putAll(defaultMap);
+		}
+		if (difficultyMap != null) {
+			result.putAll(difficultyMap);
+		}
+		return new ArrayList<>(result.values());
+	}
 
-    /**
-     * Gets the starting units for this nation type.
-     *
-     * @return A list of <code>AbstractUnit</code>s to start with.
-     */
-    public List<AbstractUnit> getStartingUnits() {
-        boolean ex = getSpecification().getBoolean(GameOptions.EXPERT_STARTING_UNITS);
-        return getStartingUnits(String.valueOf(ex));
-    }
+	/**
+	 * Add a starting unit.
+	 *
+	 * @param id
+	 *            The unit identifier.
+	 * @param unit
+	 *            The <code>AbstractUnit</code> to add.
+	 * @param expert
+	 *            Is this an expert unit?
+	 */
+	private void addStartingUnit(String id, AbstractUnit unit, boolean expert) {
+		String exTag = (expert) ? Boolean.TRUE.toString() : null;
+		Map<String, AbstractUnit> units = startingUnitMap.get(exTag);
+		if (units == null) {
+			units = new HashMap<>();
+			startingUnitMap.put(exTag, units);
+		}
+		units.put(id, unit);
+	}
 
-    /**
-     * Gets a list of this Nation's starting units at the given
-     * difficulty.
-     *
-     * @param key The value of the expert-starting-units field.
-     * @return A list of <code>AbstractUnit</code>s to start with.
-     */
-    public List<AbstractUnit> getStartingUnits(String key) {
-        Map<String, AbstractUnit> result = new HashMap<>();
-        Map<String, AbstractUnit> defaultMap = startingUnitMap.get(null);
-        Map<String, AbstractUnit> difficultyMap = startingUnitMap.get(key);
-        if (defaultMap != null) {
-            result.putAll(defaultMap);
-        }
-        if (difficultyMap != null) {
-            result.putAll(difficultyMap);
-        }
-        return new ArrayList<>(result.values());
-    }
+	// Serialization
 
-    /**
-     * Add a starting unit.
-     *
-     * @param id The unit identifier.
-     * @param unit The <code>AbstractUnit</code> to add.
-     * @param expert Is this an expert unit?
-     */
-    private void addStartingUnit(String id, AbstractUnit unit, boolean expert) {
-        String exTag = (expert) ? Boolean.TRUE.toString() : null;
-        Map<String, AbstractUnit> units = startingUnitMap.get(exTag);
-        if (units == null) {
-            units = new HashMap<>();
-            startingUnitMap.put(exTag, units);
-        }
-        units.put(id, unit);
-    }
+	private static final String EXPERT_STARTING_UNITS_TAG = "expert-starting-units";
+	private static final String REF_TAG = "ref";
+	private static final String ROLE_TAG = "role";
+	private static final String TYPE_TAG = "type";
+	private static final String UNIT_TAG = "unit";
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
+		super.writeAttributes(xw);
 
-    // Serialization
+		xw.writeAttribute(REF_TAG, ref);
+	}
 
-    private static final String EXPERT_STARTING_UNITS_TAG = "expert-starting-units";
-    private static final String REF_TAG = "ref";
-    private static final String ROLE_TAG = "role";
-    private static final String TYPE_TAG = "type";
-    private static final String UNIT_TAG = "unit";
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void writeChildren(FreeColXMLWriter xw) throws XMLStreamException {
+		super.writeChildren(xw);
 
+		if (startingUnitMap != null && !startingUnitMap.isEmpty()) {
+			Map<String, AbstractUnit> map;
+			// default map
+			if ((map = startingUnitMap.get(null)) != null) {
+				for (Map.Entry<String, AbstractUnit> entry : map.entrySet()) {
+					writeUnit(xw, entry.getKey(), entry.getValue(), false);
+				}
+			}
+			// expert map
+			if ((map = startingUnitMap.get(Boolean.TRUE.toString())) != null) {
+				for (Map.Entry<String, AbstractUnit> entry : map.entrySet()) {
+					writeUnit(xw, entry.getKey(), entry.getValue(), true);
+				}
+			}
+		}
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeAttributes(xw);
+	private void writeUnit(FreeColXMLWriter xw, String id, AbstractUnit au, boolean expert) throws XMLStreamException {
+		xw.writeStartElement(UNIT_TAG);
 
-        xw.writeAttribute(REF_TAG, ref);
-    }
+		xw.writeAttribute(ID_ATTRIBUTE_TAG, id);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void writeChildren(FreeColXMLWriter xw) throws XMLStreamException {
-        super.writeChildren(xw);
+		xw.writeAttribute(TYPE_TAG, au);
 
-        if (startingUnitMap != null && !startingUnitMap.isEmpty()) {
-            Map<String, AbstractUnit> map;
-            // default map
-            if ((map = startingUnitMap.get(null)) != null) {
-                for (Map.Entry<String, AbstractUnit> entry : map.entrySet()) {
-                    writeUnit(xw, entry.getKey(), entry.getValue(), false);
-                }
-            }
-            // expert map
-            if ((map = startingUnitMap.get(Boolean.TRUE.toString())) != null) {
-                for (Map.Entry<String, AbstractUnit> entry : map.entrySet()) {
-                    writeUnit(xw, entry.getKey(), entry.getValue(), true);
-                }
-            }
-        }
-    }
+		xw.writeAttribute(ROLE_TAG, au.getRoleId());
 
-    private void writeUnit(FreeColXMLWriter xw, String id,
-                           AbstractUnit au,
-                           boolean expert) throws XMLStreamException {
-        xw.writeStartElement(UNIT_TAG);
+		// xw.writeAttribute("number", unit.getNumber());
 
-        xw.writeAttribute(ID_ATTRIBUTE_TAG, id);
+		if (expert)
+			xw.writeAttribute(EXPERT_STARTING_UNITS_TAG, expert);
 
-        xw.writeAttribute(TYPE_TAG, au);
+		xw.writeEndElement();
+	}
 
-        xw.writeAttribute(ROLE_TAG, au.getRoleId());
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
+		super.readAttributes(xr);
 
-        //xw.writeAttribute("number", unit.getNumber());
+		final Specification spec = getSpecification();
 
-        if (expert) xw.writeAttribute(EXPERT_STARTING_UNITS_TAG, expert);
+		EuropeanNationType parent = xr.getType(spec, EXTENDS_TAG, EuropeanNationType.class, this);
 
-        xw.writeEndElement();
-    }
+		ref = xr.getAttribute(REF_TAG, parent.ref);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
-        super.readAttributes(xr);
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void readChildren(FreeColXMLReader xr) throws XMLStreamException {
+		// Clear containers.
+		if (xr.shouldClearContainers()) {
+			startingUnitMap.clear();
+		}
 
-        final Specification spec = getSpecification();
+		final Specification spec = getSpecification();
+		EuropeanNationType parent = xr.getType(spec, EXTENDS_TAG, EuropeanNationType.class, this);
+		if (parent != this) {
+			for (Map.Entry<String, Map<String, AbstractUnit>> entry : parent.startingUnitMap.entrySet()) {
+				startingUnitMap.put(entry.getKey(), new HashMap<>(entry.getValue()));
+			}
+		}
 
-        EuropeanNationType parent = xr.getType(spec, EXTENDS_TAG,
-                                               EuropeanNationType.class, this);
+		super.readChildren(xr);
+	}
 
-        ref = xr.getAttribute(REF_TAG, parent.ref);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void readChild(FreeColXMLReader xr) throws XMLStreamException {
+		final String tag = xr.getLocalName();
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void readChildren(FreeColXMLReader xr) throws XMLStreamException {
-        // Clear containers.
-        if (xr.shouldClearContainers()) {
-            startingUnitMap.clear();
-        }
+		if (UNIT_TAG.equals(tag)) {
+			String id = xr.readId();
 
-        final Specification spec = getSpecification();
-        EuropeanNationType parent = xr.getType(spec, EXTENDS_TAG,
-                                               EuropeanNationType.class, this);
-        if (parent != this) {
-            for (Map.Entry<String, Map<String, AbstractUnit>> entry
-                     : parent.startingUnitMap.entrySet()) {
-                startingUnitMap.put(entry.getKey(), new HashMap<>(entry.getValue()));
-            }
-        }
+			String type = xr.getAttribute(TYPE_TAG, (String) null);
 
-        super.readChildren(xr);
-    }
+			String roleId = xr.getAttribute(ROLE_TAG, Specification.DEFAULT_ROLE_ID);
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void readChild(FreeColXMLReader xr) throws XMLStreamException {
-        final String tag = xr.getLocalName();
+			// @compat 0.10.7
+			roleId = Role.fixRoleId(roleId);
+			// end @compat
 
-        if (UNIT_TAG.equals(tag)) {
-            String id = xr.readId();
+			boolean ex = xr.getAttribute(EXPERT_STARTING_UNITS_TAG, false);
 
-            String type = xr.getAttribute(TYPE_TAG, (String)null);
+			addStartingUnit(id, new AbstractUnit(type, roleId, 1), ex);
+			xr.closeTag(UNIT_TAG);
 
-            String roleId = xr.getAttribute(ROLE_TAG,
-                                            Specification.DEFAULT_ROLE_ID);
+		} else {
+			super.readChild(xr);
+		}
+	}
 
-            // @compat 0.10.7
-            roleId = Role.fixRoleId(roleId);
-            // end @compat
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getXMLTagName() {
+		return getXMLElementTagName();
+	}
 
-            boolean ex = xr.getAttribute(EXPERT_STARTING_UNITS_TAG, false);
-
-            addStartingUnit(id, new AbstractUnit(type, roleId, 1), ex);
-            xr.closeTag(UNIT_TAG);
-
-        } else {
-            super.readChild(xr);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getXMLTagName() { return getXMLElementTagName(); }
-
-    /**
-     * Gets the tag name of the root element representing this object.
-     *
-     * @return "european-nation-type".
-     */
-    public static String getXMLElementTagName() {
-        return "european-nation-type";
-    }
+	/**
+	 * Gets the tag name of the root element representing this object.
+	 *
+	 * @return "european-nation-type".
+	 */
+	public static String getXMLElementTagName() {
+		return "european-nation-type";
+	}
 }
