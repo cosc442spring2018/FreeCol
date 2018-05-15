@@ -21,7 +21,7 @@ package net.sf.freecol.server.model;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -61,8 +61,6 @@ import net.sf.freecol.server.control.ChangeSet;
 import net.sf.freecol.server.control.ChangeSet.ChangePriority;
 import net.sf.freecol.server.control.ChangeSet.See;
 
-
-// TODO: Auto-generated Javadoc
 /**
  * The server representation of the game.
  */
@@ -158,31 +156,6 @@ public class ServerGame extends Game implements ServerModelObject {
      */
     public void sendToList(List<ServerPlayer> serverPlayers, ChangeSet cs) {
         for (ServerPlayer s : serverPlayers) s.send(cs);
-    }
-    
-
-    /**
-     * Makes a trivial server object in this game given a server object tag
-     * and an identifier.
-     *
-     * @param type The server object tag.
-     * @param id The object identifier.
-     * @return A trivial server object.
-     * @throws ClassNotFoundException the class not found exception
-     * @throws IllegalAccessException the illegal access exception
-     * @throws InstantiationException the instantiation exception
-     * @throws InvocationTargetException the invocation target exception
-     * @throws NoSuchMethodException the no such method exception
-     */
-    private Object makeServerObject(String type, String id)
-        throws ClassNotFoundException, IllegalAccessException,
-               InstantiationException, InvocationTargetException,
-               NoSuchMethodException {
-        type = "net.sf.freecol.server.model."
-            + type.substring(0,1).toUpperCase() + type.substring(1);
-        Class<?> c = Class.forName(type);
-        return c.getConstructor(Game.class, String.class)
-            .newInstance(this, id);
     }
 
     /**
@@ -309,10 +282,7 @@ public class ServerGame extends Game implements ServerModelObject {
         final Specification spec = getSpecification();
         Event succession = spec.getEvent("model.event.spanishSuccession");
         if (succession != null && !getSpanishSuccession()) {
-            ServerPlayer loser = csSpanishSuccession(cs, lb, succession);
-            // TODO: send update to loser.  It will not see anything
-            // because it is no longer a live player.
-            // if (loser != null) sendElement(loser, cs);
+
         }
     }
 
