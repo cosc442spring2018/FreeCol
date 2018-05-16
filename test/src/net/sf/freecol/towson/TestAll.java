@@ -1,5 +1,4 @@
-package towson.tests;
-
+package net.sf.freecol.towson;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -37,6 +36,7 @@ public class TestAll {
 	 *
 	 * @generatedBy CodePro at 5/12/18 8:58 PM
 	 */
+	
 	public static void main(String[] args) {
 		JUnitCore.runClasses(new Class[] { TestAll.class });
 	}

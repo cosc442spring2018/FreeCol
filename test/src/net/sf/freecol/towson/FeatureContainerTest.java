@@ -1,5 +1,4 @@
-package towson.tests;
-
+package net.sf.freecol.towson;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;

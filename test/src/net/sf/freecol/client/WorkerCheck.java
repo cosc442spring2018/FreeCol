@@ -48,7 +48,7 @@ public final class WorkerCheck {
 
     private WorkerCheck() {
 
-        final Worker  worker = new Worker();
+        final Worker worker = new Worker();
 
         textArea = new JTextArea( 10, 40 );
         textArea.setEditable( false );
@@ -85,7 +85,8 @@ public final class WorkerCheck {
                 // for when the window is closed by the OS
                 @Override
                 public void windowClosing(WindowEvent event) {
-                    worker.askToStop();
+                    //worker.askToStop();
+                	worker.stop();
                 }
 
                 // for when the window is closed by Java

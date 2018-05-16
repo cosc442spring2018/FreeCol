@@ -1,5 +1,4 @@
-package towson.tests;
-
+package net.sf.freecol.towson;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 

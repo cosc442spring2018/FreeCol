@@ -400,6 +400,8 @@
             description="Runs all unit tests">
         <delete dir="${freecol.build.dir}/report" />
         <mkdir dir="${freecol.build.dir}/report"/>
+        <mkdir dir="${freecol.build.dir}/report/towson"/>
+        <mkdir dir="${freecol.build.dir}/report/towson/xml"/>
         <mkdir dir="${freecol.build.dir}/report/xml"/>
         <!-- if the next fails then here is the long answer:
              http://ant.apache.org/faq.html#delegating-classloader
@@ -422,6 +424,8 @@
 
             <test todir="${freecol.build.dir}/report/xml"
                   name="net.sf.freecol.AllTests" fork="yes"/>
+            <test todir="${freecol.build.dir}/report/towson/xml"
+                  name="net.sf.freecol.towson.TestAll" fork="yes"/>
 
             <!--
                 <batchtest fork="false" todir="${freecol.build.dir}/report/xml">
@@ -433,6 +437,9 @@
 
         <junitreport>
             <fileset dir="${freecol.build.dir}/report/xml">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <fileset dir="${freecol.build.dir}/report/towson/xml">
                 <include name="TEST-*.xml"/>
             </fileset>
             <report todir="${freecol.build.dir}/report" />

@@ -1,5 +1,4 @@
-package towson.tests;
-
+package net.sf.freecol.towson;
 import java.util.Random;
 import java.util.logging.Logger;
 import org.junit.*;

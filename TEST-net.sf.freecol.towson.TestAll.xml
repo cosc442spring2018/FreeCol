@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="trailBlazer.local" name="net.sf.freecol.towson.TestAll" skipped="0" tests="393" time="0.675" timestamp="2018-05-16T19:02:33">
+  <properties>
+    <property name="java.vendor" value="Oracle Corporation" />
+    <property name="miglayout-core.jar" value="jars/miglayout-core-4.2.jar" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="env.XPC_SERVICE_NAME" value="0" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="freecol.javadoc.dir" value="/Users/tylerhoward/git/FreeCol/doc/javadoc" />
+    <property name="env.COLORFGBG" value="7;0" />
+    <property name="os.name" value="Mac OS X" />
+    <property name="sun.boot.class.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/jre/classes" />
+    <property name="env.TMPDIR" value="/var/folders/fd/1nmg8nnd35n1zhz7lgkt97180000gn/T/" />
+    <property name="env.PWD" value="/Users/tylerhoward/git/FreeCol" />
+    <property name="TODAY" value="May 16 2018" />
+    <property name="env.LANG" value="en_US.UTF-8" />
+    <property name="env.LESS" value="-R" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="ant.home" value="/usr/local/Cellar/ant/1.10.3/libexec" />
+    <property name="freecol.metaserver.jar.file" value="/Users/tylerhoward/git/FreeCol/FreeCol-metaserver.jar" />
+    <property name="java.runtime.version" value="1.8.0_102-b14" />
+    <property name="env.Apple_PubSub_Socket_Render" value="/private/tmp/com.apple.launchd.HNRC6BulQB/Render" />
+    <property name="user.name" value="tylerhoward" />
+    <property name="env.USER" value="tylerhoward" />
+    <property name="env.SHELL" value="/usr/local/bin/zsh" />
+    <property name="env.__CF_USER_TEXT_ENCODING" value="0x1F5:0x0:0x0" />
+    <property name="freecol.overview.file" value="/Users/tylerhoward/git/FreeCol/src/overview.html" />
+    <property name="ant.file.type.FreeCol" value="file" />
+    <property name="freecol.release.dir" value="/Users/tylerhoward/git/FreeCol/dist" />
+    <property name="env.PATH" value="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/Library/Frameworks/Mono.framework/Versions/Current/Commands" />
+    <property name="user.language" value="en" />
+    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/jre/lib" />
+    <property name="ant.project.default-target" value="package" />
+    <property name="env.XPC_FLAGS" value="0x0" />
+    <property name="ant.project.name" value="FreeCol" />
+    <property name="DSTAMP" value="20180516" />
+    <property name="env.LC_CTYPE" value="en_US.UTF-8" />
+    <property name="cortado.jar" value="jars/cortado-0.6.0.jar" />
+    <property name="java.version" value="1.8.0_102" />
+    <property name="user.timezone" value="" />
+    <property name="freecol.name" value="freecol" />
+    <property name="sun.arch.data.model" value="64" />
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+    <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/jre/lib/endorsed" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="env.ITERM_SESSION_ID" value="w0t0p1:13A18BFE-85EA-41F7-B3C5-DA4036398579" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="env.SHLVL" value="2" />
+    <property name="file.separator" value="/" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="java.class.version" value="52.0" />
+    <property name="user.country" value="US" />
+    <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/jre" />
+    <property name="env.ZSH" value="/Users/tylerhoward/.oh-my-zsh" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="env.LOGNAME" value="tylerhoward" />
+    <property name="ant.file" value="/Users/tylerhoward/git/FreeCol/build.xml" />
+    <property name="os.version" value="10.13.2" />
+    <property name="miglayout-swing.jar" value="jars/miglayout-swing-4.2.jar" />
+    <property name="env.TERM_PROGRAM_VERSION" value="3.0.8" />
+    <property name="freecol.build.dir" value="/Users/tylerhoward/git/FreeCol/build" />
+    <property name="path.separator" value=":" />
+    <property name="java.vm.version" value="25.102-b14" />
+    <property name="java.target.version" value="1.8" />
+    <property name="ant.library.dir" value="/usr/local/Cellar/ant/1.10.3/libexec/lib" />
+    <property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob" />
+    <property name="env.TERM" value="xterm-256color" />
+    <property name="freecol.packaging.dir" value="/Users/tylerhoward/git/FreeCol/packaging" />
+    <property name="env.JAVA_MAIN_CLASS_38463" value="org.apache.tools.ant.launch.Launcher" />
+    <property name="sun.io.unicode.encoding" value="UnicodeBig" />
+    <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit" />
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+    <property name="env.LSCOLORS" value="Gxfxcxdxbxegedabagacad" />
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+    <property name="ant.file.FreeCol" value="/Users/tylerhoward/git/FreeCol/build.xml" />
+    <property name="user.home" value="/Users/tylerhoward" />
+    <property name="freecol.rules.dir" value="/Users/tylerhoward/git/FreeCol/data/rules" />
+    <property name="test" value="AllTests" />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
+    <property name="env.TERM_PROGRAM" value="iTerm.app" />
+    <property name="env.PAGER" value="less" />
+    <property name="java.vendor.url" value="http://java.oracle.com/" />
+    <property name="java.library.path" value="/Users/tylerhoward/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:." />
+    <property name="gopherProxySet" value="false" />
+    <property name="java.vm.vendor" value="Oracle Corporation" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.10.3 compiled on March 24 2018" />
+    <property name="java.class.path" value="/Users/tylerhoward/git/FreeCol/build:/Users/tylerhoward/git/FreeCol/test/lib/junit.jar:/Users/tylerhoward/git/FreeCol/jars/miglayout-swing-4.2.jar:/Users/tylerhoward/git/FreeCol/jars/miglayout-core-4.2.jar:/Users/tylerhoward/git/FreeCol/jars/commons-cli-1.1.jar:/Users/tylerhoward/git/FreeCol/jars/cortado-0.6.0.jar:/Users/tylerhoward/git/FreeCol/jars/jogg-0.0.17.jar:/Users/tylerhoward/git/FreeCol/jars/jorbis-0.0.17.jar:/usr/local/Cellar/ant/1.10.3/libexec/lib/ant-launcher.jar:/usr/local/Cellar/ant/1.10.3/libexec/lib/ant.jar:/usr/local/Cellar/ant/1.10.3/libexec/lib/ant-junit.jar:/usr/local/Cellar/ant/1.10.3/libexec/lib/ant-junit4.jar" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner net.sf.freecol.towson.TestAll skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/tylerhoward/git/FreeCol/TEST-net.sf.freecol.towson.TestAll.xml crashfile=/Users/tylerhoward/git/FreeCol/junitvmwatcher941820149264254555.properties propsfile=/Users/tylerhoward/git/FreeCol/junit5204572898067215858.properties" />
+    <property name="env.TERM_SESSION_ID" value="w0t0p1:13A18BFE-85EA-41F7-B3C5-DA4036398579" />
+    <property name="TSTAMP" value="1502" />
+    <property name="isOsMac" value="true" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="ant.file.type" value="file" />
+    <property name="java.vm.specification.version" value="1.8" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="env.HOME" value="/Users/tylerhoward" />
+    <property name="java.awt.headless" value="true" />
+    <property name="java.io.tmpdir" value="/var/folders/fd/1nmg8nnd35n1zhz7lgkt97180000gn/T/" />
+    <property name="env.LS_COLORS" value="no=00:fi=00:di=01;34:ln=00;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=41;33;01:ex=00;32:*.cmd=00;32:*.exe=01;32:*.com=01;32:*.bat=01;32:*.btm=01;32:*.dll=01;32:*.tar=00;31:*.tbz=00;31:*.tgz=00;31:*.rpm=00;31:*.deb=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.lzma=00;31:*.zip=00;31:*.zoo=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.tb2=00;31:*.tz2=00;31:*.tbz2=00;31:*.avi=01;35:*.bmp=01;35:*.fli=01;35:*.gif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mng=01;35:*.mov=01;35:*.mpg=01;35:*.pcx=01;35:*.pbm=01;35:*.pgm=01;35:*.png=01;35:*.ppm=01;35:*.tga=01;35:*.tif=01;35:*.xbm=01;35:*.xpm=01;35:*.dl=01;35:*.gl=01;35:*.wmv=01;35:*.aiff=00;32:*.au=00;32:*.mid=00;32:*.mp3=00;32:*.ogg=00;32:*.voc=00;32:*.wav=00;32:" />
+    <property name="freecol.src.dir" value="/Users/tylerhoward/git/FreeCol/src" />
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+    <property name="env.SSH_AUTH_SOCK" value="/private/tmp/com.apple.launchd.3dbxUFeoSG/Listeners" />
+    <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment" />
+    <property name="os.arch" value="x86_64" />
+    <property name="java.ext.dirs" value="/Users/tylerhoward/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java" />
+    <property name="user.dir" value="/Users/tylerhoward/git/FreeCol" />
+    <property name="isOsUnixLike" value="true" />
+    <property name="line.separator" value="&#xa;" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="basedir" value="/Users/tylerhoward/git/FreeCol" />
+    <property name="env.ITERM_PROFILE" value="Default" />
+    <property name="ant.java.version" value="1.8" />
+    <property name="freecol.jar.file" value="/Users/tylerhoward/git/FreeCol/FreeCol.jar" />
+    <property name="ant.core.lib" value="/usr/local/Cellar/ant/1.10.3/libexec/lib/ant.jar" />
+    <property name="cli.jar" value="jars/commons-cli-1.1.jar" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="freecol.data.dir" value="/Users/tylerhoward/git/FreeCol/data" />
+    <property name="freecol.doc.dir" value="/Users/tylerhoward/git/FreeCol/doc" />
+    <property name="java.specification.version" value="1.8" />
+    <property name="ant.project.invoked-targets" value="testall" />
+  </properties>
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testGetNameKey_1" time="0.013" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testGetDuration_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testSetSource_1" time="0.003" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testAddScope_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testAddScope_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testGetSource_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testHasScope_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testHasScope_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testHasScope_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testGetLastTurn_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testSetDuration_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testHashCode_1" time="0.002" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testHashCode_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testHashCode_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testHasTimeLimit_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testHasTimeLimit_2" time="0.002" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testHasTimeLimit_3" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testIsOutOfDate_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testIsOutOfDate_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testIsOutOfDate_3" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testIsOutOfDate_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testGetScopes_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testGetScopes_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testIsTemporary_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testIsTemporary_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testEquals_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testEquals_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testEquals_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testEquals_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testEquals_5" time="0.003" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testEquals_6" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testEquals_7" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testEquals_8" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testEquals_9" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testGetFirstTurn_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testEquals_10" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testIsIndependent_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testIsIndependent_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testIsIndependent_3" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testIsIndependent_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureTest" name="testIsIndependent_5" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testGetListLabel_1" time="0.018" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testGetListLabel_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testGetDescription_1" time="0.015" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testGetXMLElementTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testSetNumber_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testGetNumber_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testGetLabel_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testGetXMLTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testCalculateStrength_1" time="0.043" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testAbstractUnit_1" time="0.006" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testAbstractUnit_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testAbstractUnit_5" time="0.002" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testToString_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testSetRoleId_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testGetRoleId_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testGetRole_1" time="0.01" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testGetType_1" time="0.003" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testDeepCopy_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.AbstractUnitTest" name="testDeepCopy_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testGetNameKey_1" time="0.002" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testContainsType_1" time="0.011" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testContainsType_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testFindByType_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testFindByType_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testFindByType_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testGetXMLElementTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testAbstractGoods_1" time="0.002" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testAbstractGoods_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testAbstractGoods_3" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testHashCode_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testSetAmount_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testGetAmount_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testGetLabel_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testGetLabel_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testGetLabel_3" time="0.002" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testGetLabel_4" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testGetLabel_5" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testGetXMLTagName_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testToString_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testToString_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testToString_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testToString_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testGetCount_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testGetCount_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testSetType_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testEquals_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testEquals_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testEquals_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testEquals_4" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testEquals_5" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.AbstractGoodsTest" name="testGetType_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetSortedModifiers_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testSerialize_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testSerialize_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testSerialize_3" time="0.002" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testSerialize_4" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetPropertyChangeListeners_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetPropertyChangeListeners_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetPropertyChangeListeners_3" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetPropertyChangeListeners_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testRemoveModifiers_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testRemoveModifiers_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testAddAbility_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testAddAbility_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testAddAbility_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetAbilities_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetAbilities_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testToXML_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testToXML_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testToXML_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testToXML_4" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testToXML_5" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testToXML_6" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testToXML_7" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testApplyModifiers_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testApplyModifiers_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testContainsModifierKey_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testContainsModifierKey_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testContainsModifierKey_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testAddModifier_1" time="0.003" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testAddModifier_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testAddModifier_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetXMLElementTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testCompareTo_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testRemovePropertyChangeListener_1" time="0.012" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testRemovePropertyChangeListener_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testRemovePropertyChangeListener_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testRemovePropertyChangeListener_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testToXMLElement_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testToXMLElement_5" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testRemoveAbility_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testRemoveAbility_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetSuffix_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetSuffix_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testHashCode_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testHasModifier_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testHasModifier_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetId_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testFirePropertyChange_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testFirePropertyChange_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testFirePropertyChange_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testFirePropertyChange_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testFirePropertyChange_5" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testFirePropertyChange_6" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testFirePropertyChange_7" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testFirePropertyChange_8" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetSortedAbilities_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testRemoveFeatures_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testRemoveFeatures_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testReadId_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testReadId_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetSpecification_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testHasListeners_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testHasListeners_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testHasListeners_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testRemoveAbilities_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testRemoveAbilities_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testContainsAbilityKey_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testContainsAbilityKey_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetIdNumber_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetIdNumber_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetIdNumber_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetIdNumber_4" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testFireIndexedPropertyChange_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testFireIndexedPropertyChange_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testFireIndexedPropertyChange_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testFireIndexedPropertyChange_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testFireIndexedPropertyChange_5" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testFireIndexedPropertyChange_6" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetIdType_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetIdType_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetIdType_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetIdType_4" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetModifiers_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetModifiers_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testDumpObject_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testAddPropertyChangeListener_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testAddPropertyChangeListener_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testAddPropertyChangeListener_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testAddPropertyChangeListener_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testToString_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testCompareIds_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testCompareIds_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testCompareIds_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testCompareIds_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testCompareIds_5" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testCompareIds_6" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testRemoveModifier_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testRemoveModifier_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testEquals_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testEquals_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testEquals_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testEquals_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testSave_10" time="0.059" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testSave_11" time="0.002" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testSave_12" time="0.002" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testSave_13" time="0.003" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testSave_14" time="0.005" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetFeatureContainer_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testSetId_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testHasAbility_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testHasAbility_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testGetDefenceModifiers_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testAddFeatures_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testAddFeatures_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testToXMLPartial_7" time="0.003" />
+  <testcase classname="net.sf.freecol.towson.FreeColObjectTest" name="testToXMLPartial_8" time="0.002" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testIsCompatibleWith_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testIsCompatibleWith_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testIsCompatibleWith_3" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testIsCompatibleWith_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testIsCompatibleWith_5" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testIsMilitaryEquipment_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testIsMilitaryEquipment_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testGetCombatLossPriority_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testGetXMLElementTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testGetCaptureEquipment_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testGetCaptureEquipment_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testGetCaptureEquipment_3" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testCanBeCaptured_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testCanBeCaptured_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testHashCode_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testHashCode_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testGetXMLTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testEquipmentType_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testGetMaximumCount_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testSetRole_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testEquals_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testEquals_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testEquals_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testEquals_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testEquals_5" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testEquals_6" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testEquals_7" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EquipmentTypeTest" name="testGetRole_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetPriority_1" time="0.003" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetWorkPlaces_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetUpkeep_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testIsDefenceType_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testIsDefenceType_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetXMLElementTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testCompareTo_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testCompareTo_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testCanProduce_1" time="0.006" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testCanProduce_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testCanProduce_3" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testBuildingType_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetProducedGoodsType_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetProducedGoodsType_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetProducedGoodsType_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetPotentialProduction_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetPotentialProduction_2" time="0.004" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetPotentialProduction_3" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetUpgradesTo_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetXMLTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetLevel_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetUpgradesFrom_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testCanAdd_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testCanAdd_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetNoAddReason_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetNoAddReason_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetNoAddReason_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetNoAddReason_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetNoAddReason_5" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetAvailableProductionTypes_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetAvailableProductionTypes_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetFirstLevel_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetType_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testIsAutomaticBuild_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testIsAutomaticBuild_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testIsAutomaticBuild_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testAddProductionType_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testAddProductionType_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetBaseProduction_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetBaseProduction_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetBaseProduction_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.BuildingTypeTest" name="testGetBaseProduction_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DisasterTest" name="testDisaster_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.DisasterTest" name="testGetXMLElementTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DisasterTest" name="testGetEffects_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.DisasterTest" name="testGetEffects_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DisasterTest" name="testIsNatural_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DisasterTest" name="testIsNatural_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DisasterTest" name="testGetXMLTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DisasterTest" name="testToString_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DisasterTest" name="testToString_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DisasterTest" name="testGetNumberOfEffects_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.EuropeanNationTypeTest" name="testIsIndian_1" time="0.003" />
+  <testcase classname="net.sf.freecol.towson.EuropeanNationTypeTest" name="testGetXMLElementTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EuropeanNationTypeTest" name="testIsEuropean_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EuropeanNationTypeTest" name="testGetXMLTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EuropeanNationTypeTest" name="testEuropeanNationType_1" time="0.004" />
+  <testcase classname="net.sf.freecol.towson.EuropeanNationTypeTest" name="testIsREF_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EuropeanNationTypeTest" name="testIsREF_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EuropeanNationTypeTest" name="testGetStartingUnits_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EuropeanNationTypeTest" name="testGetStartingUnits_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testRemoveModifiers_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testRemoveModifiers_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddAbility_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddAbility_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddAbility_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testApplyModifiers_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testApplyModifiers_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testApplyModifiers_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testApplyModifiers_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testApplyModifiers_5" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddModifier_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddModifier_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddModifier_3" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_10" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_11" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_12" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_13" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_14" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_15" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_16" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testRemoveAbility_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testRemoveAbility_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testRemoveAbility_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testRemoveAbility_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testRemoveAbility_5" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testFeatureContainer_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testContainsAbilityKey_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testContainsAbilityKey_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testClear_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testClear_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testClear_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testClear_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testToString_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testToString_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testToString_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testRemoveModifier_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testRemoveModifier_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testRemoveModifier_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testRemoveModifier_4" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testRemoveModifier_5" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testHasAbility_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testHasAbility_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testHasAbility_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testHasAbility_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_5" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_6" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_7" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_8" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FeatureContainerTest" name="testAddFeatures_9" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetXMLElementTagName_1" time="0.008" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetUpgrades_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetUpgrades_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetUnits_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetUnits_2" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetXMLTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetWeight_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetWeight_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetWeight_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetScopes_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetScopes_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testFoundingFather_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetType_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetTypeKey_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetTypeKey_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetEvents_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.FoundingFatherTest" name="testGetEvents_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testGetNextDirection_1" time="0.002" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testGetNameKey_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testGetKey_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testGetReverseDirection_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testGetPreviousDirection_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testAngleToDirection_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testGetEWMirroredDirection_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testGetEWMirroredDirection_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testGetEWMirroredDirection_3" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testGetEWMirroredDirection_4" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testGetEWMirroredDirection_5" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testGetEWMirroredDirection_6" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testGetEWMirroredDirection_7" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testStep_1" time="0.001" />
+  <testcase classname="net.sf.freecol.towson.DirectionTest" name="testStep_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EventTest" name="testSetValue_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EventTest" name="testEvent_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EventTest" name="testGetLimits_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EventTest" name="testGetLimits_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EventTest" name="testGetXMLElementTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EventTest" name="testGetScoreValue_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EventTest" name="testSetScoreValue_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EventTest" name="testGetXMLTagName_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EventTest" name="testGetLimit_1" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EventTest" name="testGetLimit_2" time="0.0" />
+  <testcase classname="net.sf.freecol.towson.EventTest" name="testGetValue_1" time="0.0" />
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 1 null (model.role.default)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+<?xml version="1.0" encoding="UTF-8"?><abstractGoods amount="0"></abstractGoods>May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject writeAttributes
+WARNING: FreeColObject with null identifier: 0 (null)
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject toXMLPartial
+WARNING: Partial write failed for net.sf.freecol.common.model.AbstractGoods
+java.lang.NullPointerException
+	at com.sun.xml.internal.stream.writers.XMLStreamWriterImpl.writeXMLContent(XMLStreamWriterImpl.java:1447)
+	at com.sun.xml.internal.stream.writers.XMLStreamWriterImpl.writeAttribute(XMLStreamWriterImpl.java:547)
+	at net.sf.freecol.common.io.FreeColXMLWriter.writeAttribute(FreeColXMLWriter.java:445)
+	at net.sf.freecol.common.model.FreeColObject.toXMLPartial(FreeColObject.java:1248)
+	at net.sf.freecol.towson.FreeColObjectTest.testToXMLPartial_7(FreeColObjectTest.java:2234)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:38)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:536)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1205)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1048)
+
+May 16, 2018 3:02:34 PM net.sf.freecol.common.model.FreeColObject toXMLPartial
+WARNING: Partial write failed for net.sf.freecol.common.model.AbstractGoods
+java.lang.NullPointerException
+	at com.sun.xml.internal.stream.writers.XMLStreamWriterImpl.writeXMLContent(XMLStreamWriterImpl.java:1447)
+	at com.sun.xml.internal.stream.writers.XMLStreamWriterImpl.writeAttribute(XMLStreamWriterImpl.java:547)
+	at net.sf.freecol.common.io.FreeColXMLWriter.writeAttribute(FreeColXMLWriter.java:445)
+	at net.sf.freecol.common.model.FreeColObject.toXMLPartial(FreeColObject.java:1248)
+	at net.sf.freecol.towson.FreeColObjectTest.testToXMLPartial_8(FreeColObjectTest.java:2253)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at junit.framework.JUnit4TestAdapter.run(JUnit4TestAdapter.java:38)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.run(JUnitTestRunner.java:536)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.launch(JUnitTestRunner.java:1205)
+	at org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner.main(JUnitTestRunner.java:1048)
+
+]]></system-err>
+</testsuite>
