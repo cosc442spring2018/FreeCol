@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PlayerLibertyTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">test/src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">PlayerLibertyTest.java</span></div><h1>PlayerLibertyTest.java</h1><pre class="source lang-java linenums">package net.sf.freecol.common.model;
+
+import net.sf.freecol.server.model.ServerColony;
+import net.sf.freecol.server.model.ServerPlayer;
+import net.sf.freecol.util.test.FreeColTestCase;
+
+public class PlayerLibertyTest extends FreeColTestCase{
+
+    Game game;
+    ServerPlayer dutchPlayer; //This player is always creating in standard game
+
+<span class="nc" id="L12">    public PlayerLibertyTest() { super(); }</span>
+
+    protected void setUp() throws Exception
+    {
+<span class="nc" id="L16">        super.setUp();</span>
+<span class="nc" id="L17">        game = getStandardGame();</span>
+<span class="nc" id="L18">        dutchPlayer = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+<span class="nc" id="L19">    }</span>
+
+    public void testGetSetLiberty() {
+<span class="nc" id="L22">        ServerPlayer nativeAmericanPlayer = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.inca&quot;);</span>
+<span class="nc" id="L23">        int libertyAmt = 100;</span>
+
+<span class="nc" id="L25">        nativeAmericanPlayer.setLiberty(libertyAmt);</span>
+<span class="nc" id="L26">        assertEquals(nativeAmericanPlayer.getLiberty(), 0);</span>
+<span class="nc" id="L27">        dutchPlayer.setLiberty(libertyAmt);</span>
+<span class="nc" id="L28">        assertEquals(dutchPlayer.getLiberty(), 100);</span>
+<span class="nc" id="L29">    }</span>
+
+    public void testsModifyLiberty() {
+<span class="nc" id="L32">        int libertyAmt = 100;</span>
+<span class="nc" id="L33">        dutchPlayer.modifyLiberty(libertyAmt);</span>
+<span class="nc" id="L34">        assertEquals(dutchPlayer.getLiberty(), libertyAmt);</span>
+<span class="nc" id="L35">        assertEquals(dutchPlayer.interventionBells, 0);</span>
+<span class="nc" id="L36">        dutchPlayer.changePlayerType(Player.PlayerType.REBEL);</span>
+<span class="nc" id="L37">        dutchPlayer.modifyLiberty(libertyAmt);</span>
+<span class="nc" id="L38">        assertEquals(dutchPlayer.getLiberty(), libertyAmt * 2);</span>
+<span class="nc" id="L39">        assertEquals(dutchPlayer.interventionBells, libertyAmt);</span>
+<span class="nc" id="L40">    }</span>
+
+    public void testGetLibertyProductionNextTurn() {
+<span class="nc" id="L43">        game.setMap(getTestMap());</span>
+<span class="nc" id="L44">        GoodsType liberty = game.getSpecification().getLibertyGoodsTypeList().get(0);</span>
+<span class="nc" id="L45">        assertEquals(0, dutchPlayer.getLibertyProductionNextTurn());</span>
+
+<span class="nc" id="L47">        String colonyName = &quot;AnthonyAsimNoobville&quot;;</span>
+<span class="nc" id="L48">        int goodsAmt = 100;</span>
+
+<span class="nc" id="L50">        Colony newColony = new ServerColony(getGame(), dutchPlayer, colonyName, getTestMap().getTile(0, 0));</span>
+<span class="nc" id="L51">        Building newBuilding = new Building(getGame(), newColony, new BuildingType(&quot;model.building.church&quot;, getGame().getSpecification()));</span>
+<span class="nc" id="L52">        Goods goods = new Goods(game, newColony, liberty, goodsAmt);</span>
+<span class="nc" id="L53">        newColony.addBuilding(newBuilding);</span>
+<span class="nc" id="L54">        newBuilding.getProductionInfo().addProduction(goods);</span>
+<span class="nc" id="L55">        dutchPlayer.addSettlement(newColony);</span>
+
+<span class="nc" id="L57">        assertEquals(dutchPlayer.getLibertyProductionNextTurn(), (int)dutchPlayer.applyModifiers((float)newColony.getTotalProductionOf(liberty), game.getTurn(),</span>
+<span class="nc" id="L58">                Modifier.LIBERTY));</span>
+<span class="nc" id="L59">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>

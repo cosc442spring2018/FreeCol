@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PlayerMonetaryTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">test/src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">PlayerMonetaryTest.java</span></div><h1>PlayerMonetaryTest.java</h1><pre class="source lang-java linenums">package net.sf.freecol.common.model;
+import net.sf.freecol.server.model.ServerColony;
+import net.sf.freecol.server.model.ServerUnit;
+import net.sf.freecol.util.test.FreeColTestCase;
+import net.sf.freecol.server.model.ServerPlayer;
+import net.sf.freecol.server.ServerTestHelper;
+public class PlayerMonetaryTest extends FreeColTestCase {
+    Game game;
+    ServerPlayer dutchPlayer; //This player is always creating in standard game
+
+    public PlayerMonetaryTest() {
+<span class="nc" id="L12">        super();</span>
+<span class="nc" id="L13">    }</span>
+
+    protected void setUp() throws Exception {
+<span class="nc" id="L16">        super.setUp();</span>
+<span class="nc" id="L17">        game = getStandardGame();</span>
+<span class="nc" id="L18">        dutchPlayer = (ServerPlayer) game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+<span class="nc" id="L19">    }</span>
+
+    /**Test setting and getting sales tax*/
+    public void testGetSetTax() {
+<span class="nc" id="L23">        dutchPlayer.setTax(100);</span>
+<span class="nc" id="L24">        assertEquals(dutchPlayer.getTax(), 100);</span>
+<span class="nc" id="L25">    }</span>
+
+    /**Test getter for market*/
+    public void testGetMarket() {
+<span class="nc" id="L29">        GoodsType type = game.getSpecification().getGoodsType(&quot;model.goods.food&quot;);</span>
+<span class="nc" id="L30">        int initialFood = dutchPlayer.getMarket().getAmountInMarket(type);</span>
+<span class="nc" id="L31">        dutchPlayer.getMarket().addGoodsToMarket(type, 100);</span>
+<span class="nc" id="L32">        assertEquals(dutchPlayer.getMarket().getOwner(), dutchPlayer);</span>
+<span class="nc" id="L33">        assertEquals(dutchPlayer.getMarket().getAmountInMarket(type),initialFood+100);</span>
+<span class="nc" id="L34">    }</span>
+
+    /**Test restarting market after changing it to make sure it resets to default*/
+    public void testReinitializeMarket() {
+<span class="nc" id="L38">        GoodsType type = game.getSpecification().getGoodsType(&quot;model.goods.food&quot;);</span>
+<span class="nc" id="L39">        int initialFood = dutchPlayer.getMarket().getAmountInMarket(type);</span>
+<span class="nc" id="L40">        dutchPlayer.getMarket().addGoodsToMarket(type, 100);</span>
+<span class="nc" id="L41">        assertEquals(dutchPlayer.getMarket().getAmountInMarket(type),initialFood+100);</span>
+<span class="nc" id="L42">        dutchPlayer.reinitialiseMarket();</span>
+<span class="nc" id="L43">        assertEquals(dutchPlayer.getMarket().getAmountInMarket(type),initialFood);</span>
+<span class="nc" id="L44">    }</span>
+
+    /**Test out LastSales functionality including accessors and string representation*/
+    public void testGetSetLastSales() {
+<span class="nc" id="L48">        game.setMap(getTestMap());</span>
+<span class="nc" id="L49">        Colony colony = new ServerColony(game, dutchPlayer, &quot;New Amsterdam&quot;, game.getMap().getTile(0,0));</span>
+<span class="nc" id="L50">        GoodsType type = game.getSpecification().getGoodsType(&quot;model.goods.food&quot;);</span>
+
+<span class="nc" id="L52">        dutchPlayer.addLastSale(new LastSale(LastSale.makeKey(colony,type), game.getTurn(), 100));</span>
+<span class="nc" id="L53">        assertEquals(dutchPlayer.getLastSale(colony, type).getPrice(), 100);</span>
+<span class="nc" id="L54">        assertEquals(dutchPlayer.getLastSaleString(colony,type), &quot;100&quot;);</span>
+<span class="nc" id="L55">    }</span>
+
+    /**Test ability to check how many arrears (debt) player owes to the market.*/
+    public void testGetArrears() {
+<span class="nc" id="L59">        GoodsType type = game.getSpecification().getGoodsType(&quot;model.goods.food&quot;);</span>
+<span class="nc" id="L60">        int arrearAmt = 100;</span>
+
+<span class="nc" id="L62">        dutchPlayer.getMarket().setArrears(type, arrearAmt);</span>
+<span class="nc" id="L63">        assertEquals(arrearAmt,dutchPlayer.getArrears(type));</span>
+<span class="nc" id="L64">    }</span>
+
+    /** Test sales accessor */
+    public void testGetSetSales() {
+<span class="nc" id="L68">        GoodsType type = game.getSpecification().getGoodsType(&quot;model.goods.food&quot;);</span>
+<span class="nc" id="L69">        int salesAmt = 100;</span>
+
+<span class="nc" id="L71">        assertEquals(dutchPlayer.getSales(type),0);</span>
+<span class="nc" id="L72">        dutchPlayer.modifySales(type,salesAmt);</span>
+<span class="nc" id="L73">        assertEquals(dutchPlayer.getSales(type),salesAmt);</span>
+<span class="nc" id="L74">    }</span>
+
+    /**Test hasTraded accesor*/
+    public void testGetTrade() {
+<span class="nc" id="L78">        GoodsType type = game.getSpecification().getGoodsType(&quot;model.goods.food&quot;);</span>
+<span class="nc" id="L79">        assertFalse(dutchPlayer.hasTraded(type));</span>
+<span class="nc" id="L80">        dutchPlayer.getMarket().getMarketData(type).setTraded(true);</span>
+<span class="nc" id="L81">        assertTrue(dutchPlayer.hasTraded(type));</span>
+<span class="nc" id="L82">    }</span>
+
+    /**Get the most valuable good that has been traded and we have no debt for*/
+    public void testGetMostValuableGoods() {
+<span class="nc" id="L86">        ServerPlayer nativeAmericanPlayer = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.inca&quot;);</span>
+<span class="nc" id="L87">        assertNull(nativeAmericanPlayer.getMostValuableGoods());</span>
+
+<span class="nc" id="L89">        game.setMap(getTestMap());</span>
+<span class="nc" id="L90">        Colony colony = new ServerColony(game, dutchPlayer, &quot;New Amsterdam&quot;, game.getMap().getTile(0,0));</span>
+<span class="nc" id="L91">        dutchPlayer.addSettlement(colony);</span>
+
+<span class="nc" id="L93">        GoodsType type = game.getSpecification().getGoodsType(&quot;model.goods.food&quot;);</span>
+
+<span class="nc" id="L95">        int goodsAmt = 100;</span>
+<span class="nc" id="L96">        colony.addGoods(type, goodsAmt);</span>
+<span class="nc" id="L97">        dutchPlayer.getMarket().getMarketData(type).setTraded(true);</span>
+<span class="nc" id="L98">        dutchPlayer.getMarket().getMarketData(type).setPaidForSale(100);</span>
+
+<span class="nc" id="L100">        assertEquals(dutchPlayer.getMostValuableGoods().getType(), type);</span>
+<span class="nc" id="L101">    }</span>
+
+    /**Test if a good can be traded to Europe*/
+    public void testCanTradeEurope() {
+<span class="nc" id="L105">        GoodsType type = game.getSpecification().getGoodsType(&quot;model.goods.food&quot;);</span>
+<span class="nc" id="L106">        assertTrue(dutchPlayer.canTrade(type));</span>
+<span class="nc" id="L107">        dutchPlayer.getMarket().setArrears(type, 100);</span>
+<span class="nc" id="L108">        assertFalse(dutchPlayer.canTrade(type));</span>
+<span class="nc" id="L109">    }</span>
+
+    public void testGetClosestPortForEurope() {
+<span class="nc" id="L112">        game.setMap(getTestMap(game.getSpecification().getTileType(&quot;model.tile.ocean&quot;)));</span>
+<span class="nc" id="L113">        Tile tile = game.getMap().getTile(0,0);</span>
+<span class="nc" id="L114">        tile.setHighSeasCount(100);</span>
+<span class="nc" id="L115">        Colony colony = new ServerColony(game, dutchPlayer, &quot;New Amsterdam&quot;, tile);</span>
+<span class="nc" id="L116">        dutchPlayer.addSettlement(colony);</span>
+<span class="nc" id="L117">        assertEquals(dutchPlayer.getClosestPortForEurope(), colony);</span>
+<span class="nc" id="L118">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>

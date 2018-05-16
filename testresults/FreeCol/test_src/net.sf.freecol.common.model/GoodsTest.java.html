@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>GoodsTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">test/src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">GoodsTest.java</span></div><h1>GoodsTest.java</h1><pre class="source lang-java linenums">/**
+ *  Copyright (C) 2002-2015  The FreeCol Team
+ *
+ *  This file is part of FreeCol.
+ *
+ *  FreeCol is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  FreeCol is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with FreeCol.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package net.sf.freecol.common.model;
+
+import java.util.List;
+import java.util.Locale;
+
+import net.sf.freecol.common.i18n.Messages;
+import net.sf.freecol.common.model.FreeColObject;
+import net.sf.freecol.common.networking.DOMMessage;
+import net.sf.freecol.server.model.ServerUnit;
+import net.sf.freecol.util.test.FreeColTestCase;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+
+<span class="fc" id="L35">public class GoodsTest extends FreeColTestCase {</span>
+
+<span class="fc" id="L37">    private static final GoodsType bellsType</span>
+<span class="fc" id="L38">        = spec().getGoodsType(&quot;model.goods.bells&quot;);</span>
+<span class="fc" id="L39">    private static final GoodsType clothType</span>
+<span class="fc" id="L40">        = spec().getGoodsType(&quot;model.goods.cloth&quot;);</span>
+<span class="fc" id="L41">    private static final GoodsType cottonType</span>
+<span class="fc" id="L42">        = spec().getGoodsType(&quot;model.goods.cotton&quot;);</span>
+<span class="fc" id="L43">    private static final GoodsType crossesType</span>
+<span class="fc" id="L44">        = spec().getGoodsType(&quot;model.goods.crosses&quot;);</span>
+<span class="fc" id="L45">    private static final GoodsType fishType</span>
+<span class="fc" id="L46">        = spec().getGoodsType(&quot;model.goods.fish&quot;);</span>
+<span class="fc" id="L47">    private static final GoodsType foodType</span>
+<span class="fc" id="L48">        = spec().getPrimaryFoodType();</span>
+<span class="fc" id="L49">    private static final GoodsType grainType</span>
+<span class="fc" id="L50">        = spec().getGoodsType(&quot;model.goods.grain&quot;);</span>
+<span class="fc" id="L51">    private static final GoodsType hammersType</span>
+<span class="fc" id="L52">        = spec().getGoodsType(&quot;model.goods.hammers&quot;);</span>
+<span class="fc" id="L53">    private static final GoodsType horsesType</span>
+<span class="fc" id="L54">        = spec().getGoodsType(&quot;model.goods.horses&quot;);</span>
+<span class="fc" id="L55">    private static final GoodsType lumberType</span>
+<span class="fc" id="L56">        = spec().getGoodsType(&quot;model.goods.lumber&quot;);</span>
+<span class="fc" id="L57">    private static final GoodsType musketsType</span>
+<span class="fc" id="L58">        = spec().getGoodsType(&quot;model.goods.muskets&quot;);</span>
+<span class="fc" id="L59">    private static final GoodsType oreType</span>
+<span class="fc" id="L60">        = spec().getGoodsType(&quot;model.goods.ore&quot;);</span>
+<span class="fc" id="L61">    private static final GoodsType toolsType</span>
+<span class="fc" id="L62">        = spec().getGoodsType(&quot;model.goods.tools&quot;);</span>
+<span class="fc" id="L63">    private static final GoodsType tradeGoodsType</span>
+<span class="fc" id="L64">        = spec().getGoodsType(&quot;model.goods.tradeGoods&quot;);</span>
+
+<span class="fc" id="L66">    private static final TileType plainsType</span>
+<span class="fc" id="L67">        = spec().getTileType(&quot;model.tile.plains&quot;);</span>
+
+<span class="fc" id="L69">    private static final UnitType privateerType</span>
+<span class="fc" id="L70">        = spec().getUnitType(&quot;model.unit.privateer&quot;);</span>
+<span class="fc" id="L71">    private static final UnitType veteranSoldierType</span>
+<span class="fc" id="L72">        = spec().getUnitType(&quot;model.unit.veteranSoldier&quot;);</span>
+<span class="fc" id="L73">    private static final UnitType wagonTrainType</span>
+<span class="fc" id="L74">        = spec().getUnitType(&quot;model.unit.wagonTrain&quot;);</span>
+
+
+    public void testGoodsGameLocationIntInt() {
+
+<span class="fc" id="L79">        Map map = getTestMap(plainsType);</span>
+
+<span class="fc" id="L81">        Unit wagon = new ServerUnit(getGame(), map.getTile(9, 10), dutch(),</span>
+<span class="fc" id="L82">                                    wagonTrainType);</span>
+
+<span class="fc" id="L84">        Goods g = new Goods(getGame(), wagon, cottonType, 75);</span>
+
+<span class="fc" id="L86">        assertEquals(wagon, g.getLocation());</span>
+<span class="fc" id="L87">        assertEquals(cottonType, g.getType());</span>
+<span class="fc" id="L88">        assertEquals(75, g.getAmount());</span>
+<span class="fc" id="L89">    }</span>
+
+    public void testSetOwner() {
+
+        try {
+<span class="fc" id="L94">            Map map = getTestMap(plainsType);</span>
+
+<span class="fc" id="L96">            Unit wagon = new ServerUnit(getGame(), map.getTile(9, 10), dutch(),</span>
+<span class="fc" id="L97">                                        wagonTrainType);</span>
+
+<span class="fc" id="L99">            Goods g = new Goods(getGame(), wagon, cottonType, 75);</span>
+
+<span class="nc" id="L101">            g.setOwner(getGame().getCurrentPlayer());</span>
+
+<span class="nc" id="L103">            fail(&quot;Should not allow setOwner&quot;);</span>
+<span class="pc" id="L104">        } catch (UnsupportedOperationException e) {</span>
+            // Okay to throw exception.
+        }
+<span class="fc" id="L107">    }</span>
+
+    public void testToString() {
+
+<span class="fc" id="L111">        Messages.loadMessageBundle(Locale.ENGLISH);</span>
+
+<span class="fc" id="L113">        Map map = getTestMap(plainsType);</span>
+
+<span class="fc" id="L115">        Unit wagon = new ServerUnit(getGame(), map.getTile(9, 10), dutch(), wagonTrainType);</span>
+
+<span class="fc" id="L117">        Goods g = new Goods(getGame(), wagon, cottonType, 75);</span>
+
+<span class="fc" id="L119">        assertEquals(&quot;75 cotton&quot;, g.toString());</span>
+<span class="fc" id="L120">    }</span>
+
+    public void testGetName() {
+
+<span class="fc" id="L124">        Locale.setDefault(Locale.ENGLISH);</span>
+
+<span class="fc" id="L126">        Goods g = new Goods(getGame(), null, cottonType, 75);</span>
+
+<span class="fc" id="L128">        assertEquals(&quot;75 Cotton&quot;, Messages.message(g.getLabel(true)));</span>
+<span class="fc" id="L129">        assertEquals(&quot;75 Cotton (boycotted)&quot;, Messages.message(g.getLabel(false)));</span>
+
+        // Same as getName(int, boolean)
+        //assertEquals(g.getName(), Goods.getName(cottonType));
+        //assertEquals(g.getName(false), Goods.getName(cottonType, false));
+        //assertEquals(g.getName(true), Goods.getName(cottonType, true));
+
+<span class="fc" id="L136">    }</span>
+
+    public void testGetInputType() {
+<span class="fc" id="L139">        assertEquals(null, cottonType.getInputType());</span>
+<span class="fc" id="L140">        assertEquals(cottonType, clothType.getInputType());</span>
+<span class="fc" id="L141">    }</span>
+
+    public void testGetOutputType() {
+<span class="fc" id="L144">        assertEquals(null, clothType.getOutputType());</span>
+<span class="fc" id="L145">        assertEquals(clothType, cottonType.getOutputType());</span>
+<span class="fc" id="L146">    }</span>
+
+    public void testIsFarmedGoods() {
+<span class="fc" id="L149">        assertFalse(bellsType.isFarmed());</span>
+<span class="fc" id="L150">        assertTrue(cottonType.isFarmed());</span>
+<span class="fc" id="L151">        assertFalse(clothType.isFarmed());</span>
+<span class="fc" id="L152">    }</span>
+
+    public void testMilitaryGoods() {
+<span class="fc" id="L155">        assertFalse(bellsType.isMilitaryGoods());</span>
+<span class="fc" id="L156">        assertFalse(crossesType.isMilitaryGoods());</span>
+<span class="fc" id="L157">        assertFalse(clothType.isMilitaryGoods());</span>
+<span class="fc" id="L158">        assertFalse(cottonType.isMilitaryGoods());</span>
+<span class="fc" id="L159">        assertTrue(horsesType.isMilitaryGoods());</span>
+<span class="fc" id="L160">        assertTrue(musketsType.isMilitaryGoods());</span>
+<span class="fc" id="L161">    }</span>
+
+    public void testBuildingMaterials() {
+        // for dragoon role
+<span class="fc" id="L165">        assertTrue(horsesType.isBuildingMaterial());</span>
+<span class="fc" id="L166">        assertTrue(musketsType.isBuildingMaterial());</span>
+        // for buildings and units
+<span class="fc" id="L168">        assertTrue(hammersType.isBuildingMaterial());</span>
+<span class="fc" id="L169">        assertTrue(toolsType.isBuildingMaterial());</span>
+
+        // other goods not involved in construction, or not directly involved
+<span class="fc" id="L172">        assertFalse(bellsType.isBuildingMaterial());</span>
+<span class="fc" id="L173">        assertFalse(crossesType.isBuildingMaterial());</span>
+<span class="fc" id="L174">        assertFalse(clothType.isBuildingMaterial());</span>
+<span class="fc" id="L175">        assertFalse(cottonType.isBuildingMaterial());</span>
+<span class="fc" id="L176">        assertFalse(fishType.isBuildingMaterial());</span>
+        //assertFalse(foodType.isBuildingMaterial());
+<span class="fc" id="L178">        assertFalse(oreType.isBuildingMaterial());</span>
+<span class="fc" id="L179">        assertFalse(lumberType.isBuildingMaterial());</span>
+
+        // checking raw materials
+<span class="fc" id="L182">        assertTrue(oreType.isRawBuildingMaterial());</span>
+<span class="fc" id="L183">        assertTrue(lumberType.isRawBuildingMaterial());</span>
+<span class="fc" id="L184">        assertFalse(toolsType.isRawBuildingMaterial());</span>
+<span class="fc" id="L185">        assertFalse(foodType.isRawBuildingMaterial());// freecol-ruleset!</span>
+<span class="fc" id="L186">        assertTrue(grainType.isRawBuildingMaterial());// freecol-ruleset!</span>
+<span class="fc" id="L187">        assertFalse(fishType.isRawBuildingMaterial());</span>
+<span class="fc" id="L188">        assertFalse(horsesType.isRawBuildingMaterial());</span>
+<span class="fc" id="L189">        assertFalse(musketsType.isRawBuildingMaterial());</span>
+<span class="fc" id="L190">        assertFalse(hammersType.isRawBuildingMaterial());</span>
+<span class="fc" id="L191">        assertFalse(bellsType.isRawBuildingMaterial());</span>
+<span class="fc" id="L192">        assertFalse(crossesType.isRawBuildingMaterial());</span>
+<span class="fc" id="L193">        assertFalse(clothType.isRawBuildingMaterial());</span>
+<span class="fc" id="L194">        assertFalse(cottonType.isRawBuildingMaterial());</span>
+<span class="fc" id="L195">    }</span>
+
+    public void testTradeGoods() {
+<span class="fc" id="L198">        assertTrue(tradeGoodsType.isTradeGoods());</span>
+<span class="fc" id="L199">    }</span>
+
+    public void testGetTakeSpace() {
+<span class="fc" id="L202">        Map map = getTestMap(plainsType, true);</span>
+<span class="fc" id="L203">        Unit wagon = new ServerUnit(getGame(), map.getTile(9, 10), dutch(),</span>
+<span class="fc" id="L204">                                    wagonTrainType);</span>
+
+<span class="fc" id="L206">        Goods cotton = new Goods(getGame(), wagon, cottonType, 75);</span>
+<span class="fc" id="L207">        assertEquals(1, cotton.getSpaceTaken());</span>
+<span class="fc" id="L208">    }</span>
+
+    public void testSetGetAmount() {
+<span class="fc" id="L211">        Map map = getTestMap(plainsType, true);</span>
+
+<span class="fc" id="L213">        Unit wagon = new ServerUnit(getGame(), map.getTile(9, 10), dutch(), wagonTrainType);</span>
+
+<span class="fc" id="L215">        Goods cotton = new Goods(getGame(), wagon, cottonType, 75);</span>
+
+<span class="fc" id="L217">        assertEquals(75, cotton.getAmount());</span>
+
+<span class="fc" id="L219">        cotton.setAmount(-10);</span>
+
+<span class="fc" id="L221">        assertEquals(-10, cotton.getAmount());</span>
+
+<span class="fc" id="L223">        cotton.setAmount(100000);</span>
+
+<span class="fc" id="L225">        assertEquals(100000, cotton.getAmount());</span>
+
+<span class="fc" id="L227">    }</span>
+
+    public Player dutch(){
+<span class="fc" id="L230">        return getGame().getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+    }
+
+    public void testAdjustAmount() {
+
+<span class="fc" id="L235">        Map map = getTestMap(plainsType, true);</span>
+
+<span class="fc" id="L237">        Unit wagon = new ServerUnit(getGame(), map.getTile(9, 10), dutch(), wagonTrainType);</span>
+
+<span class="fc" id="L239">        Goods cotton = new Goods(getGame(), wagon, cottonType, 75);</span>
+
+<span class="fc" id="L241">        assertEquals(75, cotton.getAmount());</span>
+
+<span class="fc" id="L243">        cotton.adjustAmount();</span>
+
+<span class="fc" id="L245">        cotton.setAmount(-10);</span>
+
+<span class="fc" id="L247">        assertEquals(-10, cotton.getAmount());</span>
+
+<span class="fc" id="L249">        cotton.setAmount(100000);</span>
+
+<span class="fc" id="L251">        assertEquals(100000, cotton.getAmount());</span>
+
+<span class="fc" id="L253">    }</span>
+
+    public void testSerialize() {
+<span class="fc" id="L256">        Game game = getGame();</span>
+<span class="fc" id="L257">        game.setMap(getTestMap(plainsType,true));</span>
+
+<span class="fc" id="L259">        Colony colony = getStandardColony();</span>
+<span class="fc" id="L260">        Goods goods1 = new Goods(game, colony, cottonType, 75);</span>
+<span class="fc" id="L261">        Document document = DOMMessage.createNewDocument();</span>
+<span class="fc" id="L262">        Element element = goods1.toXMLElement(document);</span>
+
+<span class="fc" id="L264">        element.setAttribute(FreeColObject.ID_ATTRIBUTE_TAG, &quot;newID&quot;);</span>
+<span class="fc" id="L265">        Goods goods2 = new Goods(colony.getGame(), element);</span>
+
+<span class="fc" id="L267">        assertEquals(goods1.getGame(), goods2.getGame());</span>
+<span class="fc" id="L268">        assertEquals(goods1.getLocation(), goods2.getLocation());</span>
+<span class="fc" id="L269">        assertEquals(goods1.getType(), goods2.getType());</span>
+<span class="fc" id="L270">        assertEquals(goods1.getAmount(), goods2.getAmount());</span>
+
+<span class="fc" id="L272">    }</span>
+
+    public void testProductionChain() {
+<span class="fc" id="L275">        List&lt;GoodsType&gt; chain = hammersType.getProductionChain();</span>
+<span class="fc" id="L276">        assertEquals(lumberType, chain.get(0));</span>
+<span class="fc" id="L277">        assertEquals(hammersType, chain.get(1));</span>
+
+<span class="fc" id="L279">        chain = musketsType.getProductionChain();</span>
+<span class="fc" id="L280">        assertEquals(oreType, chain.get(0));</span>
+<span class="fc" id="L281">        assertEquals(toolsType, chain.get(1));</span>
+<span class="fc" id="L282">        assertEquals(musketsType, chain.get(2));</span>
+<span class="fc" id="L283">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
