@@ -525,153 +525,32 @@ public final class Specification {
         Iterator<FreeColGameObjectType> typeIterator
             = allTypes.values().iterator();
         while (typeIterator.hasNext()) {
-            FreeColGameObjectType type = typeIterator.next();
-            if (type.isAbstractType()) {
-                typeIterator.remove();
-            }
+            initializeFreeColGameObjectType(typeIterator);
         }
 
         // Fix up the GoodsType derived attributes.  Several GoodsType
         // predicates are likely to fail until this is done.
         GoodsType.setDerivedAttributes(this);
 
-        storableGoodsTypeList.clear();
-        farmedGoodsTypeList.clear();
-        foodGoodsTypeList.clear();
-        newWorldGoodsTypeList.clear();
-        newWorldLuxuryGoodsTypeList.clear();
-        libertyGoodsTypeList.clear();
-        immigrationGoodsTypeList.clear();
-        rawBuildingGoodsTypeList.clear();
-        for (GoodsType goodsType : goodsTypeList) {
-            if (goodsType.isStorable()) {
-                storableGoodsTypeList.add(goodsType);
-            }
-            if (goodsType.isFarmed()) {
-                farmedGoodsTypeList.add(goodsType);
-            }
-            if (goodsType.isFoodType()) {
-                foodGoodsTypeList.add(goodsType);
-            }
-            if (goodsType.isNewWorldGoodsType()) {
-                newWorldGoodsTypeList.add(goodsType);
-                if (goodsType.isNewWorldLuxuryType()) {
-                    newWorldLuxuryGoodsTypeList.add(goodsType);
-                }
-            }
-            if (goodsType.isLibertyType()) {
-                libertyGoodsTypeList.add(goodsType);
-            }
-            if (goodsType.isImmigrationType()) {
-                immigrationGoodsTypeList.add(goodsType);
-            }
-            if (goodsType.isRawBuildingMaterial() && !goodsType.isFoodType()) {
-                rawBuildingGoodsTypeList.add(goodsType);
-            }
-        }
+        clearGoodsList();
+        iterateGoodsType();
 
-        REFNations.clear();
-        europeanNations.clear();
-        indianNations.clear();
-        for (Nation nation : nations) {
-            if (nation.getType().isEuropean()) {
-                if (nation.isUnknownEnemy()) {
-                    continue;
-                } else if (nation.getType().isREF()) {
-                    REFNations.add(nation);
-                } else {
-                    europeanNations.add(nation);
-                }
-            } else {
-                indianNations.add(nation);
-            }
-        }
+        clearEuroIndianNations();
+        iterateNations();
 
-        nationTypes.clear();
-        nationTypes.addAll(indianNationTypes);
-        nationTypes.addAll(europeanNationTypes);
+        clearNationTypes();
         Iterator<EuropeanNationType> iterator = europeanNationTypes.iterator();
-        while (iterator.hasNext()) {
-            EuropeanNationType nationType = iterator.next();
-            if (nationType.isREF()) {
-                REFNationTypes.add(nationType);
-                iterator.remove();
-            }
-        }
+        iterateEuropeanNationType(iterator);
 
-        experts.clear();
-        unitTypesTrainedInEurope.clear();
-        unitTypesPurchasedInEurope.clear();
-        defaultUnitTypes.clear();
-        int bestLandValue = -1, bestNavalValue = -1;
-        for (UnitType unitType : unitTypeList) {
-            if (unitType.isDefaultUnitType()) defaultUnitTypes.add(unitType);
-            if (unitType.needsGoodsToBuild()
-                && !unitType.hasAbility(Ability.BORN_IN_COLONY)) {
-                buildableUnitTypes.add(unitType);
-            }
-            if (unitType.getExpertProduction() != null) {
-                experts.put(unitType.getExpertProduction(), unitType);
-            }
-            if (unitType.hasPrice()) {
-                if (unitType.getSkill() > 0) {
-                    unitTypesTrainedInEurope.add(unitType);
-                } else if (!unitType.hasSkill()) {
-                    unitTypesPurchasedInEurope.add(unitType);
-                }
-            }
-            if (unitType.isNaval()) {
-                if (bestNavalValue < unitType.getMovement()) {
-                    bestNavalValue = unitType.getMovement();
-                    fastestNavalUnitType = unitType;
-                }
-            } else {
-                if (bestLandValue < unitType.getMovement()) {
-                    bestLandValue = unitType.getMovement();
-                    fastestLandUnitType = unitType;
-                }
-            }
-        }
+        clearUnitTypesEuro();
+        iterateUnitType();
 
         // Initialize UI containers.
-        for (AbstractOption option : allOptions.values()) {
-            option.generateChoices();
-        }
+        iterateAbstractOptionValues();
 
         // Initialize the Turn class using GameOptions and messages.
-        Turn.initialize(getInteger(GameOptions.STARTING_YEAR),
-                        getInteger(GameOptions.SEASON_YEAR),
-                        getInteger(GameOptions.SEASONS));
-        {
-            Option agesOption = getOption(GameOptions.AGES);
-            boolean badAges = !(agesOption instanceof TextOption);
-            String agesValue = (badAges) ? ""
-                : ((TextOption)agesOption).getValue();
-            String a[] = agesValue.split(",");
-            badAges |= a.length != NUMBER_OF_AGES-1;
-            if (!badAges) {
-                try {
-                    ages[0] = 1;
-                    ages[1] = Turn.yearToTurn(Integer.parseInt(a[0]));
-                    ages[2] = Turn.yearToTurn(Integer.parseInt(a[1]));
-                    if (ages[1] < 1 || ages[2] < 1) {
-                        badAges = true;
-                    } else if (ages[1] > ages[2]) {
-                        int tmp = ages[1];
-                        ages[1] = ages[2];
-                        ages[2] = tmp;
-                    }
-                } catch (NumberFormatException nfe) {
-                    badAges = true;
-                }
-            }
-            if (badAges) {
-                logger.warning("Bad ages: " + agesValue);
-                ages[0] = 1;   // First turn
-                ages[1] = Turn.yearToTurn(1600);
-                ages[2] = Turn.yearToTurn(1700);
-            }
-        }
+        initializeTurn();
+        optionsLogic();
 
         // Apply the customs on coast restriction
         boolean customsOnCoast = getBoolean(GameOptions.CUSTOMS_ON_COAST);
@@ -680,7 +559,173 @@ public final class Specification {
             a.setValue(customsOnCoast);
         }
 
-        logger.info("Specification clean following " + why + " complete"
+        displayLogInfo(why);
+    }
+
+
+	/**
+	 * 
+	 */
+	private void optionsLogic() {
+		{
+            Option agesOption = getOption(GameOptions.AGES);
+            boolean badAges = !(agesOption instanceof TextOption);
+            String agesValue = (badAges) ? ""
+                : ((TextOption)agesOption).getValue();
+            String a[] = agesValue.split(",");
+            badAges |= a.length != NUMBER_OF_AGES-1;
+            if (!badAges) {
+                try {
+                    setAges(a);
+                    badAges = ageLogic(badAges);
+                } catch (NumberFormatException nfe) {
+                    badAges = true;
+                }
+            }
+            if (badAges) {
+                setBadAges(agesValue);
+            }
+        }
+	}
+
+
+	/**
+	 * @param badAges
+	 * @return
+	 */
+	private boolean ageLogic(boolean badAges) {
+		if (ages[1] < 1 || ages[2] < 1) {
+		    badAges = true;
+		} else if (ages[1] > ages[2]) {
+		    int tmp = ages[1];
+		    ages[1] = ages[2];
+		    ages[2] = tmp;
+		}
+		return badAges;
+	}
+
+
+	/**
+	 * @param a
+	 */
+	private void setAges(String[] a) {
+		ages[0] = 1;
+		ages[1] = Turn.yearToTurn(Integer.parseInt(a[0]));
+		ages[2] = Turn.yearToTurn(Integer.parseInt(a[1]));
+	}
+
+
+	/**
+	 * 
+	 */
+	private void iterateAbstractOptionValues() {
+		for (AbstractOption option : allOptions.values()) {
+            option.generateChoices();
+        }
+	}
+
+
+	/**
+	 * 
+	 */
+	private void iterateUnitType() {
+		int bestLandValue = -1, bestNavalValue = -1;
+        for (UnitType unitType : unitTypeList) {
+            checkUnitTypeProperties(unitType);
+            if (unitType.isNaval()) {
+                bestNavalValue = checkBestNavalValue(bestNavalValue, unitType);
+            } else {
+                bestLandValue = checkBestLandValue(bestLandValue, unitType);
+            }
+        }
+	}
+
+
+	/**
+	 * @param iterator
+	 */
+	private void iterateEuropeanNationType(Iterator<EuropeanNationType> iterator) {
+		while (iterator.hasNext()) {
+            initializeEuropeanNationType(iterator);
+        }
+	}
+
+
+	/**
+	 * 
+	 */
+	private void iterateNations() {
+		for (Nation nation : nations) {
+            checkNationProperties(nation);
+        }
+	}
+
+
+	/**
+	 * 
+	 */
+	private void iterateGoodsType() {
+		for (GoodsType goodsType : goodsTypeList) {
+            getGoodsTypeProperties(goodsType);
+        }
+	}
+
+
+	/**
+	 * @param agesValue
+	 */
+	private void setBadAges(String agesValue) {
+		logger.warning("Bad ages: " + agesValue);
+		ages[0] = 1;   // First turn
+		ages[1] = Turn.yearToTurn(1600);
+		ages[2] = Turn.yearToTurn(1700);
+	}
+
+
+	/**
+	 * 
+	 */
+	private void initializeTurn() {
+		Turn.initialize(getInteger(GameOptions.STARTING_YEAR),
+                        getInteger(GameOptions.SEASON_YEAR),
+                        getInteger(GameOptions.SEASONS));
+	}
+
+
+	/**
+	 * @param unitType
+	 */
+	private void checkUnitTypeProperties(UnitType unitType) {
+		checkDefaultUnitType(unitType);
+		checkUnitTypeNeedsGoodsToBuild(unitType);
+		checkUnitTypeGetExpertProd(unitType);
+		checkUnitTypeHasPrice(unitType);
+	}
+
+
+	/**
+	 * @param iterator
+	 */
+	private void initializeEuropeanNationType(Iterator<EuropeanNationType> iterator) {
+		EuropeanNationType nationType = iterator.next();
+		checkNationTypeREF(iterator, nationType);
+	}
+
+
+	/**
+	 * @param typeIterator
+	 */
+	private void initializeFreeColGameObjectType(Iterator<FreeColGameObjectType> typeIterator) {
+		FreeColGameObjectType type = typeIterator.next();
+		checkTypeAbstract(typeIterator, type);
+	}
+
+
+	/**
+	 * @param why
+	 */
+	private void displayLogInfo(String why) {
+		logger.info("Specification clean following " + why + " complete"
             + ", starting year=" + Turn.getStartingYear()
             + ", season year=" + Turn.getSeasonYear()
             + ", ages=[" + ages[0] + "," + ages[1] + "," + ages[2] + "]"
@@ -704,7 +749,324 @@ public final class Specification {
             + ", " + tileImprovementTypeList.size() + " TileImprovementTypes"
             + ", " + unitTypeList.size() + " UnitTypes"
             + " read.");
-    }
+	}
+
+
+	/**
+	 * @param bestLandValue
+	 * @param unitType
+	 * @return
+	 */
+	private int checkBestLandValue(int bestLandValue, UnitType unitType) {
+		if (bestLandValue < unitType.getMovement()) {
+		    bestLandValue = unitType.getMovement();
+		    fastestLandUnitType = unitType;
+		}
+		return bestLandValue;
+	}
+
+
+	/**
+	 * @param bestNavalValue
+	 * @param unitType
+	 * @return
+	 */
+	private int checkBestNavalValue(int bestNavalValue, UnitType unitType) {
+		if (bestNavalValue < unitType.getMovement()) {
+		    bestNavalValue = unitType.getMovement();
+		    fastestNavalUnitType = unitType;
+		}
+		return bestNavalValue;
+	}
+
+
+	/**
+	 * @param unitType
+	 */
+	private void checkUnitTypeHasPrice(UnitType unitType) {
+		if (unitType.hasPrice()) {
+		    checkUnitTypeGetSkill(unitType);
+		}
+	}
+
+
+	/**
+	 * @param unitType
+	 */
+	private void checkUnitTypeGetSkill(UnitType unitType) {
+		if (unitType.getSkill() > 0) {
+		    unitTypesTrainedInEurope.add(unitType);
+		} else if (!unitType.hasSkill()) {
+		    unitTypesPurchasedInEurope.add(unitType);
+		}
+	}
+
+
+	/**
+	 * @param unitType
+	 */
+	private void checkUnitTypeGetExpertProd(UnitType unitType) {
+		if (unitType.getExpertProduction() != null) {
+		    experts.put(unitType.getExpertProduction(), unitType);
+		}
+	}
+
+
+	/**
+	 * @param unitType
+	 */
+	private void checkUnitTypeNeedsGoodsToBuild(UnitType unitType) {
+		if (unitType.needsGoodsToBuild()
+		    && !unitType.hasAbility(Ability.BORN_IN_COLONY)) {
+		    buildableUnitTypes.add(unitType);
+		}
+	}
+
+
+	/**
+	 * @param unitType
+	 */
+	private void checkDefaultUnitType(UnitType unitType) {
+		if (unitType.isDefaultUnitType()) defaultUnitTypes.add(unitType);
+	}
+
+
+	/**
+	 * 
+	 */
+	private void clearUnitTypesEuro() {
+		experts.clear();
+        unitTypesTrainedInEurope.clear();
+        unitTypesPurchasedInEurope.clear();
+        defaultUnitTypes.clear();
+	}
+
+
+	/**
+	 * @param iterator
+	 * @param nationType
+	 */
+	private void checkNationTypeREF(Iterator<EuropeanNationType> iterator, EuropeanNationType nationType) {
+		if (nationType.isREF()) {
+		    REFNationTypes.add(nationType);
+		    iterator.remove();
+		}
+	}
+
+
+	/**
+	 * 
+	 */
+	private void clearNationTypes() {
+		nationTypes.clear();
+        nationTypes.addAll(indianNationTypes);
+        nationTypes.addAll(europeanNationTypes);
+	}
+
+
+	/**
+	 * 
+	 */
+	private void clearEuroIndianNations() {
+		REFNations.clear();
+        europeanNations.clear();
+        indianNations.clear();
+	}
+
+
+	/**
+	 * @param nation
+	 */
+	private void checkNationProperties(Nation nation) {
+		if (nation.getType().isEuropean()) {
+		    if (nation.isUnknownEnemy()) {
+		        return;
+		    } else if (nation.getType().isREF()) {
+		        REFNations.add(nation);
+		    } else {
+		        europeanNations.add(nation);
+		    }
+		} else {
+		    indianNations.add(nation);
+		}
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void getGoodsTypeProperties(GoodsType goodsType) {
+		checkGoodstype(goodsType);
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodstype(GoodsType goodsType) {
+		checkGoodsStorable(goodsType);
+		checkGoodsFarmed(goodsType);
+		checkGoodsFoodType(goodsType);
+		checkGoodsTypeLuxury(goodsType);
+		checkGoodsLiberty(goodsType);
+		checkGoodsImmigration(goodsType);
+		checkGoodsRaw(goodsType);
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodsRaw(GoodsType goodsType) {
+		if (goodsType.isRawBuildingMaterial() && !goodsType.isFoodType()) {
+		    addRawBuildingGoods(goodsType);
+		}
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodsImmigration(GoodsType goodsType) {
+		if (goodsType.isImmigrationType()) {
+		    addImmigrationGoods(goodsType);
+		}
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodsLiberty(GoodsType goodsType) {
+		if (goodsType.isLibertyType()) {
+		    addLibertyGoods(goodsType);
+		}
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodsTypeLuxury(GoodsType goodsType) {
+		if (goodsType.isNewWorldGoodsType()) {
+		    newWorldGoodsTypeList.add(goodsType);
+		    if (goodsType.isNewWorldLuxuryType()) {
+		        addNewWorldLuxury(goodsType);
+		    }
+		}
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodsFoodType(GoodsType goodsType) {
+		if (goodsType.isFoodType()) {
+		    addfoodGoods(goodsType);
+		}
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodsFarmed(GoodsType goodsType) {
+		if (goodsType.isFarmed()) {
+		    addFarmedGoods(goodsType);
+		}
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodsStorable(GoodsType goodsType) {
+		if (goodsType.isStorable()) {
+		    addStorable(goodsType);
+		}
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void addRawBuildingGoods(GoodsType goodsType) {
+		rawBuildingGoodsTypeList.add(goodsType);
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void addImmigrationGoods(GoodsType goodsType) {
+		immigrationGoodsTypeList.add(goodsType);
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void addLibertyGoods(GoodsType goodsType) {
+		libertyGoodsTypeList.add(goodsType);
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void addNewWorldLuxury(GoodsType goodsType) {
+		newWorldLuxuryGoodsTypeList.add(goodsType);
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void addfoodGoods(GoodsType goodsType) {
+		foodGoodsTypeList.add(goodsType);
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void addFarmedGoods(GoodsType goodsType) {
+		farmedGoodsTypeList.add(goodsType);
+	}
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void addStorable(GoodsType goodsType) {
+		storableGoodsTypeList.add(goodsType);
+	}
+
+
+	/**
+	 * 
+	 */
+	private void clearGoodsList() {
+		storableGoodsTypeList.clear();
+        farmedGoodsTypeList.clear();
+        foodGoodsTypeList.clear();
+        newWorldGoodsTypeList.clear();
+        newWorldLuxuryGoodsTypeList.clear();
+        libertyGoodsTypeList.clear();
+        immigrationGoodsTypeList.clear();
+        rawBuildingGoodsTypeList.clear();
+	}
+
+
+	/**
+	 * @param typeIterator
+	 * @param type
+	 */
+	private void checkTypeAbstract(Iterator<FreeColGameObjectType> typeIterator, FreeColGameObjectType type) {
+		if (type.isAbstractType()) {
+		    typeIterator.remove();
+		}
+	}
 
     /**
      * Disable editing of some critical option groups.
@@ -804,39 +1166,65 @@ public final class Specification {
             while (xr.nextTag() != XMLStreamConstants.END_ELEMENT) {
                 final String tag = xr.getLocalName();
                 String id = xr.readId();
-                if (id == null) {
-                    logger.warning("Null identifier, tag: " + tag);
-
-                } else if (FreeColGameObjectType.DELETE_TAG.equals(tag)) {
-                    FreeColGameObjectType object = allTypes.remove(id);
-                    if (object != null) result.remove(object);
-
-                } else {
-                    T object = getType(id, type);
-                    allTypes.put(id, object);
-
-                    // If this an existing object (with id) and the
-                    // PRESERVE tag is present, then leave the
-                    // attributes intact and only read the child
-                    // elements, otherwise do a full attribute
-                    // inclusive read.  This allows mods and spec
-                    // extensions to not have to re-specify all the
-                    // attributes when just changing the children.
-                    if (object.getId() != null
-                        && xr.getAttribute(FreeColGameObjectType.PRESERVE_TAG,
-                                           (String)null) != null) {
-                        object.readChildren(xr);
-                    } else {
-                        object.readFromXML(xr);
-                    }
-                    if (!object.isAbstractType() && !result.contains(object)) {
-                        result.add(object);
-                        object.setIndex(index);
-                        index++;
-                    }
-                }
+                checkObjectType(xr, tag, id);
             }
         }
+
+		/**
+		 * @param xr
+		 * @param tag
+		 * @param id
+		 * @throws XMLStreamException
+		 */
+		private void checkObjectType(FreeColXMLReader xr, final String tag, String id) throws XMLStreamException {
+			if (id == null) {
+			    logger.warning("Null identifier, tag: " + tag);
+
+			} else if (FreeColGameObjectType.DELETE_TAG.equals(tag)) {
+			    FreeColGameObjectType object = allTypes.remove(id);
+			    if (object != null) result.remove(object);
+
+			} else {
+			    T object = getType(id, type);
+			    allTypes.put(id, object);
+
+			    // If this an existing object (with id) and the
+			    // PRESERVE tag is present, then leave the
+			    // attributes intact and only read the child
+			    // elements, otherwise do a full attribute
+			    // inclusive read.  This allows mods and spec
+			    // extensions to not have to re-specify all the
+			    // attributes when just changing the children.
+			    checkObjectId(xr, object);
+			    checkObjectAbstract(object);
+			}
+		}
+
+		/**
+		 * @param object
+		 */
+		private void checkObjectAbstract(T object) {
+			if (!object.isAbstractType() && !result.contains(object)) {
+			    result.add(object);
+			    object.setIndex(index);
+			    index++;
+			}
+		}
+
+		/**
+		 * @param xr
+		 * @param object
+		 * @throws XMLStreamException
+		 */
+		private void checkObjectId(FreeColXMLReader xr, T object) throws XMLStreamException {
+			if (object.getId() != null
+			    && xr.getAttribute(FreeColGameObjectType.PRESERVE_TAG,
+			                       (String)null) != null) {
+			    object.readChildren(xr);
+			} else {
+			    object.readFromXML(xr);
+			}
+		}
     }
 
     /**
@@ -1917,13 +2305,7 @@ public final class Specification {
      * Specification backward compatibility for the spec in general.
      */
     private void fixSpec() {
-        // @compat 0.10.0
-        if (getModifiers(Modifier.SHIP_TRADE_PENALTY) == null) {
-            addModifier(new Modifier(Modifier.SHIP_TRADE_PENALTY,
-                                     -30.0f, Modifier.ModifierType.PERCENTAGE,
-                                     Specification.SHIP_TRADE_PENALTY_SOURCE));
-        }
-        // end @compat
+        handleModifiers();
 
         // @compat 0.10.7
         // model.ability.missionary was split into distinct parts,
@@ -1931,184 +2313,428 @@ public final class Specification {
         // scope was left hanging.
         FoundingFather brebeuf
             = getFoundingFather("model.foundingFather.fatherJeanDeBrebeuf");
-        for (Ability ability : brebeuf.getAbilities()) {
-            for (Scope scope : ability.getScopes()) {
-                if ("model.ability.missionary".equals(scope.getAbilityId())) {
-                    scope.setAbilityId(Ability.ESTABLISH_MISSION);
-                }
-            }
-        }
+        iterateAbilities(brebeuf);
 
         // Coronado gained an ability in freecol
-        FoundingFather coronado
-            = getFoundingFather("model.foundingFather.franciscoDeCoronado");
-        if ("freecol".equals(getId())
-            && !coronado.hasAbility(Ability.SEE_ALL_COLONIES)) {
-            coronado.addAbility(new Ability(Ability.SEE_ALL_COLONIES,
-                                            coronado, true));
-        }
+        FoundingFather coronado = checkCoronadoGainedAbility();
 
         // Require the scopes added to founding fathers in git.8971674
-        fatherGoodsFixMap.clear();
-        fatherGoodsFixMap.put("model.foundingFather.thomasJefferson",
-                              "model.goods.bells");
-        fatherGoodsFixMap.put("model.foundingFather.thomasPaine",
-                              "model.goods.bells");
-        fatherGoodsFixMap.put("model.foundingFather.williamPenn",
-                              "model.goods.crosses");
-        for (Entry<String, String> e : fatherGoodsFixMap.entrySet()) {
-            FoundingFather father = getFoundingFather(e.getKey());
-            for (Modifier m : father.getModifiers(e.getValue())) {
-                m.requireNegatedPersonScope();
-            }
-        }
+        fatherGoodsFixMapScope();
+        requireScopestoFoundingFather();
 
         // Nation FOUND_COLONY -> FOUNDS_COLONIES
-        for (EuropeanNationType ent : europeanNationTypes) {
-            if (ent.hasAbility(Ability.FOUND_COLONY)) {
-                ent.removeAbilities(Ability.FOUND_COLONY);
-                ent.addAbility(new Ability(Ability.FOUNDS_COLONIES, ent, true));
-            }
-        }
+        foundColonies();
 
         // Fix REF roles, soldier -> infantry, dragoon -> cavalry
         // Older specs (<= 0.10.5 ?) had refSize directly under difficulty
         // level, later moved it under the monarch group.
-        for (OptionGroup level : getDifficultyLevels()) {
-            Option monarch = level.getOption(GameOptions.DIFFICULTY_MONARCH);
-            Option refSize = ((OptionGroup)((monarch instanceof OptionGroup)
-                    ? monarch : level)).getOption(GameOptions.REF_FORCE);
-            if (refSize == null
-                || !(refSize instanceof UnitListOption)) continue;
-            for (AbstractUnit au
-                     : ((UnitListOption)refSize).getOptionValues()) {
-                if ("DEFAULT".equals(au.getRoleId())) {
-                    au.setRoleId(DEFAULT_ROLE_ID);
-                } else if ("model.role.soldier".equals(au.getRoleId())
-                    || "SOLDIER".equals(au.getRoleId())) {
-                    au.setRoleId("model.role.infantry");
-                } else if ("model.role.dragoon".equals(au.getRoleId())
-                    || "DRAGOON".equals(au.getRoleId())) {
-                    au.setRoleId("model.role.cavalry");
-                }
-            }
-        }
+        difficultyLevels();
 
-        // Fix all other UnitListOptions
-        List<Option> todo = new ArrayList<>(getDifficultyLevels());
-        while (!todo.isEmpty()) {
-            Option o = todo.remove(0);
-            if (o instanceof OptionGroup) {
-                List<Option> next = ((OptionGroup)o).getOptions();
-                todo.addAll(new ArrayList<>(next));
-            } else if (o instanceof UnitListOption) {
-                for (AbstractUnit au : ((UnitListOption)o).getOptionValues()) {
-                    String roleId = au.getRoleId();
-                    if (roleId == null) {
-                        au.setRoleId(DEFAULT_ROLE_ID);
-                    } else if (au.getRoleId().startsWith("model.role.")) {
-                        ; // OK
-                    } else if ("DEFAULT".equals(au.getRoleId())) {
-                        au.setRoleId(DEFAULT_ROLE_ID);
-                    } else if ("DRAGOON".equals(au.getRoleId())) {
-                        au.setRoleId("model.role.dragoon");
-                    } else if ("MISSIONARY".equals(au.getRoleId())) {
-                        au.setRoleId("model.role.missionary");
-                    } else if ("PIONEER".equals(au.getRoleId())) {
-                        au.setRoleId("model.role.pioneer");
-                    } else if ("MISSIONARY".equals(au.getRoleId())) {
-                        au.setRoleId("model.role.missionary");
-                    } else if ("SCOUT".equals(au.getRoleId())) {
-                        au.setRoleId("model.role.scout");
-                    } else if ("SOLDIER".equals(au.getRoleId())) {
-                        au.setRoleId("model.role.soldier");
-                    } else {
-                        au.setRoleId(DEFAULT_ROLE_ID);
-                    }
-                }
-            }
-        }
+        unitListOptions();
 
         // The REF is also an independent nation, which is a required
         // ability to have man-o-war.  Older specs used
         // INDEPENDENCE_DECLARED but we can not directly use that or
         // the REF gets access to colonialRegulars.
-        for (NationType nt : europeanNationTypes) {
-            if (!nt.isREF()) continue;
-            if (!nt.hasAbility(Ability.INDEPENDENT_NATION)) {
-                nt.addAbility(new Ability(Ability.INDEPENDENT_NATION));
-            }
-        }
+        iterateEuropeanNationTypes();
 
         // Resource type modifiers had the wrong priority
-        for (ResourceType rt : resourceTypeList) {
-            for (Modifier m : rt.getModifiers()) {
-                m.setModifierIndex(Modifier.RESOURCE_PRODUCTION_INDEX);
-            }
-        }
+        iterateResourceTypeList();
 
         // Unit type indexes moved into the spec
-        for (UnitType ut : unitTypeList) {
-            for (Modifier m : ut.getModifiers()) {
-                if (allTypes.get(m.getId()) instanceof GoodsType) {
-                    m.setModifierIndex(Modifier.EXPERT_PRODUCTION_INDEX);
-                }
-            }
-        }
+        iterateUnitTypeList();
 
         // Father production modifiers have moved to the spec
-        for (FoundingFather ff : foundingFathers) {
-            for (Modifier m : ff.getModifiers()) {
-                if (allTypes.get(m.getId()) instanceof GoodsType) {
-                    m.setModifierIndex(Modifier.FATHER_PRODUCTION_INDEX);
-                }
-            }
-        }
+        moveFatherProdtoSpec();
 
         // Tile improvement type modifier index has moved to the spec
-        for (TileImprovementType ti : tileImprovementTypeList) {
-            for (Modifier m : ti.getModifiers()) {
-                if (allTypes.get(m.getId()) instanceof GoodsType) {
-                    m.setModifierIndex(Modifier.IMPROVEMENT_PRODUCTION_INDEX);
-                }
-            }
-        }
+        moveTileImprovementSpec();
 
         // Building type modifier indexes have moved to the spec
-        for (BuildingType bt : buildingTypeList) {
-            for (Modifier m : bt.getModifiers()) {
-                if (allTypes.get(m.getId()) instanceof GoodsType) {
-                    m.setModifierIndex((bt.hasAbility(Ability.AUTO_PRODUCTION))
-                        ? Modifier.AUTO_PRODUCTION_INDEX
-                        : Modifier.BUILDING_PRODUCTION_INDEX);
-                }
-            }
-        }
+        moveBuildingTypeSpec();
 
         // European nation type production modifier indexes moved to the spec
-        for (EuropeanNationType et : europeanNationTypes) {
-            for (Modifier m : et.getModifiers()) {
-                if (allTypes.get(m.getId()) instanceof GoodsType) {
-                    m.setModifierIndex(Modifier.NATION_PRODUCTION_INDEX);
-                }
-            }
-        }
+        moveEuropeanNationTypeSpec();
 
         // TownHall, Chapel et al now have unattended production types
         // (replacing modifiers).
-        BuildingType townHallType = getBuildingType("model.building.townHall");
-        if (townHallType.hasModifier("model.goods.bells")) {
-            GoodsType bellsType = getGoodsType("model.goods.bells");
-            AbstractGoods ag = new AbstractGoods(bellsType, 1);
-            ProductionType pt = new ProductionType(ag, true, null);
-            townHallType.addProductionType(pt);
-            townHallType.removeModifiers("model.goods.bells");
-            logger.info("Added backward compatibility production " + pt
-                + " to " + townHallType);
+        initializeLocations();
+        // Country and stables production is now defined as unattended.
+        iterateCountryStableProduction();
+
+        // 0.10.x had no unknown enemy nation, just an unknown enemy player
+        if (getNation(Nation.UNKNOWN_NATION_ID) == null) {
+            Nation ue = new Nation(Nation.UNKNOWN_NATION_ID, this);
+            ue.setColor(Nation.UNKNOWN_NATION_COLOR);
         }
+
+        // Ambush terrain ability not present in older specs.
+        getAmbushTerrain();
+
+        // is-military was added to goods type
+        setGoodsTypeHorses();
+
+        // automaticEquipment scope types are now roles
+        iterateIndianNationTypes();
+        {
+            iterateFoundingFatherAbilities();
+        }
+        // end @compat 0.10.7
+
+        // @compat 0.11.0
+        // Bolivar changed from being an event, then to a liberty modifier,
+        // and now to a SoL% modifier.
+        FoundingFather bolivar
+            = getFoundingFather("model.foundingFather.simonBolivar");
+        boolean bolivarAdd = false;
+        bolivarAdd = checkBoliverEvents(bolivar, bolivarAdd);
+        checkBolivarAdd(bolivar, bolivarAdd);
+
+        // The COASTAL_ONLY attribute was added to customs house.
+        BuildingType customs = getBuildingType("model.building.customHouse");
+        checkCustomsHasAbility(customs);
+        // end @compat 0.11.0
+
+        // @compat 0.11.3
+        // Added the cargo penalty modifier
+        if (getModifiers(Modifier.CARGO_PENALTY).isEmpty()) {
+            addCargoModifiers();
+        }
+
+        // Backwards compatibility for the fixes to BR#2873.
+        Event event = getEvent("model.event.declareIndependence");
+        checkEvents(event);
+        // end @compat 0.11.3
+
+        // @compat 0.11.5
+        // Added a modifier to hardy pioneer
+        UnitType hardyPioneer = getUnitType("model.unit.hardyPioneer");
+        addHardyPioneerModifier(hardyPioneer);
+
+        // Added modifier to Coronado
+        if (!coronado.hasModifier(Modifier.EXPOSED_TILES_RADIUS)) {
+            addCoronadoModifier(coronado);
+        }
+        // end @compat 0.11.5
+    }
+
+
+	/**
+	 * @param hardyPioneer
+	 */
+	private void addHardyPioneerModifier(UnitType hardyPioneer) {
+		if (hardyPioneer.getModifiers(Modifier.TILE_TYPE_CHANGE_PRODUCTION)
+            .isEmpty()) {
+            addModifiertoPioneer(hardyPioneer);
+        }
+	}
+
+
+	/**
+	 * @param event
+	 */
+	private void checkEvents(Event event) {
+		if (event != null) {
+            Limit limit = event.getLimit("model.limit.independence.coastalColonies");
+            if (limit != null) {
+                setLimitProperties(limit);
+            }
+        }
+	}
+
+
+	/**
+	 * 
+	 */
+	private void addCargoModifiers() {
+		addModifier(new Modifier(Modifier.CARGO_PENALTY, -12.5f,
+		        Modifier.ModifierType.PERCENTAGE, CARGO_PENALTY_SOURCE,
+		        Modifier.GENERAL_COMBAT_INDEX));
+	}
+
+
+	/**
+	 * @param customs
+	 */
+	private void checkCustomsHasAbility(BuildingType customs) {
+		if (!customs.hasAbility(Ability.COASTAL_ONLY)) {
+            customsAddAbility(customs);
+        }
+	}
+
+
+	/**
+	 * @param bolivar
+	 * @param bolivarAdd
+	 * @return
+	 */
+	private boolean checkBoliverEvents(FoundingFather bolivar, boolean bolivarAdd) {
+		if (!bolivar.getEvents().isEmpty()) {
+            bolivarAdd = setBolivarEvents(bolivar);
+        } else if (bolivar.hasModifier(Modifier.LIBERTY)) {
+            bolivarAdd = removeBolivarModifiers(bolivar);
+        }
+		return bolivarAdd;
+	}
+
+
+	/**
+	 * @param bolivar
+	 * @param bolivarAdd
+	 */
+	private void checkBolivarAdd(FoundingFather bolivar, boolean bolivarAdd) {
+		if (bolivarAdd) {
+            bolivarAddModifier(bolivar);
+        }
+	}
+
+
+	/**
+	 * 
+	 */
+	private void iterateCountryStableProduction() {
+		for (BuildingType bt : new BuildingType[] {
+                getBuildingType("model.building.country"),
+                getBuildingType("model.building.stables") }) {
+            for (ProductionType pt : bt.getAvailableProductionTypes(false)) {
+                pt.setUnattended(true);
+                logSwitchedProduction(bt, pt);
+            }
+        }
+	}
+
+
+	/**
+	 * 
+	 */
+	private void iterateFoundingFatherAbilities() {
+		FoundingFather revere
+		    = getFoundingFather("model.foundingFather.paulRevere");
+		for (Ability ability : revere.getAbilities(Ability.AUTOMATIC_EQUIPMENT)) {
+		    for (Scope scope : ability.getScopes()) {
+		        String type = scope.getType();
+		        if ("model.equipment.muskets".equals(type)) {
+		            setScopeTypeSoldier(scope);
+		        }
+		    }
+		}
+	}
+
+
+	/**
+	 * 
+	 */
+	private void initializeLocations() {
+		BuildingType townHallType = getBuildingType("model.building.townHall");
+        checkTownHallType(townHallType);
         GoodsType crossesType = getGoodsType("model.goods.crosses");
         int a = 1;
-        for (BuildingType bt : new BuildingType[] {
+        a = getBuildingType(crossesType, a);
+	}
+
+
+	/**
+	 * 
+	 */
+	private void requireScopestoFoundingFather() {
+		for (Entry<String, String> e : fatherGoodsFixMap.entrySet()) {
+            FoundingFather father = getFoundingFather(e.getKey());
+            for (Modifier m : father.getModifiers(e.getValue())) {
+                m.requireNegatedPersonScope();
+            }
+        }
+	}
+
+
+	/**
+	 * @return
+	 */
+	private FoundingFather checkCoronadoGainedAbility() {
+		FoundingFather coronado
+            = getFoundingFather("model.foundingFather.franciscoDeCoronado");
+        if ("freecol".equals(getId())
+            && !coronado.hasAbility(Ability.SEE_ALL_COLONIES)) {
+            coronadoAddNewAbility(coronado);
+        }
+		return coronado;
+	}
+
+
+	/**
+	 * @param brebeuf
+	 */
+	private void iterateAbilities(FoundingFather brebeuf) {
+		for (Ability ability : brebeuf.getAbilities()) {
+            for (Scope scope : ability.getScopes()) {
+                if ("model.ability.missionary".equals(scope.getAbilityId())) {
+                    setScopeAbilityId(scope);
+                }
+            }
+        }
+	}
+
+
+	/**
+	 * @param coronado
+	 */
+	private void addCoronadoModifier(FoundingFather coronado) {
+		coronado.addModifier(new Modifier(Modifier.EXPOSED_TILES_RADIUS,
+		        3.0f, Modifier.ModifierType.ADDITIVE, coronado, 0));
+	}
+
+
+	/**
+	 * @param hardyPioneer
+	 */
+	private void addModifiertoPioneer(UnitType hardyPioneer) {
+		Modifier m = new Modifier(Modifier.TILE_TYPE_CHANGE_PRODUCTION,
+		    2.0f, Modifier.ModifierType.MULTIPLICATIVE);
+		Scope scope = new Scope();
+		scope.setType("model.goods.lumber");
+		m.addScope(scope);
+		hardyPioneer.addModifier(m);
+	}
+
+
+	/**
+	 * @param limit
+	 */
+	private void setLimitProperties(Limit limit) {
+		limit.setOperator(Limit.Operator.GE);
+		limit.getRightHandSide().setValue(1);
+	}
+
+
+	/**
+	 * @param customs
+	 */
+	private void customsAddAbility(BuildingType customs) {
+		customs.addAbility(new Ability(Ability.COASTAL_ONLY, null, false));
+	}
+
+
+	/**
+	 * @param bolivar
+	 */
+	private void bolivarAddModifier(FoundingFather bolivar) {
+		bolivar.addModifier(new Modifier(Modifier.SOL, 20,
+		        Modifier.ModifierType.ADDITIVE, bolivar, 0));
+	}
+
+
+	/**
+	 * @param bolivar
+	 * @return
+	 */
+	private boolean removeBolivarModifiers(FoundingFather bolivar) {
+		boolean bolivarAdd;
+		bolivar.removeModifiers(Modifier.LIBERTY);
+		bolivarAdd = true;
+		return bolivarAdd;
+	}
+
+
+	/**
+	 * @param bolivar
+	 * @return
+	 */
+	private boolean setBolivarEvents(FoundingFather bolivar) {
+		boolean bolivarAdd;
+		bolivar.setEvents(Collections.<Event>emptyList());
+		bolivarAdd = true;
+		return bolivarAdd;
+	}
+
+
+	/**
+	 * @param scope
+	 */
+	private void setScopeTypeSoldier(Scope scope) {
+		scope.setType("model.role.soldier");
+	}
+
+
+	/**
+	 * 
+	 */
+	private void setGoodsTypeHorses() {
+		GoodsType goodsType = getGoodsType("model.goods.horses");
+        goodsType.setMilitary();
+        goodsType = getGoodsType("model.goods.muskets");
+        goodsType.setMilitary();
+	}
+
+
+	/**
+	 * @param bt
+	 * @param pt
+	 */
+	private void logSwitchedProduction(BuildingType bt, ProductionType pt) {
+		logger.info("Switched production " + pt
+		    + " to unattended at " + bt);
+	}
+
+
+	/**
+	 * @param coronado
+	 */
+	private void coronadoAddNewAbility(FoundingFather coronado) {
+		coronado.addAbility(new Ability(Ability.SEE_ALL_COLONIES,
+		                                coronado, true));
+	}
+
+
+	/**
+	 * @param scope
+	 */
+	private void setScopeAbilityId(Scope scope) {
+		scope.setAbilityId(Ability.ESTABLISH_MISSION);
+	}
+
+
+	/**
+	 * 
+	 */
+	private void iterateIndianNationTypes() {
+		for (NationType nt : indianNationTypes) {
+            for (Ability ability : nt.getAbilities(Ability.AUTOMATIC_EQUIPMENT)) {
+                for (Scope scope : ability.getScopes()) {
+                    String type = scope.getType();
+                    if ("model.equipment.indian.muskets".equals(type)) {
+                        scope.setType("model.role.nativeDragoon");
+                    } else if ("model.equipment.indian.horses".equals(type)) {
+                        scope.setType("model.role.armedBrave");
+                    }
+                }
+            }
+        }
+	}
+
+
+	/**
+	 * 
+	 */
+	private void getAmbushTerrain() {
+		if (getAbilities(Ability.AMBUSH_TERRAIN) == null) {
+            Ability ambush = new Ability(Ability.AMBUSH_TERRAIN, null, true);
+            addAbility(ambush);
+            for (TileType tt : getTileTypeList()) {
+                if ((tt.isElevation() || tt.isForested())
+                    && !tt.hasAbility(Ability.AMBUSH_TERRAIN)) {
+                    tt.addAbility(new Ability(Ability.AMBUSH_TERRAIN, tt, true));
+                }
+            }
+        }
+	}
+
+
+	/**
+	 * @param crossesType
+	 * @param a
+	 * @return
+	 */
+	private int getBuildingType(GoodsType crossesType, int a) {
+		for (BuildingType bt : new BuildingType[] {
                 getBuildingType("model.building.chapel"),
                 getBuildingType("model.building.church"),
                 getBuildingType("model.building.cathedral") }) {
@@ -2122,132 +2748,329 @@ public final class Specification {
                     + " to " + bt);
             }
         }
-        // Country and stables production is now defined as unattended.
-        for (BuildingType bt : new BuildingType[] {
-                getBuildingType("model.building.country"),
-                getBuildingType("model.building.stables") }) {
-            for (ProductionType pt : bt.getAvailableProductionTypes(false)) {
-                pt.setUnattended(true);
-                logger.info("Switched production " + pt
-                    + " to unattended at " + bt);
-            }
-        }
+		return a;
+	}
 
-        // 0.10.x had no unknown enemy nation, just an unknown enemy player
-        if (getNation(Nation.UNKNOWN_NATION_ID) == null) {
-            Nation ue = new Nation(Nation.UNKNOWN_NATION_ID, this);
-            ue.setColor(Nation.UNKNOWN_NATION_COLOR);
-        }
 
-        // Ambush terrain ability not present in older specs.
-        if (getAbilities(Ability.AMBUSH_TERRAIN) == null) {
-            Ability ambush = new Ability(Ability.AMBUSH_TERRAIN, null, true);
-            addAbility(ambush);
-            for (TileType tt : getTileTypeList()) {
-                if ((tt.isElevation() || tt.isForested())
-                    && !tt.hasAbility(Ability.AMBUSH_TERRAIN)) {
-                    tt.addAbility(new Ability(Ability.AMBUSH_TERRAIN, tt, true));
+	/**
+	 * @param townHallType
+	 */
+	private void checkTownHallType(BuildingType townHallType) {
+		if (townHallType.hasModifier("model.goods.bells")) {
+            GoodsType bellsType = getGoodsType("model.goods.bells");
+            AbstractGoods ag = new AbstractGoods(bellsType, 1);
+            ProductionType pt = new ProductionType(ag, true, null);
+            townHallType.addProductionType(pt);
+            townHallType.removeModifiers("model.goods.bells");
+            logger.info("Added backward compatibility production " + pt
+                + " to " + townHallType);
+        }
+	}
+
+
+	/**
+	 * 
+	 */
+	private void moveEuropeanNationTypeSpec() {
+		for (EuropeanNationType et : europeanNationTypes) {
+            for (Modifier m : et.getModifiers()) {
+                if (allTypes.get(m.getId()) instanceof GoodsType) {
+                    m.setModifierIndex(Modifier.NATION_PRODUCTION_INDEX);
                 }
             }
         }
+	}
 
-        // is-military was added to goods type
-        GoodsType goodsType = getGoodsType("model.goods.horses");
-        goodsType.setMilitary();
-        goodsType = getGoodsType("model.goods.muskets");
-        goodsType.setMilitary();
 
-        // automaticEquipment scope types are now roles
-        for (NationType nt : indianNationTypes) {
-            for (Ability ability : nt.getAbilities(Ability.AUTOMATIC_EQUIPMENT)) {
-                for (Scope scope : ability.getScopes()) {
-                    String type = scope.getType();
-                    if ("model.equipment.indian.muskets".equals(type)) {
-                        scope.setType("model.role.nativeDragoon");
-                    } else if ("model.equipment.indian.horses".equals(type)) {
-                        scope.setType("model.role.armedBrave");
-                    }
+	/**
+	 * 
+	 */
+	private void moveBuildingTypeSpec() {
+		for (BuildingType bt : buildingTypeList) {
+            for (Modifier m : bt.getModifiers()) {
+                if (allTypes.get(m.getId()) instanceof GoodsType) {
+                    m.setModifierIndex((bt.hasAbility(Ability.AUTO_PRODUCTION))
+                        ? Modifier.AUTO_PRODUCTION_INDEX
+                        : Modifier.BUILDING_PRODUCTION_INDEX);
                 }
             }
         }
-        {
-            FoundingFather revere
-                = getFoundingFather("model.foundingFather.paulRevere");
-            for (Ability ability : revere.getAbilities(Ability.AUTOMATIC_EQUIPMENT)) {
-                for (Scope scope : ability.getScopes()) {
-                    String type = scope.getType();
-                    if ("model.equipment.muskets".equals(type)) {
-                        scope.setType("model.role.soldier");
-                    }
+	}
+
+
+	/**
+	 * 
+	 */
+	private void moveTileImprovementSpec() {
+		for (TileImprovementType ti : tileImprovementTypeList) {
+            for (Modifier m : ti.getModifiers()) {
+                if (allTypes.get(m.getId()) instanceof GoodsType) {
+                    m.setModifierIndex(Modifier.IMPROVEMENT_PRODUCTION_INDEX);
                 }
             }
         }
-        // end @compat 0.10.7
+	}
 
-        // @compat 0.11.0
-        // Bolivar changed from being an event, then to a liberty modifier,
-        // and now to a SoL% modifier.
-        FoundingFather bolivar
-            = getFoundingFather("model.foundingFather.simonBolivar");
-        boolean bolivarAdd = false;
-        if (!bolivar.getEvents().isEmpty()) {
-            bolivar.setEvents(Collections.<Event>emptyList());
-            bolivarAdd = true;
-        } else if (bolivar.hasModifier(Modifier.LIBERTY)) {
-            bolivar.removeModifiers(Modifier.LIBERTY);
-            bolivarAdd = true;
-        }
-        if (bolivarAdd) {
-            bolivar.addModifier(new Modifier(Modifier.SOL, 20,
-                    Modifier.ModifierType.ADDITIVE, bolivar, 0));
-        }
 
-        // The COASTAL_ONLY attribute was added to customs house.
-        BuildingType customs = getBuildingType("model.building.customHouse");
-        if (!customs.hasAbility(Ability.COASTAL_ONLY)) {
-            customs.addAbility(new Ability(Ability.COASTAL_ONLY, null, false));
-        }
-        // end @compat 0.11.0
-
-        // @compat 0.11.3
-        // Added the cargo penalty modifier
-        if (getModifiers(Modifier.CARGO_PENALTY).isEmpty()) {
-            addModifier(new Modifier(Modifier.CARGO_PENALTY, -12.5f,
-                    Modifier.ModifierType.PERCENTAGE, CARGO_PENALTY_SOURCE,
-                    Modifier.GENERAL_COMBAT_INDEX));
-        }
-
-        // Backwards compatibility for the fixes to BR#2873.
-        Event event = getEvent("model.event.declareIndependence");
-        if (event != null) {
-            Limit limit = event.getLimit("model.limit.independence.coastalColonies");
-            if (limit != null) {
-                limit.setOperator(Limit.Operator.GE);
-                limit.getRightHandSide().setValue(1);
+	/**
+	 * 
+	 */
+	private void moveFatherProdtoSpec() {
+		for (FoundingFather ff : foundingFathers) {
+            for (Modifier m : ff.getModifiers()) {
+                if (allTypes.get(m.getId()) instanceof GoodsType) {
+                    m.setModifierIndex(Modifier.FATHER_PRODUCTION_INDEX);
+                }
             }
         }
-        // end @compat 0.11.3
+	}
 
-        // @compat 0.11.5
-        // Added a modifier to hardy pioneer
-        UnitType hardyPioneer = getUnitType("model.unit.hardyPioneer");
-        if (hardyPioneer.getModifiers(Modifier.TILE_TYPE_CHANGE_PRODUCTION)
-            .isEmpty()) {
-            Modifier m = new Modifier(Modifier.TILE_TYPE_CHANGE_PRODUCTION,
-                2.0f, Modifier.ModifierType.MULTIPLICATIVE);
-            Scope scope = new Scope();
-            scope.setType("model.goods.lumber");
-            m.addScope(scope);
-            hardyPioneer.addModifier(m);
-        }
 
-        // Added modifier to Coronado
-        if (!coronado.hasModifier(Modifier.EXPOSED_TILES_RADIUS)) {
-            coronado.addModifier(new Modifier(Modifier.EXPOSED_TILES_RADIUS,
-                    3.0f, Modifier.ModifierType.ADDITIVE, coronado, 0));
+	/**
+	 * 
+	 */
+	private void iterateUnitTypeList() {
+		for (UnitType ut : unitTypeList) {
+            for (Modifier m : ut.getModifiers()) {
+                if (allTypes.get(m.getId()) instanceof GoodsType) {
+                    m.setModifierIndex(Modifier.EXPERT_PRODUCTION_INDEX);
+                }
+            }
         }
-        // end @compat 0.11.5
-    }
+	}
+
+
+	/**
+	 * 
+	 */
+	private void iterateResourceTypeList() {
+		for (ResourceType rt : resourceTypeList) {
+            for (Modifier m : rt.getModifiers()) {
+                m.setModifierIndex(Modifier.RESOURCE_PRODUCTION_INDEX);
+            }
+        }
+	}
+
+
+	/**
+	 * 
+	 */
+	private void iterateEuropeanNationTypes() {
+		for (NationType nt : europeanNationTypes) {
+            if (!nt.isREF()) continue;
+            if (!nt.hasAbility(Ability.INDEPENDENT_NATION)) {
+                nt.addAbility(new Ability(Ability.INDEPENDENT_NATION));
+            }
+        }
+	}
+
+
+	/**
+	 * 
+	 */
+	private void foundColonies() {
+		for (EuropeanNationType ent : europeanNationTypes) {
+            if (ent.hasAbility(Ability.FOUND_COLONY)) {
+                ent.removeAbilities(Ability.FOUND_COLONY);
+                ent.addAbility(new Ability(Ability.FOUNDS_COLONIES, ent, true));
+            }
+        }
+	}
+
+
+	/**
+	 * 
+	 */
+	private void fatherGoodsFixMapScope() {
+		fatherGoodsFixMap.clear();
+        fatherGoodsFixMap.put("model.foundingFather.thomasJefferson",
+                              "model.goods.bells");
+        fatherGoodsFixMap.put("model.foundingFather.thomasPaine",
+                              "model.goods.bells");
+        fatherGoodsFixMap.put("model.foundingFather.williamPenn",
+                              "model.goods.crosses");
+	}
+
+
+	/**
+	 * 
+	 */
+	private void unitListOptions() {
+		// Fix all other UnitListOptions
+        List<Option> todo = new ArrayList<>(getDifficultyLevels());
+        while (!todo.isEmpty()) {
+            Option o = todo.remove(0);
+            if (o instanceof OptionGroup) {
+                initializeUnitListOptions(todo, o);
+            } else if (o instanceof UnitListOption) {
+                for (AbstractUnit au : ((UnitListOption)o).getOptionValues()) {
+                    String roleId = au.getRoleId();
+                    checkRoleId(au, roleId);
+                }
+            }
+        }
+	}
+
+
+	/**
+	 * @param au
+	 * @param roleId
+	 */
+	private void checkRoleId(AbstractUnit au, String roleId) {
+		if (roleId == null) {
+		    setAuRoleId(au);
+		} else if (au.getRoleId().startsWith("model.role.")) {
+		    ; // OK
+		} else if ("DEFAULT".equals(au.getRoleId())) {
+		    setAuRoleId(au);
+		} else if ("DRAGOON".equals(au.getRoleId())) {
+		    setAuRoleIdDragoon(au);
+		} else if ("MISSIONARY".equals(au.getRoleId())) {
+		    setAURoleIdMissionary(au);
+		} else if ("PIONEER".equals(au.getRoleId())) {
+		    setAURoleIdPioneer(au);
+		} else if ("MISSIONARY".equals(au.getRoleId())) {
+		    setAURoleIdMissionary(au);
+		} else if ("SCOUT".equals(au.getRoleId())) {
+		    setAURoleIdScout(au);
+		} else if ("SOLDIER".equals(au.getRoleId())) {
+		    setAURoleIdSoldier(au);
+		} else {
+		    setAuRoleId(au);
+		}
+	}
+
+
+	/**
+	 * @param au
+	 */
+	private void setAURoleIdSoldier(AbstractUnit au) {
+		au.setRoleId("model.role.soldier");
+	}
+
+
+	/**
+	 * @param au
+	 */
+	private void setAURoleIdScout(AbstractUnit au) {
+		au.setRoleId("model.role.scout");
+	}
+
+
+	/**
+	 * @param au
+	 */
+	private void setAURoleIdPioneer(AbstractUnit au) {
+		au.setRoleId("model.role.pioneer");
+	}
+
+
+	/**
+	 * @param au
+	 */
+	private void setAURoleIdMissionary(AbstractUnit au) {
+		au.setRoleId("model.role.missionary");
+	}
+
+
+	/**
+	 * @param au
+	 */
+	private void setAuRoleIdDragoon(AbstractUnit au) {
+		au.setRoleId("model.role.dragoon");
+	}
+
+
+	/**
+	 * @param todo
+	 * @param o
+	 */
+	private void initializeUnitListOptions(List<Option> todo, Option o) {
+		List<Option> next = ((OptionGroup)o).getOptions();
+		todo.addAll(new ArrayList<>(next));
+	}
+
+
+	/**
+	 * 
+	 */
+	private void difficultyLevels() {
+		for (OptionGroup level : getDifficultyLevels()) {
+            Option refSize = initializeMonarchRefSize(level);
+            if (refSize == null
+                || !(refSize instanceof UnitListOption)) continue;
+            for (AbstractUnit au
+                     : ((UnitListOption)refSize).getOptionValues()) {
+                checkRoleIds(au);
+            }
+        }
+	}
+
+
+	/**
+	 * @param au
+	 */
+	private void checkRoleIds(AbstractUnit au) {
+		if ("DEFAULT".equals(au.getRoleId())) {
+		    setAuRoleId(au);
+		} else if ("model.role.soldier".equals(au.getRoleId())
+		    || "SOLDIER".equals(au.getRoleId())) {
+		    setInfantryAURoleId(au);
+		} else if ("model.role.dragoon".equals(au.getRoleId())
+		    || "DRAGOON".equals(au.getRoleId())) {
+		    setCavalryAURoleId(au);
+		}
+	}
+
+
+	/**
+	 * @param au
+	 */
+	private void setCavalryAURoleId(AbstractUnit au) {
+		au.setRoleId("model.role.cavalry");
+	}
+
+
+	/**
+	 * @param au
+	 */
+	private void setInfantryAURoleId(AbstractUnit au) {
+		au.setRoleId("model.role.infantry");
+	}
+
+
+	/**
+	 * @param au
+	 */
+	private void setAuRoleId(AbstractUnit au) {
+		au.setRoleId(DEFAULT_ROLE_ID);
+	}
+
+
+	/**
+	 * @param level
+	 * @return
+	 */
+	private Option initializeMonarchRefSize(OptionGroup level) {
+		Option monarch = level.getOption(GameOptions.DIFFICULTY_MONARCH);
+		Option refSize = ((OptionGroup)((monarch instanceof OptionGroup)
+		        ? monarch : level)).getOption(GameOptions.REF_FORCE);
+		return refSize;
+	}
+
+
+	/**
+	 * 
+	 */
+	private void handleModifiers() {
+		// @compat 0.10.0
+        if (getModifiers(Modifier.SHIP_TRADE_PENALTY) == null) {
+            addModifier(new Modifier(Modifier.SHIP_TRADE_PENALTY,
+                                     -30.0f, Modifier.ModifierType.PERCENTAGE,
+                                     Specification.SHIP_TRADE_PENALTY_SOURCE));
+        }
+        // end @compat
+	}
 
     /**
      * Backward compatibility code to make sure this specification
@@ -2825,35 +3648,18 @@ public final class Specification {
      */
     public void readFromXML(FreeColXMLReader xr) throws XMLStreamException {
         String newId = xr.readId();
-        if (id == null) id = newId; // don't overwrite id with parent id!
+        checkIdNull(newId);
 
-        if (difficultyLevel == null) {
-            difficultyLevel = xr.getAttribute(DIFFICULTY_LEVEL_TAG,
-                                              (String)null);
-            // @compat 0.11.3
-            if (difficultyLevel == null) {
-                difficultyLevel = xr.getAttribute(OLD_DIFFICULTY_LEVEL_TAG,
-                                                  (String)null);
-            }
-            // end @compat 0.11.3
-        }
+        checkDifficultLevelNullAttr(xr);
 
         version = xr.getAttribute(VERSION_TAG, (String)null);
 
-        logger.fine("Reading specification " + newId
-            + " difficulty=" + difficultyLevel
-            + " version=" + version);
+        logSpecificationDifficultyVersion(newId);
 
         String parentId = xr.getAttribute(FreeColGameObjectType.EXTENDS_TAG,
                                           (String)null);
         if (parentId != null) {
-            try {
-                FreeColTcFile parent = new FreeColTcFile(parentId);
-                load(parent.getSpecificationInputStream());
-                initialized = false;
-            } catch (IOException e) {
-                throw new XMLStreamException("Failed to open parent specification: ", e);
-            }
+            openParentSpec(parentId);
         }
 
         while (xr.nextTag() != XMLStreamConstants.END_ELEMENT) {
@@ -2871,12 +3677,78 @@ public final class Specification {
             // end @compat 0.10.x
             ChildReader reader = readerMap.get(childName);
             if (reader == null) {
-                logger.warning("No reader found for: " + childName);
+                logNoChildName(childName);
             } else {  
                 reader.readChildren(xr);
             }
         }
     }
+
+
+	/**
+	 * @param childName
+	 */
+	private void logNoChildName(String childName) {
+		logger.warning("No reader found for: " + childName);
+	}
+
+
+	/**
+	 * @param parentId
+	 * @throws XMLStreamException
+	 */
+	private void openParentSpec(String parentId) throws XMLStreamException {
+		try {
+		    FreeColTcFile parent = new FreeColTcFile(parentId);
+		    load(parent.getSpecificationInputStream());
+		    initialized = false;
+		} catch (IOException e) {
+		    throw new XMLStreamException("Failed to open parent specification: ", e);
+		}
+	}
+
+
+	/**
+	 * @param newId
+	 */
+	private void logSpecificationDifficultyVersion(String newId) {
+		logger.fine("Reading specification " + newId
+            + " difficulty=" + difficultyLevel
+            + " version=" + version);
+	}
+
+
+	/**
+	 * @param xr
+	 */
+	private void checkDifficultLevelNullAttr(FreeColXMLReader xr) {
+		if (difficultyLevel == null) {
+            difficultyLevel = xr.getAttribute(DIFFICULTY_LEVEL_TAG,
+                                              (String)null);
+            // @compat 0.11.3
+            checkDifficultyLevelNull(xr);
+            // end @compat 0.11.3
+        }
+	}
+
+
+	/**
+	 * @param xr
+	 */
+	private void checkDifficultyLevelNull(FreeColXMLReader xr) {
+		if (difficultyLevel == null) {
+		    difficultyLevel = xr.getAttribute(OLD_DIFFICULTY_LEVEL_TAG,
+		                                      (String)null);
+		}
+	}
+
+
+	/**
+	 * @param newId
+	 */
+	private void checkIdNull(String newId) {
+		if (id == null) id = newId; // don't overwrite id with parent id!
+	}
 
     /**
      * Gets the tag name of the root element representing this object.
