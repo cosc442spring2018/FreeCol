@@ -505,11 +505,25 @@ public class ColonyTest extends FreeColTestCase {
     	assertEquals(NoBuildReason.NOT_BUILDABLE, colony.getNoBuildReason(buildingType, null));
     }
     
+    //Test governmentChange() when 
+    public void testGovernmentChange1() {
+    	Game game = getGame();
+    	game.setMap(getTestMap(true));
+    	Colony colony = getStandardColony(5);
+    	colony.sonsOfLiberty = 30;
+    	assertEquals(0, colony.governmentChange(1));
+    	
+    }
     
+    public void testGovernmentChange2() {
+    	Game game = getGame();
+    	game.setMap(getTestMap(true));
+    	Colony colony = getStandardColony(5);
+    	colony.sonsOfLiberty = 50;
+    	assertEquals(-1, colony.governmentChange(100));
+    }
+  
     
-    
-    
-
     public void testCopyColony() {
         Game game = getGame();
         game.setMap(getTestMap(true));

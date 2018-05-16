@@ -959,6 +959,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
 	/**
 	 * @param buildableType
 	 * @param assumeBuilt
+	 * Second part of getNoBuildReason extracted
 	 */
 	private NoBuildReason checkNoBuildReasonSecondary(BuildableType buildableType, List<BuildableType> assumeBuilt) {
 		if (buildableType instanceof BuildingType) {
@@ -995,6 +996,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
 
 	/**
 	 * @param buildableType
+	 * First part of getNoBuildReason extracted
 	 */
 	private NoBuildReason checkNoBuildReasonPrimary(BuildableType buildableType) {
 		if (buildableType == null) {
@@ -1395,38 +1397,55 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
 
         int result = 0;
         if (rebelPercent >= veryGoodGovernment) { // There are no tories left.
+        	System.out.println("Entered first if");
             if (sonsOfLiberty < veryGoodGovernment) {
                 result = 1;
             }
         } else if (rebelPercent >= goodGovernment) {
+        	System.out.println("Entered second if");
             if (sonsOfLiberty >= veryGoodGovernment) {
                 result = -1;
             } else if (sonsOfLiberty < goodGovernment) {
                 result = 1;
             }
         } else {
+        	System.out.println("Entered third if");
             if (sonsOfLiberty >= goodGovernment) {
                 result = -1;
             } else { // Now that no bonus is applied, penalties may.
-                if (loyalistCount > veryBadGovernment) {
-                    if (tories <= veryBadGovernment) {
-                        result = -1;
-                    }
-                } else if (loyalistCount > badGovernment) {
-                    if (tories <= badGovernment) {
-                        result = -1;
-                    } else if (tories > veryBadGovernment) {
-                        result = 1;
-                    }
-                } else {
-                    if (tories > badGovernment) {
-                        result = 1;
-                    }
-                }
+                result = checkLoyalistCount(veryBadGovernment, badGovernment, loyalistCount, result);
             }
         }
         return result;
     }
+
+	/**
+	 * Extracted from governmentChange()
+	 * @param veryBadGovernment
+	 * @param badGovernment
+	 * @param loyalistCount
+	 * @param result
+	 * @return
+	 */
+	private int checkLoyalistCount(final int veryBadGovernment, final int badGovernment, int loyalistCount,
+			int result) {
+		if (loyalistCount > veryBadGovernment) {
+		    if (tories <= veryBadGovernment) {
+		        result = -1;
+		    }
+		} else if (loyalistCount > badGovernment) {
+		    if (tories <= badGovernment) {
+		        result = -1;
+		    } else if (tories > veryBadGovernment) {
+		        result = 1;
+		    }
+		} else {
+		    if (tories > badGovernment) {
+		        result = 1;
+		    }
+		}
+		return result;
+	}
 
     public ModelMessage checkForGovMgtChangeMessage() {
         final Specification spec = getSpecification();
