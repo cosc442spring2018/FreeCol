@@ -1397,19 +1397,16 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
 
         int result = 0;
         if (rebelPercent >= veryGoodGovernment) { // There are no tories left.
-        	System.out.println("Entered first if");
             if (sonsOfLiberty < veryGoodGovernment) {
                 result = 1;
             }
         } else if (rebelPercent >= goodGovernment) {
-        	System.out.println("Entered second if");
             if (sonsOfLiberty >= veryGoodGovernment) {
                 result = -1;
             } else if (sonsOfLiberty < goodGovernment) {
                 result = 1;
             }
         } else {
-        	System.out.println("Entered third if");
             if (sonsOfLiberty >= goodGovernment) {
                 result = -1;
             } else { // Now that no bonus is applied, penalties may.
