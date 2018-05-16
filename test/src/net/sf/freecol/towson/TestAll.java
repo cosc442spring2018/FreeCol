@@ -26,6 +26,7 @@ import org.junit.runners.Suite;
 	FoundingFatherTest.class,
 	DirectionTest.class,
 	EventTest.class,
+	RegressionTest0.class
 })
 public class TestAll {
 

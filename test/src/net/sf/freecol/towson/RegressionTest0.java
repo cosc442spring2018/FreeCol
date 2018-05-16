@@ -1153,21 +1153,6 @@ public class RegressionTest0 {
         org.junit.Assert.assertTrue("'" + str0 + "' != '" + "model.ability.produceInWater" + "'", str0.equals("model.ability.produceInWater"));
     }
 
-    @Test
-    public void test128() throws Throwable {
-        if (debug)
-            System.out.format("%n%s%n", "RegressionTest0.test128");
-        net.sf.freecol.common.model.Modifier modifier1 = net.sf.freecol.common.model.SimpleCombatModel.UNKNOWN_DEFENCE_MODIFIER;
-        boolean boolean2 = modifier1.requireNegatedPersonScope();
-        net.sf.freecol.common.model.Turn turn3 = null;
-        try {
-            net.sf.freecol.common.model.Modifier modifier4 = net.sf.freecol.common.model.Modifier.makeTimedModifier("model.option.buildOnNativeLand.never", modifier1, turn3);
-            org.junit.Assert.fail("Expected exception of type java.lang.NullPointerException; message: null");
-        } catch (java.lang.NullPointerException e) {
-        }
-        org.junit.Assert.assertNotNull(modifier1);
-        org.junit.Assert.assertTrue("'" + boolean2 + "' != '" + false + "'", boolean2 == false);
-    }
 
     @Test
     public void test129() throws Throwable {
