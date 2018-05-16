@@ -20,7 +20,7 @@
     In case of incompatible changes, please update version number and
     XSD schema for validation.
 -->
-<freecol-specification id="fastmode" extends="classic">
+<freecol-specification id="fastmode">
 
   <!-- Modifiers that are not attached to other game object
        types. They may be modified, but MUST NOT be removed. -->
@@ -1408,7 +1408,7 @@
     <!-- ATTENTION: skill-taught can NOT be inherited because it
          defaults to the unit type itself! -->
     <unit-type id="colonist" abstract="true" 
-               offence="0" defence="1" movement="6" line-of-sight="1"
+               offence="0" defence="1" movement="9" line-of-sight="1"
                priority="1000">
       <ability id="model.ability.person"
                value="true"/>
@@ -1701,7 +1701,7 @@
                 type="additive" value="-2"/>
     </unit-type>
     <unit-type id="model.unit.indianConvert" 
-               skill="0" offence="0" defence="1" movement="6" line-of-sight="1"
+               skill="0" offence="0" defence="1" movement="9" line-of-sight="1"
                maximum-attrition="10" score-value="3">
       <consumes id="model.goods.food" value="2"/>
       <consumes id="model.goods.bells" value="1"/>
@@ -1744,7 +1744,7 @@
     </unit-type>
     <unit-type id="model.unit.brave"
                offence="1" defence="1"
-               default-unit="true" movement="6" line-of-sight="1" space="1">
+               default-unit="true" movement="9" line-of-sight="1" space="1">
       <required-ability id="model.ability.native"/>
       <consumes id="model.goods.food" value="2"/>
       <consumes id="model.goods.rum" value="1"/>
@@ -1892,7 +1892,7 @@
                value="false"/>
     </unit-type>
     <unit-type id="model.unit.artillery" extends="wagon" price="500"
-               offence="7" defence="5" movement="6"
+               offence="7" defence="5" movement="9"
                score-value="2">
       <required-goods id="model.goods.hammers"
                       value="192"/>
@@ -1911,7 +1911,7 @@
                value="true"/>
     </unit-type>
     <unit-type id="model.unit.damagedArtillery" extends="wagon"
-               offence="5" defence="3" movement="9"
+               offence="5" defence="3" movement="12"
                score-value="1">
       <ability id="model.ability.captureUnits"
                value="true"/>
@@ -1919,7 +1919,7 @@
                value="true"/>
     </unit-type>
     <unit-type id="model.unit.treasureTrain" extends="wagon"
-               offence="0" defence="0" movement="9"
+               offence="0" defence="0" movement="12"
                score-value="1" spaceTaken="6">
       <ability id="model.ability.carryTreasure"
                value="true"/>
@@ -1927,7 +1927,7 @@
                value="true"/>
     </unit-type>
     <unit-type id="model.unit.wagonTrain" extends="wagon"
-               offence="0" defence="1" movement="9"
+               offence="0" defence="1" movement="12"
                score-value="1" spaceTaken="12" space="2">
       <required-goods id="model.goods.hammers"
                       value="40"/>
