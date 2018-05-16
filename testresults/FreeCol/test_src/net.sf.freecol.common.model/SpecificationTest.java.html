@@ -1,0 +1,3755 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SpecificationTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">test/src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">SpecificationTest.java</span></div><h1>SpecificationTest.java</h1><pre class="source lang-java linenums">/**
+ *  Copyright (C) 2002-2015  The FreeCol Team
+ *
+ *  This file is part of FreeCol.
+ *
+ *  FreeCol is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  FreeCol is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with FreeCol.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package net.sf.freecol.common.model;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.imageio.metadata.IIOMetadataNode;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import net.sf.freecol.common.io.FreeColModFile;
+import net.sf.freecol.common.io.FreeColTcFile;
+import net.sf.freecol.common.io.FreeColXMLReader;
+import net.sf.freecol.common.io.FreeColXMLWriter;
+import net.sf.freecol.common.model.Modifier;
+import net.sf.freecol.common.model.Modifier.ModifierType;
+import net.sf.freecol.common.option.AbstractOption;
+import net.sf.freecol.common.option.AbstractUnitOption;
+import net.sf.freecol.common.option.BooleanOption;
+import net.sf.freecol.common.option.IntegerOption;
+import net.sf.freecol.common.option.OptionGroup;
+import net.sf.freecol.common.option.RangeOption;
+import net.sf.freecol.common.option.StringOption;
+import net.sf.freecol.util.test.FreeColTestCase;
+
+
+<span class="fc" id="L58">public final class SpecificationTest extends FreeColTestCase {</span>
+
+<span class="fc" id="L60">    private static final BuildingType depotType</span>
+<span class="fc" id="L61">        = spec().getBuildingType(&quot;model.building.depot&quot;);</span>
+
+<span class="fc" id="L63">    private static final GoodsType fishType</span>
+<span class="fc" id="L64">        = spec().getGoodsType(&quot;model.goods.fish&quot;);</span>
+<span class="fc" id="L65">    private static final GoodsType foodType</span>
+<span class="fc" id="L66">        = spec().getPrimaryFoodType();</span>
+<span class="fc" id="L67">    private static final GoodsType horsesType</span>
+<span class="fc" id="L68">        = spec().getGoodsType(&quot;model.goods.horses&quot;);</span>
+<span class="fc" id="L69">    private static final GoodsType musketsType</span>
+<span class="fc" id="L70">        = spec().getGoodsType(&quot;model.goods.muskets&quot;);</span>
+<span class="fc" id="L71">    private static final GoodsType toolsType</span>
+<span class="fc" id="L72">        = spec().getGoodsType(&quot;model.goods.tools&quot;);</span>
+
+<span class="fc" id="L74">    private static final Role armedBraveRole</span>
+<span class="fc" id="L75">        = spec().getRole(&quot;model.role.armedBrave&quot;);</span>
+<span class="fc" id="L76">    private static final Role cavalryRole</span>
+<span class="fc" id="L77">        = spec().getRole(&quot;model.role.cavalry&quot;);</span>
+<span class="fc" id="L78">    private static final Role dragoonRole</span>
+<span class="fc" id="L79">        = spec().getRole(&quot;model.role.dragoon&quot;);</span>
+<span class="fc" id="L80">    private static final Role infantryRole</span>
+<span class="fc" id="L81">        = spec().getRole(&quot;model.role.infantry&quot;);</span>
+<span class="fc" id="L82">    private static final Role missionaryRole</span>
+<span class="fc" id="L83">        = spec().getRole(&quot;model.role.missionary&quot;);</span>
+<span class="fc" id="L84">    private static final Role nativeDragoonRole</span>
+<span class="fc" id="L85">        = spec().getRole(&quot;model.role.nativeDragoon&quot;);</span>
+<span class="fc" id="L86">    private static final Role soldierRole</span>
+<span class="fc" id="L87">        = spec().getRole(&quot;model.role.soldier&quot;);</span>
+
+<span class="fc" id="L89">    private static final UnitType blackSmithType</span>
+<span class="fc" id="L90">        = spec().getUnitType(&quot;model.unit.masterBlacksmith&quot;);</span>
+<span class="fc" id="L91">    private static final UnitType braveType</span>
+<span class="fc" id="L92">        = spec().getUnitType(&quot;model.unit.brave&quot;);</span>
+<span class="fc" id="L93">    private static final UnitType caravelType</span>
+<span class="fc" id="L94">        = spec().getUnitType(&quot;model.unit.caravel&quot;);</span>
+<span class="fc" id="L95">    private static final UnitType freeColonistType</span>
+<span class="fc" id="L96">        = spec().getUnitType(&quot;model.unit.freeColonist&quot;);</span>
+<span class="fc" id="L97">    private static final UnitType kingsRegularType</span>
+<span class="fc" id="L98">        = spec().getUnitType(&quot;model.unit.kingsRegular&quot;);</span>
+<span class="fc" id="L99">    private static final UnitType privateerType</span>
+<span class="fc" id="L100">        = spec().getUnitType(&quot;model.unit.privateer&quot;);</span>
+<span class="fc" id="L101">    private static final UnitType wagonType</span>
+<span class="fc" id="L102">        = spec().getUnitType(&quot;model.unit.wagonTrain&quot;);</span>
+
+
+    /**
+     * Make sure that a specification object can be created without an exception
+     * being thrown.
+     */
+    public void testLoad() {
+<span class="fc" id="L110">        Specification spec = null;</span>
+        try {
+<span class="fc" id="L112">            spec = new FreeColTcFile(&quot;freecol&quot;).getSpecification();</span>
+<span class="pc" id="L113">        } catch (Exception e) {</span>
+<span class="nc" id="L114">            e.printStackTrace();</span>
+<span class="nc" id="L115">            fail();</span>
+        }
+<span class="fc" id="L117">        assertNotNull(spec);</span>
+<span class="fc" id="L118">    }</span>
+
+    /**
+     * Test for some typical abilities.
+     */
+    public void testUnitAbilities() {
+<span class="fc" id="L124">        assertTrue(freeColonistType.hasAbility(Ability.FOUND_COLONY));</span>
+<span class="fc" id="L125">        assertFalse(freeColonistType.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT));</span>
+<span class="fc" id="L126">        assertTrue(freeColonistType.isRecruitable());</span>
+<span class="fc" id="L127">        assertFalse(freeColonistType.hasAbility(Ability.NAVAL_UNIT));</span>
+<span class="fc" id="L128">        assertFalse(freeColonistType.hasAbility(Ability.CARRY_GOODS));</span>
+<span class="fc" id="L129">        assertFalse(freeColonistType.hasAbility(Ability.CARRY_UNITS));</span>
+<span class="fc" id="L130">        assertFalse(freeColonistType.hasAbility(Ability.CAPTURE_GOODS));</span>
+
+<span class="fc" id="L132">        assertFalse(wagonType.hasAbility(Ability.FOUND_COLONY));</span>
+<span class="fc" id="L133">        assertFalse(wagonType.isRecruitable());</span>
+<span class="fc" id="L134">        assertFalse(wagonType.hasAbility(Ability.NAVAL_UNIT));</span>
+<span class="fc" id="L135">        assertTrue(wagonType.hasAbility(Ability.CARRY_GOODS));</span>
+<span class="fc" id="L136">        assertFalse(wagonType.hasAbility(Ability.CARRY_UNITS));</span>
+<span class="fc" id="L137">        assertFalse(wagonType.hasAbility(Ability.CAPTURE_GOODS));</span>
+
+        //assertFalse(brave.hasAbility(Ability.FOUND_COLONY));
+<span class="fc" id="L140">        assertTrue(braveType.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT));</span>
+<span class="fc" id="L141">        assertFalse(braveType.isRecruitable());</span>
+<span class="fc" id="L142">        assertFalse(braveType.hasAbility(Ability.NAVAL_UNIT));</span>
+<span class="fc" id="L143">        assertTrue(braveType.hasAbility(Ability.CARRY_GOODS));</span>
+<span class="fc" id="L144">        assertFalse(braveType.hasAbility(Ability.CARRY_UNITS));</span>
+<span class="fc" id="L145">        assertFalse(braveType.hasAbility(Ability.CAPTURE_GOODS));</span>
+
+<span class="fc" id="L147">        assertFalse(caravelType.hasAbility(Ability.FOUND_COLONY));</span>
+<span class="fc" id="L148">        assertFalse(caravelType.isRecruitable());</span>
+<span class="fc" id="L149">        assertTrue(caravelType.hasAbility(Ability.NAVAL_UNIT));</span>
+<span class="fc" id="L150">        assertTrue(caravelType.hasAbility(Ability.CARRY_GOODS));</span>
+<span class="fc" id="L151">        assertTrue(caravelType.hasAbility(Ability.CARRY_UNITS));</span>
+<span class="fc" id="L152">        assertFalse(caravelType.hasAbility(Ability.CAPTURE_GOODS));</span>
+
+<span class="fc" id="L154">        assertFalse(privateerType.hasAbility(Ability.FOUND_COLONY));</span>
+<span class="fc" id="L155">        assertFalse(privateerType.isRecruitable());</span>
+<span class="fc" id="L156">        assertTrue(privateerType.hasAbility(Ability.NAVAL_UNIT));</span>
+<span class="fc" id="L157">        assertTrue(privateerType.hasAbility(Ability.CARRY_GOODS));</span>
+<span class="fc" id="L158">        assertTrue(privateerType.hasAbility(Ability.CARRY_UNITS));</span>
+<span class="fc" id="L159">        assertTrue(privateerType.hasAbility(Ability.CAPTURE_GOODS));</span>
+<span class="fc" id="L160">    }</span>
+
+    public void testFoundingFathers() {
+<span class="fc" id="L163">        final FoundingFather smith</span>
+<span class="fc" id="L164">            = spec().getFoundingFather(&quot;model.foundingFather.adamSmith&quot;);</span>
+<span class="fc" id="L165">        assertNotNull(smith);</span>
+<span class="fc" id="L166">        assertEquals(FoundingFather.FoundingFatherType.TRADE, smith.getType());</span>
+        // weight is some value in [0, 10]
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">        assertTrue(smith.getWeight(0) &gt;= 0);</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">        assertTrue(smith.getWeight(1) &gt;= 0);</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">        assertTrue(smith.getWeight(2) &gt;= 0);</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        assertTrue(smith.getWeight(0) &lt;= 10);</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">        assertTrue(smith.getWeight(1) &lt;= 10);</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        assertTrue(smith.getWeight(2) &lt;= 10);</span>
+
+<span class="fc" id="L175">        assertEquals(0, smith.getWeight(-1));</span>
+<span class="fc" id="L176">        assertEquals(0, smith.getWeight(34));</span>
+        // check for ability
+<span class="fc" id="L178">        assertTrue(smith.hasAbility(Ability.BUILD_FACTORY));</span>
+<span class="fc" id="L179">    }</span>
+
+    public void testModifiers() {
+        // Percentage Modifier
+        /*
+        BuildingType ironWorks = spec.getBuildingType(&quot;model.building.ironWorks&quot;);
+        Modifier modifier = ironWorks.getModifiers(&quot;model.goods.tools&quot;).iterator().next();
+        assertEquals(Modifier.Type.PERCENTAGE, modifier.getType());
+        assertEquals(50f, modifier.getValue());
+        */
+
+        // Additive Modifier
+<span class="fc" id="L191">        Modifier modifier = depotType</span>
+<span class="fc" id="L192">            .getModifiers(Modifier.WAREHOUSE_STORAGE).iterator().next();</span>
+<span class="fc" id="L193">        assertEquals(ModifierType.ADDITIVE, modifier.getType());</span>
+<span class="fc" id="L194">        assertEquals(100f, modifier.getValue());</span>
+
+        // Multiplicative Modifier
+<span class="fc" id="L197">        modifier = blackSmithType.getModifiers(&quot;model.goods.tools&quot;).iterator().next();</span>
+<span class="fc" id="L198">        assertEquals(ModifierType.MULTIPLICATIVE, modifier.getType());</span>
+<span class="fc" id="L199">        assertEquals(2f, modifier.getValue());</span>
+<span class="fc" id="L200">    }</span>
+
+    public void testNations() {
+        // 4 original European nations, 4 in freecol rules
+        // The unknown enemy is deliberately absent from the European
+        // nations list
+<span class="fc" id="L206">        List&lt;Nation&gt; europeanNations = spec().getEuropeanNations();</span>
+<span class="fc" id="L207">        assertEquals(8, europeanNations.size());</span>
+
+        // 8 original native nations
+<span class="fc" id="L210">        List&lt;Nation&gt; indianNations = spec().getIndianNations();</span>
+<span class="fc" id="L211">        assertEquals(8, indianNations.size());</span>
+
+        // Unknown enemy has no REF
+<span class="fc" id="L214">        List&lt;Nation&gt; REFNations = spec().getREFNations();</span>
+<span class="fc" id="L215">        assertEquals(europeanNations.size(), REFNations.size());</span>
+<span class="fc" id="L216">    }</span>
+
+    public void testNationTypes() {
+<span class="fc" id="L219">        final Specification spec = spec();</span>
+
+<span class="fc" id="L221">        List&lt;IndianNationType&gt; indianNationTypes = spec.getIndianNationTypes();</span>
+<span class="fc" id="L222">        assertEquals(8, indianNationTypes.size());</span>
+<span class="fc" id="L223">        List&lt;EuropeanNationType&gt; REFNationTypes = spec.getREFNationTypes();</span>
+<span class="fc" id="L224">        assertEquals(1, REFNationTypes.size());</span>
+
+<span class="fc" id="L226">    }</span>
+
+    public void testRequiredAbilitiesForRoles() {
+<span class="fc" id="L229">        final Specification spec = spec();</span>
+        Map&lt;String, Boolean&gt; abilitiesReq, expectAbilities;
+<span class="fc" id="L231">        Map&lt;String, Map&lt;String, Boolean&gt;&gt; roleAbilities = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L233">        expectAbilities = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L234">        expectAbilities.put(Ability.CAN_BE_EQUIPPED, true);</span>
+<span class="fc" id="L235">        expectAbilities.put(Ability.NATIVE, false);</span>
+<span class="fc" id="L236">        expectAbilities.put(Ability.REF_UNIT, false);</span>
+<span class="fc" id="L237">        roleAbilities.put(&quot;model.role.scout&quot;, expectAbilities);</span>
+
+<span class="fc" id="L239">        expectAbilities = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L240">        expectAbilities.put(Ability.CAN_BE_EQUIPPED, true);</span>
+<span class="fc" id="L241">        expectAbilities.put(Ability.NATIVE, false);</span>
+<span class="fc" id="L242">        expectAbilities.put(Ability.REF_UNIT, false);</span>
+<span class="fc" id="L243">        roleAbilities.put(&quot;model.role.soldier&quot;, expectAbilities);</span>
+
+<span class="fc" id="L245">        expectAbilities = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L246">        expectAbilities.put(Ability.CAN_BE_EQUIPPED, true);</span>
+<span class="fc" id="L247">        expectAbilities.put(Ability.NATIVE, false);</span>
+<span class="fc" id="L248">        expectAbilities.put(Ability.REF_UNIT, false);</span>
+<span class="fc" id="L249">        roleAbilities.put(&quot;model.role.dragoon&quot;, expectAbilities);</span>
+
+<span class="fc" id="L251">        expectAbilities = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L252">        expectAbilities.put(Ability.CAN_BE_EQUIPPED, true);</span>
+<span class="fc" id="L253">        expectAbilities.put(Ability.NATIVE, false);</span>
+<span class="fc" id="L254">        expectAbilities.put(Ability.REF_UNIT, false);</span>
+<span class="fc" id="L255">        roleAbilities.put(&quot;model.role.pioneer&quot;, expectAbilities);</span>
+
+<span class="fc" id="L257">        expectAbilities = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L258">        expectAbilities.put(Ability.CAN_BE_EQUIPPED, true);</span>
+<span class="fc" id="L259">        expectAbilities.put(Ability.DRESS_MISSIONARY, true);</span>
+<span class="fc" id="L260">        expectAbilities.put(Ability.NATIVE, false);</span>
+<span class="fc" id="L261">        expectAbilities.put(Ability.REF_UNIT, false);</span>
+<span class="fc" id="L262">        roleAbilities.put(&quot;model.role.missionary&quot;, expectAbilities);</span>
+
+<span class="fc" id="L264">        expectAbilities = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L265">        expectAbilities.put(Ability.CAN_BE_EQUIPPED, true);</span>
+<span class="fc" id="L266">        expectAbilities.put(Ability.NATIVE, false);</span>
+<span class="fc" id="L267">        expectAbilities.put(Ability.REF_UNIT, true);</span>
+<span class="fc" id="L268">        expectAbilities.put(Ability.ROYAL_EXPEDITIONARY_FORCE, true);</span>
+<span class="fc" id="L269">        roleAbilities.put(&quot;model.role.infantry&quot;, expectAbilities);</span>
+
+<span class="fc" id="L271">        expectAbilities = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L272">        expectAbilities.put(Ability.CAN_BE_EQUIPPED, true);</span>
+<span class="fc" id="L273">        expectAbilities.put(Ability.NATIVE, false);</span>
+<span class="fc" id="L274">        expectAbilities.put(Ability.REF_UNIT, true);</span>
+<span class="fc" id="L275">        expectAbilities.put(Ability.ROYAL_EXPEDITIONARY_FORCE, true);</span>
+<span class="fc" id="L276">        roleAbilities.put(&quot;model.role.cavalry&quot;, expectAbilities);</span>
+
+<span class="fc" id="L278">        expectAbilities = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L279">        expectAbilities.put(Ability.CAN_BE_EQUIPPED, true);</span>
+<span class="fc" id="L280">        expectAbilities.put(Ability.NATIVE, true);</span>
+<span class="fc" id="L281">        expectAbilities.put(Ability.REF_UNIT, false);</span>
+<span class="fc" id="L282">        roleAbilities.put(&quot;model.role.mountedBrave&quot;, expectAbilities);</span>
+
+<span class="fc" id="L284">        expectAbilities = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L285">        expectAbilities.put(Ability.CAN_BE_EQUIPPED, true);</span>
+<span class="fc" id="L286">        expectAbilities.put(Ability.NATIVE, true);</span>
+<span class="fc" id="L287">        expectAbilities.put(Ability.REF_UNIT, false);</span>
+<span class="fc" id="L288">        roleAbilities.put(&quot;model.role.armedBrave&quot;, expectAbilities);</span>
+
+<span class="fc" id="L290">        expectAbilities = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L291">        expectAbilities.put(Ability.CAN_BE_EQUIPPED, true);</span>
+<span class="fc" id="L292">        expectAbilities.put(Ability.NATIVE, true);</span>
+<span class="fc" id="L293">        expectAbilities.put(Ability.REF_UNIT, false);</span>
+<span class="fc" id="L294">        roleAbilities.put(&quot;model.role.nativeDragoon&quot;, expectAbilities);</span>
+
+        // Verify
+<span class="fc bfc" id="L297" title="All 2 branches covered.">        for (Entry&lt;String, Map&lt;String, Boolean&gt;&gt; entry</span>
+<span class="fc" id="L298">                 : roleAbilities.entrySet()) {</span>
+<span class="fc" id="L299">            Role role = spec.getRole(entry.getKey());</span>
+<span class="fc" id="L300">            Map&lt;String, Boolean&gt; required = role.getRequiredAbilities();</span>
+<span class="fc" id="L301">            expectAbilities = entry.getValue();</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">            for (String key : required.keySet()) {</span>
+<span class="fc" id="L303">                Boolean req = required.get(key);</span>
+<span class="fc" id="L304">                Boolean val = expectAbilities.get(key);</span>
+<span class="fc" id="L305">                assertNotNull(role.getId() + &quot; missing &quot; + key, val);</span>
+<span class="fc" id="L306">                assertEquals(role.getId() + &quot; &quot; + key + &quot; value != &quot; + req,</span>
+<span class="fc" id="L307">                    req, val);</span>
+<span class="fc" id="L308">                expectAbilities.remove(key);</span>
+            }
+<span class="fc" id="L310">            assertEquals(role.getId() + &quot; excess abilities&quot;, 0,</span>
+<span class="fc" id="L311">                expectAbilities.size());</span>
+        }
+
+        Role role;
+<span class="fc" id="L315">        role = spec.getRole(&quot;model.role.default&quot;);</span>
+<span class="fc" id="L316">        assertNotNull(role);</span>
+<span class="fc" id="L317">        checkGoods(role.getId(), role.getRequiredGoods());</span>
+
+<span class="fc" id="L319">        role = spec.getRole(&quot;model.role.scout&quot;);</span>
+<span class="fc" id="L320">        assertNotNull(role);</span>
+<span class="fc" id="L321">        checkGoods(role.getId(), role.getRequiredGoods(),</span>
+<span class="fc" id="L322">            new AbstractGoods(horsesType, 50));</span>
+
+<span class="fc" id="L324">        role = spec.getRole(&quot;model.role.soldier&quot;);</span>
+<span class="fc" id="L325">        assertNotNull(role);</span>
+<span class="fc" id="L326">        checkGoods(role.getId(), role.getRequiredGoods(),</span>
+<span class="fc" id="L327">            new AbstractGoods(musketsType, 50));</span>
+
+<span class="fc" id="L329">        role = spec.getRole(&quot;model.role.dragoon&quot;);</span>
+<span class="fc" id="L330">        assertNotNull(role);</span>
+<span class="fc" id="L331">        checkGoods(role.getId(), role.getRequiredGoods(),</span>
+<span class="fc" id="L332">            new AbstractGoods(horsesType, 50),</span>
+<span class="fc" id="L333">            new AbstractGoods(musketsType, 50));</span>
+
+<span class="fc" id="L335">        role = spec.getRole(&quot;model.role.pioneer&quot;);</span>
+<span class="fc" id="L336">        assertNotNull(role);</span>
+<span class="fc" id="L337">        checkGoods(role.getId(), role.getRequiredGoods(),</span>
+<span class="fc" id="L338">            new AbstractGoods(toolsType, 20));</span>
+
+<span class="fc" id="L340">        role = spec.getRole(&quot;model.role.missionary&quot;);</span>
+<span class="fc" id="L341">        assertNotNull(role);</span>
+<span class="fc" id="L342">        checkGoods(role.getId(), role.getRequiredGoods());</span>
+
+<span class="fc" id="L344">        role = spec.getRole(&quot;model.role.infantry&quot;);</span>
+<span class="fc" id="L345">        assertNotNull(role);</span>
+<span class="fc" id="L346">        checkGoods(role.getId(), role.getRequiredGoods(),</span>
+<span class="fc" id="L347">            new AbstractGoods(musketsType, 50));</span>
+
+<span class="fc" id="L349">        role = spec.getRole(&quot;model.role.cavalry&quot;);</span>
+<span class="fc" id="L350">        assertNotNull(role);</span>
+<span class="fc" id="L351">        checkGoods(role.getId(), role.getRequiredGoods(),</span>
+<span class="fc" id="L352">            new AbstractGoods(horsesType, 50),</span>
+<span class="fc" id="L353">            new AbstractGoods(musketsType, 50));</span>
+
+<span class="fc" id="L355">        role = spec.getRole(&quot;model.role.mountedBrave&quot;);</span>
+<span class="fc" id="L356">        assertNotNull(role);</span>
+<span class="fc" id="L357">        checkGoods(role.getId(), role.getRequiredGoods(),</span>
+<span class="fc" id="L358">            new AbstractGoods(horsesType, 25));</span>
+
+<span class="fc" id="L360">        role = spec.getRole(&quot;model.role.armedBrave&quot;);</span>
+<span class="fc" id="L361">        assertNotNull(role);</span>
+<span class="fc" id="L362">        checkGoods(role.getId(), role.getRequiredGoods(),</span>
+<span class="fc" id="L363">            new AbstractGoods(musketsType, 25));</span>
+
+<span class="fc" id="L365">        role = spec.getRole(&quot;model.role.nativeDragoon&quot;);</span>
+<span class="fc" id="L366">        assertNotNull(role);</span>
+<span class="fc" id="L367">        checkGoods(role.getId(), role.getRequiredGoods(),</span>
+<span class="fc" id="L368">            new AbstractGoods(horsesType, 25),</span>
+<span class="fc" id="L369">            new AbstractGoods(musketsType, 25));</span>
+<span class="fc" id="L370">    }</span>
+
+    public void testGoodsTypes() {
+<span class="fc" id="L373">        assertTrue(foodType.isFarmed());</span>
+<span class="fc" id="L374">        assertTrue(spec().getFarmedGoodsTypeList().contains(foodType));</span>
+<span class="fc" id="L375">        assertTrue(foodType.isFoodType());</span>
+<span class="fc" id="L376">        assertTrue(spec().getFoodGoodsTypeList().contains(foodType));</span>
+
+<span class="fc" id="L378">        assertTrue(fishType.isFarmed());</span>
+<span class="fc" id="L379">        assertTrue(spec().getFarmedGoodsTypeList().contains(fishType));</span>
+<span class="fc" id="L380">        assertTrue(fishType.isFoodType());</span>
+<span class="fc" id="L381">        assertTrue(spec().getFoodGoodsTypeList().contains(fishType));</span>
+<span class="fc" id="L382">    }</span>
+
+    public void testExtends() {
+<span class="fc" id="L385">        String specification = &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;&quot;</span>
+            + &quot;&lt;freecol-specification id=\&quot;test\&quot; extends=\&quot;freecol\&quot;&gt;&quot;
+            + &quot;&lt;unit-types&gt;&quot;
+            + &quot;&lt;unit-type id=\&quot;model.unit.milkmaid\&quot; extends=\&quot;colonist\&quot; &quot;
+            + &quot;expert-production=\&quot;model.goods.food\&quot; /&gt;&quot;
+            + &quot;&lt;/unit-types&gt;&quot;
+            + &quot;&lt;/freecol-specification&gt;&quot;;
+
+<span class="fc" id="L393">        Specification spec = new Specification(new ByteArrayInputStream(specification.getBytes()));</span>
+
+<span class="fc" id="L395">        assertNotNull(spec.getUnitType(&quot;model.unit.milkmaid&quot;));</span>
+<span class="fc" id="L396">        assertNotNull(spec.getUnitType(&quot;model.unit.caravel&quot;));</span>
+
+        // restore original values
+        try {
+<span class="fc" id="L400">            spec = new Specification(new FreeColTcFile(&quot;freecol&quot;).getSpecificationInputStream());</span>
+<span class="pc" id="L401">        } catch (Exception e) {</span>
+<span class="nc" id="L402">            System.out.println(e);</span>
+        }
+<span class="fc" id="L404">    }</span>
+
+    public void testExtendsDelete() {
+<span class="fc" id="L407">        String specification = &quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;&quot;</span>
+            + &quot;&lt;freecol-specification id=\&quot;test\&quot; extends=\&quot;freecol\&quot;&gt;&quot;
+            + &quot;&lt;unit-types&gt;&quot;
+            + &quot;&lt;delete id=\&quot;model.unit.caravel\&quot; /&gt;&quot;
+            + &quot;&lt;/unit-types&gt;&quot;
+            + &quot;&lt;/freecol-specification&gt;&quot;;
+
+<span class="fc" id="L414">        Specification spec = new Specification(new ByteArrayInputStream(specification.getBytes()));</span>
+
+        try {
+<span class="nc" id="L417">            spec.getUnitType(&quot;model.unit.caravel&quot;);</span>
+<span class="nc" id="L418">            fail(&quot;Caravel is defined.&quot;);</span>
+<span class="pc" id="L419">        } catch (IllegalArgumentException e) {</span>
+        }
+
+<span class="fc bfc" id="L422" title="All 2 branches covered.">        for (UnitType unitType : spec.getUnitTypeList()) {</span>
+<span class="fc" id="L423">            assertFalse(&quot;model.unit.caravel&quot;.equals(unitType.getId()));</span>
+        }
+
+        // restore original values
+        try {
+<span class="fc" id="L428">            spec = new Specification(new FreeColTcFile(&quot;freecol&quot;).getSpecificationInputStream());</span>
+<span class="pc" id="L429">        } catch (Exception e) {</span>
+<span class="nc" id="L430">            System.out.println(e);</span>
+        }
+<span class="fc" id="L432">    }</span>
+
+    public void testGetDefaultUnitType() {
+<span class="fc" id="L435">        NationType europeanNationType = null;</span>
+<span class="fc" id="L436">        NationType nativeNationType = null;</span>
+<span class="fc" id="L437">        NationType refNationType = null;</span>
+<span class="fc bfc" id="L438" title="All 2 branches covered.">        for (NationType nt : spec().getNationTypes()) {</span>
+<span class="fc bfc" id="L439" title="All 2 branches covered.">            if (nt.isIndian()) {</span>
+<span class="fc bfc" id="L440" title="All 2 branches covered.">                if (nativeNationType == null) nativeNationType = nt;</span>
+<span class="fc bfc" id="L441" title="All 2 branches covered.">            } else if (nt.isREF()) {</span>
+<span class="pc bpc" id="L442" title="1 of 2 branches missed.">                if (refNationType == null) refNationType = nt;</span>
+<span class="fc" id="L443">            } else {</span>
+<span class="fc bfc" id="L444" title="All 2 branches covered.">                if (europeanNationType == null) europeanNationType = nt;</span>
+            }
+        }
+<span class="fc" id="L447">        assertNotNull(&quot;No European nation type&quot;, europeanNationType);</span>
+<span class="fc" id="L448">        assertNotNull(&quot;No native nation type&quot;, nativeNationType);</span>
+<span class="fc" id="L449">        assertNotNull(&quot;No REF nation type&quot;, refNationType);</span>
+                
+<span class="fc" id="L451">        assertEquals(&quot;Should find free colonist&quot;, freeColonistType,</span>
+<span class="fc" id="L452">                     spec().getDefaultUnitType(europeanNationType));</span>
+<span class="fc" id="L453">        assertEquals(&quot;Should find brave&quot;, braveType,</span>
+<span class="fc" id="L454">                     spec().getDefaultUnitType(nativeNationType));</span>
+<span class="fc" id="L455">        assertEquals(&quot;Should find kings regular&quot;, kingsRegularType,</span>
+<span class="fc" id="L456">                     spec().getDefaultUnitType(refNationType));</span>
+<span class="fc" id="L457">    }        </span>
+        
+    public void testLoadMods() {
+        try {
+<span class="fc" id="L461">            Specification specification = new Specification(new FreeColTcFile(&quot;freecol&quot;).getSpecificationInputStream());</span>
+<span class="fc" id="L462">            int numberOfUnitTypes = specification.getUnitTypeList().size();</span>
+<span class="fc" id="L463">            List&lt;FreeColModFile&gt; mods = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L464">            mods.add(new FreeColModFile(new File(&quot;data/mods/example&quot;)));</span>
+<span class="fc" id="L465">            specification.loadMods(mods);</span>
+<span class="fc" id="L466">            UnitType milkmaid = specification.getUnitType(&quot;model.unit.milkmaid&quot;);</span>
+<span class="fc" id="L467">            assertEquals(numberOfUnitTypes + 1, </span>
+<span class="fc" id="L468">                specification.getUnitTypeList().size());</span>
+<span class="pc" id="L469">        } catch (Exception e) {</span>
+<span class="nc" id="L470">            fail(e.getMessage());</span>
+        }
+<span class="fc" id="L472">    }</span>
+    @Test
+	public void testSpecification_1()
+		throws Exception {
+
+<span class="fc" id="L477">		Specification result = new Specification();</span>
+
+		// add additional test code here
+<span class="fc" id="L480">		assertNotNull(result);</span>
+<span class="fc" id="L481">		assertEquals(null, result.getId());</span>
+<span class="fc" id="L482">		assertEquals(null, result.getVersion());</span>
+<span class="fc" id="L483">		assertEquals(null, result.getDifficultyOptionGroup());</span>
+<span class="fc" id="L484">		assertEquals(null, result.getFastestNavalUnitType());</span>
+<span class="fc" id="L485">		assertEquals(null, result.getFastestLandUnitType());</span>
+<span class="fc" id="L486">		assertEquals(null, result.getDefaultNationType());</span>
+<span class="fc" id="L487">		assertEquals(null, result.getMissionaryRole());</span>
+<span class="fc" id="L488">		assertEquals(null, result.getDifficultyLevel());</span>
+<span class="fc" id="L489">		assertEquals(null, result.getScoutRole());</span>
+<span class="fc" id="L490">		assertEquals(null, result.getPioneerRole());</span>
+<span class="fc" id="L491">	}</span>
+
+	/**
+	 * Run the Specification() constructor test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testSpecification_2()
+		throws Exception {
+
+<span class="fc" id="L504">		Specification result = new Specification();</span>
+
+		// add additional test code here
+<span class="fc" id="L507">		assertNotNull(result);</span>
+<span class="fc" id="L508">		assertEquals(null, result.getId());</span>
+<span class="fc" id="L509">		assertEquals(null, result.getVersion());</span>
+<span class="fc" id="L510">		assertEquals(null, result.getDifficultyOptionGroup());</span>
+<span class="fc" id="L511">		assertEquals(null, result.getFastestNavalUnitType());</span>
+<span class="fc" id="L512">		assertEquals(null, result.getFastestLandUnitType());</span>
+<span class="fc" id="L513">		assertEquals(null, result.getDefaultNationType());</span>
+<span class="fc" id="L514">		assertEquals(null, result.getMissionaryRole());</span>
+<span class="fc" id="L515">		assertEquals(null, result.getDifficultyLevel());</span>
+<span class="fc" id="L516">		assertEquals(null, result.getScoutRole());</span>
+<span class="fc" id="L517">		assertEquals(null, result.getPioneerRole());</span>
+<span class="fc" id="L518">	}</span>
+
+	/**
+	 * Run the void addAbility(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testAddAbility_1()
+		throws Exception {
+<span class="fc" id="L530">		Specification fixture = new Specification();</span>
+<span class="fc" id="L531">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L533">		fixture.addAbility(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L536">	}</span>
+
+	/**
+	 * Run the void addAbility(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testAddAbility_2()
+		throws Exception {
+<span class="fc" id="L548">		Specification fixture = new Specification();</span>
+<span class="fc" id="L549">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L551">		fixture.addAbility(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L554">	}</span>
+
+	/**
+	 * Run the void addAbility(Ability) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testAddAbility_3()
+		throws Exception {
+<span class="fc" id="L566">		Specification fixture = new Specification();</span>
+<span class="fc" id="L567">		Ability ability = new Ability(&quot;&quot;);</span>
+
+<span class="fc" id="L569">		fixture.addAbility(ability);</span>
+
+		// add additional test code here
+<span class="fc" id="L572">	}</span>
+
+	/**
+	 * Run the void addModifier(Modifier) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testAddModifier_1()
+		throws Exception {
+<span class="fc" id="L584">		Specification fixture = new Specification();</span>
+<span class="fc" id="L585">		Modifier modifier = new Modifier(new Specification());</span>
+
+<span class="fc" id="L587">		fixture.addModifier(modifier);</span>
+
+		// add additional test code here
+<span class="fc" id="L590">	}</span>
+
+	/**
+	 * Run the void addModifier(Modifier) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testAddModifier_2()
+		throws Exception {
+<span class="fc" id="L602">		Specification fixture = new Specification();</span>
+<span class="fc" id="L603">		Modifier modifier = new Modifier(new Specification());</span>
+
+<span class="fc" id="L605">		fixture.addModifier(modifier);</span>
+
+		// add additional test code here
+<span class="fc" id="L608">	}</span>
+
+	/**
+	 * Run the void addOptionGroup(OptionGroup,boolean) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testAddOptionGroup_1()
+		throws Exception {
+<span class="fc" id="L620">		Specification fixture = new Specification();</span>
+<span class="fc" id="L621">		OptionGroup optionGroup = new OptionGroup(&quot;&quot;);</span>
+<span class="fc" id="L622">		boolean recursive = true;</span>
+
+<span class="fc" id="L624">		fixture.addOptionGroup(optionGroup, recursive);</span>
+
+		// add additional test code here
+<span class="fc" id="L627">	}</span>
+
+	/**
+	 * Run the void addOptionGroup(OptionGroup,boolean) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testAddOptionGroup_2()
+		throws Exception {
+<span class="fc" id="L639">		Specification fixture = new Specification();</span>
+<span class="fc" id="L640">		OptionGroup optionGroup = new OptionGroup(&quot;&quot;);</span>
+<span class="fc" id="L641">		boolean recursive = true;</span>
+
+<span class="fc" id="L643">		fixture.addOptionGroup(optionGroup, recursive);</span>
+
+		// add additional test code here
+<span class="fc" id="L646">	}</span>
+
+	/**
+	 * Run the void addOptionGroup(OptionGroup,boolean) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testAddOptionGroup_3()
+		throws Exception {
+<span class="fc" id="L658">		Specification fixture = new Specification();</span>
+<span class="fc" id="L659">		OptionGroup optionGroup = new OptionGroup(&quot;&quot;);</span>
+<span class="fc" id="L660">		boolean recursive = false;</span>
+
+<span class="fc" id="L662">		fixture.addOptionGroup(optionGroup, recursive);</span>
+
+		// add additional test code here
+<span class="fc" id="L665">	}</span>
+
+	/**
+	 * Run the void addOptionGroup(OptionGroup,boolean) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testAddOptionGroup_4()
+		throws Exception {
+<span class="fc" id="L677">		Specification fixture = new Specification();</span>
+<span class="fc" id="L678">		OptionGroup optionGroup = new OptionGroup(&quot;&quot;);</span>
+<span class="fc" id="L679">		boolean recursive = true;</span>
+
+<span class="fc" id="L681">		fixture.addOptionGroup(optionGroup, recursive);</span>
+
+		// add additional test code here
+<span class="fc" id="L684">	}</span>
+
+	/**
+	 * Run the void applyDifficultyLevel(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testApplyDifficultyLevel_1()
+		throws Exception {
+<span class="fc" id="L696">		Specification fixture = new Specification();</span>
+<span class="fc" id="L697">		String difficulty = &quot;&quot;;</span>
+
+<span class="fc" id="L699">		fixture.applyDifficultyLevel(difficulty);</span>
+
+		// add additional test code here
+<span class="fc" id="L702">	}</span>
+
+	/**
+	 * Run the void applyDifficultyLevel(OptionGroup) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testApplyDifficultyLevel_2()
+		throws Exception {
+<span class="fc" id="L714">		Specification fixture = new Specification();</span>
+<span class="fc" id="L715">		OptionGroup level = null;</span>
+
+<span class="fc" id="L717">		fixture.applyDifficultyLevel(level);</span>
+
+		// add additional test code here
+<span class="fc" id="L720">	}</span>
+
+	/**
+	 * Run the void applyDifficultyLevel(OptionGroup) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testApplyDifficultyLevel_3()
+		throws Exception {
+<span class="fc" id="L732">		Specification fixture = new Specification();</span>
+<span class="fc" id="L733">		OptionGroup level = new OptionGroup(&quot;&quot;);</span>
+
+<span class="fc" id="L735">		fixture.applyDifficultyLevel(level);</span>
+
+		// add additional test code here
+<span class="fc" id="L738">	}</span>
+
+	/**
+	 * Run the void clearEuropeanNationalAdvantages() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testClearEuropeanNationalAdvantages_1()
+		throws Exception {
+<span class="fc" id="L750">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L752">		fixture.clearEuropeanNationalAdvantages();</span>
+
+		// add additional test code here
+<span class="fc" id="L755">	}</span>
+
+	/**
+	 * Run the void clearEuropeanNationalAdvantages() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testClearEuropeanNationalAdvantages_2()
+		throws Exception {
+<span class="fc" id="L767">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L769">		fixture.clearEuropeanNationalAdvantages();</span>
+
+		// add additional test code here
+<span class="fc" id="L772">	}</span>
+
+	/**
+	 * Run the void disableEditing() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testDisableEditing_1()
+		throws Exception {
+<span class="fc" id="L784">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L786">		fixture.disableEditing();</span>
+
+		// add additional test code here
+<span class="fc" id="L789">	}</span>
+
+	/**
+	 * Run the void disableEditing() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testDisableEditing_2()
+		throws Exception {
+<span class="fc" id="L801">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L803">		fixture.disableEditing();</span>
+
+		// add additional test code here
+<span class="fc" id="L806">	}</span>
+
+	/**
+	 * Run the void disableEditing() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testDisableEditing_3()
+		throws Exception {
+<span class="fc" id="L818">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L820">		fixture.disableEditing();</span>
+
+		// add additional test code here
+<span class="fc" id="L823">	}</span>
+
+	/**
+	 * Run the FreeColGameObjectType findType(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testFindType_1()
+		throws Exception {
+<span class="fc" id="L835">		Specification fixture = new Specification();</span>
+<span class="fc" id="L836">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L838">		FreeColGameObjectType result = fixture.findType(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L841">		assertEquals(null, result);</span>
+<span class="fc" id="L842">	}</span>
+
+	/**
+	 * Run the FreeColGameObjectType findType(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testFindType_2()
+		throws Exception {
+<span class="fc" id="L854">		Specification fixture = new Specification();</span>
+<span class="fc" id="L855">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L857">		FreeColGameObjectType result = fixture.findType(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L860">		assertEquals(null, result);</span>
+<span class="fc" id="L861">	}</span>
+
+	/**
+	 * Run the List&lt;Ability&gt; getAbilities(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetAbilities_1()
+		throws Exception {
+<span class="fc" id="L873">		Specification fixture = new Specification();</span>
+<span class="fc" id="L874">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L876">		List&lt;Ability&gt; result = fixture.getAbilities(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L879">		assertEquals(null, result);</span>
+<span class="fc" id="L880">	}</span>
+
+	/**
+	 * Run the int getAge(Turn) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetAge_1()
+		throws Exception {
+<span class="fc" id="L892">		Specification fixture = new Specification();</span>
+<span class="fc" id="L893">		Turn turn = new Turn(1);</span>
+
+<span class="fc" id="L895">		int result = fixture.getAge(turn);</span>
+
+		// add additional test code here
+<span class="fc" id="L898">		assertEquals(2, result);</span>
+<span class="fc" id="L899">	}</span>
+
+	/**
+	 * Run the int getAge(Turn) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetAge_2()
+		throws Exception {
+<span class="fc" id="L911">		Specification fixture = new Specification();</span>
+<span class="fc" id="L912">		Turn turn = new Turn(1);</span>
+
+<span class="fc" id="L914">		int result = fixture.getAge(turn);</span>
+
+		// add additional test code here
+<span class="fc" id="L917">		assertEquals(2, result);</span>
+<span class="fc" id="L918">	}</span>
+
+	/**
+	 * Run the int getAge(Turn) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetAge_3()
+		throws Exception {
+<span class="fc" id="L930">		Specification fixture = new Specification();</span>
+<span class="fc" id="L931">		Turn turn = new Turn(1);</span>
+
+<span class="fc" id="L933">		int result = fixture.getAge(turn);</span>
+
+		// add additional test code here
+<span class="fc" id="L936">		assertEquals(2, result);</span>
+<span class="fc" id="L937">	}</span>
+
+	/**
+	 * Run the int getAge(Turn) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetAge_4()
+		throws Exception {
+<span class="fc" id="L949">		Specification fixture = new Specification();</span>
+<span class="fc" id="L950">		Turn turn = new Turn(1);</span>
+
+<span class="fc" id="L952">		int result = fixture.getAge(turn);</span>
+
+		// add additional test code here
+<span class="fc" id="L955">		assertEquals(2, result);</span>
+<span class="fc" id="L956">	}</span>
+
+	/**
+	 * Run the List&lt;UnitType&gt; getBuildableUnitTypes() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetBuildableUnitTypes_1()
+		throws Exception {
+<span class="fc" id="L968">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L970">		List&lt;UnitType&gt; result = fixture.getBuildableUnitTypes();</span>
+
+		// add additional test code here
+<span class="fc" id="L973">		assertNotNull(result);</span>
+<span class="fc" id="L974">		assertEquals(0, result.size());</span>
+<span class="fc" id="L975">	}</span>
+
+	/**
+	 * Run the BuildingType getBuildingType(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetBuildingType_1()
+		throws Exception {
+<span class="fc" id="L987">		Specification fixture = new Specification();</span>
+<span class="fc" id="L988">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L990">		BuildingType result = fixture.getBuildingType(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L993">		assertNotNull(result);</span>
+<span class="fc" id="L994">		assertEquals(800, result.getPriority());</span>
+<span class="fc" id="L995">		assertEquals(1, result.getLevel());</span>
+<span class="fc" id="L996">		assertEquals(null, result.getProducedGoodsType());</span>
+<span class="fc" id="L997">		assertEquals(&quot;building-type&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L998">		assertEquals(true, result.isAutomaticBuild());</span>
+<span class="fc" id="L999">		assertEquals(0, result.getUpkeep());</span>
+<span class="fc" id="L1000">		assertEquals(null, result.getUpgradesFrom());</span>
+<span class="fc" id="L1001">		assertEquals(null, result.getUpgradesTo());</span>
+<span class="fc" id="L1002">		assertEquals(3, result.getWorkPlaces());</span>
+<span class="fc" id="L1003">		assertEquals(false, result.isDefenceType());</span>
+<span class="fc" id="L1004">		assertEquals(false, result.needsGoodsToBuild());</span>
+<span class="fc" id="L1005">		assertEquals(1, result.getRequiredPopulation());</span>
+<span class="fc" id="L1006">		assertEquals(&quot;&quot;, result.toString());</span>
+<span class="fc" id="L1007">		assertEquals(&quot;.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L1008">		assertEquals(&quot;.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L1009">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L1010">		assertEquals(&quot;&quot;, result.getId());</span>
+<span class="fc" id="L1011">		assertEquals(&quot;&quot;, result.getSuffix());</span>
+<span class="fc" id="L1012">		assertEquals(&quot;&lt;building-type id=\&quot;\&quot; workplaces=\&quot;3\&quot;&gt;&lt;/building-type&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L1013">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L1014">		assertEquals(&quot;&quot;, result.getIdType());</span>
+<span class="fc" id="L1015">	}</span>
+
+	/**
+	 * Run the List&lt;BuildingType&gt; getBuildingTypeList() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetBuildingTypeList_1()
+		throws Exception {
+<span class="fc" id="L1027">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1029">		List&lt;BuildingType&gt; result = fixture.getBuildingTypeList();</span>
+
+		// add additional test code here
+<span class="fc" id="L1032">		assertNotNull(result);</span>
+<span class="fc" id="L1033">		assertEquals(0, result.size());</span>
+<span class="fc" id="L1034">	}</span>
+
+	/**
+	 * Run the NationType getDefaultNationType() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDefaultNationType_1()
+		throws Exception {
+<span class="fc" id="L1046">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1048">		NationType result = fixture.getDefaultNationType();</span>
+
+		// add additional test code here
+<span class="fc" id="L1051">		assertEquals(null, result);</span>
+<span class="fc" id="L1052">	}</span>
+
+	/**
+	 * Run the Role getDefaultRole() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDefaultRole_1()
+		throws Exception {
+<span class="fc" id="L1064">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1066">		Role result = fixture.getDefaultRole();</span>
+
+		// add additional test code here
+<span class="fc" id="L1069">		assertNotNull(result);</span>
+<span class="fc" id="L1070">		assertEquals(false, result.isOffensive());</span>
+<span class="fc" id="L1071">		assertEquals(&quot;role&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L1072">		assertEquals(&quot;default&quot;, result.getRoleSuffix());</span>
+<span class="fc" id="L1073">		assertEquals(true, result.isDefaultRole());</span>
+<span class="fc" id="L1074">		assertEquals(null, result.getExpertUnit());</span>
+<span class="fc" id="L1075">		assertEquals(null, result.getDowngrade());</span>
+<span class="fc" id="L1076">		assertEquals(0.0, result.getOffence(), 1.0);</span>
+<span class="fc" id="L1077">		assertEquals(&quot;[Role default]&quot;, result.toFullString());</span>
+<span class="fc" id="L1078">		assertEquals(false, result.isDefensive());</span>
+<span class="fc" id="L1079">		assertEquals(1, result.getMaximumCount());</span>
+<span class="fc" id="L1080">		assertEquals(false, result.needsGoodsToBuild());</span>
+<span class="fc" id="L1081">		assertEquals(1, result.getRequiredPopulation());</span>
+<span class="fc" id="L1082">		assertEquals(&quot;model.role.default&quot;, result.toString());</span>
+<span class="fc" id="L1083">		assertEquals(&quot;model.role.default.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L1084">		assertEquals(&quot;model.role.default.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L1085">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L1086">		assertEquals(&quot;model.role.default&quot;, result.getId());</span>
+<span class="fc" id="L1087">		assertEquals(&quot;default&quot;, result.getSuffix());</span>
+<span class="fc" id="L1088">		assertEquals(&quot;&lt;role id=\&quot;model.role.default\&quot;&gt;&lt;/role&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L1089">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L1090">		assertEquals(&quot;model.role.default&quot;, result.getIdType());</span>
+<span class="fc" id="L1091">	}</span>
+
+	/**
+	 * Run the UnitType getDefaultUnitType() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDefaultUnitType_1()
+		throws Exception {
+<span class="fc" id="L1103">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1105">		UnitType result = fixture.getDefaultUnitType();</span>
+
+		// add additional test code here
+<span class="fc" id="L1108">		assertNotNull(result);</span>
+<span class="fc" id="L1109">		assertEquals(&quot;model.unit.freeColonist&quot;, result.toString());</span>
+<span class="fc" id="L1110">		assertEquals(1000, result.getPriority());</span>
+<span class="fc" id="L1111">		assertEquals(0, result.getSpace());</span>
+<span class="fc" id="L1112">		assertEquals(false, result.isDefaultUnitType());</span>
+<span class="fc" id="L1113">		assertEquals(null, result.getExpertProduction());</span>
+<span class="fc" id="L1114">		assertEquals(0, result.getMaximumExperience());</span>
+<span class="fc" id="L1115">		assertEquals(0, result.getRecruitProbability());</span>
+<span class="fc" id="L1116">		assertEquals(false, result.canMoveToHighSeas());</span>
+<span class="fc" id="L1117">		assertEquals(Integer.MAX_VALUE, result.getMaximumAttrition());</span>
+<span class="fc" id="L1118">		assertEquals(false, result.isOffensive());</span>
+<span class="fc" id="L1119">		assertEquals(&quot;unit-type&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L1120">		assertEquals(&quot;model.unit.freeColonist.workingAs&quot;, result.getWorkingAsKey());</span>
+<span class="fc" id="L1121">		assertEquals(0, result.getScoreValue());</span>
+<span class="fc" id="L1122">		assertEquals(0.0, result.getOffence(), 1.0);</span>
+<span class="fc" id="L1123">		assertEquals(1.0, result.getDefence(), 1.0);</span>
+<span class="fc" id="L1124">		assertEquals(false, result.isDefensive());</span>
+<span class="fc" id="L1125">		assertEquals(&quot;model.role.default&quot;, result.getDisplayRoleId());</span>
+<span class="fc" id="L1126">		assertEquals(false, result.canBuildColony());</span>
+<span class="fc" id="L1127">		assertEquals(false, result.canCarryGoods());</span>
+<span class="fc" id="L1128">		assertEquals(0, result.getBaseOffence());</span>
+<span class="fc" id="L1129">		assertEquals(0, result.getHitPoints());</span>
+<span class="fc" id="L1130">		assertEquals(1, result.getSpaceTaken());</span>
+<span class="fc" id="L1131">		assertEquals(false, result.canCarryUnits());</span>
+<span class="fc" id="L1132">		assertEquals(1, result.getBaseDefence());</span>
+<span class="fc" id="L1133">		assertEquals(null, result.getSkillTaught());</span>
+<span class="fc" id="L1134">		assertEquals(1, result.getLineOfSight());</span>
+<span class="fc" id="L1135">		assertEquals(false, result.isRecruitable());</span>
+<span class="fc" id="L1136">		assertEquals(false, result.isPerson());</span>
+<span class="fc" id="L1137">		assertEquals(false, result.hasPrice());</span>
+<span class="fc" id="L1138">		assertEquals(3, result.getMovement());</span>
+<span class="fc" id="L1139">		assertEquals(Integer.MIN_VALUE, result.getPrice());</span>
+<span class="fc" id="L1140">		assertEquals(false, result.isNaval());</span>
+<span class="fc" id="L1141">		assertEquals(Integer.MIN_VALUE, result.getSkill());</span>
+<span class="fc" id="L1142">		assertEquals(false, result.hasSkill());</span>
+<span class="fc" id="L1143">		assertEquals(false, result.needsGoodsToBuild());</span>
+<span class="fc" id="L1144">		assertEquals(1, result.getRequiredPopulation());</span>
+<span class="fc" id="L1145">		assertEquals(&quot;model.unit.freeColonist.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L1146">		assertEquals(&quot;model.unit.freeColonist.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L1147">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L1148">		assertEquals(&quot;model.unit.freeColonist&quot;, result.getId());</span>
+<span class="fc" id="L1149">		assertEquals(&quot;freeColonist&quot;, result.getSuffix());</span>
+<span class="fc" id="L1150">		assertEquals(&quot;&lt;unit-type id=\&quot;model.unit.freeColonist\&quot; offence=\&quot;0\&quot; defence=\&quot;1\&quot; default-unit=\&quot;false\&quot; movement=\&quot;3\&quot; line-of-sight=\&quot;1\&quot; score-value=\&quot;0\&quot; space=\&quot;0\&quot; space-taken=\&quot;1\&quot; hit-points=\&quot;0\&quot; maximum-experience=\&quot;0\&quot; recruit-probability=\&quot;0\&quot; priority=\&quot;1000\&quot;&gt;&lt;/unit-type&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L1151">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L1152">		assertEquals(&quot;model.unit.freeColonist&quot;, result.getIdType());</span>
+<span class="fc" id="L1153">	}</span>
+
+	/**
+	 * Run the UnitType getDefaultUnitType(NationType) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDefaultUnitType_2()
+		throws Exception {
+<span class="fc" id="L1165">		Specification fixture = new Specification();</span>
+<span class="fc" id="L1166">		NationType nationType = new EuropeanNationType(&quot;&quot;, new Specification());</span>
+
+<span class="fc" id="L1168">		UnitType result = fixture.getDefaultUnitType(nationType);</span>
+
+		// add additional test code here
+<span class="fc" id="L1171">		assertNotNull(result);</span>
+<span class="fc" id="L1172">		assertEquals(&quot;model.unit.freeColonist&quot;, result.toString());</span>
+<span class="fc" id="L1173">		assertEquals(1000, result.getPriority());</span>
+<span class="fc" id="L1174">		assertEquals(0, result.getSpace());</span>
+<span class="fc" id="L1175">		assertEquals(false, result.isDefaultUnitType());</span>
+<span class="fc" id="L1176">		assertEquals(null, result.getExpertProduction());</span>
+<span class="fc" id="L1177">		assertEquals(0, result.getMaximumExperience());</span>
+<span class="fc" id="L1178">		assertEquals(0, result.getRecruitProbability());</span>
+<span class="fc" id="L1179">		assertEquals(false, result.canMoveToHighSeas());</span>
+<span class="fc" id="L1180">		assertEquals(Integer.MAX_VALUE, result.getMaximumAttrition());</span>
+<span class="fc" id="L1181">		assertEquals(false, result.isOffensive());</span>
+<span class="fc" id="L1182">		assertEquals(&quot;unit-type&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L1183">		assertEquals(&quot;model.unit.freeColonist.workingAs&quot;, result.getWorkingAsKey());</span>
+<span class="fc" id="L1184">		assertEquals(0, result.getScoreValue());</span>
+<span class="fc" id="L1185">		assertEquals(0.0, result.getOffence(), 1.0);</span>
+<span class="fc" id="L1186">		assertEquals(1.0, result.getDefence(), 1.0);</span>
+<span class="fc" id="L1187">		assertEquals(false, result.isDefensive());</span>
+<span class="fc" id="L1188">		assertEquals(&quot;model.role.default&quot;, result.getDisplayRoleId());</span>
+<span class="fc" id="L1189">		assertEquals(false, result.canBuildColony());</span>
+<span class="fc" id="L1190">		assertEquals(false, result.canCarryGoods());</span>
+<span class="fc" id="L1191">		assertEquals(0, result.getBaseOffence());</span>
+<span class="fc" id="L1192">		assertEquals(0, result.getHitPoints());</span>
+<span class="fc" id="L1193">		assertEquals(1, result.getSpaceTaken());</span>
+<span class="fc" id="L1194">		assertEquals(false, result.canCarryUnits());</span>
+<span class="fc" id="L1195">		assertEquals(1, result.getBaseDefence());</span>
+<span class="fc" id="L1196">		assertEquals(null, result.getSkillTaught());</span>
+<span class="fc" id="L1197">		assertEquals(1, result.getLineOfSight());</span>
+<span class="fc" id="L1198">		assertEquals(false, result.isRecruitable());</span>
+<span class="fc" id="L1199">		assertEquals(false, result.isPerson());</span>
+<span class="fc" id="L1200">		assertEquals(false, result.hasPrice());</span>
+<span class="fc" id="L1201">		assertEquals(3, result.getMovement());</span>
+<span class="fc" id="L1202">		assertEquals(Integer.MIN_VALUE, result.getPrice());</span>
+<span class="fc" id="L1203">		assertEquals(false, result.isNaval());</span>
+<span class="fc" id="L1204">		assertEquals(Integer.MIN_VALUE, result.getSkill());</span>
+<span class="fc" id="L1205">		assertEquals(false, result.hasSkill());</span>
+<span class="fc" id="L1206">		assertEquals(false, result.needsGoodsToBuild());</span>
+<span class="fc" id="L1207">		assertEquals(1, result.getRequiredPopulation());</span>
+<span class="fc" id="L1208">		assertEquals(&quot;model.unit.freeColonist.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L1209">		assertEquals(&quot;model.unit.freeColonist.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L1210">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L1211">		assertEquals(&quot;model.unit.freeColonist&quot;, result.getId());</span>
+<span class="fc" id="L1212">		assertEquals(&quot;freeColonist&quot;, result.getSuffix());</span>
+<span class="fc" id="L1213">		assertEquals(&quot;&lt;unit-type id=\&quot;model.unit.freeColonist\&quot; offence=\&quot;0\&quot; defence=\&quot;1\&quot; default-unit=\&quot;false\&quot; movement=\&quot;3\&quot; line-of-sight=\&quot;1\&quot; score-value=\&quot;0\&quot; space=\&quot;0\&quot; space-taken=\&quot;1\&quot; hit-points=\&quot;0\&quot; maximum-experience=\&quot;0\&quot; recruit-probability=\&quot;0\&quot; priority=\&quot;1000\&quot;&gt;&lt;/unit-type&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L1214">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L1215">		assertEquals(&quot;model.unit.freeColonist&quot;, result.getIdType());</span>
+<span class="fc" id="L1216">	}</span>
+
+	/**
+	 * Run the UnitType getDefaultUnitType(NationType) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDefaultUnitType_3()
+		throws Exception {
+<span class="fc" id="L1228">		Specification fixture = new Specification();</span>
+<span class="fc" id="L1229">		NationType nationType = new EuropeanNationType(&quot;&quot;, new Specification());</span>
+
+<span class="fc" id="L1231">		UnitType result = fixture.getDefaultUnitType(nationType);</span>
+
+		// add additional test code here
+<span class="fc" id="L1234">		assertNotNull(result);</span>
+<span class="fc" id="L1235">		assertEquals(&quot;model.unit.freeColonist&quot;, result.toString());</span>
+<span class="fc" id="L1236">		assertEquals(1000, result.getPriority());</span>
+<span class="fc" id="L1237">		assertEquals(0, result.getSpace());</span>
+<span class="fc" id="L1238">		assertEquals(false, result.isDefaultUnitType());</span>
+<span class="fc" id="L1239">		assertEquals(null, result.getExpertProduction());</span>
+<span class="fc" id="L1240">		assertEquals(0, result.getMaximumExperience());</span>
+<span class="fc" id="L1241">		assertEquals(0, result.getRecruitProbability());</span>
+<span class="fc" id="L1242">		assertEquals(false, result.canMoveToHighSeas());</span>
+<span class="fc" id="L1243">		assertEquals(Integer.MAX_VALUE, result.getMaximumAttrition());</span>
+<span class="fc" id="L1244">		assertEquals(false, result.isOffensive());</span>
+<span class="fc" id="L1245">		assertEquals(&quot;unit-type&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L1246">		assertEquals(&quot;model.unit.freeColonist.workingAs&quot;, result.getWorkingAsKey());</span>
+<span class="fc" id="L1247">		assertEquals(0, result.getScoreValue());</span>
+<span class="fc" id="L1248">		assertEquals(0.0, result.getOffence(), 1.0);</span>
+<span class="fc" id="L1249">		assertEquals(1.0, result.getDefence(), 1.0);</span>
+<span class="fc" id="L1250">		assertEquals(false, result.isDefensive());</span>
+<span class="fc" id="L1251">		assertEquals(&quot;model.role.default&quot;, result.getDisplayRoleId());</span>
+<span class="fc" id="L1252">		assertEquals(false, result.canBuildColony());</span>
+<span class="fc" id="L1253">		assertEquals(false, result.canCarryGoods());</span>
+<span class="fc" id="L1254">		assertEquals(0, result.getBaseOffence());</span>
+<span class="fc" id="L1255">		assertEquals(0, result.getHitPoints());</span>
+<span class="fc" id="L1256">		assertEquals(1, result.getSpaceTaken());</span>
+<span class="fc" id="L1257">		assertEquals(false, result.canCarryUnits());</span>
+<span class="fc" id="L1258">		assertEquals(1, result.getBaseDefence());</span>
+<span class="fc" id="L1259">		assertEquals(null, result.getSkillTaught());</span>
+<span class="fc" id="L1260">		assertEquals(1, result.getLineOfSight());</span>
+<span class="fc" id="L1261">		assertEquals(false, result.isRecruitable());</span>
+<span class="fc" id="L1262">		assertEquals(false, result.isPerson());</span>
+<span class="fc" id="L1263">		assertEquals(false, result.hasPrice());</span>
+<span class="fc" id="L1264">		assertEquals(3, result.getMovement());</span>
+<span class="fc" id="L1265">		assertEquals(Integer.MIN_VALUE, result.getPrice());</span>
+<span class="fc" id="L1266">		assertEquals(false, result.isNaval());</span>
+<span class="fc" id="L1267">		assertEquals(Integer.MIN_VALUE, result.getSkill());</span>
+<span class="fc" id="L1268">		assertEquals(false, result.hasSkill());</span>
+<span class="fc" id="L1269">		assertEquals(false, result.needsGoodsToBuild());</span>
+<span class="fc" id="L1270">		assertEquals(1, result.getRequiredPopulation());</span>
+<span class="fc" id="L1271">		assertEquals(&quot;model.unit.freeColonist.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L1272">		assertEquals(&quot;model.unit.freeColonist.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L1273">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L1274">		assertEquals(&quot;model.unit.freeColonist&quot;, result.getId());</span>
+<span class="fc" id="L1275">		assertEquals(&quot;freeColonist&quot;, result.getSuffix());</span>
+<span class="fc" id="L1276">		assertEquals(&quot;&lt;unit-type id=\&quot;model.unit.freeColonist\&quot; offence=\&quot;0\&quot; defence=\&quot;1\&quot; default-unit=\&quot;false\&quot; movement=\&quot;3\&quot; line-of-sight=\&quot;1\&quot; score-value=\&quot;0\&quot; space=\&quot;0\&quot; space-taken=\&quot;1\&quot; hit-points=\&quot;0\&quot; maximum-experience=\&quot;0\&quot; recruit-probability=\&quot;0\&quot; priority=\&quot;1000\&quot;&gt;&lt;/unit-type&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L1277">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L1278">		assertEquals(&quot;model.unit.freeColonist&quot;, result.getIdType());</span>
+<span class="fc" id="L1279">	}</span>
+
+	/**
+	 * Run the UnitType getDefaultUnitType(NationType) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDefaultUnitType_4()
+		throws Exception {
+<span class="fc" id="L1291">		Specification fixture = new Specification();</span>
+<span class="fc" id="L1292">		NationType nationType = new EuropeanNationType(&quot;&quot;, new Specification());</span>
+
+<span class="fc" id="L1294">		UnitType result = fixture.getDefaultUnitType(nationType);</span>
+
+		// add additional test code here
+<span class="fc" id="L1297">		assertNotNull(result);</span>
+<span class="fc" id="L1298">		assertEquals(&quot;model.unit.freeColonist&quot;, result.toString());</span>
+<span class="fc" id="L1299">		assertEquals(1000, result.getPriority());</span>
+<span class="fc" id="L1300">		assertEquals(0, result.getSpace());</span>
+<span class="fc" id="L1301">		assertEquals(false, result.isDefaultUnitType());</span>
+<span class="fc" id="L1302">		assertEquals(null, result.getExpertProduction());</span>
+<span class="fc" id="L1303">		assertEquals(0, result.getMaximumExperience());</span>
+<span class="fc" id="L1304">		assertEquals(0, result.getRecruitProbability());</span>
+<span class="fc" id="L1305">		assertEquals(false, result.canMoveToHighSeas());</span>
+<span class="fc" id="L1306">		assertEquals(Integer.MAX_VALUE, result.getMaximumAttrition());</span>
+<span class="fc" id="L1307">		assertEquals(false, result.isOffensive());</span>
+<span class="fc" id="L1308">		assertEquals(&quot;unit-type&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L1309">		assertEquals(&quot;model.unit.freeColonist.workingAs&quot;, result.getWorkingAsKey());</span>
+<span class="fc" id="L1310">		assertEquals(0, result.getScoreValue());</span>
+<span class="fc" id="L1311">		assertEquals(0.0, result.getOffence(), 1.0);</span>
+<span class="fc" id="L1312">		assertEquals(1.0, result.getDefence(), 1.0);</span>
+<span class="fc" id="L1313">		assertEquals(false, result.isDefensive());</span>
+<span class="fc" id="L1314">		assertEquals(&quot;model.role.default&quot;, result.getDisplayRoleId());</span>
+<span class="fc" id="L1315">		assertEquals(false, result.canBuildColony());</span>
+<span class="fc" id="L1316">		assertEquals(false, result.canCarryGoods());</span>
+<span class="fc" id="L1317">		assertEquals(0, result.getBaseOffence());</span>
+<span class="fc" id="L1318">		assertEquals(0, result.getHitPoints());</span>
+<span class="fc" id="L1319">		assertEquals(1, result.getSpaceTaken());</span>
+<span class="fc" id="L1320">		assertEquals(false, result.canCarryUnits());</span>
+<span class="fc" id="L1321">		assertEquals(1, result.getBaseDefence());</span>
+<span class="fc" id="L1322">		assertEquals(null, result.getSkillTaught());</span>
+<span class="fc" id="L1323">		assertEquals(1, result.getLineOfSight());</span>
+<span class="fc" id="L1324">		assertEquals(false, result.isRecruitable());</span>
+<span class="fc" id="L1325">		assertEquals(false, result.isPerson());</span>
+<span class="fc" id="L1326">		assertEquals(false, result.hasPrice());</span>
+<span class="fc" id="L1327">		assertEquals(3, result.getMovement());</span>
+<span class="fc" id="L1328">		assertEquals(Integer.MIN_VALUE, result.getPrice());</span>
+<span class="fc" id="L1329">		assertEquals(false, result.isNaval());</span>
+<span class="fc" id="L1330">		assertEquals(Integer.MIN_VALUE, result.getSkill());</span>
+<span class="fc" id="L1331">		assertEquals(false, result.hasSkill());</span>
+<span class="fc" id="L1332">		assertEquals(false, result.needsGoodsToBuild());</span>
+<span class="fc" id="L1333">		assertEquals(1, result.getRequiredPopulation());</span>
+<span class="fc" id="L1334">		assertEquals(&quot;model.unit.freeColonist.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L1335">		assertEquals(&quot;model.unit.freeColonist.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L1336">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L1337">		assertEquals(&quot;model.unit.freeColonist&quot;, result.getId());</span>
+<span class="fc" id="L1338">		assertEquals(&quot;freeColonist&quot;, result.getSuffix());</span>
+<span class="fc" id="L1339">		assertEquals(&quot;&lt;unit-type id=\&quot;model.unit.freeColonist\&quot; offence=\&quot;0\&quot; defence=\&quot;1\&quot; default-unit=\&quot;false\&quot; movement=\&quot;3\&quot; line-of-sight=\&quot;1\&quot; score-value=\&quot;0\&quot; space=\&quot;0\&quot; space-taken=\&quot;1\&quot; hit-points=\&quot;0\&quot; maximum-experience=\&quot;0\&quot; recruit-probability=\&quot;0\&quot; priority=\&quot;1000\&quot;&gt;&lt;/unit-type&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L1340">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L1341">		assertEquals(&quot;model.unit.freeColonist&quot;, result.getIdType());</span>
+<span class="fc" id="L1342">	}</span>
+
+	/**
+	 * Run the UnitType getDefaultUnitType(NationType) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDefaultUnitType_5()
+		throws Exception {
+<span class="fc" id="L1354">		Specification fixture = new Specification();</span>
+<span class="fc" id="L1355">		NationType nationType = null;</span>
+
+<span class="fc" id="L1357">		UnitType result = fixture.getDefaultUnitType(nationType);</span>
+
+		// add additional test code here
+<span class="fc" id="L1360">		assertNotNull(result);</span>
+<span class="fc" id="L1361">		assertEquals(&quot;model.unit.freeColonist&quot;, result.toString());</span>
+<span class="fc" id="L1362">		assertEquals(1000, result.getPriority());</span>
+<span class="fc" id="L1363">		assertEquals(0, result.getSpace());</span>
+<span class="fc" id="L1364">		assertEquals(false, result.isDefaultUnitType());</span>
+<span class="fc" id="L1365">		assertEquals(null, result.getExpertProduction());</span>
+<span class="fc" id="L1366">		assertEquals(0, result.getMaximumExperience());</span>
+<span class="fc" id="L1367">		assertEquals(0, result.getRecruitProbability());</span>
+<span class="fc" id="L1368">		assertEquals(false, result.canMoveToHighSeas());</span>
+<span class="fc" id="L1369">		assertEquals(Integer.MAX_VALUE, result.getMaximumAttrition());</span>
+<span class="fc" id="L1370">		assertEquals(false, result.isOffensive());</span>
+<span class="fc" id="L1371">		assertEquals(&quot;unit-type&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L1372">		assertEquals(&quot;model.unit.freeColonist.workingAs&quot;, result.getWorkingAsKey());</span>
+<span class="fc" id="L1373">		assertEquals(0, result.getScoreValue());</span>
+<span class="fc" id="L1374">		assertEquals(0.0, result.getOffence(), 1.0);</span>
+<span class="fc" id="L1375">		assertEquals(1.0, result.getDefence(), 1.0);</span>
+<span class="fc" id="L1376">		assertEquals(false, result.isDefensive());</span>
+<span class="fc" id="L1377">		assertEquals(&quot;model.role.default&quot;, result.getDisplayRoleId());</span>
+<span class="fc" id="L1378">		assertEquals(false, result.canBuildColony());</span>
+<span class="fc" id="L1379">		assertEquals(false, result.canCarryGoods());</span>
+<span class="fc" id="L1380">		assertEquals(0, result.getBaseOffence());</span>
+<span class="fc" id="L1381">		assertEquals(0, result.getHitPoints());</span>
+<span class="fc" id="L1382">		assertEquals(1, result.getSpaceTaken());</span>
+<span class="fc" id="L1383">		assertEquals(false, result.canCarryUnits());</span>
+<span class="fc" id="L1384">		assertEquals(1, result.getBaseDefence());</span>
+<span class="fc" id="L1385">		assertEquals(null, result.getSkillTaught());</span>
+<span class="fc" id="L1386">		assertEquals(1, result.getLineOfSight());</span>
+<span class="fc" id="L1387">		assertEquals(false, result.isRecruitable());</span>
+<span class="fc" id="L1388">		assertEquals(false, result.isPerson());</span>
+<span class="fc" id="L1389">		assertEquals(false, result.hasPrice());</span>
+<span class="fc" id="L1390">		assertEquals(3, result.getMovement());</span>
+<span class="fc" id="L1391">		assertEquals(Integer.MIN_VALUE, result.getPrice());</span>
+<span class="fc" id="L1392">		assertEquals(false, result.isNaval());</span>
+<span class="fc" id="L1393">		assertEquals(Integer.MIN_VALUE, result.getSkill());</span>
+<span class="fc" id="L1394">		assertEquals(false, result.hasSkill());</span>
+<span class="fc" id="L1395">		assertEquals(false, result.needsGoodsToBuild());</span>
+<span class="fc" id="L1396">		assertEquals(1, result.getRequiredPopulation());</span>
+<span class="fc" id="L1397">		assertEquals(&quot;model.unit.freeColonist.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L1398">		assertEquals(&quot;model.unit.freeColonist.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L1399">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L1400">		assertEquals(&quot;model.unit.freeColonist&quot;, result.getId());</span>
+<span class="fc" id="L1401">		assertEquals(&quot;freeColonist&quot;, result.getSuffix());</span>
+<span class="fc" id="L1402">		assertEquals(&quot;&lt;unit-type id=\&quot;model.unit.freeColonist\&quot; offence=\&quot;0\&quot; defence=\&quot;1\&quot; default-unit=\&quot;false\&quot; movement=\&quot;3\&quot; line-of-sight=\&quot;1\&quot; score-value=\&quot;0\&quot; space=\&quot;0\&quot; space-taken=\&quot;1\&quot; hit-points=\&quot;0\&quot; maximum-experience=\&quot;0\&quot; recruit-probability=\&quot;0\&quot; priority=\&quot;1000\&quot;&gt;&lt;/unit-type&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L1403">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L1404">		assertEquals(&quot;model.unit.freeColonist&quot;, result.getIdType());</span>
+<span class="fc" id="L1405">	}</span>
+
+	/**
+	 * Run the UnitType getDefaultUnitType(Player) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDefaultUnitType_7()
+		throws Exception {
+<span class="fc" id="L1417">		Specification fixture = new Specification();</span>
+<span class="fc" id="L1418">		Player player = null;</span>
+
+<span class="fc" id="L1420">		UnitType result = fixture.getDefaultUnitType(player);</span>
+
+		// add additional test code here
+<span class="fc" id="L1423">		assertNotNull(result);</span>
+<span class="fc" id="L1424">		assertEquals(&quot;model.unit.freeColonist&quot;, result.toString());</span>
+<span class="fc" id="L1425">		assertEquals(1000, result.getPriority());</span>
+<span class="fc" id="L1426">		assertEquals(0, result.getSpace());</span>
+<span class="fc" id="L1427">		assertEquals(false, result.isDefaultUnitType());</span>
+<span class="fc" id="L1428">		assertEquals(null, result.getExpertProduction());</span>
+<span class="fc" id="L1429">		assertEquals(0, result.getMaximumExperience());</span>
+<span class="fc" id="L1430">		assertEquals(0, result.getRecruitProbability());</span>
+<span class="fc" id="L1431">		assertEquals(false, result.canMoveToHighSeas());</span>
+<span class="fc" id="L1432">		assertEquals(Integer.MAX_VALUE, result.getMaximumAttrition());</span>
+<span class="fc" id="L1433">		assertEquals(false, result.isOffensive());</span>
+<span class="fc" id="L1434">		assertEquals(&quot;unit-type&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L1435">		assertEquals(&quot;model.unit.freeColonist.workingAs&quot;, result.getWorkingAsKey());</span>
+<span class="fc" id="L1436">		assertEquals(0, result.getScoreValue());</span>
+<span class="fc" id="L1437">		assertEquals(0.0, result.getOffence(), 1.0);</span>
+<span class="fc" id="L1438">		assertEquals(1.0, result.getDefence(), 1.0);</span>
+<span class="fc" id="L1439">		assertEquals(false, result.isDefensive());</span>
+<span class="fc" id="L1440">		assertEquals(&quot;model.role.default&quot;, result.getDisplayRoleId());</span>
+<span class="fc" id="L1441">		assertEquals(false, result.canBuildColony());</span>
+<span class="fc" id="L1442">		assertEquals(false, result.canCarryGoods());</span>
+<span class="fc" id="L1443">		assertEquals(0, result.getBaseOffence());</span>
+<span class="fc" id="L1444">		assertEquals(0, result.getHitPoints());</span>
+<span class="fc" id="L1445">		assertEquals(1, result.getSpaceTaken());</span>
+<span class="fc" id="L1446">		assertEquals(false, result.canCarryUnits());</span>
+<span class="fc" id="L1447">		assertEquals(1, result.getBaseDefence());</span>
+<span class="fc" id="L1448">		assertEquals(null, result.getSkillTaught());</span>
+<span class="fc" id="L1449">		assertEquals(1, result.getLineOfSight());</span>
+<span class="fc" id="L1450">		assertEquals(false, result.isRecruitable());</span>
+<span class="fc" id="L1451">		assertEquals(false, result.isPerson());</span>
+<span class="fc" id="L1452">		assertEquals(false, result.hasPrice());</span>
+<span class="fc" id="L1453">		assertEquals(3, result.getMovement());</span>
+<span class="fc" id="L1454">		assertEquals(Integer.MIN_VALUE, result.getPrice());</span>
+<span class="fc" id="L1455">		assertEquals(false, result.isNaval());</span>
+<span class="fc" id="L1456">		assertEquals(Integer.MIN_VALUE, result.getSkill());</span>
+<span class="fc" id="L1457">		assertEquals(false, result.hasSkill());</span>
+<span class="fc" id="L1458">		assertEquals(false, result.needsGoodsToBuild());</span>
+<span class="fc" id="L1459">		assertEquals(1, result.getRequiredPopulation());</span>
+<span class="fc" id="L1460">		assertEquals(&quot;model.unit.freeColonist.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L1461">		assertEquals(&quot;model.unit.freeColonist.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L1462">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L1463">		assertEquals(&quot;model.unit.freeColonist&quot;, result.getId());</span>
+<span class="fc" id="L1464">		assertEquals(&quot;freeColonist&quot;, result.getSuffix());</span>
+<span class="fc" id="L1465">		assertEquals(&quot;&lt;unit-type id=\&quot;model.unit.freeColonist\&quot; offence=\&quot;0\&quot; defence=\&quot;1\&quot; default-unit=\&quot;false\&quot; movement=\&quot;3\&quot; line-of-sight=\&quot;1\&quot; score-value=\&quot;0\&quot; space=\&quot;0\&quot; space-taken=\&quot;1\&quot; hit-points=\&quot;0\&quot; maximum-experience=\&quot;0\&quot; recruit-probability=\&quot;0\&quot; priority=\&quot;1000\&quot;&gt;&lt;/unit-type&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L1466">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L1467">		assertEquals(&quot;model.unit.freeColonist&quot;, result.getIdType());</span>
+<span class="fc" id="L1468">	}</span>
+
+	/**
+	 * Run the String getDifficultyLevel() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDifficultyLevel_1()
+		throws Exception {
+<span class="fc" id="L1480">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1482">		String result = fixture.getDifficultyLevel();</span>
+
+		// add additional test code here
+<span class="fc" id="L1485">		assertEquals(null, result);</span>
+<span class="fc" id="L1486">	}</span>
+
+	/**
+	 * Run the List&lt;OptionGroup&gt; getDifficultyLevels() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDifficultyLevels_1()
+		throws Exception {
+<span class="fc" id="L1498">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1500">		List&lt;OptionGroup&gt; result = fixture.getDifficultyLevels();</span>
+
+		// add additional test code here
+<span class="fc" id="L1503">		assertNotNull(result);</span>
+<span class="fc" id="L1504">		assertEquals(0, result.size());</span>
+<span class="fc" id="L1505">	}</span>
+
+	/**
+	 * Run the List&lt;OptionGroup&gt; getDifficultyLevels() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDifficultyLevels_2()
+		throws Exception {
+<span class="fc" id="L1517">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1519">		List&lt;OptionGroup&gt; result = fixture.getDifficultyLevels();</span>
+
+		// add additional test code here
+<span class="fc" id="L1522">		assertNotNull(result);</span>
+<span class="fc" id="L1523">		assertEquals(0, result.size());</span>
+<span class="fc" id="L1524">	}</span>
+
+	/**
+	 * Run the List&lt;OptionGroup&gt; getDifficultyLevels() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDifficultyLevels_3()
+		throws Exception {
+<span class="fc" id="L1536">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1538">		List&lt;OptionGroup&gt; result = fixture.getDifficultyLevels();</span>
+
+		// add additional test code here
+<span class="fc" id="L1541">		assertNotNull(result);</span>
+<span class="fc" id="L1542">		assertEquals(0, result.size());</span>
+<span class="fc" id="L1543">	}</span>
+
+	/**
+	 * Run the List&lt;OptionGroup&gt; getDifficultyLevels() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDifficultyLevels_4()
+		throws Exception {
+<span class="fc" id="L1555">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1557">		List&lt;OptionGroup&gt; result = fixture.getDifficultyLevels();</span>
+
+		// add additional test code here
+<span class="fc" id="L1560">		assertNotNull(result);</span>
+<span class="fc" id="L1561">		assertEquals(0, result.size());</span>
+<span class="fc" id="L1562">	}</span>
+
+	/**
+	 * Run the OptionGroup getDifficultyOptionGroup() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDifficultyOptionGroup_1()
+		throws Exception {
+<span class="fc" id="L1574">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1576">		OptionGroup result = fixture.getDifficultyOptionGroup();</span>
+
+		// add additional test code here
+<span class="fc" id="L1579">		assertEquals(null, result);</span>
+<span class="fc" id="L1580">	}</span>
+
+	/**
+	 * Run the OptionGroup getDifficultyOptionGroup(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDifficultyOptionGroup_2()
+		throws Exception {
+<span class="fc" id="L1592">		Specification fixture = new Specification();</span>
+<span class="fc" id="L1593">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L1595">		OptionGroup result = fixture.getDifficultyOptionGroup(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L1598">		assertEquals(null, result);</span>
+<span class="fc" id="L1599">	}</span>
+
+	/**
+	 * Run the Disaster getDisaster(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDisaster_1()
+		throws Exception {
+<span class="fc" id="L1611">		Specification fixture = new Specification();</span>
+<span class="fc" id="L1612">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L1614">		Disaster result = fixture.getDisaster(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L1617">		assertNotNull(result);</span>
+<span class="fc" id="L1618">		assertEquals(&quot;[]&quot;, result.toString());</span>
+<span class="fc" id="L1619">		assertEquals(&quot;disaster&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L1620">		assertEquals(false, result.isNatural());</span>
+<span class="fc" id="L1621">		assertEquals(&quot;.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L1622">		assertEquals(&quot;.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L1623">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L1624">		assertEquals(&quot;&quot;, result.getId());</span>
+<span class="fc" id="L1625">		assertEquals(&quot;&quot;, result.getSuffix());</span>
+<span class="fc" id="L1626">		assertEquals(&quot;&lt;disaster id=\&quot;\&quot; natural=\&quot;false\&quot; effects=\&quot;one\&quot;&gt;&lt;/disaster&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L1627">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L1628">		assertEquals(&quot;&quot;, result.getIdType());</span>
+<span class="fc" id="L1629">	}</span>
+
+	/**
+	 * Run the List&lt;Disaster&gt; getDisasters() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetDisasters_1()
+		throws Exception {
+<span class="fc" id="L1641">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1643">		List&lt;Disaster&gt; result = fixture.getDisasters();</span>
+
+		// add additional test code here
+<span class="fc" id="L1646">		assertNotNull(result);</span>
+<span class="fc" id="L1647">		assertEquals(0, result.size());</span>
+<span class="fc" id="L1648">	}</span>
+
+	/**
+	 * Run the EquipmentType getEquipmentType(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetEquipmentType_1()
+		throws Exception {
+<span class="fc" id="L1660">		Specification fixture = new Specification();</span>
+<span class="fc" id="L1661">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L1663">		EquipmentType result = fixture.getEquipmentType(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L1666">		assertNotNull(result);</span>
+<span class="fc" id="L1667">		assertEquals(null, result.getRole());</span>
+<span class="fc" id="L1668">		assertEquals(-1, result.getCombatLossPriority());</span>
+<span class="fc" id="L1669">		assertEquals(false, result.isMilitaryEquipment());</span>
+<span class="fc" id="L1670">		assertEquals(&quot;equipment-type&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L1671">		assertEquals(false, result.canBeCaptured());</span>
+<span class="fc" id="L1672">		assertEquals(1, result.getMaximumCount());</span>
+<span class="fc" id="L1673">		assertEquals(false, result.needsGoodsToBuild());</span>
+<span class="fc" id="L1674">		assertEquals(1, result.getRequiredPopulation());</span>
+<span class="fc" id="L1675">		assertEquals(&quot;&quot;, result.toString());</span>
+<span class="fc" id="L1676">		assertEquals(&quot;.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L1677">		assertEquals(&quot;.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L1678">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L1679">		assertEquals(&quot;&quot;, result.getId());</span>
+<span class="fc" id="L1680">		assertEquals(&quot;&quot;, result.getSuffix());</span>
+<span class="fc" id="L1681">		assertEquals(&quot;&lt;equipment-type id=\&quot;\&quot; maximum-count=\&quot;1\&quot; combat-loss-priority=\&quot;-1\&quot;&gt;&lt;/equipment-type&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L1682">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L1683">		assertEquals(&quot;&quot;, result.getIdType());</span>
+<span class="fc" id="L1684">	}</span>
+
+	/**
+	 * Run the List&lt;EuropeanNationType&gt; getEuropeanNationTypes() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetEuropeanNationTypes_1()
+		throws Exception {
+<span class="fc" id="L1696">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1698">		List&lt;EuropeanNationType&gt; result = fixture.getEuropeanNationTypes();</span>
+
+		// add additional test code here
+<span class="fc" id="L1701">		assertNotNull(result);</span>
+<span class="fc" id="L1702">		assertEquals(0, result.size());</span>
+<span class="fc" id="L1703">	}</span>
+
+	/**
+	 * Run the List&lt;Nation&gt; getEuropeanNations() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetEuropeanNations_1()
+		throws Exception {
+<span class="fc" id="L1715">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1717">		List&lt;Nation&gt; result = fixture.getEuropeanNations();</span>
+
+		// add additional test code here
+<span class="fc" id="L1720">		assertNotNull(result);</span>
+<span class="fc" id="L1721">		assertEquals(0, result.size());</span>
+<span class="fc" id="L1722">	}</span>
+
+	/**
+	 * Run the Event getEvent(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetEvent_1()
+		throws Exception {
+<span class="fc" id="L1734">		Specification fixture = new Specification();</span>
+<span class="fc" id="L1735">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L1737">		Event result = fixture.getEvent(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L1740">		assertNotNull(result);</span>
+<span class="fc" id="L1741">		assertEquals(null, result.getValue());</span>
+<span class="fc" id="L1742">		assertEquals(&quot;event&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L1743">		assertEquals(0, result.getScoreValue());</span>
+<span class="fc" id="L1744">		assertEquals(&quot;&quot;, result.toString());</span>
+<span class="fc" id="L1745">		assertEquals(&quot;.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L1746">		assertEquals(&quot;.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L1747">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L1748">		assertEquals(&quot;&quot;, result.getId());</span>
+<span class="fc" id="L1749">		assertEquals(&quot;&quot;, result.getSuffix());</span>
+<span class="fc" id="L1750">		assertEquals(&quot;&lt;event id=\&quot;\&quot;&gt;&lt;/event&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L1751">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L1752">		assertEquals(&quot;&quot;, result.getIdType());</span>
+<span class="fc" id="L1753">	}</span>
+
+	/**
+	 * Run the List&lt;Event&gt; getEvents() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetEvents_1()
+		throws Exception {
+<span class="fc" id="L1765">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1767">		List&lt;Event&gt; result = fixture.getEvents();</span>
+
+		// add additional test code here
+<span class="fc" id="L1770">		assertNotNull(result);</span>
+<span class="fc" id="L1771">		assertEquals(0, result.size());</span>
+<span class="fc" id="L1772">	}</span>
+
+	/**
+	 * Run the UnitType getExpertForProducing(GoodsType) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetExpertForProducing_1()
+		throws Exception {
+<span class="fc" id="L1784">		Specification fixture = new Specification();</span>
+<span class="fc" id="L1785">		GoodsType goodsType = new GoodsType(&quot;&quot;, new Specification());</span>
+
+<span class="fc" id="L1787">		UnitType result = fixture.getExpertForProducing(goodsType);</span>
+
+		// add additional test code here
+<span class="fc" id="L1790">		assertEquals(null, result);</span>
+<span class="fc" id="L1791">	}</span>
+
+	/**
+	 * Run the List&lt;GoodsType&gt; getFarmedGoodsTypeList() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetFarmedGoodsTypeList_1()
+		throws Exception {
+<span class="fc" id="L1803">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1805">		List&lt;GoodsType&gt; result = fixture.getFarmedGoodsTypeList();</span>
+
+		// add additional test code here
+<span class="fc" id="L1808">		assertNotNull(result);</span>
+<span class="fc" id="L1809">		assertEquals(0, result.size());</span>
+<span class="fc" id="L1810">	}</span>
+
+	/**
+	 * Run the UnitType getFastestLandUnitType() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetFastestLandUnitType_1()
+		throws Exception {
+<span class="fc" id="L1822">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1824">		UnitType result = fixture.getFastestLandUnitType();</span>
+
+		// add additional test code here
+<span class="fc" id="L1827">		assertEquals(null, result);</span>
+<span class="fc" id="L1828">	}</span>
+
+	/**
+	 * Run the UnitType getFastestNavalUnitType() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetFastestNavalUnitType_1()
+		throws Exception {
+<span class="fc" id="L1840">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1842">		UnitType result = fixture.getFastestNavalUnitType();</span>
+
+		// add additional test code here
+<span class="fc" id="L1845">		assertEquals(null, result);</span>
+<span class="fc" id="L1846">	}</span>
+
+	/**
+	 * Run the List&lt;GoodsType&gt; getFoodGoodsTypeList() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetFoodGoodsTypeList_1()
+		throws Exception {
+<span class="fc" id="L1858">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1860">		List&lt;GoodsType&gt; result = fixture.getFoodGoodsTypeList();</span>
+
+		// add additional test code here
+<span class="fc" id="L1863">		assertNotNull(result);</span>
+<span class="fc" id="L1864">		assertEquals(0, result.size());</span>
+<span class="fc" id="L1865">	}</span>
+
+	/**
+	 * Run the FoundingFather getFoundingFather(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetFoundingFather_1()
+		throws Exception {
+<span class="fc" id="L1877">		Specification fixture = new Specification();</span>
+<span class="fc" id="L1878">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L1880">		FoundingFather result = fixture.getFoundingFather(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L1883">		assertNotNull(result);</span>
+<span class="fc" id="L1884">		assertEquals(null, result.getType());</span>
+<span class="fc" id="L1885">		assertEquals(&quot;founding-father&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L1886">		assertEquals(&quot;&quot;, result.toString());</span>
+<span class="fc" id="L1887">		assertEquals(&quot;.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L1888">		assertEquals(&quot;.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L1889">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L1890">		assertEquals(&quot;&quot;, result.getId());</span>
+<span class="fc" id="L1891">		assertEquals(&quot;&quot;, result.getSuffix());</span>
+<span class="fc" id="L1892">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L1893">		assertEquals(&quot;&quot;, result.getIdType());</span>
+<span class="fc" id="L1894">	}</span>
+
+	/**
+	 * Run the List&lt;FoundingFather&gt; getFoundingFathers() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetFoundingFathers_1()
+		throws Exception {
+<span class="fc" id="L1906">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1908">		List&lt;FoundingFather&gt; result = fixture.getFoundingFathers();</span>
+
+		// add additional test code here
+<span class="fc" id="L1911">		assertNotNull(result);</span>
+<span class="fc" id="L1912">		assertEquals(0, result.size());</span>
+<span class="fc" id="L1913">	}</span>
+
+	/**
+	 * Run the GoodsType getGoodsType(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetGoodsType_1()
+		throws Exception {
+<span class="fc" id="L1925">		Specification fixture = new Specification();</span>
+<span class="fc" id="L1926">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L1928">		GoodsType result = fixture.getGoodsType(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L1931">		assertNotNull(result);</span>
+<span class="fc" id="L1932">		assertEquals(false, result.isNewWorldGoodsType());</span>
+<span class="fc" id="L1933">		assertEquals(false, result.isImmigrationType());</span>
+<span class="fc" id="L1934">		assertEquals(false, result.isRawBuildingMaterial());</span>
+<span class="fc" id="L1935">		assertEquals(false, result.isNewWorldLuxuryType());</span>
+<span class="fc" id="L1936">		assertEquals(Integer.MAX_VALUE, result.getBreedingNumber());</span>
+<span class="fc" id="L1937">		assertEquals(false, result.isBuildingMaterial());</span>
+<span class="fc" id="L1938">		assertEquals(1.0f, result.getProductionWeight(), 1.0f);</span>
+<span class="fc" id="L1939">		assertEquals(0.0f, result.getLowProductionThreshold(), 1.0f);</span>
+<span class="fc" id="L1940">		assertEquals(1.0f, result.getZeroProductionFactor(), 1.0f);</span>
+<span class="fc" id="L1941">		assertEquals(&quot;goods-type&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L1942">		assertEquals(false, result.isTradeGoods());</span>
+<span class="fc" id="L1943">		assertEquals(false, result.isRawMaterial());</span>
+<span class="fc" id="L1944">		assertEquals(false, result.isBreedable());</span>
+<span class="fc" id="L1945">		assertEquals(&quot;.workingAs&quot;, result.getWorkingAsKey());</span>
+<span class="fc" id="L1946">		assertEquals(null, result.getOutputType());</span>
+<span class="fc" id="L1947">		assertEquals(false, result.isMilitaryGoods());</span>
+<span class="fc" id="L1948">		assertEquals(false, result.isRefined());</span>
+<span class="fc" id="L1949">		assertEquals(false, result.isStoredAs());</span>
+<span class="fc" id="L1950">		assertEquals(false, result.limitIgnored());</span>
+<span class="fc" id="L1951">		assertEquals(null, result.getInputType());</span>
+<span class="fc" id="L1952">		assertEquals(0, result.getInitialAmount());</span>
+<span class="fc" id="L1953">		assertEquals(false, result.isFoodType());</span>
+<span class="fc" id="L1954">		assertEquals(false, result.isStorable());</span>
+<span class="fc" id="L1955">		assertEquals(false, result.isLibertyType());</span>
+<span class="fc" id="L1956">		assertEquals(false, result.isFarmed());</span>
+<span class="fc" id="L1957">		assertEquals(Integer.MAX_VALUE, result.getPrice());</span>
+<span class="fc" id="L1958">		assertEquals(&quot;&quot;, result.toString());</span>
+<span class="fc" id="L1959">		assertEquals(&quot;.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L1960">		assertEquals(&quot;.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L1961">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L1962">		assertEquals(&quot;&quot;, result.getId());</span>
+<span class="fc" id="L1963">		assertEquals(&quot;&quot;, result.getSuffix());</span>
+<span class="fc" id="L1964">		assertEquals(&quot;&lt;goods-type id=\&quot;\&quot; is-farmed=\&quot;false\&quot; is-food=\&quot;false\&quot; is-military=\&quot;false\&quot; ignore-limit=\&quot;false\&quot; new-world-goods=\&quot;false\&quot; trade-goods=\&quot;false\&quot; storable=\&quot;false\&quot; production-weight=\&quot;1.0\&quot;&gt;&lt;/goods-type&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L1965">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L1966">		assertEquals(&quot;&quot;, result.getIdType());</span>
+<span class="fc" id="L1967">	}</span>
+
+	/**
+	 * Run the List&lt;GoodsType&gt; getGoodsTypeList() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetGoodsTypeList_1()
+		throws Exception {
+<span class="fc" id="L1979">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L1981">		List&lt;GoodsType&gt; result = fixture.getGoodsTypeList();</span>
+
+		// add additional test code here
+<span class="fc" id="L1984">		assertNotNull(result);</span>
+<span class="fc" id="L1985">		assertEquals(0, result.size());</span>
+<span class="fc" id="L1986">	}</span>
+
+	/**
+	 * Run the String getId() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetId_1()
+		throws Exception {
+<span class="fc" id="L1998">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2000">		String result = fixture.getId();</span>
+
+		// add additional test code here
+<span class="fc" id="L2003">		assertEquals(null, result);</span>
+<span class="fc" id="L2004">	}</span>
+
+	/**
+	 * Run the List&lt;GoodsType&gt; getImmigrationGoodsTypeList() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetImmigrationGoodsTypeList_1()
+		throws Exception {
+<span class="fc" id="L2016">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2018">		List&lt;GoodsType&gt; result = fixture.getImmigrationGoodsTypeList();</span>
+
+		// add additional test code here
+<span class="fc" id="L2021">		assertNotNull(result);</span>
+<span class="fc" id="L2022">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2023">	}</span>
+
+	/**
+	 * Run the List&lt;IndianNationType&gt; getIndianNationTypes() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetIndianNationTypes_1()
+		throws Exception {
+<span class="fc" id="L2035">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2037">		List&lt;IndianNationType&gt; result = fixture.getIndianNationTypes();</span>
+
+		// add additional test code here
+<span class="fc" id="L2040">		assertNotNull(result);</span>
+<span class="fc" id="L2041">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2042">	}</span>
+
+	/**
+	 * Run the List&lt;Nation&gt; getIndianNations() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetIndianNations_1()
+		throws Exception {
+<span class="fc" id="L2054">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2056">		List&lt;Nation&gt; result = fixture.getIndianNations();</span>
+
+		// add additional test code here
+<span class="fc" id="L2059">		assertNotNull(result);</span>
+<span class="fc" id="L2060">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2061">	}</span>
+
+	/**
+	 * Run the int getInitialPrice(GoodsType) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetInitialPrice_1()
+		throws Exception {
+<span class="fc" id="L2073">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2074">		GoodsType goodsType = new GoodsType(&quot;&quot;, new Specification());</span>
+
+<span class="fc" id="L2076">		int result = fixture.getInitialPrice(goodsType);</span>
+
+		// add additional test code here
+<span class="fc" id="L2079">		assertEquals(0, result);</span>
+<span class="fc" id="L2080">	}</span>
+
+	/**
+	 * Run the int getInitialPrice(GoodsType) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetInitialPrice_2()
+		throws Exception {
+<span class="fc" id="L2092">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2093">		GoodsType goodsType = new GoodsType(&quot;&quot;, new Specification());</span>
+
+<span class="fc" id="L2095">		int result = fixture.getInitialPrice(goodsType);</span>
+
+		// add additional test code here
+<span class="fc" id="L2098">		assertEquals(0, result);</span>
+<span class="fc" id="L2099">	}</span>
+
+	/**
+	 * Run the int getInitialPrice(GoodsType) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetInitialPrice_3()
+		throws Exception {
+<span class="fc" id="L2111">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2112">		GoodsType goodsType = new GoodsType(&quot;&quot;, new Specification());</span>
+
+<span class="fc" id="L2114">		int result = fixture.getInitialPrice(goodsType);</span>
+
+		// add additional test code here
+<span class="fc" id="L2117">		assertEquals(0, result);</span>
+<span class="fc" id="L2118">	}</span>
+
+	/**
+	 * Run the List&lt;GoodsType&gt; getLibertyGoodsTypeList() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetLibertyGoodsTypeList_1()
+		throws Exception {
+<span class="fc" id="L2130">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2132">		List&lt;GoodsType&gt; result = fixture.getLibertyGoodsTypeList();</span>
+
+		// add additional test code here
+<span class="fc" id="L2135">		assertNotNull(result);</span>
+<span class="fc" id="L2136">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2137">	}</span>
+
+	/**
+	 * Run the List&lt;Role&gt; getMilitaryRoles() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetMilitaryRoles_1()
+		throws Exception {
+<span class="fc" id="L2149">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2151">		List&lt;Role&gt; result = fixture.getMilitaryRoles();</span>
+
+		// add additional test code here
+<span class="fc" id="L2154">		assertNotNull(result);</span>
+<span class="fc" id="L2155">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2156">	}</span>
+
+	/**
+	 * Run the List&lt;Role&gt; getMilitaryRoles() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetMilitaryRoles_2()
+		throws Exception {
+<span class="fc" id="L2168">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2170">		List&lt;Role&gt; result = fixture.getMilitaryRoles();</span>
+
+		// add additional test code here
+<span class="fc" id="L2173">		assertNotNull(result);</span>
+<span class="fc" id="L2174">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2175">	}</span>
+
+	/**
+	 * Run the Role getMissionaryRole() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetMissionaryRole_1()
+		throws Exception {
+<span class="fc" id="L2187">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2189">		Role result = fixture.getMissionaryRole();</span>
+
+		// add additional test code here
+<span class="fc" id="L2192">		assertEquals(null, result);</span>
+<span class="fc" id="L2193">	}</span>
+
+	/**
+	 * Run the List&lt;Modifier&gt; getModifiers(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetModifiers_1()
+		throws Exception {
+<span class="fc" id="L2205">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2206">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L2208">		List&lt;Modifier&gt; result = fixture.getModifiers(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L2211">		assertNotNull(result);</span>
+<span class="fc" id="L2212">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2213">	}</span>
+
+	/**
+	 * Run the List&lt;Modifier&gt; getModifiers(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetModifiers_2()
+		throws Exception {
+<span class="fc" id="L2225">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2226">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L2228">		List&lt;Modifier&gt; result = fixture.getModifiers(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L2231">		assertNotNull(result);</span>
+<span class="fc" id="L2232">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2233">	}</span>
+
+	/**
+	 * Run the Nation getNation(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetNation_1()
+		throws Exception {
+<span class="fc" id="L2245">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2246">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L2248">		Nation result = fixture.getNation(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L2251">		assertNotNull(result);</span>
+<span class="fc" id="L2252">		assertEquals(null, result.getType());</span>
+<span class="fc" id="L2253">		assertEquals(null, result.getColor());</span>
+<span class="fc" id="L2254">		assertEquals(true, result.startsOnEastCoast());</span>
+<span class="fc" id="L2255">		assertEquals(0, result.getPreferredLatitude());</span>
+<span class="fc" id="L2256">		assertEquals(null, result.forceDefaultColor());</span>
+<span class="fc" id="L2257">		assertEquals(&quot;nation&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L2258">		assertEquals(null, result.getREFNation());</span>
+<span class="fc" id="L2259">		assertEquals(null, result.getRebelNation());</span>
+<span class="fc" id="L2260">		assertEquals(&quot;.ruler&quot;, result.getRulerName());</span>
+<span class="fc" id="L2261">		assertEquals(&quot;.ruler&quot;, result.getRulerNameKey());</span>
+<span class="fc" id="L2262">		assertEquals(false, result.isUnknownEnemy());</span>
+<span class="fc" id="L2263">		assertEquals(false, result.isSelectable());</span>
+<span class="fc" id="L2264">		assertEquals(&quot;&quot;, result.toString());</span>
+<span class="fc" id="L2265">		assertEquals(&quot;.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L2266">		assertEquals(&quot;.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L2267">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L2268">		assertEquals(&quot;&quot;, result.getId());</span>
+<span class="fc" id="L2269">		assertEquals(&quot;&quot;, result.getSuffix());</span>
+<span class="fc" id="L2270">		assertEquals(&quot;&lt;nation id=\&quot;\&quot; selectable=\&quot;false\&quot; preferred-latitude=\&quot;0\&quot; starts-on-east-coast=\&quot;true\&quot;&gt;&lt;/nation&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L2271">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L2272">		assertEquals(&quot;&quot;, result.getIdType());</span>
+<span class="fc" id="L2273">	}</span>
+
+	/**
+	 * Run the NationType getNationType(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetNationType_1()
+		throws Exception {
+<span class="fc" id="L2285">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2286">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L2288">		NationType result = fixture.getNationType(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L2291">		assertEquals(null, result);</span>
+<span class="fc" id="L2292">	}</span>
+
+	/**
+	 * Run the List&lt;NationType&gt; getNationTypes() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetNationTypes_1()
+		throws Exception {
+<span class="fc" id="L2304">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2306">		List&lt;NationType&gt; result = fixture.getNationTypes();</span>
+
+		// add additional test code here
+<span class="fc" id="L2309">		assertNotNull(result);</span>
+<span class="fc" id="L2310">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2311">	}</span>
+
+	/**
+	 * Run the List&lt;Nation&gt; getNations() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetNations_1()
+		throws Exception {
+<span class="fc" id="L2323">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2325">		List&lt;Nation&gt; result = fixture.getNations();</span>
+
+		// add additional test code here
+<span class="fc" id="L2328">		assertNotNull(result);</span>
+<span class="fc" id="L2329">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2330">	}</span>
+
+	/**
+	 * Run the List&lt;GoodsType&gt; getNewWorldGoodsTypeList() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetNewWorldGoodsTypeList_1()
+		throws Exception {
+<span class="fc" id="L2342">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2344">		List&lt;GoodsType&gt; result = fixture.getNewWorldGoodsTypeList();</span>
+
+		// add additional test code here
+<span class="fc" id="L2347">		assertNotNull(result);</span>
+<span class="fc" id="L2348">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2349">	}</span>
+
+	/**
+	 * Run the List&lt;GoodsType&gt; getNewWorldLuxuryGoodsTypeList() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetNewWorldLuxuryGoodsTypeList_1()
+		throws Exception {
+<span class="fc" id="L2361">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2363">		List&lt;GoodsType&gt; result = fixture.getNewWorldLuxuryGoodsTypeList();</span>
+
+		// add additional test code here
+<span class="fc" id="L2366">		assertNotNull(result);</span>
+<span class="fc" id="L2367">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2368">	}</span>
+
+	/**
+	 * Run the Role getPioneerRole() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetPioneerRole_1()
+		throws Exception {
+<span class="fc" id="L2380">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2382">		Role result = fixture.getPioneerRole();</span>
+
+		// add additional test code here
+<span class="fc" id="L2385">		assertEquals(null, result);</span>
+<span class="fc" id="L2386">	}</span>
+
+	/**
+	 * Run the GoodsType getPrimaryFoodType() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetPrimaryFoodType_1()
+		throws Exception {
+<span class="fc" id="L2398">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2400">		GoodsType result = fixture.getPrimaryFoodType();</span>
+
+		// add additional test code here
+<span class="fc" id="L2403">		assertNotNull(result);</span>
+<span class="fc" id="L2404">		assertEquals(false, result.isNewWorldGoodsType());</span>
+<span class="fc" id="L2405">		assertEquals(false, result.isImmigrationType());</span>
+<span class="fc" id="L2406">		assertEquals(false, result.isRawBuildingMaterial());</span>
+<span class="fc" id="L2407">		assertEquals(false, result.isNewWorldLuxuryType());</span>
+<span class="fc" id="L2408">		assertEquals(Integer.MAX_VALUE, result.getBreedingNumber());</span>
+<span class="fc" id="L2409">		assertEquals(false, result.isBuildingMaterial());</span>
+<span class="fc" id="L2410">		assertEquals(1.0f, result.getProductionWeight(), 1.0f);</span>
+<span class="fc" id="L2411">		assertEquals(0.0f, result.getLowProductionThreshold(), 1.0f);</span>
+<span class="fc" id="L2412">		assertEquals(1.0f, result.getZeroProductionFactor(), 1.0f);</span>
+<span class="fc" id="L2413">		assertEquals(&quot;goods-type&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L2414">		assertEquals(false, result.isTradeGoods());</span>
+<span class="fc" id="L2415">		assertEquals(false, result.isRawMaterial());</span>
+<span class="fc" id="L2416">		assertEquals(false, result.isBreedable());</span>
+<span class="fc" id="L2417">		assertEquals(&quot;model.goods.food.workingAs&quot;, result.getWorkingAsKey());</span>
+<span class="fc" id="L2418">		assertEquals(null, result.getOutputType());</span>
+<span class="fc" id="L2419">		assertEquals(false, result.isMilitaryGoods());</span>
+<span class="fc" id="L2420">		assertEquals(false, result.isRefined());</span>
+<span class="fc" id="L2421">		assertEquals(false, result.isStoredAs());</span>
+<span class="fc" id="L2422">		assertEquals(false, result.limitIgnored());</span>
+<span class="fc" id="L2423">		assertEquals(null, result.getInputType());</span>
+<span class="fc" id="L2424">		assertEquals(0, result.getInitialAmount());</span>
+<span class="fc" id="L2425">		assertEquals(false, result.isFoodType());</span>
+<span class="fc" id="L2426">		assertEquals(false, result.isStorable());</span>
+<span class="fc" id="L2427">		assertEquals(false, result.isLibertyType());</span>
+<span class="fc" id="L2428">		assertEquals(false, result.isFarmed());</span>
+<span class="fc" id="L2429">		assertEquals(Integer.MAX_VALUE, result.getPrice());</span>
+<span class="fc" id="L2430">		assertEquals(&quot;model.goods.food&quot;, result.toString());</span>
+<span class="fc" id="L2431">		assertEquals(&quot;model.goods.food.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L2432">		assertEquals(&quot;model.goods.food.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L2433">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L2434">		assertEquals(&quot;model.goods.food&quot;, result.getId());</span>
+<span class="fc" id="L2435">		assertEquals(&quot;food&quot;, result.getSuffix());</span>
+<span class="fc" id="L2436">		assertEquals(&quot;&lt;goods-type id=\&quot;model.goods.food\&quot; is-farmed=\&quot;false\&quot; is-food=\&quot;false\&quot; is-military=\&quot;false\&quot; ignore-limit=\&quot;false\&quot; new-world-goods=\&quot;false\&quot; trade-goods=\&quot;false\&quot; storable=\&quot;false\&quot; production-weight=\&quot;1.0\&quot;&gt;&lt;/goods-type&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L2437">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L2438">		assertEquals(&quot;model.goods.food&quot;, result.getIdType());</span>
+<span class="fc" id="L2439">	}</span>
+
+	/**
+	 * Run the List&lt;EuropeanNationType&gt; getREFNationTypes() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetREFNationTypes_1()
+		throws Exception {
+<span class="fc" id="L2451">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2453">		List&lt;EuropeanNationType&gt; result = fixture.getREFNationTypes();</span>
+
+		// add additional test code here
+<span class="fc" id="L2456">		assertNotNull(result);</span>
+<span class="fc" id="L2457">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2458">	}</span>
+
+	/**
+	 * Run the List&lt;Nation&gt; getREFNations() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetREFNations_1()
+		throws Exception {
+<span class="fc" id="L2470">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2472">		List&lt;Nation&gt; result = fixture.getREFNations();</span>
+
+		// add additional test code here
+<span class="fc" id="L2475">		assertNotNull(result);</span>
+<span class="fc" id="L2476">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2477">	}</span>
+
+	/**
+	 * Run the List&lt;Role&gt; getREFRoles(boolean) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetREFRoles_1()
+		throws Exception {
+<span class="fc" id="L2489">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2490">		boolean naval = false;</span>
+
+<span class="fc" id="L2492">		List&lt;Role&gt; result = fixture.getREFRoles(naval);</span>
+
+		// add additional test code here
+<span class="fc" id="L2495">		assertNotNull(result);</span>
+<span class="fc" id="L2496">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2497">	}</span>
+
+	/**
+	 * Run the List&lt;Role&gt; getREFRoles(boolean) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetREFRoles_2()
+		throws Exception {
+<span class="fc" id="L2509">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2510">		boolean naval = true;</span>
+
+<span class="fc" id="L2512">		List&lt;Role&gt; result = fixture.getREFRoles(naval);</span>
+
+		// add additional test code here
+<span class="fc" id="L2515">		assertNotNull(result);</span>
+<span class="fc" id="L2516">		assertEquals(1, result.size());</span>
+<span class="fc" id="L2517">	}</span>
+
+	/**
+	 * Run the List&lt;UnitType&gt; getREFUnitTypes(boolean) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetREFUnitTypes_1()
+		throws Exception {
+<span class="fc" id="L2529">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2530">		boolean naval = true;</span>
+
+<span class="fc" id="L2532">		List&lt;UnitType&gt; result = fixture.getREFUnitTypes(naval);</span>
+
+		// add additional test code here
+<span class="fc" id="L2535">		assertNotNull(result);</span>
+<span class="fc" id="L2536">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2537">	}</span>
+
+	/**
+	 * Run the List&lt;GoodsType&gt; getRawBuildingGoodsTypeList() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetRawBuildingGoodsTypeList_1()
+		throws Exception {
+<span class="fc" id="L2549">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2551">		List&lt;GoodsType&gt; result = fixture.getRawBuildingGoodsTypeList();</span>
+
+		// add additional test code here
+<span class="fc" id="L2554">		assertNotNull(result);</span>
+<span class="fc" id="L2555">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2556">	}</span>
+
+	/**
+	 * Run the ResourceType getResourceType(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetResourceType_1()
+		throws Exception {
+<span class="fc" id="L2568">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2569">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L2571">		ResourceType result = fixture.getResourceType(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L2574">		assertNotNull(result);</span>
+<span class="fc" id="L2575">		assertEquals(0, result.getMaxValue());</span>
+<span class="fc" id="L2576">		assertEquals(0, result.getMinValue());</span>
+<span class="fc" id="L2577">		assertEquals(&quot;resource-type&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L2578">		assertEquals(null, result.getBestGoodsType());</span>
+<span class="fc" id="L2579">		assertEquals(&quot;&quot;, result.toString());</span>
+<span class="fc" id="L2580">		assertEquals(&quot;.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L2581">		assertEquals(&quot;.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L2582">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L2583">		assertEquals(&quot;&quot;, result.getId());</span>
+<span class="fc" id="L2584">		assertEquals(&quot;&quot;, result.getSuffix());</span>
+<span class="fc" id="L2585">		assertEquals(&quot;&lt;resource-type id=\&quot;\&quot; maximum-value=\&quot;0\&quot; minimum-value=\&quot;0\&quot;&gt;&lt;/resource-type&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L2586">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L2587">		assertEquals(&quot;&quot;, result.getIdType());</span>
+<span class="fc" id="L2588">	}</span>
+
+	/**
+	 * Run the List&lt;ResourceType&gt; getResourceTypeList() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetResourceTypeList_1()
+		throws Exception {
+<span class="fc" id="L2600">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2602">		List&lt;ResourceType&gt; result = fixture.getResourceTypeList();</span>
+
+		// add additional test code here
+<span class="fc" id="L2605">		assertNotNull(result);</span>
+<span class="fc" id="L2606">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2607">	}</span>
+
+	/**
+	 * Run the Role getRole(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetRole_1()
+		throws Exception {
+<span class="fc" id="L2619">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2620">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L2622">		Role result = fixture.getRole(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L2625">		assertNotNull(result);</span>
+<span class="fc" id="L2626">		assertEquals(false, result.isOffensive());</span>
+<span class="fc" id="L2627">		assertEquals(&quot;role&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L2628">		assertEquals(&quot;&quot;, result.getRoleSuffix());</span>
+<span class="fc" id="L2629">		assertEquals(false, result.isDefaultRole());</span>
+<span class="fc" id="L2630">		assertEquals(null, result.getExpertUnit());</span>
+<span class="fc" id="L2631">		assertEquals(null, result.getDowngrade());</span>
+<span class="fc" id="L2632">		assertEquals(0.0, result.getOffence(), 1.0);</span>
+<span class="fc" id="L2633">		assertEquals(&quot;[Role ]&quot;, result.toFullString());</span>
+<span class="fc" id="L2634">		assertEquals(false, result.isDefensive());</span>
+<span class="fc" id="L2635">		assertEquals(1, result.getMaximumCount());</span>
+<span class="fc" id="L2636">		assertEquals(false, result.needsGoodsToBuild());</span>
+<span class="fc" id="L2637">		assertEquals(1, result.getRequiredPopulation());</span>
+<span class="fc" id="L2638">		assertEquals(&quot;&quot;, result.toString());</span>
+<span class="fc" id="L2639">		assertEquals(&quot;.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L2640">		assertEquals(&quot;.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L2641">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L2642">		assertEquals(&quot;&quot;, result.getId());</span>
+<span class="fc" id="L2643">		assertEquals(&quot;&quot;, result.getSuffix());</span>
+<span class="fc" id="L2644">		assertEquals(&quot;&lt;role id=\&quot;\&quot;&gt;&lt;/role&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L2645">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L2646">		assertEquals(&quot;&quot;, result.getIdType());</span>
+<span class="fc" id="L2647">	}</span>
+
+	/**
+	 * Run the Role getRoleWithAbility(String,List&lt;Role&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetRoleWithAbility_1()
+		throws Exception {
+<span class="fc" id="L2659">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2660">		String id = &quot;&quot;;</span>
+<span class="fc" id="L2661">		List&lt;Role&gt; roles = new ArrayList&lt;Role&gt;();</span>
+
+<span class="fc" id="L2663">		Role result = fixture.getRoleWithAbility(id, roles);</span>
+
+		// add additional test code here
+<span class="fc" id="L2666">		assertEquals(null, result);</span>
+<span class="fc" id="L2667">	}</span>
+
+	/**
+	 * Run the List&lt;Role&gt; getRoles() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetRoles_1()
+		throws Exception {
+<span class="fc" id="L2679">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2681">		List&lt;Role&gt; result = fixture.getRoles();</span>
+
+		// add additional test code here
+<span class="fc" id="L2684">		assertNotNull(result);</span>
+<span class="fc" id="L2685">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2686">	}</span>
+
+	/**
+	 * Run the Role getScoutRole() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetScoutRole_1()
+		throws Exception {
+<span class="fc" id="L2698">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2700">		Role result = fixture.getScoutRole();</span>
+
+		// add additional test code here
+<span class="fc" id="L2703">		assertEquals(null, result);</span>
+<span class="fc" id="L2704">	}</span>
+
+	/**
+	 * Run the List&lt;GoodsType&gt; getStorableGoodsTypeList() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetStorableGoodsTypeList_1()
+		throws Exception {
+<span class="fc" id="L2716">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2718">		List&lt;GoodsType&gt; result = fixture.getStorableGoodsTypeList();</span>
+
+		// add additional test code here
+<span class="fc" id="L2721">		assertNotNull(result);</span>
+<span class="fc" id="L2722">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2723">	}</span>
+
+	/**
+	 * Run the TileImprovementType getTileImprovementType(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetTileImprovementType_1()
+		throws Exception {
+<span class="fc" id="L2735">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2736">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L2738">		TileImprovementType result = fixture.getTileImprovementType(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L2741">		assertNotNull(result);</span>
+<span class="fc" id="L2742">		assertEquals(0, result.getZIndex());</span>
+<span class="fc" id="L2743">		assertEquals(0, result.getExposeResourcePercent());</span>
+<span class="fc" id="L2744">		assertEquals(0, result.getExpendedAmount());</span>
+<span class="fc" id="L2745">		assertEquals(null, result.getRequiredImprovementType());</span>
+<span class="fc" id="L2746">		assertEquals(&quot;tile-improvement-type&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L2747">		assertEquals(false, result.isNatural());</span>
+<span class="fc" id="L2748">		assertEquals(0, result.getAddWorkTurns());</span>
+<span class="fc" id="L2749">		assertEquals(false, result.isChangeType());</span>
+<span class="fc" id="L2750">		assertEquals(null, result.getRequiredRole());</span>
+<span class="fc" id="L2751">		assertEquals(0, result.getMagnitude());</span>
+<span class="fc" id="L2752">		assertEquals(&quot;&quot;, result.toString());</span>
+<span class="fc" id="L2753">		assertEquals(&quot;.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L2754">		assertEquals(&quot;.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L2755">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L2756">		assertEquals(&quot;&quot;, result.getId());</span>
+<span class="fc" id="L2757">		assertEquals(&quot;&quot;, result.getSuffix());</span>
+<span class="fc" id="L2758">		assertEquals(&quot;&lt;tile-improvement-type id=\&quot;\&quot; natural=\&quot;false\&quot; magnitude=\&quot;0\&quot; add-work-turns=\&quot;0\&quot; movement-cost=\&quot;-1\&quot; zIndex=\&quot;0\&quot; expose-resource-percent=\&quot;0\&quot;&gt;&lt;/tile-improvement-type&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L2759">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L2760">		assertEquals(&quot;&quot;, result.getIdType());</span>
+<span class="fc" id="L2761">	}</span>
+
+	/**
+	 * Run the List&lt;TileImprovementType&gt; getTileImprovementTypeList() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetTileImprovementTypeList_1()
+		throws Exception {
+<span class="fc" id="L2773">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2775">		List&lt;TileImprovementType&gt; result = fixture.getTileImprovementTypeList();</span>
+
+		// add additional test code here
+<span class="fc" id="L2778">		assertNotNull(result);</span>
+<span class="fc" id="L2779">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2780">	}</span>
+
+	/**
+	 * Run the TileType getTileType(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetTileType_1()
+		throws Exception {
+<span class="fc" id="L2792">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2793">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L2795">		TileType result = fixture.getTileType(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L2798">		assertNotNull(result);</span>
+<span class="fc" id="L2799">		assertEquals(-1, result.getIndex());</span>
+<span class="fc" id="L2800">		assertEquals(false, result.isHighSeasConnected());</span>
+<span class="fc" id="L2801">		assertEquals(false, result.isDirectlyHighSeasConnected());</span>
+<span class="fc" id="L2802">		assertEquals(0, result.getBasicWorkTurns());</span>
+<span class="fc" id="L2803">		assertEquals(false, result.isElevation());</span>
+<span class="fc" id="L2804">		assertEquals(false, result.isForested());</span>
+<span class="fc" id="L2805">		assertEquals(&quot;tile-type&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L2806">		assertEquals(false, result.isWater());</span>
+<span class="fc" id="L2807">		assertEquals(0, result.getBasicMoveCost());</span>
+<span class="fc" id="L2808">		assertEquals(false, result.canSettle());</span>
+<span class="fc" id="L2809">		assertEquals(&quot;&quot;, result.toString());</span>
+<span class="fc" id="L2810">		assertEquals(&quot;.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L2811">		assertEquals(&quot;.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L2812">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L2813">		assertEquals(&quot;&quot;, result.getId());</span>
+<span class="fc" id="L2814">		assertEquals(&quot;&quot;, result.getSuffix());</span>
+<span class="fc" id="L2815">		assertEquals(&quot;&lt;tile-type id=\&quot;\&quot; basic-move-cost=\&quot;0\&quot; basic-work-turns=\&quot;0\&quot; is-forest=\&quot;false\&quot; is-water=\&quot;false\&quot; is-elevation=\&quot;false\&quot; is-connected=\&quot;false\&quot; can-settle=\&quot;false\&quot;&gt;&lt;gen humidity-minimum=\&quot;0\&quot; humidity-maximum=\&quot;0\&quot; temperature-minimum=\&quot;0\&quot; temperature-maximum=\&quot;0\&quot; altitude-minimum=\&quot;0\&quot; altitude-maximum=\&quot;0\&quot;&gt;&lt;/gen&gt;&lt;/tile-type&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L2816">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L2817">		assertEquals(&quot;&quot;, result.getIdType());</span>
+<span class="fc" id="L2818">	}</span>
+
+	/**
+	 * Run the List&lt;TileType&gt; getTileTypeList() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetTileTypeList_1()
+		throws Exception {
+<span class="fc" id="L2830">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L2832">		List&lt;TileType&gt; result = fixture.getTileTypeList();</span>
+
+		// add additional test code here
+<span class="fc" id="L2835">		assertNotNull(result);</span>
+<span class="fc" id="L2836">		assertEquals(0, result.size());</span>
+<span class="fc" id="L2837">	}</span>
+
+	/**
+	 * Run the FreeColGameObjectType getType(String,Class&lt;T&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetType_1()
+		throws Exception {
+<span class="fc" id="L2849">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2850">		String id = &quot;&quot;;</span>
+<span class="fc" id="L2851">		Class&lt;FreeColGameObjectType&gt; type = FreeColGameObjectType.class;</span>
+
+<span class="fc" id="L2853">		FreeColGameObjectType result = fixture.getType(id, type);</span>
+
+		// add additional test code here
+<span class="fc" id="L2856">		assertEquals(null, result);</span>
+<span class="fc" id="L2857">	}</span>
+
+	/**
+	 * Run the FreeColGameObjectType getType(String,Class&lt;T&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetType_2()
+		throws Exception {
+<span class="fc" id="L2869">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2870">		String id = &quot;&quot;;</span>
+<span class="fc" id="L2871">		Class&lt;FreeColGameObjectType&gt; type = FreeColGameObjectType.class;</span>
+
+<span class="fc" id="L2873">		FreeColGameObjectType result = fixture.getType(id, type);</span>
+
+		// add additional test code here
+<span class="fc" id="L2876">		assertEquals(null, result);</span>
+<span class="fc" id="L2877">	}</span>
+
+	/**
+	 * Run the FreeColGameObjectType getType(String,Class&lt;T&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetType_3()
+		throws Exception {
+<span class="fc" id="L2889">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2890">		String id = &quot;&quot;;</span>
+<span class="fc" id="L2891">		Class&lt;FreeColGameObjectType&gt; type = FreeColGameObjectType.class;</span>
+
+<span class="fc" id="L2893">		FreeColGameObjectType result = fixture.getType(id, type);</span>
+
+		// add additional test code here
+<span class="fc" id="L2896">		assertEquals(null, result);</span>
+<span class="fc" id="L2897">	}</span>
+
+	/**
+	 * Run the FreeColGameObjectType getType(String,Class&lt;T&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetType_4()
+		throws Exception {
+<span class="fc" id="L2909">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2910">		String id = &quot;&quot;;</span>
+<span class="fc" id="L2911">		Class&lt;FreeColGameObjectType&gt; type = FreeColGameObjectType.class;</span>
+
+<span class="fc" id="L2913">		FreeColGameObjectType result = fixture.getType(id, type);</span>
+
+		// add additional test code here
+<span class="fc" id="L2916">		assertEquals(null, result);</span>
+<span class="fc" id="L2917">	}</span>
+
+	/**
+	 * Run the FreeColGameObjectType getType(String,Class&lt;T&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetType_5()
+		throws Exception {
+<span class="fc" id="L2929">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2930">		String id = &quot;&quot;;</span>
+<span class="fc" id="L2931">		Class&lt;FreeColGameObjectType&gt; type = FreeColGameObjectType.class;</span>
+
+<span class="fc" id="L2933">		FreeColGameObjectType result = fixture.getType(id, type);</span>
+
+		// add additional test code here
+<span class="fc" id="L2936">		assertEquals(null, result);</span>
+<span class="fc" id="L2937">	}</span>
+
+	/**
+	 * Run the FreeColGameObjectType getType(String,Class&lt;T&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetType_6()
+		throws Exception {
+<span class="fc" id="L2949">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2950">		String id = &quot;&quot;;</span>
+<span class="fc" id="L2951">		Class&lt;FreeColGameObjectType&gt; type = FreeColGameObjectType.class;</span>
+
+<span class="fc" id="L2953">		FreeColGameObjectType result = fixture.getType(id, type);</span>
+
+		// add additional test code here
+<span class="fc" id="L2956">		assertEquals(null, result);</span>
+<span class="fc" id="L2957">	}</span>
+
+	/**
+	 * Run the FreeColGameObjectType getType(String,Class&lt;T&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetType_7()
+		throws Exception {
+<span class="fc" id="L2969">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2970">		String id = &quot;&quot;;</span>
+<span class="fc" id="L2971">		Class&lt;FreeColGameObjectType&gt; type = FreeColGameObjectType.class;</span>
+
+<span class="fc" id="L2973">		FreeColGameObjectType result = fixture.getType(id, type);</span>
+
+		// add additional test code here
+<span class="fc" id="L2976">		assertEquals(null, result);</span>
+<span class="fc" id="L2977">	}</span>
+
+	/**
+	 * Run the FreeColGameObjectType getType(String,Class&lt;T&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetType_8()
+		throws Exception {
+<span class="fc" id="L2989">		Specification fixture = new Specification();</span>
+<span class="fc" id="L2990">		String id = &quot;&quot;;</span>
+<span class="fc" id="L2991">		Class&lt;FreeColGameObjectType&gt; type = FreeColGameObjectType.class;</span>
+
+<span class="fc" id="L2993">		FreeColGameObjectType result = fixture.getType(id, type);</span>
+
+		// add additional test code here
+<span class="fc" id="L2996">		assertEquals(null, result);</span>
+<span class="fc" id="L2997">	}</span>
+
+	/**
+	 * Run the FreeColGameObjectType getType(String,Class&lt;T&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetType_9()
+		throws Exception {
+<span class="fc" id="L3009">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3010">		String id = &quot;&quot;;</span>
+<span class="fc" id="L3011">		Class&lt;FreeColGameObjectType&gt; type = FreeColGameObjectType.class;</span>
+
+<span class="fc" id="L3013">		FreeColGameObjectType result = fixture.getType(id, type);</span>
+
+		// add additional test code here
+<span class="fc" id="L3016">		assertEquals(null, result);</span>
+<span class="fc" id="L3017">	}</span>
+
+	/**
+	 * Run the FreeColGameObjectType getType(String,Class&lt;T&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetType_10()
+		throws Exception {
+<span class="fc" id="L3029">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3030">		String id = &quot;&quot;;</span>
+<span class="fc" id="L3031">		Class&lt;FreeColGameObjectType&gt; type = FreeColGameObjectType.class;</span>
+
+<span class="fc" id="L3033">		FreeColGameObjectType result = fixture.getType(id, type);</span>
+
+		// add additional test code here
+<span class="fc" id="L3036">		assertEquals(null, result);</span>
+<span class="fc" id="L3037">	}</span>
+
+	/**
+	 * Run the List&lt;FreeColGameObjectType&gt; getTypesWithAbility(Class&lt;T&gt;,String[]) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetTypesWithAbility_1()
+		throws Exception {
+<span class="fc" id="L3049">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3050">		Class&lt;FreeColGameObjectType&gt; resultType = FreeColGameObjectType.class;</span>
+
+<span class="fc" id="L3052">		List&lt;FreeColGameObjectType&gt; result = fixture.getTypesWithAbility(resultType);</span>
+
+		// add additional test code here
+<span class="fc" id="L3055">		assertNotNull(result);</span>
+<span class="fc" id="L3056">		assertEquals(0, result.size());</span>
+<span class="fc" id="L3057">	}</span>
+
+	/**
+	 * Run the List&lt;FreeColGameObjectType&gt; getTypesWithoutAbility(Class&lt;T&gt;,String[]) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetTypesWithoutAbility_1()
+		throws Exception {
+<span class="fc" id="L3069">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3070">		Class&lt;FreeColGameObjectType&gt; resultType = FreeColGameObjectType.class;</span>
+
+<span class="fc" id="L3072">		List&lt;FreeColGameObjectType&gt; result = fixture.getTypesWithoutAbility(resultType);</span>
+
+		// add additional test code here
+<span class="fc" id="L3075">		assertNotNull(result);</span>
+<span class="fc" id="L3076">		assertEquals(13, result.size());</span>
+<span class="fc" id="L3077">	}</span>
+
+	/**
+	 * Run the UnitType getUnitType(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetUnitType_1()
+		throws Exception {
+<span class="fc" id="L3089">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3090">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L3092">		UnitType result = fixture.getUnitType(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L3095">		assertNotNull(result);</span>
+<span class="fc" id="L3096">		assertEquals(&quot;&quot;, result.toString());</span>
+<span class="fc" id="L3097">		assertEquals(1000, result.getPriority());</span>
+<span class="fc" id="L3098">		assertEquals(0, result.getSpace());</span>
+<span class="fc" id="L3099">		assertEquals(false, result.isDefaultUnitType());</span>
+<span class="fc" id="L3100">		assertEquals(null, result.getExpertProduction());</span>
+<span class="fc" id="L3101">		assertEquals(0, result.getMaximumExperience());</span>
+<span class="fc" id="L3102">		assertEquals(0, result.getRecruitProbability());</span>
+<span class="fc" id="L3103">		assertEquals(false, result.canMoveToHighSeas());</span>
+<span class="fc" id="L3104">		assertEquals(Integer.MAX_VALUE, result.getMaximumAttrition());</span>
+<span class="fc" id="L3105">		assertEquals(false, result.isOffensive());</span>
+<span class="fc" id="L3106">		assertEquals(&quot;unit-type&quot;, result.getXMLTagName());</span>
+<span class="fc" id="L3107">		assertEquals(&quot;.workingAs&quot;, result.getWorkingAsKey());</span>
+<span class="fc" id="L3108">		assertEquals(0, result.getScoreValue());</span>
+<span class="fc" id="L3109">		assertEquals(0.0, result.getOffence(), 1.0);</span>
+<span class="fc" id="L3110">		assertEquals(1.0, result.getDefence(), 1.0);</span>
+<span class="fc" id="L3111">		assertEquals(false, result.isDefensive());</span>
+<span class="fc" id="L3112">		assertEquals(&quot;model.role.default&quot;, result.getDisplayRoleId());</span>
+<span class="fc" id="L3113">		assertEquals(false, result.canBuildColony());</span>
+<span class="fc" id="L3114">		assertEquals(false, result.canCarryGoods());</span>
+<span class="fc" id="L3115">		assertEquals(0, result.getBaseOffence());</span>
+<span class="fc" id="L3116">		assertEquals(0, result.getHitPoints());</span>
+<span class="fc" id="L3117">		assertEquals(1, result.getSpaceTaken());</span>
+<span class="fc" id="L3118">		assertEquals(false, result.canCarryUnits());</span>
+<span class="fc" id="L3119">		assertEquals(1, result.getBaseDefence());</span>
+<span class="fc" id="L3120">		assertEquals(null, result.getSkillTaught());</span>
+<span class="fc" id="L3121">		assertEquals(1, result.getLineOfSight());</span>
+<span class="fc" id="L3122">		assertEquals(false, result.isRecruitable());</span>
+<span class="fc" id="L3123">		assertEquals(false, result.isPerson());</span>
+<span class="fc" id="L3124">		assertEquals(false, result.hasPrice());</span>
+<span class="fc" id="L3125">		assertEquals(3, result.getMovement());</span>
+<span class="fc" id="L3126">		assertEquals(Integer.MIN_VALUE, result.getPrice());</span>
+<span class="fc" id="L3127">		assertEquals(false, result.isNaval());</span>
+<span class="fc" id="L3128">		assertEquals(Integer.MIN_VALUE, result.getSkill());</span>
+<span class="fc" id="L3129">		assertEquals(false, result.hasSkill());</span>
+<span class="fc" id="L3130">		assertEquals(false, result.needsGoodsToBuild());</span>
+<span class="fc" id="L3131">		assertEquals(1, result.getRequiredPopulation());</span>
+<span class="fc" id="L3132">		assertEquals(&quot;.description&quot;, result.getDescriptionKey());</span>
+<span class="fc" id="L3133">		assertEquals(&quot;.name&quot;, result.getNameKey());</span>
+<span class="fc" id="L3134">		assertEquals(false, result.isAbstractType());</span>
+<span class="fc" id="L3135">		assertEquals(&quot;&quot;, result.getId());</span>
+<span class="fc" id="L3136">		assertEquals(&quot;&quot;, result.getSuffix());</span>
+<span class="fc" id="L3137">		assertEquals(&quot;&lt;unit-type id=\&quot;\&quot; offence=\&quot;0\&quot; defence=\&quot;1\&quot; default-unit=\&quot;false\&quot; movement=\&quot;3\&quot; line-of-sight=\&quot;1\&quot; score-value=\&quot;0\&quot; space=\&quot;0\&quot; space-taken=\&quot;1\&quot; hit-points=\&quot;0\&quot; maximum-experience=\&quot;0\&quot; recruit-probability=\&quot;0\&quot; priority=\&quot;1000\&quot;&gt;&lt;/unit-type&gt;&quot;, result.serialize());</span>
+<span class="fc" id="L3138">		assertEquals(-1, result.getIdNumber());</span>
+<span class="fc" id="L3139">		assertEquals(&quot;&quot;, result.getIdType());</span>
+<span class="fc" id="L3140">	}</span>
+
+	/**
+	 * Run the List&lt;UnitType&gt; getUnitTypeList() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetUnitTypeList_1()
+		throws Exception {
+<span class="fc" id="L3152">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L3154">		List&lt;UnitType&gt; result = fixture.getUnitTypeList();</span>
+
+		// add additional test code here
+<span class="fc" id="L3157">		assertNotNull(result);</span>
+<span class="fc" id="L3158">		assertEquals(0, result.size());</span>
+<span class="fc" id="L3159">	}</span>
+
+	/**
+	 * Run the List&lt;UnitType&gt; getUnitTypesPurchasedInEurope() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetUnitTypesPurchasedInEurope_1()
+		throws Exception {
+<span class="fc" id="L3171">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L3173">		List&lt;UnitType&gt; result = fixture.getUnitTypesPurchasedInEurope();</span>
+
+		// add additional test code here
+<span class="fc" id="L3176">		assertNotNull(result);</span>
+<span class="fc" id="L3177">		assertEquals(0, result.size());</span>
+<span class="fc" id="L3178">	}</span>
+
+	/**
+	 * Run the List&lt;UnitType&gt; getUnitTypesTrainedInEurope() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetUnitTypesTrainedInEurope_1()
+		throws Exception {
+<span class="fc" id="L3190">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L3192">		List&lt;UnitType&gt; result = fixture.getUnitTypesTrainedInEurope();</span>
+
+		// add additional test code here
+<span class="fc" id="L3195">		assertNotNull(result);</span>
+<span class="fc" id="L3196">		assertEquals(0, result.size());</span>
+<span class="fc" id="L3197">	}</span>
+
+	/**
+	 * Run the List&lt;UnitType&gt; getUnitTypesWithAbility(String[]) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetUnitTypesWithAbility_1()
+		throws Exception {
+<span class="fc" id="L3209">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L3211">		List&lt;UnitType&gt; result = fixture.getUnitTypesWithAbility();</span>
+
+		// add additional test code here
+<span class="fc" id="L3214">		assertNotNull(result);</span>
+<span class="fc" id="L3215">		assertEquals(0, result.size());</span>
+<span class="fc" id="L3216">	}</span>
+
+	/**
+	 * Run the List&lt;UnitType&gt; getUnitTypesWithoutAbility(String[]) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetUnitTypesWithoutAbility_1()
+		throws Exception {
+<span class="fc" id="L3228">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L3230">		List&lt;UnitType&gt; result = fixture.getUnitTypesWithoutAbility();</span>
+
+		// add additional test code here
+<span class="fc" id="L3233">		assertNotNull(result);</span>
+<span class="fc" id="L3234">		assertEquals(0, result.size());</span>
+<span class="fc" id="L3235">	}</span>
+
+	/**
+	 * Run the String getVersion() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetVersion_1()
+		throws Exception {
+<span class="fc" id="L3247">		Specification fixture = new Specification();</span>
+
+<span class="fc" id="L3249">		String result = fixture.getVersion();</span>
+
+		// add additional test code here
+<span class="fc" id="L3252">		assertEquals(null, result);</span>
+<span class="fc" id="L3253">	}</span>
+
+	/**
+	 * Run the String getXMLElementTagName() method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testGetXMLElementTagName_1()
+		throws Exception {
+
+<span class="fc" id="L3266">		String result = Specification.getXMLElementTagName();</span>
+
+		// add additional test code here
+<span class="fc" id="L3269">		assertEquals(&quot;freecol-specification&quot;, result);</span>
+<span class="fc" id="L3270">	}</span>
+
+	/**
+	 * Run the boolean hasOption(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testHasOption_1()
+		throws Exception {
+<span class="fc" id="L3282">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3283">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L3285">		boolean result = fixture.hasOption(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L3288">		assertEquals(false, result);</span>
+<span class="fc" id="L3289">	}</span>
+
+	/**
+	 * Run the boolean hasOption(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testHasOption_2()
+		throws Exception {
+<span class="fc" id="L3301">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3302">		String id = null;</span>
+
+<span class="fc" id="L3304">		boolean result = fixture.hasOption(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L3307">		assertEquals(false, result);</span>
+<span class="fc" id="L3308">	}</span>
+
+	/**
+	 * Run the boolean hasOption(String) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testHasOption_3()
+		throws Exception {
+<span class="fc" id="L3320">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3321">		String id = &quot;&quot;;</span>
+
+<span class="fc" id="L3323">		boolean result = fixture.hasOption(id);</span>
+
+		// add additional test code here
+<span class="fc" id="L3326">		assertEquals(false, result);</span>
+<span class="fc" id="L3327">	}</span>
+
+	/**
+	 * Run the boolean loadMods(List&lt;FreeColModFile&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testLoadMods_1()
+		throws Exception {
+<span class="fc" id="L3339">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3340">		List&lt;FreeColModFile&gt; mods = new ArrayList&lt;FreeColModFile&gt;();</span>
+
+<span class="fc" id="L3342">		boolean result = fixture.loadMods(mods);</span>
+
+		// add additional test code here
+<span class="fc" id="L3345">		assertEquals(false, result);</span>
+<span class="fc" id="L3346">	}</span>
+
+	/**
+	 * Run the boolean loadMods(List&lt;FreeColModFile&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testLoadMods_2()
+		throws Exception {
+<span class="fc" id="L3358">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3359">		List&lt;FreeColModFile&gt; mods = new ArrayList&lt;FreeColModFile&gt;();</span>
+
+<span class="fc" id="L3361">		boolean result = fixture.loadMods(mods);</span>
+
+		// add additional test code here
+<span class="fc" id="L3364">		assertEquals(false, result);</span>
+<span class="fc" id="L3365">	}</span>
+
+	/**
+	 * Run the boolean loadMods(List&lt;FreeColModFile&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testLoadMods_3()
+		throws Exception {
+<span class="fc" id="L3377">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3378">		List&lt;FreeColModFile&gt; mods = new ArrayList&lt;FreeColModFile&gt;();</span>
+
+<span class="fc" id="L3380">		boolean result = fixture.loadMods(mods);</span>
+
+		// add additional test code here
+<span class="fc" id="L3383">		assertEquals(false, result);</span>
+<span class="fc" id="L3384">	}</span>
+
+	/**
+	 * Run the boolean loadMods(List&lt;FreeColModFile&gt;) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testLoadMods_4()
+		throws Exception {
+<span class="fc" id="L3396">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3397">		List&lt;FreeColModFile&gt; mods = new ArrayList&lt;FreeColModFile&gt;();</span>
+
+<span class="fc" id="L3399">		boolean result = fixture.loadMods(mods);</span>
+
+		// add additional test code here
+<span class="fc" id="L3402">		assertEquals(false, result);</span>
+<span class="fc" id="L3403">	}</span>
+
+	/**
+	 * Run the OptionGroup loadOptionsFile(String,File) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testLoadOptionsFile_1()
+		throws Exception {
+<span class="fc" id="L3415">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3416">		String optionId = &quot;&quot;;</span>
+<span class="fc" id="L3417">		File file = new File(&quot;&quot;);</span>
+
+<span class="fc" id="L3419">		OptionGroup result = fixture.loadOptionsFile(optionId, file);</span>
+
+		// add additional test code here
+<span class="fc" id="L3422">		assertEquals(null, result);</span>
+<span class="fc" id="L3423">	}</span>
+
+	/**
+	 * Run the OptionGroup loadOptionsFile(String,File) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testLoadOptionsFile_2()
+		throws Exception {
+<span class="fc" id="L3435">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3436">		String optionId = &quot;&quot;;</span>
+<span class="fc" id="L3437">		File file = new File(&quot;&quot;);</span>
+
+<span class="fc" id="L3439">		OptionGroup result = fixture.loadOptionsFile(optionId, file);</span>
+
+		// add additional test code here
+<span class="fc" id="L3442">		assertEquals(null, result);</span>
+<span class="fc" id="L3443">	}</span>
+
+	/**
+	 * Run the OptionGroup loadOptionsFile(String,File) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testLoadOptionsFile_3()
+		throws Exception {
+<span class="fc" id="L3455">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3456">		String optionId = &quot;&quot;;</span>
+<span class="fc" id="L3457">		File file = new File(&quot;&quot;);</span>
+
+<span class="fc" id="L3459">		OptionGroup result = fixture.loadOptionsFile(optionId, file);</span>
+
+		// add additional test code here
+<span class="fc" id="L3462">		assertEquals(null, result);</span>
+<span class="fc" id="L3463">	}</span>
+
+	/**
+	 * Run the OptionGroup loadOptionsFile(String,File) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testLoadOptionsFile_4()
+		throws Exception {
+<span class="fc" id="L3475">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3476">		String optionId = &quot;&quot;;</span>
+<span class="fc" id="L3477">		File file = new File(&quot;&quot;);</span>
+
+<span class="fc" id="L3479">		OptionGroup result = fixture.loadOptionsFile(optionId, file);</span>
+
+		// add additional test code here
+<span class="fc" id="L3482">		assertEquals(null, result);</span>
+<span class="fc" id="L3483">	}</span>
+
+	/**
+	 * Run the OptionGroup loadOptionsFile(String,File) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testLoadOptionsFile_5()
+		throws Exception {
+<span class="fc" id="L3495">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3496">		String optionId = &quot;&quot;;</span>
+<span class="fc" id="L3497">		File file = new File(&quot;&quot;);</span>
+
+<span class="fc" id="L3499">		OptionGroup result = fixture.loadOptionsFile(optionId, file);</span>
+
+		// add additional test code here
+<span class="fc" id="L3502">		assertEquals(null, result);</span>
+<span class="fc" id="L3503">	}</span>
+
+	/**
+	 * Run the OptionGroup mergeGroup(OptionGroup) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testMergeGroup_1()
+		throws Exception {
+<span class="fc" id="L3515">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3516">		OptionGroup group = new OptionGroup(&quot;&quot;);</span>
+
+<span class="fc" id="L3518">		OptionGroup result = fixture.mergeGroup(group);</span>
+
+		// add additional test code here
+<span class="fc" id="L3521">		assertEquals(null, result);</span>
+<span class="fc" id="L3522">	}</span>
+
+	/**
+	 * Run the OptionGroup mergeGroup(OptionGroup) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testMergeGroup_2()
+		throws Exception {
+<span class="fc" id="L3534">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3535">		OptionGroup group = new OptionGroup(&quot;&quot;);</span>
+
+<span class="fc" id="L3537">		OptionGroup result = fixture.mergeGroup(group);</span>
+
+		// add additional test code here
+<span class="fc" id="L3540">		assertEquals(null, result);</span>
+<span class="fc" id="L3541">	}</span>
+
+	/**
+	 * Run the OptionGroup mergeGroup(OptionGroup) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testMergeGroup_3()
+		throws Exception {
+<span class="fc" id="L3553">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3554">		OptionGroup group = new OptionGroup(&quot;&quot;);</span>
+<span class="fc" id="L3555">		group.add(new AbstractUnitOption(new Specification()));</span>
+
+<span class="fc" id="L3557">		OptionGroup result = fixture.mergeGroup(group);</span>
+
+		// add additional test code here
+<span class="fc" id="L3560">		assertEquals(null, result);</span>
+<span class="fc" id="L3561">	}</span>
+
+	/**
+	 * Run the OptionGroup mergeGroup(OptionGroup) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testMergeGroup_4()
+		throws Exception {
+<span class="fc" id="L3573">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3574">		OptionGroup group = new OptionGroup(&quot;&quot;);</span>
+<span class="fc" id="L3575">		group.add(new AbstractUnitOption(new Specification()));</span>
+
+<span class="fc" id="L3577">		OptionGroup result = fixture.mergeGroup(group);</span>
+
+		// add additional test code here
+<span class="fc" id="L3580">		assertEquals(null, result);</span>
+<span class="fc" id="L3581">	}</span>
+
+	/**
+	 * Run the OptionGroup mergeGroup(OptionGroup) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testMergeGroup_5()
+		throws Exception {
+<span class="fc" id="L3593">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3594">		OptionGroup group = new OptionGroup(&quot;&quot;);</span>
+<span class="fc" id="L3595">		group.add(new AbstractUnitOption(new Specification()));</span>
+
+<span class="fc" id="L3597">		OptionGroup result = fixture.mergeGroup(group);</span>
+
+		// add additional test code here
+<span class="fc" id="L3600">		assertEquals(null, result);</span>
+<span class="fc" id="L3601">	}</span>
+
+	/**
+	 * Run the OptionGroup saveOptionsFile(OptionGroup,File) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testSaveOptionsFile_1()
+		throws Exception {
+<span class="fc" id="L3613">		OptionGroup group = new OptionGroup(&quot;&quot;);</span>
+<span class="fc" id="L3614">		File file = new File(&quot;&quot;);</span>
+
+<span class="fc" id="L3616">		OptionGroup result = Specification.saveOptionsFile(group, file);</span>
+
+		// add additional test code here
+<span class="fc" id="L3619">		assertEquals(null, result);</span>
+<span class="fc" id="L3620">	}</span>
+
+	/**
+	 * Run the OptionGroup saveOptionsFile(OptionGroup,File) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testSaveOptionsFile_2()
+		throws Exception {
+<span class="fc" id="L3632">		OptionGroup group = new OptionGroup(&quot;&quot;);</span>
+<span class="fc" id="L3633">		File file = new File(&quot;&quot;);</span>
+
+<span class="fc" id="L3635">		OptionGroup result = Specification.saveOptionsFile(group, file);</span>
+
+		// add additional test code here
+<span class="fc" id="L3638">		assertEquals(null, result);</span>
+<span class="fc" id="L3639">	}</span>
+
+	/**
+	 * Run the OptionGroup saveOptionsFile(OptionGroup,File) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testSaveOptionsFile_3()
+		throws Exception {
+<span class="fc" id="L3651">		OptionGroup group = new OptionGroup(&quot;&quot;);</span>
+<span class="fc" id="L3652">		File file = new File(&quot;&quot;);</span>
+
+<span class="fc" id="L3654">		OptionGroup result = Specification.saveOptionsFile(group, file);</span>
+
+		// add additional test code here
+<span class="fc" id="L3657">		assertEquals(null, result);</span>
+<span class="fc" id="L3658">	}</span>
+
+	/**
+	 * Run the OptionGroup saveOptionsFile(OptionGroup,File) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testSaveOptionsFile_4()
+		throws Exception {
+<span class="fc" id="L3670">		OptionGroup group = null;</span>
+<span class="fc" id="L3671">		File file = new File(&quot;&quot;);</span>
+
+<span class="fc" id="L3673">		OptionGroup result = Specification.saveOptionsFile(group, file);</span>
+
+		// add additional test code here
+<span class="fc" id="L3676">		assertEquals(null, result);</span>
+<span class="fc" id="L3677">	}</span>
+
+	/**
+	 * Run the void setGameOptions(OptionGroup) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testSetGameOptions_1()
+		throws Exception {
+<span class="fc" id="L3689">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3690">		OptionGroup go = new OptionGroup(&quot;&quot;);</span>
+
+<span class="fc" id="L3692">		fixture.setGameOptions(go);</span>
+
+		// add additional test code here
+<span class="fc" id="L3695">	}</span>
+
+	/**
+	 * Run the void setMapGeneratorOptions(OptionGroup) method test.
+	 *
+	 * @throws Exception
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Test
+	public void testSetMapGeneratorOptions_1()
+		throws Exception {
+<span class="fc" id="L3707">		Specification fixture = new Specification();</span>
+<span class="fc" id="L3708">		OptionGroup mgo = new OptionGroup(&quot;&quot;);</span>
+
+<span class="fc" id="L3710">		fixture.setMapGeneratorOptions(mgo);</span>
+
+		// add additional test code here
+<span class="fc" id="L3713">	}</span>
+
+	/**
+	 * Perform pre-test initialization.
+	 *
+	 * @throws Exception
+	 *         if the initialization fails for some reason
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@Before
+	public void setUp()
+		throws Exception {
+		// add additional set up code here
+<span class="fc" id="L3727">	}</span>
+
+	/**
+	 * Perform post-test clean-up.
+	 *
+	 * @throws Exception
+	 *         if the clean-up fails for some reason
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	@After
+	public void tearDown()
+		throws Exception {
+		// Add additional tear down code here
+<span class="fc" id="L3741">	}</span>
+
+	/**
+	 * Launch the test.
+	 *
+	 * @param args the command line arguments
+	 *
+	 * @generatedBy CodePro at 4/20/18 5:14 PM
+	 */
+	public static void main(String[] args) {
+<span class="nc" id="L3751">		new org.junit.runner.JUnitCore().run(SpecificationTest.class);</span>
+<span class="nc" id="L3752">	}</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

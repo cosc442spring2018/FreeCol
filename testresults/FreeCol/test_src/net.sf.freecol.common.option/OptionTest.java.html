@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>OptionTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">test/src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.option</a> &gt; <span class="el_source">OptionTest.java</span></div><h1>OptionTest.java</h1><pre class="source lang-java linenums">/**
+ *  Copyright (C) 2002-2015  The FreeCol Team
+ *
+ *  This file is part of FreeCol.
+ *
+ *  FreeCol is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  FreeCol is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with FreeCol.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package net.sf.freecol.common.option;
+
+import net.sf.freecol.common.model.AbstractUnit;
+import net.sf.freecol.common.model.GameOptions;
+import net.sf.freecol.util.test.FreeColTestCase;
+
+
+<span class="fc" id="L27">public class OptionTest extends FreeColTestCase {</span>
+
+    public void testGameOptions() {
+<span class="fc" id="L30">        OptionGroup gameOptions = spec().getGameOptions();</span>
+<span class="fc" id="L31">        assertNotNull(gameOptions);</span>
+<span class="fc" id="L32">        assertNotNull(spec().getOptionGroup(&quot;gameOptions.map&quot;));</span>
+<span class="fc" id="L33">        assertNotNull(spec().getOptionGroup(&quot;gameOptions.colony&quot;));</span>
+<span class="fc" id="L34">        assertNotNull(spec().getOption(GameOptions.FOG_OF_WAR));</span>
+<span class="fc" id="L35">        assertNotNull(spec().getOption(GameOptions.ALLOW_STUDENT_SELECTION));</span>
+<span class="fc" id="L36">        assertNotNull(gameOptions);</span>
+<span class="fc" id="L37">        assertTrue(gameOptions.iterator().hasNext());</span>
+<span class="fc" id="L38">        assertNotNull(gameOptions.getOption(GameOptions.FOG_OF_WAR));</span>
+<span class="fc" id="L39">        assertFalse(((BooleanOption) gameOptions.getOption(GameOptions.CUSTOM_IGNORE_BOYCOTT))</span>
+<span class="fc" id="L40">                    .getValue());</span>
+<span class="fc" id="L41">        assertFalse(spec().getBoolean(GameOptions.CUSTOM_IGNORE_BOYCOTT));</span>
+<span class="fc" id="L42">        assertFalse(spec().getBoolean(GameOptions.EXPERTS_HAVE_CONNECTIONS));</span>
+<span class="fc" id="L43">        assertFalse(spec().getBoolean(GameOptions.SAVE_PRODUCTION_OVERFLOW));</span>
+<span class="fc" id="L44">        assertTrue(spec().getBoolean(GameOptions.ALLOW_STUDENT_SELECTION));</span>
+<span class="fc" id="L45">    }</span>
+
+    public void testCloneIntegerOption() {
+<span class="fc" id="L48">        IntegerOption money = spec().getIntegerOption(GameOptions.STARTING_MONEY);</span>
+<span class="fc" id="L49">        IntegerOption money2 = money.clone();</span>
+
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        assertFalse(money == money2);</span>
+<span class="fc" id="L52">        assertEquals(money.getId(), money2.getId());</span>
+<span class="fc" id="L53">        assertEquals(money.getValue(), money2.getValue());</span>
+<span class="fc" id="L54">        assertEquals(money.getMinimumValue(), money2.getMinimumValue());</span>
+<span class="fc" id="L55">        assertEquals(money.getMaximumValue(), money2.getMaximumValue());</span>
+
+<span class="fc" id="L57">        money2.setValue(money.getValue() + 23);</span>
+<span class="fc" id="L58">        assertEquals((int) (money.getValue() + 23), (int) money2.getValue());</span>
+
+<span class="fc" id="L60">    }</span>
+
+    public void testUnitListOption() {
+
+<span class="fc" id="L64">        UnitListOption refOption = (UnitListOption) spec().getOption(GameOptions.REF_FORCE);</span>
+
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        for (AbstractUnit unit : refOption.getOptionValues()) {</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">            assertTrue(unit.getNumber() &gt; 0);</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">            assertTrue(unit.getNumber() &lt; Integer.MAX_VALUE);</span>
+        }
+
+<span class="fc" id="L71">    }</span>
+
+
+    /**
+     * OptionGroups are editable by default. If an OptionGroup is not
+     * editable, however, none of its subgroups are editable either.
+     */
+    public void testInheritsEditable() {
+
+<span class="fc" id="L80">        OptionGroup difficulties = spec().getOptionGroup(&quot;difficultyLevels&quot;);</span>
+<span class="fc" id="L81">        assertNotNull(difficulties);</span>
+<span class="fc" id="L82">        assertTrue(difficulties.isEditable());</span>
+
+<span class="fc" id="L84">        String[] levels = new String[] { &quot;veryEasy&quot;, &quot;easy&quot;, &quot;medium&quot;, &quot;hard&quot;, &quot;veryHard&quot; };</span>
+<span class="fc" id="L85">        String[] names = new String[] { &quot;immigration&quot;, &quot;natives&quot;, &quot;monarch&quot;, &quot;government&quot;, &quot;other&quot; };</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        for (String level : levels) {</span>
+<span class="fc" id="L87">            OptionGroup group = (OptionGroup) difficulties.getOption(&quot;model.difficulty.&quot; + level);</span>
+<span class="fc" id="L88">            assertNotNull(&quot;Failed to find difficulty level '&quot; + level + &quot;'&quot;, group);</span>
+<span class="fc" id="L89">            assertFalse(&quot;Difficulty level '&quot; + level + &quot;' should not be editable&quot;, group.isEditable());</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">            for (String name : names) {</span>
+<span class="fc" id="L91">                OptionGroup subGroup = (OptionGroup) group.getOption(&quot;model.difficulty.&quot; + name);</span>
+<span class="fc" id="L92">                assertNotNull(&quot;Failed to find option group '&quot; + name + &quot;' (&quot; + level + &quot;)&quot;, subGroup);</span>
+<span class="fc" id="L93">                assertFalse(&quot;Option group '&quot; + name + &quot;' in '&quot; + level + &quot;' should not be editable&quot;, subGroup.isEditable());</span>
+            }
+        }
+
+<span class="fc" id="L97">        OptionGroup group = (OptionGroup) difficulties.getOption(&quot;model.difficulty.custom&quot;);</span>
+<span class="fc" id="L98">        assertNotNull(&quot;Failed to find difficulty level 'custom'&quot;, group);</span>
+<span class="fc" id="L99">        assertTrue(&quot;Difficulty level 'custom' should be editable&quot;, group.isEditable());</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        for (String name : names) {</span>
+<span class="fc" id="L101">            OptionGroup subGroup = (OptionGroup) group.getOption(&quot;model.difficulty.&quot; + name);</span>
+<span class="fc" id="L102">            assertNotNull(&quot;Failed to find option group '&quot; + name + &quot;' (custom)&quot;, subGroup);</span>
+<span class="fc" id="L103">            assertTrue(&quot;Option group '&quot; + name + &quot;' should be editable&quot;, subGroup.isEditable());</span>
+        }
+
+<span class="fc" id="L106">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

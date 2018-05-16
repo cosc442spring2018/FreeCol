@@ -1383,13 +1383,13 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public int getTotalImmigrationProduction() {
         if (!isColonial()) return 0;
-        
+
         final List<GoodsType> immigrationGoodsTypes = getSpecification()
-            .getImmigrationGoodsTypeList();
+                .getImmigrationGoodsTypeList();
         int production = getColonies().stream()
-            .mapToInt(c -> immigrationGoodsTypes.stream()
-                .mapToInt(gt -> c.getTotalProductionOf(gt)).sum())
-            .sum();
+                .mapToInt(c -> immigrationGoodsTypes.stream()
+                        .mapToInt(gt -> c.getTotalProductionOf(gt)).sum())
+                .sum();
         final Europe europe = getEurope();
         if (europe != null) production += europe.getImmigration(production);
         return production;

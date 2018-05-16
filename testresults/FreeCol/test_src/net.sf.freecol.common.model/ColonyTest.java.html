@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ColonyTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">test/src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">ColonyTest.java</span></div><h1>ColonyTest.java</h1><pre class="source lang-java linenums">/**
+ *  Copyright (C) 2002-2015  The FreeCol Team
+ *
+ *  This file is part of FreeCol.
+ *
+ *  FreeCol is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  FreeCol is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with FreeCol.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package net.sf.freecol.common.model;
+
+import net.sf.freecol.common.model.Colony.NoBuildReason;
+
+import java.util.Collections;
+
+import net.sf.freecol.common.model.Direction;
+import net.sf.freecol.common.model.Player;
+import net.sf.freecol.common.model.Player.NoClaimReason;
+import net.sf.freecol.common.model.Role;
+import net.sf.freecol.server.model.ServerUnit;
+import net.sf.freecol.server.model.ServerPlayer;
+import net.sf.freecol.util.test.FreeColTestCase;
+
+
+<span class="fc" id="L35">public class ColonyTest extends FreeColTestCase {</span>
+
+<span class="fc" id="L37">    private static final BuildingType carpenterHouseType</span>
+<span class="fc" id="L38">        = spec().getBuildingType(&quot;model.building.carpenterHouse&quot;);</span>
+<span class="fc" id="L39">    private static final BuildingType churchType</span>
+<span class="fc" id="L40">        = spec().getBuildingType(&quot;model.building.church&quot;);</span>
+<span class="fc" id="L41">    private static final BuildingType depotType</span>
+<span class="fc" id="L42">        = spec().getBuildingType(&quot;model.building.depot&quot;);</span>
+<span class="fc" id="L43">    private static final BuildingType lumberMillType</span>
+<span class="fc" id="L44">        = spec().getBuildingType(&quot;model.building.lumberMill&quot;);</span>
+<span class="fc" id="L45">    private static final BuildingType townHallType</span>
+<span class="fc" id="L46">        = spec().getBuildingType(&quot;model.building.townHall&quot;);</span>
+<span class="fc" id="L47">    private static final BuildingType warehouseType</span>
+<span class="fc" id="L48">        = spec().getBuildingType(&quot;model.building.warehouse&quot;);</span>
+<span class="fc" id="L49">    private static final BuildingType warehouseExpansionType</span>
+<span class="fc" id="L50">        = spec().getBuildingType(&quot;model.building.warehouseExpansion&quot;);</span>
+<span class="fc" id="L51">    private static final BuildingType weaversHouseType</span>
+<span class="fc" id="L52">        = spec().getBuildingType(&quot;model.building.weaverHouse&quot;);</span>
+
+<span class="fc" id="L54">    private static final GoodsType bellsGoodsType</span>
+<span class="fc" id="L55">        = spec().getGoodsType(&quot;model.goods.bells&quot;);</span>
+<span class="fc" id="L56">    private static final GoodsType clothGoodsType</span>
+<span class="fc" id="L57">        = spec().getGoodsType(&quot;model.goods.cloth&quot;);</span>
+<span class="fc" id="L58">    private static final GoodsType cottonGoodsType</span>
+<span class="fc" id="L59">        = spec().getGoodsType(&quot;model.goods.cotton&quot;);</span>
+<span class="fc" id="L60">    private static final GoodsType foodGoodsType</span>
+<span class="fc" id="L61">        = spec().getPrimaryFoodType();</span>
+<span class="fc" id="L62">    private static final GoodsType grainGoodsType</span>
+<span class="fc" id="L63">        = spec().getGoodsType(&quot;model.goods.grain&quot;);</span>
+<span class="fc" id="L64">    private static final GoodsType hammerGoodsType</span>
+<span class="fc" id="L65">        = spec().getGoodsType(&quot;model.goods.hammers&quot;);</span>
+<span class="fc" id="L66">    private static final GoodsType lumberGoodsType</span>
+<span class="fc" id="L67">        = spec().getGoodsType(&quot;model.goods.lumber&quot;);</span>
+
+<span class="fc" id="L69">    private static final Role soldierRole</span>
+<span class="fc" id="L70">        = spec().getRole(&quot;model.role.soldier&quot;);</span>
+
+<span class="fc" id="L72">    private static final TileType arcticTileType</span>
+<span class="fc" id="L73">        = spec().getTileType(&quot;model.tile.arctic&quot;);</span>
+<span class="fc" id="L74">    private static final TileType plainsTileType</span>
+<span class="fc" id="L75">        = spec().getTileType(&quot;model.tile.plains&quot;);</span>
+
+<span class="fc" id="L77">    private static final UnitType cottonPlanterType</span>
+<span class="fc" id="L78">        = spec().getUnitType(&quot;model.unit.masterCottonPlanter&quot;);</span>
+<span class="fc" id="L79">    private static final UnitType elderStatesmanType</span>
+<span class="fc" id="L80">        = spec().getUnitType(&quot;model.unit.elderStatesman&quot;);</span>
+<span class="fc" id="L81">    private static final UnitType freeColonistType</span>
+<span class="fc" id="L82">        = spec().getUnitType(&quot;model.unit.freeColonist&quot;);</span>
+<span class="fc" id="L83">    private static final UnitType masterWeaverType</span>
+<span class="fc" id="L84">        = spec().getUnitType(&quot;model.unit.masterWeaver&quot;);</span>
+<span class="fc" id="L85">    private static final UnitType wagonTrainType</span>
+<span class="fc" id="L86">        = spec().getUnitType(&quot;model.unit.wagonTrain&quot;);</span>
+<span class="fc" id="L87">    private static final UnitType braveType</span>
+<span class="fc" id="L88">        = spec().getUnitType(&quot;model.unit.brave&quot;);</span>
+
+
+    public void testCurrentlyBuilding() {
+<span class="fc" id="L92">        Game game = getGame();</span>
+<span class="fc" id="L93">        game.setMap(getTestMap(true));</span>
+
+<span class="fc" id="L95">        Colony colony = getStandardColony();</span>
+<span class="fc" id="L96">        colony.setCurrentlyBuilding(warehouseType);</span>
+<span class="fc" id="L97">        assertEquals(&quot;Colony should be building a warehouse&quot;,</span>
+<span class="fc" id="L98">                     warehouseType, colony.getCurrentlyBuilding());</span>
+
+<span class="fc" id="L100">        colony.setCurrentlyBuilding(churchType);</span>
+<span class="fc" id="L101">        assertEquals(&quot;Colony should be building a church&quot;,</span>
+<span class="fc" id="L102">                     churchType, colony.getCurrentlyBuilding());</span>
+<span class="fc" id="L103">    }</span>
+
+    public void testBuildQueueDoesNotAcceptBuildingDoubles() {
+<span class="fc" id="L106">        Game game = getGame();</span>
+<span class="fc" id="L107">        game.setMap(getTestMap(true));</span>
+
+<span class="fc" id="L109">        Colony colony = getStandardColony();</span>
+
+<span class="fc" id="L111">        colony.setCurrentlyBuilding(warehouseType);</span>
+<span class="fc" id="L112">        assertEquals(&quot;Building queue should have 1 entry&quot;,</span>
+<span class="fc" id="L113">                     1, colony.getBuildQueue().size());</span>
+
+<span class="fc" id="L115">        colony.setCurrentlyBuilding(warehouseType);</span>
+<span class="fc" id="L116">        assertEquals(&quot;Building queue should still have 1 entry&quot;,</span>
+<span class="fc" id="L117">                     1, colony.getBuildQueue().size());</span>
+
+<span class="fc" id="L119">        colony.setCurrentlyBuilding(churchType);</span>
+<span class="fc" id="L120">        assertEquals(&quot;Building queue should have 2 entries&quot;,</span>
+<span class="fc" id="L121">                     2, colony.getBuildQueue().size());</span>
+
+<span class="fc" id="L123">        colony.setCurrentlyBuilding(warehouseType);</span>
+<span class="fc" id="L124">        assertEquals(&quot;Building queue should still have 2 entries&quot;,</span>
+<span class="fc" id="L125">                     2, colony.getBuildQueue().size());</span>
+<span class="fc" id="L126">    }</span>
+
+    public void testBuildQueueAcceptsUnitDoubles() {
+<span class="fc" id="L129">        Game game = getGame();</span>
+<span class="fc" id="L130">        game.setMap(getTestMap(true));</span>
+
+<span class="fc" id="L132">        Colony colony = getStandardColony();</span>
+<span class="fc" id="L133">        colony.setCurrentlyBuilding(wagonTrainType);</span>
+        // default item will be added to new colony's build queue
+<span class="fc" id="L135">        assertEquals(&quot;Building queue should have 2 entry&quot;,</span>
+<span class="fc" id="L136">                     2, colony.getBuildQueue().size());</span>
+
+<span class="fc" id="L138">        colony.setCurrentlyBuilding(wagonTrainType);</span>
+<span class="fc" id="L139">        assertEquals(&quot;Building queue should have 3 entries&quot;,</span>
+<span class="fc" id="L140">                     3, colony.getBuildQueue().size());</span>
+<span class="fc" id="L141">    }</span>
+
+    public void testOccupationWithFood() {
+<span class="fc" id="L144">        int population = 1;</span>
+
+<span class="fc" id="L146">        Game game = getGame();</span>
+<span class="fc" id="L147">        game.setMap(getTestMap(true));</span>
+<span class="fc" id="L148">        Colony colony = getStandardColony(population);</span>
+
+<span class="fc" id="L150">        assertTrue(&quot;colony should produce enough food&quot;,</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">                   colony.getFoodProduction() &gt; colony.getFoodConsumption()</span>
+<span class="fc" id="L152">                   + freeColonistType.getConsumptionOf(grainGoodsType));</span>
+
+        // colonist with no skill or experience will produce food
+<span class="fc" id="L155">        Unit colonist = new ServerUnit(game, colony.getTile(),</span>
+<span class="fc" id="L156">                                       colony.getOwner(), freeColonistType);</span>
+<span class="fc" id="L157">        nonServerJoinColony(colonist, colony);</span>
+<span class="fc" id="L158">        assertTrue(colonist.getLocation() instanceof ColonyTile);</span>
+<span class="fc" id="L159">        assertEquals(grainGoodsType, colonist.getWorkType());</span>
+
+        // colonist with experience in producing farmed goods will
+        // produce that type of goods
+<span class="fc" id="L163">        colonist.setLocation(colony.getTile());</span>
+<span class="fc" id="L164">        colonist.changeWorkType(cottonGoodsType);</span>
+<span class="fc" id="L165">        colonist.modifyExperience(100);</span>
+<span class="fc" id="L166">        nonServerJoinColony(colonist, colony);</span>
+<span class="fc" id="L167">        assertTrue(colonist.getLocation() instanceof ColonyTile);</span>
+<span class="fc" id="L168">        assertEquals(cottonGoodsType, colonist.getWorkType());</span>
+
+        // expert will produce expert goods
+<span class="fc" id="L171">        colonist.setLocation(colony.getTile());</span>
+<span class="fc" id="L172">        colonist.setType(cottonPlanterType);</span>
+<span class="fc" id="L173">        colonist.changeWorkType(null);</span>
+<span class="fc" id="L174">        nonServerJoinColony(colonist, colony);</span>
+<span class="fc" id="L175">        assertTrue(colonist.getLocation() instanceof ColonyTile);</span>
+<span class="fc" id="L176">        assertEquals(cottonGoodsType, colonist.getWorkType());</span>
+
+        // expert will produce expert goods
+<span class="fc" id="L179">        colonist.setLocation(colony.getTile());</span>
+<span class="fc" id="L180">        colonist.setType(elderStatesmanType);</span>
+<span class="fc" id="L181">        colonist.changeWorkType(null);</span>
+<span class="fc" id="L182">        nonServerJoinColony(colonist, colony);</span>
+<span class="fc" id="L183">        assertTrue(colonist.getLocation() instanceof Building);</span>
+<span class="fc" id="L184">        assertEquals(townHallType,</span>
+<span class="fc" id="L185">                     ((Building) colonist.getLocation()).getType());</span>
+<span class="fc" id="L186">        assertEquals(bellsGoodsType, colonist.getWorkType());</span>
+<span class="fc" id="L187">    }</span>
+
+    private int countParties(Colony colony) {
+<span class="fc" id="L190">        int modifierCount = 0;</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">        for (Modifier existingModifier</span>
+<span class="fc" id="L192">                 : colony.getModifiers(&quot;model.goods.bells&quot;)) {</span>
+<span class="fc" id="L193">            if (Specification.COLONY_GOODS_PARTY_SOURCE</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">                .equals(existingModifier.getSource())) modifierCount++;</span>
+        }
+<span class="fc" id="L196">        return modifierCount;</span>
+    }
+
+    public void testTeaParty() {
+<span class="fc" id="L200">        Game game = getGame();</span>
+<span class="fc" id="L201">        game.setMap(getTestMap(true));</span>
+<span class="fc" id="L202">        Colony colony = getStandardColony(5);</span>
+<span class="fc" id="L203">        ServerPlayer serverPlayer = (ServerPlayer)colony.getOwner();</span>
+
+<span class="fc" id="L205">        assertEquals(0, countParties(colony));</span>
+<span class="fc" id="L206">        colony.addModifier(serverPlayer.makeTeaPartyModifier());</span>
+<span class="fc" id="L207">        assertEquals(1, countParties(colony));</span>
+<span class="fc" id="L208">        Modifier m = serverPlayer.makeTeaPartyModifier();</span>
+<span class="fc" id="L209">        m.setFirstTurn(new Turn(game.getTurn().getNumber() + 1));</span>
+<span class="fc" id="L210">        colony.addModifier(m);</span>
+<span class="fc" id="L211">        assertEquals(2, countParties(colony));</span>
+<span class="fc" id="L212">    }</span>
+
+    public void testAddUnitToColony() {
+<span class="fc" id="L215">        Game game = getGame();</span>
+<span class="fc" id="L216">        game.setMap(getTestMap(arcticTileType, true));</span>
+
+<span class="fc" id="L218">        int population = 1;</span>
+<span class="fc" id="L219">        Colony colony = getStandardColony(population);</span>
+<span class="fc" id="L220">        assertTrue(&quot;colony should produce less food than it consumes&quot;,</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">            colony.getFoodProduction() &lt; colony.getFoodConsumption()</span>
+<span class="fc" id="L222">            + freeColonistType.getConsumptionOf(foodGoodsType));</span>
+
+<span class="fc" id="L224">        assertEquals(2, freeColonistType.getConsumptionOf(foodGoodsType));</span>
+<span class="fc" id="L225">        assertEquals(2, masterWeaverType.getConsumptionOf(foodGoodsType));</span>
+
+        // colonist produces bells, the colony needs them
+<span class="fc" id="L228">        Unit colonist = colony.getUnitList().get(0);</span>
+<span class="fc" id="L229">        Building townHall = colony.getBuilding(townHallType);</span>
+<span class="fc" id="L230">        assertEquals(townHall, colonist.getLocation());</span>
+<span class="fc" id="L231">        assertEquals(townHall, colony.getWorkLocationFor(colonist));</span>
+<span class="fc" id="L232">        assertEquals(bellsGoodsType, colonist.getWorkType());</span>
+
+        // colonist might have experience, but the colony still needs bells
+<span class="fc" id="L235">        colonist.setLocation(colony.getTile());</span>
+<span class="fc" id="L236">        colonist.changeWorkType(cottonGoodsType);</span>
+<span class="fc" id="L237">        colonist.modifyExperience(100);</span>
+<span class="fc" id="L238">        nonServerJoinColony(colonist, colony);</span>
+<span class="fc" id="L239">        assertEquals(townHall, colony.getWorkLocationFor(colonist));</span>
+<span class="fc" id="L240">        assertEquals(townHall, (Building)colonist.getLocation());</span>
+<span class="fc" id="L241">        assertEquals(bellsGoodsType, colonist.getWorkType());</span>
+
+        // Add a statesman and have it deal with the bells problem
+<span class="fc" id="L244">        colonist.setLocation(colony.getTile());</span>
+<span class="fc" id="L245">        Unit statesman = new ServerUnit(game, colony.getTile(),</span>
+<span class="fc" id="L246">                                        colony.getOwner(), elderStatesmanType);</span>
+<span class="fc" id="L247">        nonServerJoinColony(statesman, colony);</span>
+<span class="fc" id="L248">        assertEquals(townHall, statesman.getLocation());</span>
+<span class="fc" id="L249">        assertEquals(bellsGoodsType, statesman.getWorkType());</span>
+
+        // Add one plains tile
+<span class="fc" id="L252">        Tile plainsTile = colony.getTile().getNeighbourOrNull(Direction.S);</span>
+<span class="fc" id="L253">        plainsTile.setType(plainsTileType);</span>
+<span class="fc" id="L254">        ColonyTile colonyTile = colony.getColonyTile(plainsTile);</span>
+<span class="fc" id="L255">        assertTrue(colonyTile.isEmpty());</span>
+
+        // colonist experience might be cotton, but the colony needs food
+<span class="fc" id="L258">        colonist.setLocation(colony.getTile());</span>
+<span class="fc" id="L259">        colonist.changeWorkType(cottonGoodsType);</span>
+<span class="fc" id="L260">        colonist.modifyExperience(100);</span>
+<span class="fc" id="L261">        nonServerJoinColony(colonist, colony);</span>
+<span class="fc" id="L262">        assertEquals(colonyTile, colonist.getLocation());</span>
+<span class="fc" id="L263">        assertEquals(grainGoodsType, colonist.getWorkType());</span>
+
+        // Change the center tile to plains to improve the food situation
+<span class="fc" id="L266">        colony.getTile().changeType(plainsTileType);</span>
+<span class="fc" id="L267">        colony.invalidateCache();</span>
+<span class="fc" id="L268">        assertTrue(&quot;colony should produce more food than it consumes&quot;,</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">            colony.getFoodProduction() &gt;= colony.getFoodConsumption()</span>
+<span class="fc" id="L270">            + freeColonistType.getConsumptionOf(foodGoodsType));</span>
+
+        // colonist experience will now encourage cotton production
+<span class="fc" id="L273">        colonist.setLocation(colony.getTile());</span>
+<span class="fc" id="L274">        colonist.changeWorkType(cottonGoodsType);</span>
+<span class="fc" id="L275">        colonist.modifyExperience(100);</span>
+<span class="fc" id="L276">        nonServerJoinColony(colonist, colony);</span>
+<span class="fc" id="L277">        assertEquals(colonyTile, colonist.getLocation());</span>
+<span class="fc" id="L278">        assertEquals(cottonGoodsType, colonist.getWorkType());</span>
+
+        // colonist should still make cotton due to expertise
+<span class="fc" id="L281">        colonist.setLocation(colony.getTile());</span>
+<span class="fc" id="L282">        colonist.changeWorkType(null);</span>
+<span class="fc" id="L283">        colonist.setType(cottonPlanterType);</span>
+<span class="fc" id="L284">        nonServerJoinColony(colonist, colony);</span>
+<span class="fc" id="L285">        assertEquals(colonyTile, colonist.getLocation());</span>
+<span class="fc" id="L286">        assertEquals(cottonGoodsType, colonist.getWorkType());</span>
+
+        // colonist produces cloth, because there is cotton now
+<span class="fc" id="L289">        colonist.setLocation(colony.getTile());</span>
+<span class="fc" id="L290">        colonist.changeWorkType(null);</span>
+<span class="fc" id="L291">        colonist.setType(masterWeaverType);</span>
+<span class="fc" id="L292">        colony.addGoods(cottonGoodsType, 100);</span>
+<span class="fc" id="L293">        nonServerJoinColony(colonist, colony);</span>
+<span class="fc" id="L294">        assertTrue(colonist.getLocation() instanceof Building);</span>
+<span class="fc" id="L295">        Building weaversHouse = colony.getBuilding(weaversHouseType);</span>
+<span class="fc" id="L296">        assertEquals(weaversHouse, (Building)colonist.getLocation());</span>
+<span class="fc" id="L297">        assertEquals(clothGoodsType, colonist.getWorkType());</span>
+<span class="fc" id="L298">    }</span>
+
+    public void testFoundColony() {
+<span class="fc" id="L301">        Game game = getGame();</span>
+<span class="fc" id="L302">        Map map = getCoastTestMap(plainsTileType);</span>
+<span class="fc" id="L303">        game.setMap(map);</span>
+
+<span class="fc" id="L305">        Colony colony = getStandardColony(3, 1, 8);</span>
+<span class="fc" id="L306">        Player dutch = colony.getOwner();</span>
+<span class="fc" id="L307">        Tile colonyTile = colony.getTile();</span>
+<span class="fc" id="L308">        assertEquals(colonyTile.getType(), plainsTileType);</span>
+
+<span class="fc" id="L310">        Unit colonist = colony.getUnitList().get(0);</span>
+<span class="fc" id="L311">        Tile workedTile = null;</span>
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">        for (ColonyTile ct : colony.getColonyTiles()) {</span>
+<span class="fc bfc" id="L313" title="All 2 branches covered.">            if (ct.isColonyCenterTile()) continue;</span>
+<span class="fc" id="L314">            workedTile = ct.getWorkTile();</span>
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">            if (workedTile.isInUse()) {</span>
+<span class="fc" id="L316">                break;</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">            } else if (workedTile.getType() == plainsTileType) {</span>
+<span class="nc" id="L318">                colonist.changeWorkType(spec().getPrimaryFoodType());</span>
+<span class="nc" id="L319">                colonist.setLocation(ct);</span>
+<span class="nc" id="L320">                break;</span>
+            }
+        }
+<span class="fc" id="L323">        assertTrue(workedTile.isInUse());</span>
+
+<span class="fc" id="L325">        FreeColTestCase.IndianSettlementBuilder builder</span>
+<span class="fc" id="L326">            = new FreeColTestCase.IndianSettlementBuilder(game);</span>
+<span class="fc" id="L327">        IndianSettlement camp = builder.build();</span>
+<span class="fc" id="L328">        Player indianPlayer = camp.getOwner();</span>
+<span class="fc" id="L329">        Tile campTile = camp.getTile();</span>
+<span class="fc" id="L330">        assertEquals(campTile.getType(), plainsTileType);</span>
+
+<span class="fc" id="L332">        Tile nativeTile = null;</span>
+<span class="pc bpc" id="L333" title="1 of 2 branches missed.">        for (Tile t : camp.getTile().getSurroundingTiles(1)) {</span>
+<span class="pc bpc" id="L334" title="1 of 2 branches missed.">            if (t.getType() == plainsTileType) {</span>
+<span class="fc" id="L335">                nativeTile = t;</span>
+<span class="fc" id="L336">                break;</span>
+            }
+        }
+<span class="fc" id="L339">        assertEquals(nativeTile.getOwner(), indianPlayer);</span>
+
+<span class="fc" id="L341">        Player french = game.getPlayerByNationId(&quot;model.nation.french&quot;);</span>
+<span class="fc" id="L342">        Colony frenchColony = getStandardColony(3, 9, 8);</span>
+<span class="fc" id="L343">        frenchColony.changeOwner(french);</span>
+<span class="fc" id="L344">        assertEquals(frenchColony.getTile().getType(), plainsTileType);</span>
+<span class="fc" id="L345">        Tile frenchTile = null;</span>
+<span class="pc bpc" id="L346" title="1 of 2 branches missed.">        for (Tile t : frenchColony.getTile().getSurroundingTiles(1)) {</span>
+<span class="pc bpc" id="L347" title="1 of 2 branches missed.">            if (t.getType() == plainsTileType) {</span>
+<span class="fc" id="L348">                frenchTile = t;</span>
+<span class="fc" id="L349">                break;</span>
+            }
+        }
+<span class="fc" id="L352">        assertEquals(frenchTile.getOwner(), french);</span>
+
+<span class="fc" id="L354">        Tile landTile = map.getTile(1, 1);</span>
+<span class="fc" id="L355">        Tile lcrTile = map.getTile(2, 2);</span>
+<span class="fc" id="L356">        lcrTile.add(new LostCityRumour(game, lcrTile,</span>
+<span class="fc" id="L357">                LostCityRumour.RumourType.NO_SUCH_RUMOUR, &quot;fake&quot;));</span>
+<span class="fc" id="L358">        Tile waterTile = map.getTile(12, 12);</span>
+<span class="pc bpc" id="L359" title="1 of 2 branches missed.">        assertTrue(!waterTile.isLand());</span>
+
+<span class="fc" id="L361">        assertTrue(&quot;Can own empty tile&quot;,</span>
+<span class="fc" id="L362">                   dutch.canOwnTile(landTile));</span>
+<span class="fc" id="L363">        assertFalse(&quot;Europeans can not own tile with an LCR on it&quot;,</span>
+<span class="fc" id="L364">                    dutch.canOwnTile(lcrTile));</span>
+<span class="fc" id="L365">        assertTrue(&quot;Natives can own tile with an LCR on it&quot;,</span>
+<span class="fc" id="L366">                   indianPlayer.canOwnTile(campTile));</span>
+<span class="fc" id="L367">        assertTrue(&quot;Europeans can own water tile&quot;,</span>
+<span class="fc" id="L368">                   dutch.canOwnTile(waterTile));</span>
+<span class="fc" id="L369">        assertFalse(&quot;Natives can not own water tile&quot;,</span>
+<span class="fc" id="L370">                   indianPlayer.canOwnTile(waterTile));</span>
+
+<span class="fc" id="L372">        assertEquals(&quot;Can found on land&quot;,</span>
+<span class="fc" id="L373">                     NoClaimReason.NONE,</span>
+<span class="fc" id="L374">                     dutch.canClaimToFoundSettlementReason(landTile));</span>
+<span class="fc" id="L375">        assertEquals(&quot;Can found on unsettleable tile&quot;,</span>
+<span class="fc" id="L376">                     NoClaimReason.TERRAIN,</span>
+<span class="fc" id="L377">                     dutch.canClaimToFoundSettlementReason(waterTile));</span>
+<span class="fc" id="L378">        assertEquals(&quot;Can not found on LCR&quot;,</span>
+<span class="fc" id="L379">                     NoClaimReason.RUMOUR,</span>
+<span class="fc" id="L380">                     dutch.canClaimToFoundSettlementReason(lcrTile));</span>
+<span class="fc" id="L381">        assertEquals(&quot;Can not found on water&quot;,</span>
+<span class="fc" id="L382">                     NoClaimReason.TERRAIN,</span>
+<span class="fc" id="L383">                     indianPlayer.canClaimToFoundSettlementReason(waterTile));</span>
+<span class="fc" id="L384">        assertEquals(&quot;Can not found on settlement&quot;,</span>
+<span class="fc" id="L385">                     NoClaimReason.SETTLEMENT,</span>
+<span class="fc" id="L386">                     dutch.canClaimToFoundSettlementReason(campTile));</span>
+<span class="fc" id="L387">        assertEquals(&quot;Can not found on tile in use&quot;,</span>
+<span class="fc" id="L388">                     NoClaimReason.WORKED,</span>
+<span class="fc" id="L389">                     dutch.canClaimToFoundSettlementReason(workedTile));</span>
+<span class="fc" id="L390">        assertEquals(&quot;Can not found on European tile&quot;,</span>
+<span class="fc" id="L391">                     NoClaimReason.EUROPEANS,</span>
+<span class="fc" id="L392">                     dutch.canClaimToFoundSettlementReason(frenchTile));</span>
+<span class="fc" id="L393">        assertEquals(&quot;Might be able to found on native settlement tile&quot;,</span>
+<span class="fc" id="L394">                     NoClaimReason.NATIVES,</span>
+<span class="fc" id="L395">                     dutch.canClaimToFoundSettlementReason(nativeTile));</span>
+<span class="fc" id="L396">        landTile.setOwner(indianPlayer);</span>
+<span class="fc" id="L397">        assertEquals(&quot;Might be able to found on loose native tile&quot;,</span>
+<span class="fc" id="L398">                     NoClaimReason.NATIVES,</span>
+<span class="fc" id="L399">                     dutch.canClaimToFoundSettlementReason(landTile));</span>
+<span class="fc" id="L400">        landTile.setOwner(null);</span>
+
+<span class="fc" id="L402">        assertEquals(&quot;Can use land&quot;,</span>
+<span class="fc" id="L403">                     NoClaimReason.NONE,</span>
+<span class="fc" id="L404">                     dutch.canClaimForSettlementReason(landTile));</span>
+<span class="fc" id="L405">        assertEquals(&quot;Can use unsettleable tile&quot;,</span>
+<span class="fc" id="L406">                     NoClaimReason.NONE,</span>
+<span class="fc" id="L407">                     dutch.canClaimForSettlementReason(waterTile));</span>
+<span class="fc" id="L408">        assertEquals(&quot;Europeans can not use LCR&quot;,</span>
+<span class="fc" id="L409">                     NoClaimReason.RUMOUR,</span>
+<span class="fc" id="L410">                     dutch.canClaimForSettlementReason(lcrTile));</span>
+<span class="fc" id="L411">        assertEquals(&quot;Natives can use LCR&quot;,</span>
+<span class="fc" id="L412">                     NoClaimReason.NONE,</span>
+<span class="fc" id="L413">                     indianPlayer.canClaimForSettlementReason(lcrTile));</span>
+<span class="fc" id="L414">        assertEquals(&quot;Europeans can use water&quot;,</span>
+<span class="fc" id="L415">                     NoClaimReason.NONE,</span>
+<span class="fc" id="L416">                     dutch.canClaimForSettlementReason(waterTile));</span>
+<span class="fc" id="L417">        assertEquals(&quot;Natives can not use water&quot;,</span>
+<span class="fc" id="L418">                     NoClaimReason.WATER,</span>
+<span class="fc" id="L419">                     indianPlayer.canClaimForSettlementReason(waterTile));</span>
+<span class="fc" id="L420">        assertEquals(&quot;Can not use on settlement&quot;,</span>
+<span class="fc" id="L421">                     NoClaimReason.SETTLEMENT,</span>
+<span class="fc" id="L422">                     dutch.canClaimForSettlementReason(campTile));</span>
+<span class="fc" id="L423">        assertEquals(&quot;Can not use tile in use&quot;,</span>
+<span class="fc" id="L424">                     NoClaimReason.WORKED,</span>
+<span class="fc" id="L425">                     dutch.canClaimForSettlementReason(workedTile));</span>
+<span class="fc" id="L426">        assertEquals(&quot;Can not use European tile&quot;,</span>
+<span class="fc" id="L427">                     NoClaimReason.EUROPEANS,</span>
+<span class="fc" id="L428">                     dutch.canClaimForSettlementReason(frenchTile));</span>
+<span class="fc" id="L429">        assertEquals(&quot;Can not use native tile&quot;,</span>
+<span class="fc" id="L430">                     NoClaimReason.NATIVES,</span>
+<span class="fc" id="L431">                     dutch.canClaimForSettlementReason(nativeTile));</span>
+<span class="fc" id="L432">    }</span>
+
+    public void testUnderSiege() {
+<span class="fc" id="L435">        Game game = getGame();</span>
+<span class="fc" id="L436">        game.setMap(getTestMap(true));</span>
+<span class="fc" id="L437">        Colony colony = getStandardColony(5);</span>
+<span class="fc" id="L438">        Tile tile = colony.getTile().getNeighbourOrNull(Direction.N);</span>
+<span class="fc" id="L439">        Player iroquois = game.getPlayerByNationId(&quot;model.nation.iroquois&quot;);</span>
+
+<span class="fc" id="L441">        assertFalse(&quot;No enemy units present.&quot;, colony.isUnderSiege());</span>
+
+<span class="fc" id="L443">        Unit brave = new ServerUnit(game, tile, iroquois, braveType);</span>
+<span class="fc" id="L444">        assertFalse(&quot;Not at war with the Iroquois.&quot;, colony.isUnderSiege());</span>
+
+        // declare war
+<span class="fc" id="L447">        colony.getOwner().setStance(iroquois, Stance.WAR);</span>
+<span class="fc" id="L448">        iroquois.setStance(colony.getOwner(), Stance.WAR);</span>
+
+<span class="fc" id="L450">        assertTrue(&quot;At war with the Iroquois.&quot;, colony.isUnderSiege());</span>
+
+<span class="fc" id="L452">        Role soldierRole = spec().getRole(&quot;model.role.soldier&quot;);</span>
+<span class="fc" id="L453">        Unit soldier = new ServerUnit(game, colony.getTile(), colony.getOwner(),</span>
+<span class="fc" id="L454">                                      freeColonistType, soldierRole);</span>
+<span class="fc" id="L455">        assertFalse(&quot;Equal number of friendly and enemy combat units.&quot;,</span>
+<span class="fc" id="L456">                    colony.isUnderSiege());</span>
+
+<span class="fc" id="L458">        Unit brave2 = new ServerUnit(game, tile, iroquois, braveType);</span>
+<span class="fc" id="L459">        assertTrue(&quot;Enemy combat units outnumber friendly combat units.&quot;,</span>
+<span class="fc" id="L460">                   colony.isUnderSiege());</span>
+
+<span class="fc" id="L462">        Unit colonist = new ServerUnit(game, colony.getTile(), colony.getOwner(),</span>
+<span class="fc" id="L463">                                       freeColonistType);</span>
+<span class="fc" id="L464">        assertTrue(&quot;Enemy combat units outnumber friendly combat units.&quot;,</span>
+<span class="fc" id="L465">                   colony.isUnderSiege());</span>
+
+<span class="fc" id="L467">        colonist.changeRole(soldierRole, 1);</span>
+<span class="fc" id="L468">        assertFalse(&quot;Equal number of friendly and enemy combat units.&quot;,</span>
+<span class="fc" id="L469">                    colony.isUnderSiege());</span>
+<span class="fc" id="L470">    }</span>
+
+
+    public void testUpkeep() {
+<span class="fc" id="L474">        Game game = getGame();</span>
+<span class="fc" id="L475">        game.setMap(getTestMap(true));</span>
+<span class="fc" id="L476">        Colony colony = getStandardColony(5);</span>
+
+<span class="fc" id="L478">        assertEquals(&quot;New colonies should not require upkeep.&quot;,</span>
+<span class="fc" id="L479">                     0, colony.getUpkeep());</span>
+
+<span class="fc" id="L481">        int churchUpkeep = churchType.getUpkeep();</span>
+<span class="fc" id="L482">        colony.getBuilding(churchType).upgrade();</span>
+<span class="fc" id="L483">        assertEquals(churchUpkeep, colony.getUpkeep());</span>
+
+<span class="fc" id="L485">        int lumberMillUpkeep = lumberMillType.getUpkeep();</span>
+<span class="fc" id="L486">        colony.getBuilding(carpenterHouseType).upgrade();</span>
+<span class="fc" id="L487">        assertEquals(churchUpkeep + lumberMillUpkeep, colony.getUpkeep());</span>
+<span class="fc" id="L488">    }</span>
+    
+    
+    public void testGetNoBuildReason1() {
+    	//Test no build reason when null buildableType
+<span class="fc" id="L493">    	Game game = getGame();</span>
+<span class="fc" id="L494">    	game.setMap(getTestMap(true));</span>
+<span class="fc" id="L495">    	Colony colony = getStandardColony(5);</span>
+<span class="fc" id="L496">    	assertEquals(NoBuildReason.NOT_BUILDING, colony.getNoBuildReason(null, null));</span>
+<span class="fc" id="L497">    }</span>
+    
+    public void testGetNoBuildReason2() {
+    	//Test the list when BuildingType buildableType
+<span class="fc" id="L501">    	Game game = getGame();</span>
+<span class="fc" id="L502">    	game.setMap(getTestMap(true));</span>
+<span class="fc" id="L503">    	Colony colony = getStandardColony(5);</span>
+<span class="fc" id="L504">    	BuildableType buildingType = new BuildingType(&quot;building1&quot;, new Specification());</span>
+<span class="fc" id="L505">    	assertEquals(NoBuildReason.NOT_BUILDABLE, colony.getNoBuildReason(buildingType, null));</span>
+<span class="fc" id="L506">    }</span>
+    
+    //Test governmentChange() when 30 SoL and 1 unit
+    public void testGovernmentChange1() {
+<span class="fc" id="L510">    	Game game = getGame();</span>
+<span class="fc" id="L511">    	game.setMap(getTestMap(true));</span>
+<span class="fc" id="L512">    	Colony colony = getStandardColony(5);</span>
+<span class="fc" id="L513">    	colony.sonsOfLiberty = 30;</span>
+<span class="fc" id="L514">    	assertEquals(0, colony.governmentChange(1));</span>
+    	
+<span class="fc" id="L516">    }</span>
+    //Test governmentChange() when 50 SoL and 100 units
+    public void testGovernmentChange2() {
+<span class="fc" id="L519">    	Game game = getGame();</span>
+<span class="fc" id="L520">    	game.setMap(getTestMap(true));</span>
+<span class="fc" id="L521">    	Colony colony = getStandardColony(5);</span>
+<span class="fc" id="L522">    	colony.sonsOfLiberty = 50;</span>
+<span class="fc" id="L523">    	assertEquals(-1, colony.governmentChange(100));</span>
+<span class="fc" id="L524">    }</span>
+  
+    
+   
+    public void testCopyColony() {
+<span class="fc" id="L529">        Game game = getGame();</span>
+<span class="fc" id="L530">        game.setMap(getTestMap(true));</span>
+<span class="fc" id="L531">        Colony colony = getStandardColony(2);</span>
+<span class="fc" id="L532">        Player player = colony.getOwner();</span>
+
+<span class="fc" id="L534">        Colony copied = colony.copyColony();</span>
+<span class="fc" id="L535">        assertNotNull(copied);</span>
+<span class="pc bpc" id="L536" title="1 of 2 branches missed.">        assertFalse(colony == copied);</span>
+        // Note: The following is true because it uses FCGO.equals().
+<span class="fc" id="L538">        assertTrue(colony.equals(copied));</span>
+<span class="fc" id="L539">        assertEquals(colony.getId(), copied.getId());</span>
+<span class="fc" id="L540">        assertEquals(colony.getName(), copied.getName());</span>
+        // Note: we can not check that player.hasSettlement(copied) is false
+        // because it too will use FCGO.equals().
+<span class="fc bfc" id="L543" title="All 2 branches covered.">        for (Settlement s : player.getSettlements()) {</span>
+<span class="pc bpc" id="L544" title="1 of 2 branches missed.">            assertFalse(s == copied);</span>
+        }
+
+<span class="fc" id="L547">        Tile ct = colony.getTile();</span>
+<span class="fc" id="L548">        Tile oct = copied.getTile();</span>
+<span class="pc bpc" id="L549" title="1 of 2 branches missed.">        assertFalse(ct == oct);</span>
+<span class="fc" id="L550">        assertEquals(ct.getId(), oct.getId());</span>
+<span class="fc" id="L551">        assertEquals(ct.getUnitCount(), oct.getUnitCount());</span>
+<span class="fc" id="L552">        assertEquals(ct.getType(), oct.getType());</span>
+        
+<span class="fc" id="L554">        assertEquals(oct.getColony(), copied);</span>
+<span class="fc" id="L555">        assertEquals(oct.getOwningSettlement(), copied);</span>
+
+<span class="fc bfc" id="L557" title="All 2 branches covered.">        for (WorkLocation wl : colony.getAllWorkLocations()) {</span>
+<span class="fc" id="L558">            WorkLocation owl = copied.getCorresponding(wl);</span>
+<span class="fc" id="L559">            assertNotNull(owl);</span>
+<span class="pc bpc" id="L560" title="1 of 2 branches missed.">            assertFalse(wl == owl);</span>
+<span class="fc" id="L561">            assertEquals(wl.getId(), owl.getId());</span>
+<span class="fc bfc" id="L562" title="All 2 branches covered.">            if (wl instanceof ColonyTile) {</span>
+<span class="fc" id="L563">                Tile wt = ((ColonyTile)wl).getWorkTile();</span>
+<span class="fc" id="L564">                Tile owt = ((ColonyTile)owl).getWorkTile();</span>
+<span class="pc bpc" id="L565" title="1 of 2 branches missed.">                assertFalse(wt == owt);</span>
+<span class="fc" id="L566">                assertEquals(wt.getId(), owt.getId());</span>
+<span class="fc" id="L567">                assertEquals(wt.getType(), owt.getType());</span>
+<span class="fc" id="L568">                assertEquals(owt.getOwningSettlement(), copied);</span>
+            }
+<span class="fc" id="L570">            assertEquals(wl.getUnitCount(), owl.getUnitCount());</span>
+<span class="fc bfc" id="L571" title="All 2 branches covered.">            for (Unit u : wl.getUnitList()) {</span>
+<span class="fc" id="L572">                Unit ou = copied.getCorresponding(u);</span>
+<span class="fc" id="L573">                assertNotNull(ou);</span>
+<span class="pc bpc" id="L574" title="1 of 2 branches missed.">                assertFalse(u == ou);</span>
+<span class="fc" id="L575">                assertEquals(u.getId(), ou.getId());</span>
+<span class="fc" id="L576">                assertEquals(u.getType(), ou.getType());</span>
+<span class="fc" id="L577">                assertEquals(u.getRole(), ou.getRole());</span>
+<span class="fc" id="L578">                assertEquals(game.getFreeColGameObject(u.getId()), u);</span>
+<span class="fc" id="L579">                assertEquals(u.getOwner(), ou.getOwner());</span>
+            }
+        }
+<span class="fc" id="L582">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

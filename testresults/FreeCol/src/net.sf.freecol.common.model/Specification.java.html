@@ -1,0 +1,3762 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Specification.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">Specification.java</span></div><h1>Specification.java</h1><pre class="source lang-java linenums">/**
+ *  Copyright (C) 2002-2015   The FreeCol Team
+ *
+ *  This file is part of FreeCol.
+ *
+ *  FreeCol is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  FreeCol is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with FreeCol.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package net.sf.freecol.common.model;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+
+import net.sf.freecol.common.io.FreeColDirectories;
+import net.sf.freecol.common.io.FreeColModFile;
+import net.sf.freecol.common.io.FreeColTcFile;
+import net.sf.freecol.common.io.FreeColXMLReader;
+import net.sf.freecol.common.io.FreeColXMLWriter;
+import net.sf.freecol.common.model.NationOptions.Advantages;
+import net.sf.freecol.common.option.AbstractOption;
+import net.sf.freecol.common.option.AbstractUnitOption;
+import net.sf.freecol.common.option.BooleanOption;
+import net.sf.freecol.common.option.IntegerOption;
+import net.sf.freecol.common.option.MapGeneratorOptions;
+import net.sf.freecol.common.option.Option;
+import net.sf.freecol.common.option.OptionGroup;
+import net.sf.freecol.common.option.RangeOption;
+import net.sf.freecol.common.option.StringOption;
+import net.sf.freecol.common.option.TextOption;
+import net.sf.freecol.common.option.UnitListOption;
+import static net.sf.freecol.common.util.CollectionUtils.*;
+import static net.sf.freecol.common.util.StringUtils.*;
+
+
+/**
+ * This class encapsulates any parts of the &quot;specification&quot; for
+ * FreeCol that are expressed best using XML.  The XML is loaded
+ * through the class loader from the resource named
+ * &quot;specification.xml&quot; in the same package as this class.
+ */
+public final class Specification {
+
+<span class="fc" id="L74">    private static final Logger logger = Logger.getLogger(Specification.class.getName());</span>
+
+    /** The difficulty levels option group is special. */
+    private static final String DIFFICULTY_LEVELS = &quot;difficultyLevels&quot;;
+
+    /** Roles backward compatibility fragment. */
+    public static final String ROLES_COMPAT_FILE_NAME = &quot;roles-compat.xml&quot;;
+
+    /** The default role. */
+    public static final String DEFAULT_ROLE_ID = &quot;model.role.default&quot;;
+
+    /** How many game ages. */
+    public static final int NUMBER_OF_AGES = 3;
+
+
+    public static class Source extends FreeColGameObjectType {
+
+        /**
+         * Trivial constructor.
+         *
+         * @param id The object identifier.
+         */
+        public Source(String id) {
+<span class="fc" id="L97">            super(id);</span>
+<span class="fc" id="L98">        }</span>
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void toXML(FreeColXMLWriter xw) {
+<span class="nc" id="L105">            throw new RuntimeException(&quot;Can not happen&quot;);</span>
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String toString() {
+<span class="nc" id="L113">            return getId();</span>
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+<span class="nc" id="L120">        public String getXMLTagName() { return &quot;source&quot;; }</span>
+    };
+
+<span class="fc" id="L123">    public static final Source AMBUSH_BONUS_SOURCE</span>
+<span class="fc" id="L124">        = new Source(&quot;model.source.ambushBonus&quot;);</span>
+<span class="fc" id="L125">    public static final Source AMPHIBIOUS_ATTACK_PENALTY_SOURCE</span>
+<span class="fc" id="L126">        = new Source(&quot;model.source.amphibiousAttack&quot;);</span>
+<span class="fc" id="L127">    public static final Source ARTILLERY_PENALTY_SOURCE</span>
+<span class="fc" id="L128">        = new Source(&quot;model.source.artilleryInTheOpen&quot;);</span>
+<span class="fc" id="L129">    public static final Source ATTACK_BONUS_SOURCE</span>
+<span class="fc" id="L130">        = new Source(&quot;model.source.attackBonus&quot;);</span>
+<span class="fc" id="L131">    public static final Source BASE_DEFENCE_SOURCE</span>
+<span class="fc" id="L132">        = new Source(&quot;model.source.baseDefence&quot;);</span>
+<span class="fc" id="L133">    public static final Source BASE_OFFENCE_SOURCE</span>
+<span class="fc" id="L134">        = new Source(&quot;model.source.baseOffence&quot;);</span>
+<span class="fc" id="L135">    public static final Source CARGO_PENALTY_SOURCE</span>
+<span class="fc" id="L136">        = new Source(&quot;model.source.cargoPenalty&quot;);</span>
+<span class="fc" id="L137">    public static final Source COLONY_GOODS_PARTY_SOURCE</span>
+<span class="fc" id="L138">        = new Source(&quot;model.source.colonyGoodsParty&quot;);</span>
+<span class="fc" id="L139">    public static final Source FORTIFICATION_BONUS_SOURCE</span>
+<span class="fc" id="L140">        = new Source(&quot;model.source.fortified&quot;);</span>
+<span class="fc" id="L141">    public static final Source INDIAN_RAID_BONUS_SOURCE</span>
+<span class="fc" id="L142">        = new Source(&quot;model.source.artilleryAgainstRaid&quot;);</span>
+<span class="fc" id="L143">    public static final Source MOVEMENT_PENALTY_SOURCE</span>
+<span class="fc" id="L144">        = new Source(&quot;model.source.movementPenalty&quot;);</span>
+<span class="fc" id="L145">    public static final Source SHIP_TRADE_PENALTY_SOURCE</span>
+<span class="fc" id="L146">        = new Source(&quot;model.source.shipTradePenalty&quot;);</span>
+<span class="fc" id="L147">    public static final Source SOL_MODIFIER_SOURCE</span>
+<span class="fc" id="L148">        = new Source(&quot;model.source.solModifier&quot;);</span>
+    /** All the special static sources. */
+<span class="fc" id="L150">    private static final Source[] sources = new Source[] {</span>
+<span class="fc" id="L151">        MOVEMENT_PENALTY_SOURCE,</span>
+<span class="fc" id="L152">        ARTILLERY_PENALTY_SOURCE,</span>
+<span class="fc" id="L153">        ATTACK_BONUS_SOURCE,</span>
+<span class="fc" id="L154">        FORTIFICATION_BONUS_SOURCE,</span>
+<span class="fc" id="L155">        INDIAN_RAID_BONUS_SOURCE,</span>
+<span class="fc" id="L156">        AMPHIBIOUS_ATTACK_PENALTY_SOURCE,</span>
+<span class="fc" id="L157">        BASE_OFFENCE_SOURCE,</span>
+<span class="fc" id="L158">        BASE_DEFENCE_SOURCE,</span>
+<span class="fc" id="L159">        CARGO_PENALTY_SOURCE,</span>
+<span class="fc" id="L160">        AMBUSH_BONUS_SOURCE,</span>
+<span class="fc" id="L161">        COLONY_GOODS_PARTY_SOURCE,</span>
+<span class="fc" id="L162">        SHIP_TRADE_PENALTY_SOURCE,</span>
+<span class="fc" id="L163">        SOL_MODIFIER_SOURCE</span>
+    };
+
+
+    /** A map from specification element to a reader for that element. */
+<span class="fc" id="L168">    private final Map&lt;String, ChildReader&gt; readerMap = new HashMap&lt;&gt;();</span>
+
+    /* Containers filled from readers in the readerMap. */
+
+    // readerMap(&quot;building-types&quot;)
+<span class="fc" id="L173">    private final List&lt;BuildingType&gt; buildingTypeList = new ArrayList&lt;&gt;();</span>
+    // readerMap(&quot;disasters&quot;)
+<span class="fc" id="L175">    private final List&lt;Disaster&gt; disasters = new ArrayList&lt;&gt;();</span>
+    // @compat 0.10.x readerMap(&quot;equipment-types&quot;)
+<span class="fc" id="L177">    private final List&lt;EquipmentType&gt; equipmentTypes = new ArrayList&lt;&gt;();</span>
+    // end @compat 0.10.x
+    // readerMap(&quot;european-nation-types&quot;)
+<span class="fc" id="L180">    private final List&lt;EuropeanNationType&gt; europeanNationTypes = new ArrayList&lt;&gt;();</span>
+    // readerMap(&quot;events&quot;)
+<span class="fc" id="L182">    private final List&lt;Event&gt; events = new ArrayList&lt;&gt;();</span>
+    // readerMap(&quot;founding-fathers&quot;)
+<span class="fc" id="L184">    private final List&lt;FoundingFather&gt; foundingFathers = new ArrayList&lt;&gt;();</span>
+    // readerMap(&quot;goods-types&quot;)
+<span class="fc" id="L186">    private final List&lt;GoodsType&gt; goodsTypeList = new ArrayList&lt;&gt;();</span>
+    // readerMap(&quot;indian-nation-types&quot;)
+<span class="fc" id="L188">    private final List&lt;IndianNationType&gt; indianNationTypes = new ArrayList&lt;&gt;();</span>
+    // readerMap(&quot;nations&quot;)
+<span class="fc" id="L190">    private final List&lt;Nation&gt; nations = new ArrayList&lt;&gt;();</span>
+    // readerMap(&quot;resource-types&quot;)
+<span class="fc" id="L192">    private final List&lt;ResourceType&gt; resourceTypeList = new ArrayList&lt;&gt;();</span>
+    // readerMap(&quot;roles&quot;)
+<span class="fc" id="L194">    private final List&lt;Role&gt; roles = new ArrayList&lt;&gt;();</span>
+    // readerMap(&quot;tile-types&quot;)
+<span class="fc" id="L196">    private final List&lt;TileType&gt; tileTypeList = new ArrayList&lt;&gt;();</span>
+    // readerMap(&quot;tile-improvement-types&quot;)
+<span class="fc" id="L198">    private final List&lt;TileImprovementType&gt; tileImprovementTypeList = new ArrayList&lt;&gt;();</span>
+    // readerMap(&quot;unit-types&quot;)
+<span class="fc" id="L200">    private final List&lt;UnitType&gt; unitTypeList = new ArrayList&lt;&gt;();</span>
+
+    // readerMap(&quot;modifiers&quot;)
+<span class="fc" id="L203">    private final Map&lt;String, List&lt;Modifier&gt;&gt; allModifiers = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L204">    private final List&lt;Modifier&gt; specialModifiers = new ArrayList&lt;&gt;();</span>
+
+    // readerMap(&quot;options&quot;)
+<span class="fc" id="L207">    private final Map&lt;String, AbstractOption&gt; allOptions = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L208">    private final Map&lt;String, OptionGroup&gt; allOptionGroups = new HashMap&lt;&gt;();</span>
+
+    /* Containers derived from readerMap containers */
+
+    // Derived from readerMap container: goodsTypeList
+<span class="fc" id="L213">    private final List&lt;GoodsType&gt; storableGoodsTypeList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L214">    private final List&lt;GoodsType&gt; farmedGoodsTypeList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L215">    private final List&lt;GoodsType&gt; foodGoodsTypeList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L216">    private final List&lt;GoodsType&gt; newWorldGoodsTypeList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L217">    private final List&lt;GoodsType&gt; newWorldLuxuryGoodsTypeList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L218">    private final List&lt;GoodsType&gt; libertyGoodsTypeList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L219">    private final List&lt;GoodsType&gt; immigrationGoodsTypeList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L220">    private final List&lt;GoodsType&gt; rawBuildingGoodsTypeList = new ArrayList&lt;&gt;();</span>
+
+    // Derived from readerMap container: nations
+<span class="fc" id="L223">    private final List&lt;Nation&gt; europeanNations = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L224">    private final List&lt;Nation&gt; REFNations = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L225">    private final List&lt;Nation&gt; indianNations = new ArrayList&lt;&gt;();</span>
+    // Derived from readerMap containers: indianNationTypes europeanNationTypes
+<span class="fc" id="L227">    private final List&lt;NationType&gt; nationTypes = new ArrayList&lt;&gt;();</span>
+    // Derived from readerMap container: europeanNationTypes
+<span class="fc" id="L229">    private final List&lt;EuropeanNationType&gt; REFNationTypes = new ArrayList&lt;&gt;();</span>
+
+    // Derived from readerMap container: unitTypeList
+<span class="fc" id="L232">    private final ArrayList&lt;UnitType&gt; buildableUnitTypes = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L233">    private final Map&lt;GoodsType, UnitType&gt; experts = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L234">    private final List&lt;UnitType&gt; unitTypesTrainedInEurope = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L235">    private final List&lt;UnitType&gt; unitTypesPurchasedInEurope = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L236">    private UnitType fastestLandUnitType = null;</span>
+<span class="fc" id="L237">    private UnitType fastestNavalUnitType = null;</span>
+<span class="fc" id="L238">    private final List&lt;UnitType&gt; defaultUnitTypes = new ArrayList&lt;&gt;();</span>
+
+    /* Other containers. */
+
+    // @compat 0.10.7
+<span class="fc" id="L243">    public final Map&lt;String, String&gt; fatherGoodsFixMap = new HashMap&lt;&gt;();</span>
+    // end @compat 0.10.7
+
+<span class="fc" id="L246">    private final Map&lt;String, FreeColGameObjectType&gt; allTypes = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L248">    private final Map&lt;String, List&lt;Ability&gt;&gt; allAbilities = new HashMap&lt;&gt;();</span>
+
+    /** A cache of the military roles in decreasing order.  Do not serialize. */
+<span class="fc" id="L251">    private List&lt;Role&gt; militaryRoles = null;</span>
+
+<span class="fc" id="L253">    private boolean initialized = false;</span>
+
+    /** The specification identifier. */
+    private String id;
+
+    /** The specification version. */
+    private String version;
+
+    /** The name of the difficulty level option group. */
+<span class="fc" id="L262">    private String difficultyLevel = null;</span>
+
+    /** The turn number for the game ages for FF recruitment. */
+<span class="fc" id="L265">    private final int[] ages = new int[NUMBER_OF_AGES];</span>
+
+
+    /**
+     * Creates a new Specification object.
+     */
+<span class="fc" id="L271">    public Specification() {</span>
+<span class="fc" id="L272">        logger.fine(&quot;Initializing Specification&quot;);</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">        for (Source source : sources) allTypes.put(source.getId(), source);</span>
+
+<span class="fc" id="L275">        readerMap.put(BUILDING_TYPES_TAG,</span>
+<span class="fc" id="L276">                      new TypeReader&lt;&gt;(BuildingType.class, buildingTypeList));</span>
+<span class="fc" id="L277">        readerMap.put(DISASTERS_TAG,</span>
+<span class="fc" id="L278">                      new TypeReader&lt;&gt;(Disaster.class, disasters));</span>
+        // @compat 0.10.x
+<span class="fc" id="L280">        readerMap.put(EQUIPMENT_TYPES_TAG,</span>
+<span class="fc" id="L281">                      new TypeReader&lt;&gt;(EquipmentType.class, equipmentTypes));</span>
+        // end @compat 0.10.x
+<span class="fc" id="L283">        readerMap.put(EUROPEAN_NATION_TYPES_TAG,</span>
+<span class="fc" id="L284">                      new TypeReader&lt;&gt;(EuropeanNationType.class, europeanNationTypes));</span>
+<span class="fc" id="L285">        readerMap.put(EVENTS_TAG,</span>
+<span class="fc" id="L286">                      new TypeReader&lt;&gt;(Event.class, events));</span>
+<span class="fc" id="L287">        readerMap.put(FOUNDING_FATHERS_TAG,</span>
+<span class="fc" id="L288">                      new TypeReader&lt;&gt;(FoundingFather.class, foundingFathers));</span>
+<span class="fc" id="L289">        readerMap.put(GOODS_TYPES_TAG,</span>
+<span class="fc" id="L290">                      new TypeReader&lt;&gt;(GoodsType.class, goodsTypeList));</span>
+<span class="fc" id="L291">        readerMap.put(INDIAN_NATION_TYPES_TAG,</span>
+<span class="fc" id="L292">                      new TypeReader&lt;&gt;(IndianNationType.class, indianNationTypes));</span>
+<span class="fc" id="L293">        readerMap.put(NATIONS_TAG,</span>
+<span class="fc" id="L294">                      new TypeReader&lt;&gt;(Nation.class, nations));</span>
+<span class="fc" id="L295">        readerMap.put(RESOURCE_TYPES_TAG,</span>
+<span class="fc" id="L296">                      new TypeReader&lt;&gt;(ResourceType.class, resourceTypeList));</span>
+<span class="fc" id="L297">        readerMap.put(ROLES_TAG,</span>
+<span class="fc" id="L298">                      new TypeReader&lt;&gt;(Role.class, roles));</span>
+<span class="fc" id="L299">        readerMap.put(TILE_TYPES_TAG,</span>
+<span class="fc" id="L300">                      new TypeReader&lt;&gt;(TileType.class, tileTypeList));</span>
+<span class="fc" id="L301">        readerMap.put(TILE_IMPROVEMENT_TYPES_TAG,</span>
+<span class="fc" id="L302">                      new TypeReader&lt;&gt;(TileImprovementType.class, tileImprovementTypeList));</span>
+        // @compat 0.11.3
+<span class="fc" id="L304">        readerMap.put(OLD_TILEIMPROVEMENT_TYPES_TAG,</span>
+<span class="fc" id="L305">                      new TypeReader&lt;&gt;(TileImprovementType.class, tileImprovementTypeList));</span>
+        // end @compat 0.11.3
+<span class="fc" id="L307">        readerMap.put(UNIT_TYPES_TAG,</span>
+<span class="fc" id="L308">                      new TypeReader&lt;&gt;(UnitType.class, unitTypeList));</span>
+
+<span class="fc" id="L310">        readerMap.put(MODIFIERS_TAG, new ModifierReader());</span>
+<span class="fc" id="L311">        readerMap.put(OPTIONS_TAG, new OptionReader());</span>
+<span class="fc" id="L312">    }</span>
+
+
+    /**
+     * Creates a new Specification object by loading it from the
+     * given &lt;code&gt;FreeColXMLReader&lt;/code&gt;.
+     *
+     * @param xr The &lt;code&gt;FreeColXMLReader&lt;/code&gt; to read from.
+     */
+    public Specification(FreeColXMLReader xr) {
+<span class="fc" id="L322">        this();</span>
+<span class="fc" id="L323">        initialized = false;</span>
+<span class="fc" id="L324">        load(xr);</span>
+<span class="fc" id="L325">        prepare(null, difficultyLevel);</span>
+<span class="fc" id="L326">        clean(&quot;load from stream&quot;);</span>
+<span class="fc" id="L327">        initialized = true;</span>
+<span class="fc" id="L328">    }</span>
+
+
+    /**
+     * Load a specification or fragment from a stream.
+     *
+     * @param xr The &lt;code&gt;FreeColXMLReader&lt;/code&gt; to read from.
+     */
+    private void load(FreeColXMLReader xr) {
+        try {
+<span class="fc" id="L338">            readFromXML(xr);</span>
+<span class="pc" id="L339">        } catch (Exception e) {</span>
+<span class="nc" id="L340">            throw new RuntimeException(&quot;Error parsing specification&quot;, e);</span>
+        }
+<span class="fc" id="L342">    }</span>
+
+    /**
+     * Creates a new Specification object by loading it from the
+     * given &lt;code&gt;InputStream&lt;/code&gt;.
+     *
+     * @param in The &lt;code&gt;InputStream&lt;/code&gt; to read from.
+     */
+    public Specification(InputStream in) {
+<span class="fc" id="L351">        this();</span>
+<span class="fc" id="L352">        initialized = false;</span>
+<span class="fc" id="L353">        load(in);</span>
+<span class="fc" id="L354">        prepare(null, difficultyLevel);</span>
+<span class="fc" id="L355">        clean(&quot;load from InputStream&quot;);</span>
+<span class="fc" id="L356">        initialized = true;</span>
+<span class="fc" id="L357">    }</span>
+
+    /**
+     * Load a specification or fragment from a stream.
+     *
+     * @param in The &lt;code&gt;InputStream&lt;/code&gt; to read from.
+     */
+    private void load(InputStream in) {
+<span class="fc" id="L365">        try (</span>
+<span class="fc" id="L366">            FreeColXMLReader xr = new FreeColXMLReader(in);</span>
+        ) {
+<span class="fc" id="L368">            xr.nextTag();</span>
+<span class="fc" id="L369">            load(xr);</span>
+<span class="pc bpc" id="L370" title="7 of 8 branches missed.">        } catch (Exception e) {</span>
+<span class="nc" id="L371">            throw new RuntimeException(&quot;Load specification stream error&quot;, e);</span>
+        }
+<span class="fc" id="L373">    }</span>
+
+    /**
+     * Prepare a specification with given advantages and difficulty level.
+     *
+     * @param advantages An optional &lt;code&gt;Advantages&lt;/code&gt; setting.
+     * @param difficulty An optional identifier for the difficulty level.
+     */
+    public void prepare(Advantages advantages, String difficulty) {
+<span class="fc bfc" id="L382" title="All 2 branches covered.">        prepare(advantages, (difficulty == null) ? null</span>
+<span class="fc" id="L383">            : getDifficultyOptionGroup(difficulty));</span>
+<span class="fc" id="L384">    }</span>
+
+    /**
+     * Prepare a specification with given advantages and difficulty level.
+     *
+     * @param advantages An optional &lt;code&gt;Advantages&lt;/code&gt; setting.
+     * @param difficulty An optional difficulty level &lt;code&gt;OptionGroup&lt;/code&gt;.
+     */
+    public void prepare(Advantages advantages, OptionGroup difficulty) {
+<span class="fc" id="L393">        applyFixes();</span>
+<span class="pc bpc" id="L394" title="1 of 2 branches missed.">        if (advantages == Advantages.NONE) {</span>
+<span class="nc" id="L395">            clearEuropeanNationalAdvantages();</span>
+        }
+<span class="fc bfc" id="L397" title="All 2 branches covered.">        if (difficulty != null) {</span>
+<span class="fc" id="L398">            allOptionGroups.put(difficulty.getId(), difficulty);</span>
+<span class="fc" id="L399">            applyDifficultyLevel(difficulty);</span>
+        }
+<span class="fc" id="L401">    }</span>
+
+    /**
+     * Load mods into this specification.
+     *
+     * @param mods A list of &lt;code&gt;FreeColModFile&lt;/code&gt;s for the active mods.
+     * @return True if any mod was loaded.
+     */
+    public boolean loadMods(List&lt;FreeColModFile&gt; mods) {
+<span class="fc" id="L410">        initialized = false;</span>
+<span class="fc" id="L411">        boolean loadedMod = false;</span>
+<span class="fc bfc" id="L412" title="All 2 branches covered.">        for (FreeColModFile mod : mods) {</span>
+<span class="fc" id="L413">            InputStream sis = null;</span>
+            try {
+<span class="pc bpc" id="L415" title="1 of 2 branches missed.">                if ((sis = mod.getSpecificationInputStream()) != null) {</span>
+                    // Some mods are resource only
+<span class="fc" id="L417">                    load(sis);</span>
+                }
+<span class="fc" id="L419">                loadedMod = true;</span>
+<span class="fc" id="L420">                logger.info(&quot;Loaded mod &quot; + mod.getId());</span>
+<span class="pc" id="L421">            } catch (IOException ioe) {</span>
+<span class="nc" id="L422">                logger.log(Level.WARNING, &quot;Read error in mod &quot; + mod.getId(),</span>
+<span class="nc" id="L423">                    ioe);</span>
+<span class="nc" id="L424">            } catch (RuntimeException rte) {</span>
+<span class="nc" id="L425">                logger.log(Level.WARNING, &quot;Parse error in mod &quot; + mod.getId(),</span>
+<span class="nc" id="L426">                    rte);</span>
+            }
+        }
+<span class="fc bfc" id="L429" title="All 2 branches covered.">        if (loadedMod) clean(&quot;mod loading&quot;);</span>
+<span class="fc" id="L430">        initialized = true;</span>
+<span class="fc" id="L431">        return loadedMod;</span>
+    }
+
+    /**
+     * Load a limited set of options from a file.
+     *
+     * Useful to load the user game and map generator options before
+     * starting a new game.
+     *
+     * @param optionId The root identifier of an option group expected to
+     *     be found in the file.
+     * @param file The &lt;code&gt;File&lt;/code&gt; to load from.
+     * @return The &lt;code&gt;OptionGroup&lt;/code&gt; found.
+     */
+    public OptionGroup loadOptionsFile(String optionId, File file) {
+<span class="fc" id="L446">        OptionGroup group = null;</span>
+<span class="fc" id="L447">        try (</span>
+<span class="nc" id="L448">            FileInputStream fis = new FileInputStream(file);</span>
+<span class="nc" id="L449">            FreeColXMLReader xr = new FreeColXMLReader(fis);</span>
+        ) {
+<span class="nc" id="L451">            xr.nextTag();</span>
+<span class="nc" id="L452">            group = new OptionGroup(this);</span>
+<span class="nc" id="L453">            group.readFromXML(xr);</span>
+<span class="nc bnc" id="L454" title="All 2 branches missed.">            if (!optionId.equals(group.getId())) {</span>
+<span class="nc" id="L455">                Option op = group.getOption(optionId);</span>
+<span class="nc bnc" id="L456" title="All 2 branches missed.">                group = (op instanceof OptionGroup) ? (OptionGroup)op : null;</span>
+            }                   
+<span class="nc" id="L458">            logger.info(&quot;Loaded &quot; + optionId + &quot; group from file &quot;</span>
+<span class="nc" id="L459">                + file.getPath() </span>
+<span class="nc bnc" id="L460" title="All 2 branches missed.">                + ((group == null) ? &quot; failed&quot; : &quot; succeeded&quot;));</span>
+<span class="pc bpc" id="L461" title="15 of 16 branches missed.">        } catch (Exception e) {</span>
+<span class="fc" id="L462">            logger.log(Level.WARNING, &quot;Failed to load OptionGroup &quot;</span>
+<span class="fc" id="L463">                + optionId + &quot; from &quot; + file.getName(), e);</span>
+        }
+<span class="fc" id="L465">        return group;</span>
+    }
+
+    /**
+     * Merge an option group into the spec.
+     *
+     * @param group The &lt;code&gt;OptionGroup&lt;/code&gt; to merge.
+     * @return The merged &lt;code&gt;OptionGroup&lt;/code&gt; from this
+     *     &lt;code&gt;Specification&lt;/code&gt;.
+     */
+    public OptionGroup mergeGroup(OptionGroup group) {
+<span class="fc" id="L476">        OptionGroup realGroup = allOptionGroups.get(group.getId());</span>
+<span class="pc bpc" id="L477" title="3 of 4 branches missed.">        if (realGroup == null || !realGroup.isEditable()) return realGroup;</span>
+
+<span class="nc bnc" id="L479" title="All 2 branches missed.">        for (Option o : group.getOptions()) {</span>
+<span class="nc bnc" id="L480" title="All 2 branches missed.">            if (o instanceof OptionGroup) {</span>
+<span class="nc" id="L481">                mergeGroup((OptionGroup)o);</span>
+<span class="nc" id="L482">            } else {</span>
+<span class="nc" id="L483">                realGroup.add(o);</span>
+            }
+        }
+<span class="nc" id="L486">        return realGroup;</span>
+    }
+                
+    /**
+     * Save a limited set of options to a file.
+     *
+     * Useful to save the user game and map generator options before
+     * starting a new game.
+     *
+     * @param group The &lt;code&gt;OptionGroup&lt;/code&gt; to save.
+     * @param file The &lt;code&gt;File&lt;/code&gt; to save to.
+     * @return The &lt;code&gt;OptionGroup&lt;/code&gt; saved, or null on error.
+     */
+    public static OptionGroup saveOptionsFile(OptionGroup group, File file) {
+<span class="fc bfc" id="L500" title="All 2 branches covered.">        if (group != null) {</span>
+            try {
+<span class="fc" id="L502">                return (group.save(file, FreeColXMLWriter.WriteScope.toSave(),</span>
+<span class="pc bpc" id="L503" title="1 of 2 branches missed.">                                   true)) ? group : null;</span>
+<span class="nc" id="L504">            } catch (Exception e) {</span>
+<span class="nc" id="L505">                logger.log(Level.WARNING, &quot;Failed to save option group &quot;</span>
+<span class="nc" id="L506">                    + group.getId() + &quot; to &quot; + file.getName(), e);</span>
+            }
+        }
+<span class="fc" id="L509">        return null;</span>
+    }
+
+    /**
+     * Clean up the specification.
+     *
+     * Builds all the cached containers and secondary variables.  This
+     * *must* clear any containers before building as it may be called
+     * multiple times in response to various specification updates.
+     *
+     * @param why A short statement of why the specification needed to
+     *     be cleaned.
+     */
+    public void clean(String why) {
+<span class="fc" id="L523">        logger.finest(&quot;Cleaning up specification following &quot; + why + &quot;.&quot;);</span>
+
+<span class="fc" id="L525">        Iterator&lt;FreeColGameObjectType&gt; typeIterator</span>
+<span class="fc" id="L526">            = allTypes.values().iterator();</span>
+<span class="fc bfc" id="L527" title="All 2 branches covered.">        while (typeIterator.hasNext()) {</span>
+<span class="fc" id="L528">            initializeFreeColGameObjectType(typeIterator);</span>
+        }
+
+        // Fix up the GoodsType derived attributes.  Several GoodsType
+        // predicates are likely to fail until this is done.
+<span class="fc" id="L533">        GoodsType.setDerivedAttributes(this);</span>
+
+<span class="fc" id="L535">        clearGoodsList();</span>
+<span class="fc" id="L536">        iterateGoodsType();</span>
+
+<span class="fc" id="L538">        clearEuroIndianNations();</span>
+<span class="fc" id="L539">        iterateNations();</span>
+
+<span class="fc" id="L541">        clearNationTypes();</span>
+<span class="fc" id="L542">        Iterator&lt;EuropeanNationType&gt; iterator = europeanNationTypes.iterator();</span>
+<span class="fc" id="L543">        iterateEuropeanNationType(iterator);</span>
+
+<span class="fc" id="L545">        clearUnitTypesEuro();</span>
+<span class="fc" id="L546">        iterateUnitType();</span>
+
+        // Initialize UI containers.
+<span class="fc" id="L549">        iterateAbstractOptionValues();</span>
+
+        // Initialize the Turn class using GameOptions and messages.
+<span class="fc" id="L552">        initializeTurn();</span>
+<span class="fc" id="L553">        optionsLogic();</span>
+
+        // Apply the customs on coast restriction
+<span class="fc" id="L556">        boolean customsOnCoast = getBoolean(GameOptions.CUSTOMS_ON_COAST);</span>
+<span class="fc bfc" id="L557" title="All 2 branches covered.">        for (Ability a : getBuildingType(&quot;model.building.customHouse&quot;)</span>
+<span class="fc" id="L558">                 .getAbilities(Ability.COASTAL_ONLY)) {</span>
+<span class="fc" id="L559">            a.setValue(customsOnCoast);</span>
+        }
+
+<span class="fc" id="L562">        displayLogInfo(why);</span>
+<span class="fc" id="L563">    }</span>
+
+
+	/**
+	 * 
+	 */
+	private void optionsLogic() {
+		{
+<span class="fc" id="L571">            Option agesOption = getOption(GameOptions.AGES);</span>
+<span class="pc bpc" id="L572" title="1 of 2 branches missed.">            boolean badAges = !(agesOption instanceof TextOption);</span>
+<span class="pc bpc" id="L573" title="1 of 2 branches missed.">            String agesValue = (badAges) ? &quot;&quot;</span>
+<span class="fc" id="L574">                : ((TextOption)agesOption).getValue();</span>
+<span class="fc" id="L575">            String a[] = agesValue.split(&quot;,&quot;);</span>
+<span class="pc bpc" id="L576" title="1 of 2 branches missed.">            badAges |= a.length != NUMBER_OF_AGES-1;</span>
+<span class="pc bpc" id="L577" title="1 of 2 branches missed.">            if (!badAges) {</span>
+                try {
+<span class="fc" id="L579">                    setAges(a);</span>
+<span class="fc" id="L580">                    badAges = ageLogic(badAges);</span>
+<span class="pc" id="L581">                } catch (NumberFormatException nfe) {</span>
+<span class="nc" id="L582">                    badAges = true;</span>
+                }
+            }
+<span class="pc bpc" id="L585" title="1 of 2 branches missed.">            if (badAges) {</span>
+<span class="nc" id="L586">                setBadAges(agesValue);</span>
+            }
+        }
+<span class="fc" id="L589">	}</span>
+
+
+	/**
+	 * @param badAges
+	 * @return
+	 */
+	private boolean ageLogic(boolean badAges) {
+<span class="pc bpc" id="L597" title="2 of 4 branches missed.">		if (ages[1] &lt; 1 || ages[2] &lt; 1) {</span>
+<span class="nc" id="L598">		    badAges = true;</span>
+<span class="pc bpc" id="L599" title="1 of 2 branches missed.">		} else if (ages[1] &gt; ages[2]) {</span>
+<span class="nc" id="L600">		    int tmp = ages[1];</span>
+<span class="nc" id="L601">		    ages[1] = ages[2];</span>
+<span class="nc" id="L602">		    ages[2] = tmp;</span>
+		}
+<span class="fc" id="L604">		return badAges;</span>
+	}
+
+
+	/**
+	 * @param a
+	 */
+	private void setAges(String[] a) {
+<span class="fc" id="L612">		ages[0] = 1;</span>
+<span class="fc" id="L613">		ages[1] = Turn.yearToTurn(Integer.parseInt(a[0]));</span>
+<span class="fc" id="L614">		ages[2] = Turn.yearToTurn(Integer.parseInt(a[1]));</span>
+<span class="fc" id="L615">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void iterateAbstractOptionValues() {
+<span class="fc bfc" id="L622" title="All 2 branches covered.">		for (AbstractOption option : allOptions.values()) {</span>
+<span class="fc" id="L623">            option.generateChoices();</span>
+        }
+<span class="fc" id="L625">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void iterateUnitType() {
+<span class="fc" id="L632">		int bestLandValue = -1, bestNavalValue = -1;</span>
+<span class="fc bfc" id="L633" title="All 2 branches covered.">        for (UnitType unitType : unitTypeList) {</span>
+<span class="fc" id="L634">            checkUnitTypeProperties(unitType);</span>
+<span class="fc bfc" id="L635" title="All 2 branches covered.">            if (unitType.isNaval()) {</span>
+<span class="fc" id="L636">                bestNavalValue = checkBestNavalValue(bestNavalValue, unitType);</span>
+<span class="fc" id="L637">            } else {</span>
+<span class="fc" id="L638">                bestLandValue = checkBestLandValue(bestLandValue, unitType);</span>
+            }
+        }
+<span class="fc" id="L641">	}</span>
+
+
+	/**
+	 * @param iterator
+	 */
+	private void iterateEuropeanNationType(Iterator&lt;EuropeanNationType&gt; iterator) {
+<span class="fc bfc" id="L648" title="All 2 branches covered.">		while (iterator.hasNext()) {</span>
+<span class="fc" id="L649">            initializeEuropeanNationType(iterator);</span>
+        }
+<span class="fc" id="L651">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void iterateNations() {
+<span class="fc bfc" id="L658" title="All 2 branches covered.">		for (Nation nation : nations) {</span>
+<span class="fc" id="L659">            checkNationProperties(nation);</span>
+        }
+<span class="fc" id="L661">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void iterateGoodsType() {
+<span class="fc bfc" id="L668" title="All 2 branches covered.">		for (GoodsType goodsType : goodsTypeList) {</span>
+<span class="fc" id="L669">            getGoodsTypeProperties(goodsType);</span>
+        }
+<span class="fc" id="L671">	}</span>
+
+
+	/**
+	 * @param agesValue
+	 */
+	private void setBadAges(String agesValue) {
+<span class="nc" id="L678">		logger.warning(&quot;Bad ages: &quot; + agesValue);</span>
+<span class="nc" id="L679">		ages[0] = 1;   // First turn</span>
+<span class="nc" id="L680">		ages[1] = Turn.yearToTurn(1600);</span>
+<span class="nc" id="L681">		ages[2] = Turn.yearToTurn(1700);</span>
+<span class="nc" id="L682">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void initializeTurn() {
+<span class="fc" id="L689">		Turn.initialize(getInteger(GameOptions.STARTING_YEAR),</span>
+<span class="fc" id="L690">                        getInteger(GameOptions.SEASON_YEAR),</span>
+<span class="fc" id="L691">                        getInteger(GameOptions.SEASONS));</span>
+<span class="fc" id="L692">	}</span>
+
+
+	/**
+	 * @param unitType
+	 */
+	private void checkUnitTypeProperties(UnitType unitType) {
+<span class="fc" id="L699">		checkDefaultUnitType(unitType);</span>
+<span class="fc" id="L700">		checkUnitTypeNeedsGoodsToBuild(unitType);</span>
+<span class="fc" id="L701">		checkUnitTypeGetExpertProd(unitType);</span>
+<span class="fc" id="L702">		checkUnitTypeHasPrice(unitType);</span>
+<span class="fc" id="L703">	}</span>
+
+
+	/**
+	 * @param iterator
+	 */
+	private void initializeEuropeanNationType(Iterator&lt;EuropeanNationType&gt; iterator) {
+<span class="fc" id="L710">		EuropeanNationType nationType = iterator.next();</span>
+<span class="fc" id="L711">		checkNationTypeREF(iterator, nationType);</span>
+<span class="fc" id="L712">	}</span>
+
+
+	/**
+	 * @param typeIterator
+	 */
+	private void initializeFreeColGameObjectType(Iterator&lt;FreeColGameObjectType&gt; typeIterator) {
+<span class="fc" id="L719">		FreeColGameObjectType type = typeIterator.next();</span>
+<span class="fc" id="L720">		checkTypeAbstract(typeIterator, type);</span>
+<span class="fc" id="L721">	}</span>
+
+
+	/**
+	 * @param why
+	 */
+	private void displayLogInfo(String why) {
+<span class="fc" id="L728">		logger.info(&quot;Specification clean following &quot; + why + &quot; complete&quot;</span>
+<span class="fc" id="L729">            + &quot;, starting year=&quot; + Turn.getStartingYear()</span>
+<span class="fc" id="L730">            + &quot;, season year=&quot; + Turn.getSeasonYear()</span>
+<span class="fc" id="L731">            + &quot;, ages=[&quot; + ages[0] + &quot;,&quot; + ages[1] + &quot;,&quot; + ages[2] + &quot;]&quot;</span>
+<span class="fc" id="L732">            + &quot;, seasons=&quot; + Turn.getSeasonNumber()</span>
+<span class="fc" id="L733">            + &quot;, &quot; + allTypes.size() + &quot; FreeColGameObjectTypes&quot;</span>
+<span class="fc" id="L734">            + &quot;, &quot; + allAbilities.size() + &quot; Abilities&quot;</span>
+<span class="fc" id="L735">            + &quot;, &quot; + buildingTypeList.size() + &quot; BuildingTypes&quot;</span>
+<span class="fc" id="L736">            + &quot;, &quot; + disasters.size() + &quot; Disasters&quot;</span>
+<span class="fc" id="L737">            + &quot;, &quot; + europeanNationTypes.size() + &quot; EuropeanNationTypes&quot;</span>
+<span class="fc" id="L738">            + &quot;, &quot; + events.size() + &quot; Events&quot;</span>
+<span class="fc" id="L739">            + &quot;, &quot; + foundingFathers.size() + &quot; FoundingFathers&quot;</span>
+<span class="fc" id="L740">            + &quot;, &quot; + goodsTypeList.size() + &quot; GoodsTypes&quot;</span>
+<span class="fc" id="L741">            + &quot;, &quot; + indianNationTypes.size() + &quot; IndianNationTypes&quot;</span>
+<span class="fc" id="L742">            + &quot;, &quot; + allModifiers.size() + &quot; Modifiers&quot;</span>
+<span class="fc" id="L743">            + &quot;, &quot; + nations.size() + &quot; Nations&quot;</span>
+<span class="fc" id="L744">            + &quot;, &quot; + allOptions.size() + &quot; Options&quot;</span>
+<span class="fc" id="L745">            + &quot;, &quot; + allOptionGroups.size() + &quot; Option Groups&quot;</span>
+<span class="fc" id="L746">            + &quot;, &quot; + resourceTypeList.size() + &quot; ResourceTypes&quot;</span>
+<span class="fc" id="L747">            + &quot;, &quot; + roles.size() + &quot; Roles&quot;</span>
+<span class="fc" id="L748">            + &quot;, &quot; + tileTypeList.size() + &quot; TileTypes&quot;</span>
+<span class="fc" id="L749">            + &quot;, &quot; + tileImprovementTypeList.size() + &quot; TileImprovementTypes&quot;</span>
+<span class="fc" id="L750">            + &quot;, &quot; + unitTypeList.size() + &quot; UnitTypes&quot;</span>
+<span class="fc" id="L751">            + &quot; read.&quot;);</span>
+<span class="fc" id="L752">	}</span>
+
+
+	/**
+	 * @param bestLandValue
+	 * @param unitType
+	 * @return
+	 */
+	private int checkBestLandValue(int bestLandValue, UnitType unitType) {
+<span class="fc bfc" id="L761" title="All 2 branches covered.">		if (bestLandValue &lt; unitType.getMovement()) {</span>
+<span class="fc" id="L762">		    bestLandValue = unitType.getMovement();</span>
+<span class="fc" id="L763">		    fastestLandUnitType = unitType;</span>
+		}
+<span class="fc" id="L765">		return bestLandValue;</span>
+	}
+
+
+	/**
+	 * @param bestNavalValue
+	 * @param unitType
+	 * @return
+	 */
+	private int checkBestNavalValue(int bestNavalValue, UnitType unitType) {
+<span class="fc bfc" id="L775" title="All 2 branches covered.">		if (bestNavalValue &lt; unitType.getMovement()) {</span>
+<span class="fc" id="L776">		    bestNavalValue = unitType.getMovement();</span>
+<span class="fc" id="L777">		    fastestNavalUnitType = unitType;</span>
+		}
+<span class="fc" id="L779">		return bestNavalValue;</span>
+	}
+
+
+	/**
+	 * @param unitType
+	 */
+	private void checkUnitTypeHasPrice(UnitType unitType) {
+<span class="fc bfc" id="L787" title="All 2 branches covered.">		if (unitType.hasPrice()) {</span>
+<span class="fc" id="L788">		    checkUnitTypeGetSkill(unitType);</span>
+		}
+<span class="fc" id="L790">	}</span>
+
+
+	/**
+	 * @param unitType
+	 */
+	private void checkUnitTypeGetSkill(UnitType unitType) {
+<span class="fc bfc" id="L797" title="All 2 branches covered.">		if (unitType.getSkill() &gt; 0) {</span>
+<span class="fc" id="L798">		    unitTypesTrainedInEurope.add(unitType);</span>
+<span class="pc bpc" id="L799" title="1 of 2 branches missed.">		} else if (!unitType.hasSkill()) {</span>
+<span class="fc" id="L800">		    unitTypesPurchasedInEurope.add(unitType);</span>
+		}
+<span class="fc" id="L802">	}</span>
+
+
+	/**
+	 * @param unitType
+	 */
+	private void checkUnitTypeGetExpertProd(UnitType unitType) {
+<span class="fc bfc" id="L809" title="All 2 branches covered.">		if (unitType.getExpertProduction() != null) {</span>
+<span class="fc" id="L810">		    experts.put(unitType.getExpertProduction(), unitType);</span>
+		}
+<span class="fc" id="L812">	}</span>
+
+
+	/**
+	 * @param unitType
+	 */
+	private void checkUnitTypeNeedsGoodsToBuild(UnitType unitType) {
+<span class="fc bfc" id="L819" title="All 2 branches covered.">		if (unitType.needsGoodsToBuild()</span>
+<span class="fc bfc" id="L820" title="All 2 branches covered.">		    &amp;&amp; !unitType.hasAbility(Ability.BORN_IN_COLONY)) {</span>
+<span class="fc" id="L821">		    buildableUnitTypes.add(unitType);</span>
+		}
+<span class="fc" id="L823">	}</span>
+
+
+	/**
+	 * @param unitType
+	 */
+	private void checkDefaultUnitType(UnitType unitType) {
+<span class="fc bfc" id="L830" title="All 2 branches covered.">		if (unitType.isDefaultUnitType()) defaultUnitTypes.add(unitType);</span>
+<span class="fc" id="L831">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void clearUnitTypesEuro() {
+<span class="fc" id="L838">		experts.clear();</span>
+<span class="fc" id="L839">        unitTypesTrainedInEurope.clear();</span>
+<span class="fc" id="L840">        unitTypesPurchasedInEurope.clear();</span>
+<span class="fc" id="L841">        defaultUnitTypes.clear();</span>
+<span class="fc" id="L842">	}</span>
+
+
+	/**
+	 * @param iterator
+	 * @param nationType
+	 */
+	private void checkNationTypeREF(Iterator&lt;EuropeanNationType&gt; iterator, EuropeanNationType nationType) {
+<span class="fc bfc" id="L850" title="All 2 branches covered.">		if (nationType.isREF()) {</span>
+<span class="fc" id="L851">		    REFNationTypes.add(nationType);</span>
+<span class="fc" id="L852">		    iterator.remove();</span>
+		}
+<span class="fc" id="L854">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void clearNationTypes() {
+<span class="fc" id="L861">		nationTypes.clear();</span>
+<span class="fc" id="L862">        nationTypes.addAll(indianNationTypes);</span>
+<span class="fc" id="L863">        nationTypes.addAll(europeanNationTypes);</span>
+<span class="fc" id="L864">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void clearEuroIndianNations() {
+<span class="fc" id="L871">		REFNations.clear();</span>
+<span class="fc" id="L872">        europeanNations.clear();</span>
+<span class="fc" id="L873">        indianNations.clear();</span>
+<span class="fc" id="L874">	}</span>
+
+
+	/**
+	 * @param nation
+	 */
+	private void checkNationProperties(Nation nation) {
+<span class="fc bfc" id="L881" title="All 2 branches covered.">		if (nation.getType().isEuropean()) {</span>
+<span class="fc bfc" id="L882" title="All 2 branches covered.">		    if (nation.isUnknownEnemy()) {</span>
+<span class="fc" id="L883">		        return;</span>
+<span class="fc bfc" id="L884" title="All 2 branches covered.">		    } else if (nation.getType().isREF()) {</span>
+<span class="fc" id="L885">		        REFNations.add(nation);</span>
+<span class="fc" id="L886">		    } else {</span>
+<span class="fc" id="L887">		        europeanNations.add(nation);</span>
+		    }
+<span class="fc" id="L889">		} else {</span>
+<span class="fc" id="L890">		    indianNations.add(nation);</span>
+		}
+<span class="fc" id="L892">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void getGoodsTypeProperties(GoodsType goodsType) {
+<span class="fc" id="L899">		checkGoodstype(goodsType);</span>
+<span class="fc" id="L900">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodstype(GoodsType goodsType) {
+<span class="fc" id="L907">		checkGoodsStorable(goodsType);</span>
+<span class="fc" id="L908">		checkGoodsFarmed(goodsType);</span>
+<span class="fc" id="L909">		checkGoodsFoodType(goodsType);</span>
+<span class="fc" id="L910">		checkGoodsTypeLuxury(goodsType);</span>
+<span class="fc" id="L911">		checkGoodsLiberty(goodsType);</span>
+<span class="fc" id="L912">		checkGoodsImmigration(goodsType);</span>
+<span class="fc" id="L913">		checkGoodsRaw(goodsType);</span>
+<span class="fc" id="L914">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodsRaw(GoodsType goodsType) {
+<span class="fc bfc" id="L921" title="All 4 branches covered.">		if (goodsType.isRawBuildingMaterial() &amp;&amp; !goodsType.isFoodType()) {</span>
+<span class="fc" id="L922">		    addRawBuildingGoods(goodsType);</span>
+		}
+<span class="fc" id="L924">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodsImmigration(GoodsType goodsType) {
+<span class="fc bfc" id="L931" title="All 2 branches covered.">		if (goodsType.isImmigrationType()) {</span>
+<span class="fc" id="L932">		    addImmigrationGoods(goodsType);</span>
+		}
+<span class="fc" id="L934">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodsLiberty(GoodsType goodsType) {
+<span class="fc bfc" id="L941" title="All 2 branches covered.">		if (goodsType.isLibertyType()) {</span>
+<span class="fc" id="L942">		    addLibertyGoods(goodsType);</span>
+		}
+<span class="fc" id="L944">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodsTypeLuxury(GoodsType goodsType) {
+<span class="fc bfc" id="L951" title="All 2 branches covered.">		if (goodsType.isNewWorldGoodsType()) {</span>
+<span class="fc" id="L952">		    newWorldGoodsTypeList.add(goodsType);</span>
+<span class="pc bpc" id="L953" title="1 of 2 branches missed.">		    if (goodsType.isNewWorldLuxuryType()) {</span>
+<span class="nc" id="L954">		        addNewWorldLuxury(goodsType);</span>
+		    }
+		}
+<span class="fc" id="L957">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodsFoodType(GoodsType goodsType) {
+<span class="fc bfc" id="L964" title="All 2 branches covered.">		if (goodsType.isFoodType()) {</span>
+<span class="fc" id="L965">		    addfoodGoods(goodsType);</span>
+		}
+<span class="fc" id="L967">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodsFarmed(GoodsType goodsType) {
+<span class="fc bfc" id="L974" title="All 2 branches covered.">		if (goodsType.isFarmed()) {</span>
+<span class="fc" id="L975">		    addFarmedGoods(goodsType);</span>
+		}
+<span class="fc" id="L977">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void checkGoodsStorable(GoodsType goodsType) {
+<span class="fc bfc" id="L984" title="All 2 branches covered.">		if (goodsType.isStorable()) {</span>
+<span class="fc" id="L985">		    addStorable(goodsType);</span>
+		}
+<span class="fc" id="L987">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void addRawBuildingGoods(GoodsType goodsType) {
+<span class="fc" id="L994">		rawBuildingGoodsTypeList.add(goodsType);</span>
+<span class="fc" id="L995">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void addImmigrationGoods(GoodsType goodsType) {
+<span class="fc" id="L1002">		immigrationGoodsTypeList.add(goodsType);</span>
+<span class="fc" id="L1003">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void addLibertyGoods(GoodsType goodsType) {
+<span class="fc" id="L1010">		libertyGoodsTypeList.add(goodsType);</span>
+<span class="fc" id="L1011">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void addNewWorldLuxury(GoodsType goodsType) {
+<span class="nc" id="L1018">		newWorldLuxuryGoodsTypeList.add(goodsType);</span>
+<span class="nc" id="L1019">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void addfoodGoods(GoodsType goodsType) {
+<span class="fc" id="L1026">		foodGoodsTypeList.add(goodsType);</span>
+<span class="fc" id="L1027">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void addFarmedGoods(GoodsType goodsType) {
+<span class="fc" id="L1034">		farmedGoodsTypeList.add(goodsType);</span>
+<span class="fc" id="L1035">	}</span>
+
+
+	/**
+	 * @param goodsType
+	 */
+	private void addStorable(GoodsType goodsType) {
+<span class="fc" id="L1042">		storableGoodsTypeList.add(goodsType);</span>
+<span class="fc" id="L1043">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void clearGoodsList() {
+<span class="fc" id="L1050">		storableGoodsTypeList.clear();</span>
+<span class="fc" id="L1051">        farmedGoodsTypeList.clear();</span>
+<span class="fc" id="L1052">        foodGoodsTypeList.clear();</span>
+<span class="fc" id="L1053">        newWorldGoodsTypeList.clear();</span>
+<span class="fc" id="L1054">        newWorldLuxuryGoodsTypeList.clear();</span>
+<span class="fc" id="L1055">        libertyGoodsTypeList.clear();</span>
+<span class="fc" id="L1056">        immigrationGoodsTypeList.clear();</span>
+<span class="fc" id="L1057">        rawBuildingGoodsTypeList.clear();</span>
+<span class="fc" id="L1058">	}</span>
+
+
+	/**
+	 * @param typeIterator
+	 * @param type
+	 */
+	private void checkTypeAbstract(Iterator&lt;FreeColGameObjectType&gt; typeIterator, FreeColGameObjectType type) {
+<span class="fc bfc" id="L1066" title="All 2 branches covered.">		if (type.isAbstractType()) {</span>
+<span class="fc" id="L1067">		    typeIterator.remove();</span>
+		}
+<span class="fc" id="L1069">	}</span>
+
+    /**
+     * Disable editing of some critical option groups.
+     */
+    public void disableEditing() {
+<span class="fc bfc" id="L1075" title="All 2 branches covered.">        for (String s : new String[] {</span>
+<span class="fc" id="L1076">                GameOptions.getXMLElementTagName(),</span>
+<span class="fc" id="L1077">                MapGeneratorOptions.getXMLElementTagName(),</span>
+<span class="fc" id="L1078">                DIFFICULTY_LEVELS</span>
+            }) {
+<span class="fc" id="L1080">            OptionGroup og = allOptionGroups.get(s);</span>
+<span class="fc bfc" id="L1081" title="All 2 branches covered.">            if (og != null) og.setEditable(false);</span>
+        }
+<span class="fc" id="L1083">    }</span>
+
+    /**
+     * Generate the dynamic options.
+     *
+     * Only call this in the server.  If clients call it the European
+     * prices can be desynchronized.
+     */
+    public void generateDynamicOptions() {
+<span class="fc" id="L1092">        logger.finest(&quot;Generating dynamic options.&quot;);</span>
+<span class="fc" id="L1093">        OptionGroup prices = new OptionGroup(GameOptions.GAMEOPTIONS_PRICES, this);</span>
+<span class="fc" id="L1094">        allOptionGroups.put(prices.getId(), prices);</span>
+<span class="fc bfc" id="L1095" title="All 2 branches covered.">        for (GoodsType goodsType : goodsTypeList) {</span>
+<span class="fc" id="L1096">            String name = goodsType.getSuffix(&quot;model.goods.&quot;);</span>
+<span class="fc" id="L1097">            String base = &quot;model.option.&quot; + name + &quot;.&quot;;</span>
+<span class="fc bfc" id="L1098" title="All 2 branches covered.">            if (goodsType.getInitialSellPrice() &gt; 0) {</span>
+<span class="fc bfc" id="L1099" title="All 2 branches covered.">                int diff = (goodsType.isNewWorldGoodsType()</span>
+<span class="fc bfc" id="L1100" title="All 2 branches covered.">                    || goodsType.isNewWorldLuxuryType()) ? 3 : 0;</span>
+<span class="fc" id="L1101">                IntegerOption minimum</span>
+<span class="fc" id="L1102">                    = new IntegerOption(base + &quot;minimumPrice&quot;, this);</span>
+<span class="fc" id="L1103">                minimum.setValue(goodsType.getInitialSellPrice());</span>
+<span class="fc" id="L1104">                minimum.setMinimumValue(1);</span>
+<span class="fc" id="L1105">                minimum.setMaximumValue(100);</span>
+<span class="fc" id="L1106">                prices.add(minimum);</span>
+<span class="fc" id="L1107">                addAbstractOption(minimum);</span>
+<span class="fc" id="L1108">                IntegerOption maximum</span>
+<span class="fc" id="L1109">                    = new IntegerOption(base + &quot;maximumPrice&quot;, this);</span>
+<span class="fc" id="L1110">                maximum.setValue(goodsType.getInitialSellPrice() + diff);</span>
+<span class="fc" id="L1111">                maximum.setMinimumValue(1);</span>
+<span class="fc" id="L1112">                maximum.setMaximumValue(100);</span>
+<span class="fc" id="L1113">                prices.add(maximum);</span>
+<span class="fc" id="L1114">                addAbstractOption(maximum);</span>
+<span class="fc" id="L1115">                IntegerOption spread</span>
+<span class="fc" id="L1116">                    = new IntegerOption(base + &quot;spread&quot;, this);</span>
+<span class="fc" id="L1117">                spread.setValue(goodsType.getPriceDifference());</span>
+<span class="fc" id="L1118">                spread.setMinimumValue(1);</span>
+<span class="fc" id="L1119">                spread.setMaximumValue(100);</span>
+<span class="fc" id="L1120">                prices.add(spread);</span>
+<span class="fc" id="L1121">                addAbstractOption(spread);</span>
+<span class="fc bfc" id="L1122" title="All 2 branches covered.">            } else if (goodsType.getPrice() &lt; FreeColGameObjectType.INFINITY) {</span>
+<span class="fc" id="L1123">                IntegerOption price</span>
+<span class="fc" id="L1124">                    = new IntegerOption(base + &quot;price&quot;, this);</span>
+<span class="fc" id="L1125">                price.setValue(goodsType.getPrice());</span>
+<span class="fc" id="L1126">                price.setMinimumValue(1);</span>
+<span class="fc" id="L1127">                price.setMaximumValue(100);</span>
+<span class="fc" id="L1128">                prices.add(price);</span>
+<span class="fc" id="L1129">                addAbstractOption(price);</span>
+            }
+        }
+<span class="fc" id="L1132">        getGameOptions().add(prices);</span>
+<span class="fc" id="L1133">    }</span>
+
+
+    private interface ChildReader {
+        public void readChildren(FreeColXMLReader xr) throws XMLStreamException;
+    }
+
+<span class="fc" id="L1140">    private class ModifierReader implements ChildReader {</span>
+
+        @Override
+        public void readChildren(FreeColXMLReader xr) throws XMLStreamException {
+<span class="fc bfc" id="L1144" title="All 2 branches covered.">            while (xr.nextTag() != XMLStreamConstants.END_ELEMENT) {</span>
+<span class="fc" id="L1145">                Modifier modifier = new Modifier(xr, Specification.this);</span>
+<span class="fc" id="L1146">                Specification.this.addModifier(modifier);</span>
+<span class="fc" id="L1147">                Specification.this.specialModifiers.add(modifier);</span>
+            }
+<span class="fc" id="L1149">        }</span>
+    }
+
+    private class TypeReader&lt;T extends FreeColGameObjectType&gt; implements ChildReader {
+
+        private final Class&lt;T&gt; type;
+        private final List&lt;T&gt; result;
+<span class="fc" id="L1156">        private int index = 0;</span>
+
+        // Is there really no easy way to capture T?
+<span class="fc" id="L1159">        public TypeReader(Class&lt;T&gt; type, List&lt;T&gt; listToFill) {</span>
+<span class="fc" id="L1160">            result = listToFill;</span>
+<span class="fc" id="L1161">            this.type = type;</span>
+<span class="fc" id="L1162">        }</span>
+
+        @Override
+        public void readChildren(FreeColXMLReader xr) throws XMLStreamException {
+<span class="fc bfc" id="L1166" title="All 2 branches covered.">            while (xr.nextTag() != XMLStreamConstants.END_ELEMENT) {</span>
+<span class="fc" id="L1167">                final String tag = xr.getLocalName();</span>
+<span class="fc" id="L1168">                String id = xr.readId();</span>
+<span class="fc" id="L1169">                checkObjectType(xr, tag, id);</span>
+            }
+<span class="fc" id="L1171">        }</span>
+
+		/**
+		 * @param xr
+		 * @param tag
+		 * @param id
+		 * @throws XMLStreamException
+		 */
+		private void checkObjectType(FreeColXMLReader xr, final String tag, String id) throws XMLStreamException {
+<span class="pc bpc" id="L1180" title="1 of 2 branches missed.">			if (id == null) {</span>
+<span class="nc" id="L1181">			    logger.warning(&quot;Null identifier, tag: &quot; + tag);</span>
+
+<span class="pc bfc" id="L1183" title="All 2 branches covered.">			} else if (FreeColGameObjectType.DELETE_TAG.equals(tag)) {</span>
+<span class="fc" id="L1184">			    FreeColGameObjectType object = allTypes.remove(id);</span>
+<span class="pc bpc" id="L1185" title="1 of 2 branches missed.">			    if (object != null) result.remove(object);</span>
+
+<span class="fc" id="L1187">			} else {</span>
+<span class="fc" id="L1188">			    T object = getType(id, type);</span>
+<span class="fc" id="L1189">			    allTypes.put(id, object);</span>
+
+			    // If this an existing object (with id) and the
+			    // PRESERVE tag is present, then leave the
+			    // attributes intact and only read the child
+			    // elements, otherwise do a full attribute
+			    // inclusive read.  This allows mods and spec
+			    // extensions to not have to re-specify all the
+			    // attributes when just changing the children.
+<span class="fc" id="L1198">			    checkObjectId(xr, object);</span>
+<span class="fc" id="L1199">			    checkObjectAbstract(object);</span>
+			}
+<span class="fc" id="L1201">		}</span>
+
+		/**
+		 * @param object
+		 */
+		private void checkObjectAbstract(T object) {
+<span class="fc bfc" id="L1207" title="All 4 branches covered.">			if (!object.isAbstractType() &amp;&amp; !result.contains(object)) {</span>
+<span class="fc" id="L1208">			    result.add(object);</span>
+<span class="fc" id="L1209">			    object.setIndex(index);</span>
+<span class="fc" id="L1210">			    index++;</span>
+			}
+<span class="fc" id="L1212">		}</span>
+
+		/**
+		 * @param xr
+		 * @param object
+		 * @throws XMLStreamException
+		 */
+		private void checkObjectId(FreeColXMLReader xr, T object) throws XMLStreamException {
+<span class="pc bpc" id="L1220" title="1 of 2 branches missed.">			if (object.getId() != null</span>
+<span class="fc bfc" id="L1221" title="All 2 branches covered.">			    &amp;&amp; xr.getAttribute(FreeColGameObjectType.PRESERVE_TAG,</span>
+<span class="fc" id="L1222">			                       (String)null) != null) {</span>
+<span class="fc" id="L1223">			    object.readChildren(xr);</span>
+<span class="fc" id="L1224">			} else {</span>
+<span class="fc" id="L1225">			    object.readFromXML(xr);</span>
+			}
+<span class="fc" id="L1227">		}</span>
+    }
+
+    /**
+     * Options are special as they live in the allOptionGroups
+     * collection, which has its own particular semantics.  So they
+     * need their own reader.
+     */
+<span class="fc" id="L1235">    private class OptionReader implements ChildReader {</span>
+
+        private static final String RECURSIVE_TAG = &quot;recursive&quot;;
+
+        @Override
+        public void readChildren(FreeColXMLReader xr) throws XMLStreamException {
+<span class="fc bfc" id="L1241" title="All 2 branches covered.">            while (xr.nextTag() != XMLStreamConstants.END_ELEMENT) {</span>
+<span class="fc" id="L1242">                readChild(xr);</span>
+            }
+<span class="fc" id="L1244">        }</span>
+
+        private void readChild(FreeColXMLReader xr) throws XMLStreamException {
+<span class="fc" id="L1247">            final String tag = xr.getLocalName();</span>
+
+<span class="fc" id="L1249">            boolean recursive = xr.getAttribute(RECURSIVE_TAG, true);</span>
+
+<span class="pc bpc" id="L1251" title="1 of 2 branches missed.">            if (OptionGroup.getXMLElementTagName().equals(tag)) {</span>
+<span class="fc" id="L1252">                String id = xr.readId();</span>
+<span class="fc" id="L1253">                OptionGroup group = allOptionGroups.get(id);</span>
+<span class="fc bfc" id="L1254" title="All 2 branches covered.">                if (group == null) {</span>
+<span class="fc" id="L1255">                    group = new OptionGroup(id, Specification.this);</span>
+<span class="fc" id="L1256">                    allOptionGroups.put(id, group);</span>
+                }
+<span class="fc" id="L1258">                group.readFromXML(xr);</span>
+<span class="fc" id="L1259">                Specification.this.addOptionGroup(group, recursive);</span>
+
+<span class="fc" id="L1261">            } else {</span>
+<span class="nc" id="L1262">                logger.warning(OptionGroup.getXMLElementTagName()</span>
+<span class="nc" id="L1263">                    + &quot; expected in OptionReader, not: &quot; + tag);</span>
+<span class="nc" id="L1264">                xr.nextTag();</span>
+            }
+<span class="fc" id="L1266">        }</span>
+    }
+
+    // ---------------------------------------------------------- retrieval
+    // methods
+
+    /**
+     * Get the specification identifier.
+     *
+     * @return The specification identifier.
+     */
+    public String getId() {
+<span class="fc" id="L1278">        return id;</span>
+    }
+
+    /**
+     * Get the specification version.
+     *
+     * @return The specification version.
+     */
+    public String getVersion() {
+<span class="fc" id="L1287">        return version;</span>
+    }
+
+    /**
+     * Registers an Ability as defined.
+     *
+     * @param ability an &lt;code&gt;Ability&lt;/code&gt; value
+     */
+    public void addAbility(Ability ability) {
+<span class="fc" id="L1296">        String id = ability.getId();</span>
+<span class="fc" id="L1297">        addAbility(id);</span>
+<span class="fc" id="L1298">        allAbilities.get(id).add(ability);</span>
+<span class="fc" id="L1299">    }</span>
+
+    /**
+     * Registers an Ability's id as defined.  This is useful for
+     * abilities that are required rather than provided by
+     * FreeColGameObjectTypes.
+     *
+     * @param id The object identifier.
+     */
+    public void addAbility(String id) {
+<span class="fc bfc" id="L1309" title="All 2 branches covered.">        if (!allAbilities.containsKey(id)) {</span>
+<span class="fc" id="L1310">            allAbilities.put(id, new ArrayList&lt;Ability&gt;());</span>
+        }
+<span class="fc" id="L1312">    }</span>
+
+    /**
+     * Get all the Abilities with the given identifier.
+     *
+     * @param id The object identifier to look for.
+     */
+    public List&lt;Ability&gt; getAbilities(String id) {
+<span class="fc" id="L1320">        return allAbilities.get(id);</span>
+    }
+
+    /**
+     * Add a modifier.
+     *
+     * @param modifier The &lt;code&gt;Modifier&lt;/code&gt; to add.
+     */
+    public void addModifier(Modifier modifier) {
+<span class="fc" id="L1329">        String id = modifier.getId();</span>
+<span class="fc bfc" id="L1330" title="All 2 branches covered.">        if (!allModifiers.containsKey(id)) {</span>
+<span class="fc" id="L1331">            allModifiers.put(id, new ArrayList&lt;Modifier&gt;());</span>
+        }
+<span class="fc" id="L1333">        allModifiers.get(id).add(modifier);</span>
+<span class="fc" id="L1334">    }</span>
+
+    /**
+     * Get all the Modifiers with the given identifier.
+     *
+     * @param id The object identifier to look for.
+     */
+    public List&lt;Modifier&gt; getModifiers(String id) {
+<span class="fc" id="L1342">        List&lt;Modifier&gt; result = allModifiers.get(id);</span>
+<span class="fc bfc" id="L1343" title="All 2 branches covered.">        return (result == null) ? Collections.&lt;Modifier&gt;emptyList() : result;</span>
+    }
+
+
+    // Option routines
+
+    /**
+     * Is option with this identifier present?  This is helpful when
+     * options are optionally(!) present, for example
+     * model.option.priceIncrease.artillery exists but
+     * model.option.priceIncrease.frigate does not.
+     *
+     * @param id The object identifier to test.
+     * @return True/false on presence of option id.
+     */
+    public boolean hasOption(String id) {
+<span class="fc bfc" id="L1359" title="All 4 branches covered.">        return id != null &amp;&amp; allOptions.containsKey(id);</span>
+    }
+
+    /**
+     * Get the &lt;code&gt;AbstractOption&lt;/code&gt; with the given identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;AbstractOption&lt;/code&gt; found.
+     * @exception IllegalArgumentException if the identifier is null
+     *     or not present.
+     */
+    public AbstractOption getOption(String id) throws IllegalArgumentException {
+<span class="pc bpc" id="L1371" title="1 of 2 branches missed.">        if (id == null) {</span>
+<span class="nc" id="L1372">            throw new IllegalArgumentException(&quot;AbstractOption with null id.&quot;);</span>
+<span class="pc bpc" id="L1373" title="1 of 2 branches missed.">        } else if (!allOptions.containsKey(id)) {</span>
+<span class="nc" id="L1374">            throw new IllegalArgumentException(&quot;Missing AbstractOption: &quot; + id);</span>
+        } else {
+<span class="fc" id="L1376">            return allOptions.get(id);</span>
+        }
+    }
+
+    /**
+     * Get the &lt;code&gt;OptionGroup&lt;/code&gt; with the given identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;OptionGroup&lt;/code&gt; found.
+     * @exception IllegalArgumentException if the identifier is null
+     *     or not present.
+     */
+    public OptionGroup getOptionGroup(String id) throws IllegalArgumentException {
+<span class="pc bpc" id="L1389" title="1 of 2 branches missed.">        if (id == null) {</span>
+<span class="nc" id="L1390">            throw new IllegalArgumentException(&quot;OptionGroup with null id.&quot;);</span>
+<span class="pc bpc" id="L1391" title="1 of 2 branches missed.">        } else if (!allOptionGroups.containsKey(id)) {</span>
+<span class="nc" id="L1392">            throw new IllegalArgumentException(&quot;Missing OptionGroup: &quot; + id);</span>
+        } else {
+<span class="fc" id="L1394">            return allOptionGroups.get(id);</span>
+        }
+    }
+
+    /**
+     * Adds an &lt;code&gt;OptionGroup&lt;/code&gt; to this specification.
+     *
+     * @param optionGroup The &lt;code&gt;OptionGroup&lt;/code&gt; to add.
+     * @param recursive If true, add recursively to subgroups.
+     */
+    public void addOptionGroup(OptionGroup optionGroup, boolean recursive) {
+        // Add the options of the group
+<span class="fc" id="L1406">        Iterator&lt;Option&gt; iter = optionGroup.iterator();</span>
+
+<span class="fc bfc" id="L1408" title="All 2 branches covered.">        while (iter.hasNext()) {</span>
+<span class="fc" id="L1409">            Option option = iter.next();</span>
+<span class="fc bfc" id="L1410" title="All 2 branches covered.">            if (option instanceof OptionGroup) {</span>
+<span class="fc" id="L1411">                allOptionGroups.put(option.getId(), (OptionGroup)option);</span>
+<span class="fc bfc" id="L1412" title="All 2 branches covered.">                if (recursive) {</span>
+<span class="fc" id="L1413">                    addOptionGroup((OptionGroup)option, true);</span>
+                }
+<span class="fc" id="L1415">            } else {</span>
+<span class="fc" id="L1416">                addAbstractOption((AbstractOption)option);</span>
+            }
+        }
+<span class="fc" id="L1419">    }</span>
+
+    /**
+     * Adds an &lt;code&gt;AbstractOption&lt;/code&gt; to this specification.
+     *
+     * @param abstractOption The &lt;code&gt;AbstractOption&lt;/code&gt; to add.
+     */
+    private void addAbstractOption(AbstractOption abstractOption) {
+        // Add the option
+<span class="fc" id="L1428">        allOptions.put(abstractOption.getId(), abstractOption);</span>
+<span class="fc" id="L1429">    }</span>
+
+    /**
+     * Get the &lt;code&gt;IntegerOption&lt;/code&gt; with the given identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;IntegerOption&lt;/code&gt; found.
+     */
+    public IntegerOption getIntegerOption(String id) {
+<span class="fc" id="L1438">        return (IntegerOption)getOption(id);</span>
+    }
+
+    /**
+     * Get the &lt;code&gt;RangeOption&lt;/code&gt; with the given identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;RangeOption&lt;/code&gt; found.
+     */
+    public RangeOption getRangeOption(String id) {
+<span class="fc" id="L1448">        return (RangeOption)getOption(id);</span>
+    }
+
+    /**
+     * Get the &lt;code&gt;BooleanOption&lt;/code&gt; with the given identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;BooleanOption&lt;/code&gt; found.
+     */
+    public BooleanOption getBooleanOption(String id) {
+<span class="fc" id="L1458">        return (BooleanOption)getOption(id);</span>
+    }
+
+    /**
+     * Get the &lt;code&gt;StringOption&lt;/code&gt; with the given identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;StringOption&lt;/code&gt; found.
+     */
+    public StringOption getStringOption(String id) {
+<span class="fc" id="L1468">        return (StringOption) getOption(id);</span>
+    }
+
+    /**
+     * Gets the boolean value of an option.
+     *
+     * @param id The object identifier.
+     * @return The value.
+     * @exception IllegalArgumentException If there is no boolean
+     *     value associated with the specified option.
+     * @exception NullPointerException if the given
+     *     &lt;code&gt;Option&lt;/code&gt; does not exist.
+     */
+    public boolean getBoolean(String id) {
+        try {
+<span class="fc" id="L1483">            return getBooleanOption(id).getValue();</span>
+<span class="nc" id="L1484">        } catch (ClassCastException e) {</span>
+<span class="nc" id="L1485">            throw new IllegalArgumentException(&quot;Not a boolean option: &quot; + id, e);</span>
+        }
+    }
+
+    /**
+     * Gets the integer value of an option.
+     *
+     * @param id The object identifier.
+     * @return The value.
+     * @exception IllegalArgumentException If there is no integer
+     *     value associated with the specified option.
+     * @exception NullPointerException if the given
+     *     &lt;code&gt;Option&lt;/code&gt; does not exist.
+     */
+    public int getInteger(String id) {
+        try {
+<span class="fc" id="L1501">            return getIntegerOption(id).getValue();</span>
+<span class="nc" id="L1502">        } catch (ClassCastException e) {</span>
+<span class="nc" id="L1503">            throw new IllegalArgumentException(&quot;Not an integer option: &quot; + id, e);</span>
+        }
+    }
+
+    /**
+     * Gets the string value of an option.
+     *
+     * @param id The object identifier.
+     * @return The value.
+     * @exception IllegalArgumentException If there is no string
+     *     value associated with the specified option.
+     * @exception NullPointerException if the given
+     *     &lt;code&gt;Option&lt;/code&gt; does not exist.
+     */
+    public String getString(String id) {
+        try {
+<span class="fc" id="L1519">            return getStringOption(id).getValue();</span>
+<span class="nc" id="L1520">        } catch (ClassCastException e) {</span>
+<span class="nc" id="L1521">            throw new IllegalArgumentException(&quot;Not a string option: &quot; + id, e);</span>
+        }
+    }
+
+
+    // -- Buildings --
+
+    public List&lt;BuildingType&gt; getBuildingTypeList() {
+<span class="fc" id="L1529">        return buildingTypeList;</span>
+    }
+
+    /**
+     * Get a building type by identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;BuildingType&lt;/code&gt; found.
+     */
+    public BuildingType getBuildingType(String id) {
+<span class="fc" id="L1539">        return getType(id, BuildingType.class);</span>
+    }
+
+    // -- Goods --
+
+    public List&lt;GoodsType&gt; getGoodsTypeList() {
+<span class="fc" id="L1545">        return new ArrayList&lt;&gt;(goodsTypeList);</span>
+    }
+
+    public List&lt;GoodsType&gt; getStorableGoodsTypeList() {
+<span class="fc" id="L1549">        return new ArrayList&lt;&gt;(storableGoodsTypeList);</span>
+    }
+
+    public List&lt;GoodsType&gt; getFarmedGoodsTypeList() {
+<span class="fc" id="L1553">        return new ArrayList&lt;&gt;(farmedGoodsTypeList);</span>
+    }
+
+    public List&lt;GoodsType&gt; getNewWorldGoodsTypeList() {
+<span class="fc" id="L1557">        return new ArrayList&lt;&gt;(newWorldGoodsTypeList);</span>
+    }
+
+    public List&lt;GoodsType&gt; getNewWorldLuxuryGoodsTypeList() {
+<span class="fc" id="L1561">        return new ArrayList&lt;&gt;(newWorldLuxuryGoodsTypeList);</span>
+    }
+
+    public List&lt;GoodsType&gt; getLibertyGoodsTypeList() {
+<span class="fc" id="L1565">        return new ArrayList&lt;&gt;(libertyGoodsTypeList);</span>
+    }
+
+    public List&lt;GoodsType&gt; getImmigrationGoodsTypeList() {
+<span class="fc" id="L1569">        return new ArrayList&lt;&gt;(immigrationGoodsTypeList);</span>
+    }
+
+    public List&lt;GoodsType&gt; getFoodGoodsTypeList() {
+<span class="fc" id="L1573">        return new ArrayList&lt;&gt;(foodGoodsTypeList);</span>
+    }
+
+    public final List&lt;GoodsType&gt; getRawBuildingGoodsTypeList() {
+<span class="fc" id="L1577">        return new ArrayList&lt;&gt;(rawBuildingGoodsTypeList);</span>
+    }
+
+    /**
+     * The general &quot;Food&quot; type is handled as a special case in many places.
+     * Introduce this routine to collect them into one place, in the hope
+     * we can one day deprecate this routine and clean up the special cases.
+     *
+     * @return The main food type (&quot;model.goods.food&quot;).
+     */
+    public GoodsType getPrimaryFoodType() {
+<span class="fc" id="L1588">        return getGoodsType(&quot;model.goods.food&quot;);</span>
+    }
+
+    /**
+     * Get the initial &lt;em&gt;minimum&lt;/em&gt; price of the given goods
+     * type. The initial price in a particular Market may be higher.
+     *
+     * @param goodsType The &lt;code&gt;GoodsType&lt;/code&gt; to check.
+     * @return The minimum price.
+     */
+    public int getInitialPrice(GoodsType goodsType) {
+<span class="fc" id="L1599">        String suffix = goodsType.getSuffix(&quot;model.goods.&quot;);</span>
+<span class="fc" id="L1600">        String minPrice = &quot;model.option.&quot; + suffix + &quot;.minimumPrice&quot;;</span>
+<span class="fc" id="L1601">        String maxPrice = &quot;model.option.&quot; + suffix + &quot;.maximumPrice&quot;;</span>
+<span class="pc bpc" id="L1602" title="1 of 4 branches missed.">        return (hasOption(minPrice) &amp;&amp; hasOption(maxPrice))</span>
+<span class="fc" id="L1603">            ? Math.min(getInteger(minPrice), getInteger(maxPrice))</span>
+<span class="fc" id="L1604">            : goodsType.getInitialSellPrice();</span>
+    }
+
+    /**
+     * Get a goods type by identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;GoodsType&lt;/code&gt; found.
+     */
+    public GoodsType getGoodsType(String id) {
+<span class="fc" id="L1614">        return getType(id, GoodsType.class);</span>
+    }
+
+    // -- Resources --
+
+    public List&lt;ResourceType&gt; getResourceTypeList() {
+<span class="fc" id="L1620">        return resourceTypeList;</span>
+    }
+
+    /**
+     * Get a resource type by identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;ResourceType&lt;/code&gt; found.
+     */
+    public ResourceType getResourceType(String id) {
+<span class="fc" id="L1630">        return getType(id, ResourceType.class);</span>
+    }
+
+    // -- Tiles --
+
+    public List&lt;TileType&gt; getTileTypeList() {
+<span class="fc" id="L1636">        return tileTypeList;</span>
+    }
+
+    /**
+     * Get a tile type by identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;TileType&lt;/code&gt; found.
+     */
+    public TileType getTileType(String id) {
+<span class="fc" id="L1646">        return getType(id, TileType.class);</span>
+    }
+
+    // -- Improvements --
+
+    public List&lt;TileImprovementType&gt; getTileImprovementTypeList() {
+<span class="fc" id="L1652">        return tileImprovementTypeList;</span>
+    }
+
+    /**
+     * Get a tile improvement type by identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;TileImprovementType&lt;/code&gt; found.
+     */
+    public TileImprovementType getTileImprovementType(String id) {
+<span class="fc" id="L1662">        return getType(id, TileImprovementType.class);</span>
+    }
+
+    // -- Units --
+
+    public List&lt;UnitType&gt; getUnitTypeList() {
+<span class="fc" id="L1668">        return unitTypeList;</span>
+    }
+
+    /**
+     * Get the most vanilla unit type for a given player.
+     *
+     * @param player The &lt;code&gt;Player&lt;/code&gt; to find the default
+     *     unit type for, or null indicating a normal player nation
+     *     (i.e. non-REF European).
+     * @return The default unit type.
+     */
+    public UnitType getDefaultUnitType(Player player) {
+<span class="fc bfc" id="L1680" title="All 2 branches covered.">        return (player == null) ? getDefaultUnitType()</span>
+<span class="fc" id="L1681">            : getDefaultUnitType(player.getNationType());</span>
+    }
+    
+    /**
+     * Get the most vanilla unit type for a type of nation.
+     *
+     * Provides a type to use to make a neutral comparison of the
+     * productivity of work locations.
+     *
+     * @param nationType The &lt;code&gt;NationType&lt;/code&gt; to find the default
+     *     unit type for, or null indicating a normal player nation
+     *     (i.e. non-REF European).
+     * @return The free colonist unit type.
+     */
+    public UnitType getDefaultUnitType(NationType nationType) {
+<span class="fc bfc" id="L1696" title="All 2 branches covered.">        Predicate&lt;UnitType&gt; p = (nationType == null)</span>
+<span class="pc bnc" id="L1697" title="All 2 branches missed.">            ? ut -&gt; !ut.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT)</span>
+<span class="pc bnc" id="L1698" title="All 2 branches missed.">                &amp;&amp; !ut.hasAbility(Ability.REF_UNIT)</span>
+<span class="fc bfc" id="L1699" title="All 2 branches covered.">            : (nationType.isIndian())</span>
+<span class="fc bfc" id="L1700" title="All 2 branches covered.">            ? ut -&gt; ut.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT)</span>
+<span class="pc bpc" id="L1701" title="1 of 2 branches missed.">                &amp;&amp; !ut.hasAbility(Ability.REF_UNIT)</span>
+<span class="fc bfc" id="L1702" title="All 2 branches covered.">            : (nationType.isREF())</span>
+<span class="fc bfc" id="L1703" title="All 2 branches covered.">            ? ut -&gt; !ut.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT)</span>
+<span class="fc bfc" id="L1704" title="All 2 branches covered.">                &amp;&amp; ut.hasAbility(Ability.REF_UNIT)</span>
+<span class="pc bpc" id="L1705" title="1 of 2 branches missed.">            : ut -&gt; !ut.hasAbility(Ability.BORN_IN_INDIAN_SETTLEMENT)</span>
+<span class="pc bpc" id="L1706" title="1 of 2 branches missed.">                &amp;&amp; !ut.hasAbility(Ability.REF_UNIT);</span>
+<span class="fc" id="L1707">        return find(defaultUnitTypes, p, getDefaultUnitType());</span>
+    }
+    
+    /**
+     * Get the most vanilla unit type.
+     *
+     * @return The default unit type.
+     */
+    public UnitType getDefaultUnitType() {
+<span class="fc" id="L1716">        return getUnitType(&quot;model.unit.freeColonist&quot;); // Drop this soon</span>
+    }
+    
+    /**
+     * Get the list of buildable unit types.
+     *
+     * @return The list of buildable unit types.
+     */
+    public List&lt;UnitType&gt; getBuildableUnitTypes() {
+<span class="fc" id="L1725">        return buildableUnitTypes;</span>
+    }
+
+    /**
+     * Get the unit type that is the expert for producing a type of goods.
+     *
+     * @param goodsType The &lt;code&gt;GoodsType&lt;/code&gt; to check.
+     * @return The expert &lt;code&gt;UnitType&lt;/code&gt;, or null if none.
+     */
+    public UnitType getExpertForProducing(GoodsType goodsType) {
+<span class="fc" id="L1735">        return experts.get(goodsType);</span>
+    }
+
+    /**
+     * Get the unit types which have any of the given abilities
+     *
+     * @param abilities The abilities for the search
+     * @return A list of &lt;code&gt;UnitType&lt;/code&gt;s with the abilities.
+     */
+    public List&lt;UnitType&gt; getUnitTypesWithAbility(String... abilities) {
+<span class="fc" id="L1745">        return getTypesWithAbility(UnitType.class, abilities);</span>
+    }
+
+    /**
+     * Get the unit types which have none of the given abilities
+     *
+     * @param abilities The abilities for the search
+     * @return A list of &lt;code&gt;UnitType&lt;/code&gt;s without the abilities.
+     */
+    public List&lt;UnitType&gt; getUnitTypesWithoutAbility(String... abilities) {
+<span class="fc" id="L1755">        return getTypesWithoutAbility(UnitType.class, abilities);</span>
+    }
+
+    /**
+     * Gets the unit types that can be trained in Europe.
+     *
+     * @return A list of Europe-trainable &lt;code&gt;UnitType&lt;/code&gt;s.
+     */
+    public List&lt;UnitType&gt; getUnitTypesTrainedInEurope() {
+<span class="fc" id="L1764">        return unitTypesTrainedInEurope;</span>
+    }
+
+    /**
+     * Get the unit types that can be purchased in Europe.
+     *
+     * @return A list of Europe-purchasable &lt;code&gt;UnitType&lt;/code&gt;s.
+     */
+    public List&lt;UnitType&gt; getUnitTypesPurchasedInEurope() {
+<span class="fc" id="L1773">        return unitTypesPurchasedInEurope;</span>
+    }
+
+    /**
+     * Gets the fastest land unit type in this specification.
+     *
+     * @return The fastest land unit type.
+     */
+    public UnitType getFastestLandUnitType() {
+<span class="fc" id="L1782">        return fastestLandUnitType;</span>
+    }
+
+    /**
+     * Gets the fastest naval unit type in this specification.
+     *
+     * @return The fastest naval unit type.
+     */
+    public UnitType getFastestNavalUnitType() {
+<span class="fc" id="L1791">        return fastestNavalUnitType;</span>
+    }
+
+    /**
+     * Gets the REF unit types.
+     *
+     * @param naval If true, choose naval units, if not, land units.
+     */
+    public List&lt;UnitType&gt; getREFUnitTypes(boolean naval) {
+<span class="fc" id="L1800">        return getUnitTypesWithAbility(Ability.REF_UNIT).stream()</span>
+<span class="fc bfc" id="L1801" title="All 2 branches covered.">            .filter(ut -&gt; ut.isNaval() == naval)</span>
+<span class="fc" id="L1802">            .collect(Collectors.toList());</span>
+    }
+
+    /**
+     * Get a unit type by identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;UnitType&lt;/code&gt; found.
+     */
+    public UnitType getUnitType(String id) {
+<span class="fc" id="L1812">        return getType(id, UnitType.class);</span>
+    }
+
+    // -- Founding Fathers --
+
+    public List&lt;FoundingFather&gt; getFoundingFathers() {
+<span class="fc" id="L1818">        return foundingFathers;</span>
+    }
+
+    /**
+     * Get a founding father type by identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;FoundingFather&lt;/code&gt; found.
+     */
+    public FoundingFather getFoundingFather(String id) {
+<span class="fc" id="L1828">        return getType(id, FoundingFather.class);</span>
+    }
+
+    // -- NationTypes --
+
+    public List&lt;NationType&gt; getNationTypes() {
+<span class="fc" id="L1834">        return nationTypes;</span>
+    }
+
+    public List&lt;EuropeanNationType&gt; getEuropeanNationTypes() {
+<span class="fc" id="L1838">        return europeanNationTypes;</span>
+    }
+
+    public List&lt;EuropeanNationType&gt; getREFNationTypes() {
+<span class="fc" id="L1842">        return REFNationTypes;</span>
+    }
+
+    public List&lt;IndianNationType&gt; getIndianNationTypes() {
+<span class="fc" id="L1846">        return indianNationTypes;</span>
+    }
+
+    /**
+     * Get a nation type by identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;NationType&lt;/code&gt; found.
+     */
+    public NationType getNationType(String id) {
+<span class="fc" id="L1856">        return getType(id, NationType.class);</span>
+    }
+
+    public NationType getDefaultNationType() {
+<span class="fc" id="L1860">        return getNationType(&quot;model.nationType.default&quot;);</span>
+    }
+
+
+    // -- Nations --
+
+    public List&lt;Nation&gt; getNations() {
+<span class="fc" id="L1867">        return nations;</span>
+    }
+
+    public List&lt;Nation&gt; getEuropeanNations() {
+<span class="fc" id="L1871">        return europeanNations;</span>
+    }
+
+    public List&lt;Nation&gt; getIndianNations() {
+<span class="fc" id="L1875">        return indianNations;</span>
+    }
+
+    public List&lt;Nation&gt; getREFNations() {
+<span class="fc" id="L1879">        return REFNations;</span>
+    }
+
+    /**
+     * Get a nation by identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;Nation&lt;/code&gt; found.
+     */
+    public Nation getNation(String id) {
+<span class="fc" id="L1889">        return getType(id, Nation.class);</span>
+    }
+
+    /**
+     * Clear all European advantages.  Implements the Advantages==NONE setting.
+     */
+    public void clearEuropeanNationalAdvantages() {
+<span class="pc bpc" id="L1896" title="1 of 2 branches missed.">        for (Nation n : getEuropeanNations()) {</span>
+<span class="nc" id="L1897">            n.setType(getDefaultNationType());</span>
+        }
+<span class="fc" id="L1899">    }</span>
+
+    // -- Roles --
+
+    public List&lt;Role&gt; getRoles() {
+<span class="fc" id="L1904">        return roles;</span>
+    }
+
+    /**
+     * Get a role by identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;Role&lt;/code&gt; found.
+     */
+    public Role getRole(String id) {
+<span class="fc" id="L1914">        return getType(id, Role.class);</span>
+    }
+
+    /**
+     * Get the default role.
+     *
+     * @return The default &lt;code&gt;Role&lt;/code&gt;.
+     */
+    public Role getDefaultRole() {
+<span class="fc" id="L1923">        return getRole(DEFAULT_ROLE_ID);</span>
+    }
+
+    /**
+     * Get the military roles in this specification, in decreasing order
+     * of effectiveness.
+     *
+     * @return An unmodifiable list of military &lt;code&gt;Role&lt;/code&gt;s.
+     */
+    public List&lt;Role&gt; getMilitaryRoles() {
+<span class="fc bfc" id="L1933" title="All 2 branches covered.">        if (militaryRoles == null) {</span>
+<span class="fc" id="L1934">            this.militaryRoles</span>
+<span class="fc" id="L1935">                = Collections.&lt;Role&gt;unmodifiableList(roles.stream()</span>
+<span class="fc" id="L1936">                    .filter(Role::isOffensive)</span>
+<span class="fc" id="L1937">                    .sorted(Role.militaryComparator)</span>
+<span class="fc" id="L1938">                    .collect(Collectors.toList()));</span>
+        }
+<span class="fc" id="L1940">        return militaryRoles;</span>
+    }
+
+    /**
+     * Get a role with an ability.
+     *
+     * @param id The ability identifier to look for.
+     * @param roles An optional list of &lt;code&gt;Role&lt;/code&gt;s to look in,
+     *     if null all roles are used.
+     * @return The first &lt;code&gt;Role&lt;/code&gt; found with the required
+     *     ability, or null if none found.
+     */
+    public Role getRoleWithAbility(String id, List&lt;Role&gt; roles) {
+<span class="fc" id="L1953">        return find(getRoles(), r -&gt; r.hasAbility(id));</span>
+    }
+
+    /**
+     * Get the missionary role.
+     *
+     * @return The missionary &lt;code&gt;Role&lt;/code&gt;.
+     */
+    public Role getMissionaryRole() {
+<span class="fc" id="L1962">        return getRoleWithAbility(Ability.ESTABLISH_MISSION, null);</span>
+    }
+
+    /**
+     * Get the pioneer role.
+     *
+     * @return The pioneer &lt;code&gt;Role&lt;/code&gt;.
+     */
+    public Role getPioneerRole() {
+<span class="fc" id="L1971">        return getRoleWithAbility(Ability.IMPROVE_TERRAIN, null);</span>
+    }
+
+    /**
+     * Get the scout role.
+     *
+     * @return The scout &lt;code&gt;Role&lt;/code&gt;.
+     */
+    public Role getScoutRole() {
+<span class="fc" id="L1980">        return getRoleWithAbility(Ability.SPEAK_WITH_CHIEF, null);</span>
+    }
+
+    /**
+     * Gets the roles suitable for a REF unit.
+     *
+     * @param naval If true, choose roles for naval units, if not, land units.
+     */
+    public List&lt;Role&gt; getREFRoles(boolean naval) {
+<span class="fc bfc" id="L1989" title="All 2 branches covered.">        return ((naval)</span>
+<span class="fc" id="L1990">            ? Stream.of(getDefaultRole())</span>
+<span class="fc" id="L1991">            : getMilitaryRoles().stream()</span>
+<span class="pc" id="L1992">                .filter(r -&gt; r.requiresAbility(Ability.REF_UNIT)))</span>
+<span class="fc" id="L1993">            .collect(Collectors.toList());</span>
+    }
+
+
+    // @compat 0.10.x -- EquipmentTypes --
+    /**
+     * Get an equipment type by identifier.
+     * Still needed by backward compatibility code in Unit.readChild.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;EquipmentType&lt;/code&gt; found.
+     */
+    public EquipmentType getEquipmentType(String id) {
+<span class="fc" id="L2006">        return getType(id, EquipmentType.class);</span>
+    }
+    // end @compat 0.10.x
+
+    // -- DifficultyLevels --
+
+    /**
+     * Gets the difficulty levels in this specification.
+     *
+     * @return A list of difficulty levels in this specification.
+     */
+    public List&lt;OptionGroup&gt; getDifficultyLevels() {
+<span class="fc" id="L2018">        List&lt;OptionGroup&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L2019">        OptionGroup group = allOptionGroups.get(DIFFICULTY_LEVELS);</span>
+<span class="fc bfc" id="L2020" title="All 2 branches covered.">        if (group != null) {</span>
+<span class="fc bfc" id="L2021" title="All 2 branches covered.">            for (Option option : group.getOptions()) {</span>
+<span class="pc bpc" id="L2022" title="1 of 2 branches missed.">                if (option instanceof OptionGroup) {</span>
+<span class="fc" id="L2023">                    result.add((OptionGroup) option);</span>
+                }
+            }
+        }
+<span class="fc" id="L2027">        return result;</span>
+    }
+
+    /**
+     * Get the current difficulty level.
+     *
+     * @return The difficulty level.
+     */
+    public String getDifficultyLevel() {
+<span class="fc" id="L2036">        return this.difficultyLevel;</span>
+    }
+
+    /**
+     * Gets the current difficulty level options.
+     *
+     * @return The current difficulty level &lt;code&gt;OptionGroup&lt;/code&gt;.
+     */
+    public OptionGroup getDifficultyOptionGroup() {
+<span class="fc" id="L2045">        return allOptionGroups.get(this.difficultyLevel);</span>
+    }
+
+    /**
+     * Gets difficulty level options by id.
+     *
+     * @param id The id to look for.
+     * @return The corresponding difficulty level
+     *     &lt;code&gt;OptionGroup&lt;/code&gt;, if any.
+     */
+    public OptionGroup getDifficultyOptionGroup(String id) {
+<span class="fc" id="L2056">        return allOptionGroups.get(id);</span>
+    }
+
+    /**
+     * Applies the difficulty level identified by the given String to
+     * the current specification.
+     *
+     * @param difficulty The identifier of a difficulty level to apply.
+     */
+    public void applyDifficultyLevel(String difficulty) {
+<span class="fc" id="L2066">        applyDifficultyLevel(getDifficultyOptionGroup(difficulty));</span>
+<span class="fc" id="L2067">    }</span>
+
+    /**
+     * Applies the given difficulty level to the current
+     * specification.
+     *
+     * @param level The difficulty level &lt;code&gt;OptionGroup&lt;/code&gt; to apply.
+     */
+    public void applyDifficultyLevel(OptionGroup level) {
+<span class="fc bfc" id="L2076" title="All 2 branches covered.">        if (level == null) {</span>
+<span class="fc" id="L2077">            logger.warning(&quot;Null difficulty level supplied&quot;);</span>
+<span class="fc" id="L2078">            return;</span>
+        }
+<span class="fc" id="L2080">        logger.info(&quot;Applying difficulty level &quot; + level.getId());</span>
+<span class="fc" id="L2081">        addOptionGroup(level, true);</span>
+<span class="fc" id="L2082">        this.difficultyLevel = level.getId();</span>
+<span class="fc" id="L2083">    }</span>
+
+    public OptionGroup getGameOptions() {
+<span class="fc" id="L2086">        return getOptionGroup(GameOptions.getXMLElementTagName());</span>
+    }
+
+    public void setGameOptions(OptionGroup go) {
+<span class="fc" id="L2090">        allOptionGroups.put(GameOptions.getXMLElementTagName(), go);</span>
+<span class="fc" id="L2091">        addOptionGroup(go, true);</span>
+<span class="fc" id="L2092">    }</span>
+
+    public OptionGroup getMapGeneratorOptions() {
+<span class="fc" id="L2095">        return getOptionGroup(MapGeneratorOptions.getXMLElementTagName());</span>
+    }
+
+    public void setMapGeneratorOptions(OptionGroup mgo) {
+<span class="fc" id="L2099">        allOptionGroups.put(MapGeneratorOptions.getXMLElementTagName(), mgo);</span>
+<span class="fc" id="L2100">        addOptionGroup(mgo, true);</span>
+<span class="fc" id="L2101">    }</span>
+
+
+    // -- Events --
+
+    public List&lt;Event&gt; getEvents() {
+<span class="fc" id="L2107">        return events;</span>
+    }
+
+    /**
+     * Get an event by identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;Event&lt;/code&gt; found.
+     */
+    public Event getEvent(String id) {
+<span class="fc" id="L2117">        return getType(id, Event.class);</span>
+    }
+
+    // -- Disasters --
+
+    public List&lt;Disaster&gt; getDisasters() {
+<span class="fc" id="L2123">        return disasters;</span>
+    }
+
+    /**
+     * Get a disaster by identifier.
+     *
+     * @param id The object identifier.
+     * @return The &lt;code&gt;Disaster&lt;/code&gt; found.
+     */
+    public Disaster getDisaster(String id) {
+<span class="fc" id="L2133">        return getType(id, Disaster.class);</span>
+    }
+
+    // -- Ages --
+
+    /**
+     * Gets the age corresponding to a given turn.
+     *
+     * @param turn The &lt;code&gt;Turn&lt;/code&gt; to check.
+     * @return The age of the given turn.
+     */
+    public int getAge(Turn turn) {
+<span class="fc" id="L2145">        int n = turn.getNumber();</span>
+<span class="pc bpc" id="L2146" title="1 of 2 branches missed.">        return (n &lt; ages[0]) ? -1</span>
+<span class="fc bfc" id="L2147" title="All 2 branches covered.">            : (n &lt; ages[1]) ? 0</span>
+<span class="fc bfc" id="L2148" title="All 2 branches covered.">            : (n &lt; ages[2]) ? 1</span>
+<span class="fc" id="L2149">            : 2;</span>
+    }        
+
+
+    // General type retrieval
+
+    /**
+     * Get the &lt;code&gt;FreeColGameObjectType&lt;/code&gt; with the given identifier.
+     *
+     * @param id The object identifier to look for.
+     * @param type The expected &lt;code&gt;Class&lt;/code&gt;.
+     * @return The &lt;code&gt;FreeColGameObjectType&lt;/code&gt; found.
+     */
+    public &lt;T extends FreeColGameObjectType&gt; T getType(String id, Class&lt;T&gt; type) {
+<span class="fc" id="L2163">        FreeColGameObjectType o = findType(id);</span>
+<span class="fc bfc" id="L2164" title="All 2 branches covered.">        if (o != null) {</span>
+<span class="fc" id="L2165">            return type.cast(allTypes.get(id));</span>
+
+<span class="fc bfc" id="L2167" title="All 2 branches covered.">        } else if (initialized) {</span>
+<span class="fc" id="L2168">            throw new IllegalArgumentException(&quot;Undefined FCGOT: &quot; + id);</span>
+
+        } else { // forward declaration of new type
+            try {
+<span class="fc" id="L2172">                Constructor&lt;T&gt; c = type.getConstructor(String.class,</span>
+<span class="fc" id="L2173">                                                       Specification.class);</span>
+<span class="fc" id="L2174">                T result = c.newInstance(id, this);</span>
+<span class="fc" id="L2175">                allTypes.put(id, result);</span>
+<span class="fc" id="L2176">                return result;</span>
+<span class="fc" id="L2177">            } catch (Exception e) {</span>
+<span class="fc" id="L2178">                logger.log(Level.WARNING, &quot;Could not construct: &quot; + id, e);</span>
+            }
+        }
+<span class="fc" id="L2181">        return null;</span>
+    }
+
+    /**
+     * Find a &lt;code&gt;FreeColGameObjectType&lt;/code&gt; by id.
+     *
+     * @param id The identifier to look for, which must not be null.
+     * @return The &lt;code&gt;FreeColGameObjectType&lt;/code&gt; found if any.
+     */
+    public FreeColGameObjectType findType(String id) throws IllegalArgumentException {
+<span class="pc bpc" id="L2191" title="1 of 2 branches missed.">        if (id == null) {</span>
+<span class="nc" id="L2192">            throw new IllegalArgumentException(&quot;Null id&quot;);</span>
+
+<span class="fc bfc" id="L2194" title="All 2 branches covered.">        } else if (allTypes.containsKey(id)) {</span>
+<span class="fc" id="L2195">            return allTypes.get(id);</span>
+
+        } else {
+<span class="fc" id="L2198">            return null;</span>
+        }
+    }
+
+    /**
+     * Get the FreeColGameObjectTypes that provide the required ability.
+     *
+     * @param id The object identifier.
+     * @param value The ability value to check.
+     * @return A list of &lt;code&gt;FreeColGameObjectType&lt;/code&gt;s that
+     *     provide the required ability.
+     */
+    public List&lt;FreeColGameObjectType&gt; getTypesProviding(String id,
+                                                         boolean value) {
+<span class="nc" id="L2212">        List&lt;FreeColGameObjectType&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L2213" title="All 2 branches missed.">        for (Ability ability : getAbilities(id)) {</span>
+<span class="nc bnc" id="L2214" title="All 2 branches missed.">            if (ability.getValue() == value</span>
+<span class="nc bnc" id="L2215" title="All 2 branches missed.">                &amp;&amp; ability.getSource() instanceof FreeColGameObjectType) {</span>
+<span class="nc" id="L2216">                result.add((FreeColGameObjectType) ability.getSource());</span>
+            }
+        }
+<span class="nc" id="L2219">        return result;</span>
+    }
+
+    /**
+     * Get all types which have any of the given abilities.
+     *
+     * @param abilities The abilities for the search
+     * @return A list of &lt;code&gt;FreeColGameObjectType&lt;/code&gt;s with at
+     *     least one of the given abilities.
+     */
+    public &lt;T extends FreeColGameObjectType&gt; List&lt;T&gt;
+                      getTypesWithAbility(Class&lt;T&gt; resultType,
+                                          String... abilities) {
+<span class="fc" id="L2232">        return allTypes.values().stream()</span>
+<span class="fc bfc" id="L2233" title="All 2 branches covered.">            .filter(type -&gt; resultType.isInstance(type)</span>
+<span class="fc bfc" id="L2234" title="All 2 branches covered.">                &amp;&amp; any(abilities, a -&gt; type.hasAbility(a)))</span>
+<span class="fc" id="L2235">            .map(type -&gt; resultType.cast(type))</span>
+<span class="fc" id="L2236">            .collect(Collectors.toList());</span>
+    }
+
+    /**
+     * Get all types which have none of the given abilities.
+     *
+     * @param abilities The abilities for the search
+     * @return A list of &lt;code&gt;FreeColGameObjectType&lt;/code&gt;s without the
+     *     given abilities.
+     */
+    public &lt;T extends FreeColGameObjectType&gt; List&lt;T&gt;
+                      getTypesWithoutAbility(Class&lt;T&gt; resultType,
+                                             String... abilities) {
+<span class="fc" id="L2249">        return allTypes.values().stream()</span>
+<span class="fc bfc" id="L2250" title="All 2 branches covered.">            .filter(type -&gt; resultType.isInstance(type)</span>
+<span class="fc bfc" id="L2251" title="All 2 branches covered.">                &amp;&amp; none(abilities, a -&gt; type.hasAbility(a)))</span>
+<span class="fc" id="L2252">            .map(type -&gt; resultType.cast(type))</span>
+<span class="fc" id="L2253">            .collect(Collectors.toList());</span>
+    }
+
+
+    // Backward compatibility fixes.
+    // We do not pretend to fix everything, some specs are just too broken,
+    // or some changes too radical.  But we make an effort.
+
+    /**
+     * Apply all the special fixes to bring older specifications up to date.
+     */
+    private void applyFixes() {
+<span class="fc" id="L2265">        fixDifficultyOptions();</span>
+<span class="fc" id="L2266">        fixGameOptions();</span>
+<span class="fc" id="L2267">        fixMapGeneratorOptions();</span>
+<span class="fc" id="L2268">        fixSpec();</span>
+<span class="fc" id="L2269">    }</span>
+
+    // @compat 0.10.x
+    /**
+     * Handle the reworking of roles that landed in 0.11.0.
+     *
+     * Deliberately not part of applyFixes(), this is called from readFromXML
+     * which can most accurately determine whether it is needed.
+     */
+    private void fixRoles() {
+        boolean zero10X;
+        try {
+<span class="pc bpc" id="L2281" title="1 of 2 branches missed.">            zero10X = Double.parseDouble(version) &lt; 0.86;</span>
+<span class="pc" id="L2282">        } catch (Exception e) {</span>
+<span class="nc" id="L2283">            zero10X = true;</span>
+        }
+<span class="pc bpc" id="L2285" title="1 of 2 branches missed.">        if (!zero10X) return;</span>
+<span class="fc" id="L2286">        File base = FreeColDirectories.getBaseDirectory();</span>
+<span class="fc" id="L2287">        File rolf = new File(base, ROLES_COMPAT_FILE_NAME); </span>
+<span class="fc" id="L2288">        try (</span>
+<span class="fc" id="L2289">            FileInputStream fis = new FileInputStream(rolf);</span>
+        ) {
+<span class="fc" id="L2291">            load(fis);</span>
+<span class="pc bpc" id="L2292" title="7 of 8 branches missed.">        } catch (Exception e) {</span>
+<span class="nc" id="L2293">            logger.log(Level.WARNING, &quot;Failed to load remedial roles.&quot;, e);</span>
+<span class="nc" id="L2294">            return;</span>
+        }
+
+<span class="fc" id="L2297">        logger.info(&quot;Loading role backward compatibility fragment: &quot;</span>
+            + ROLES_COMPAT_FILE_NAME + &quot; with roles: &quot;
+<span class="fc" id="L2299">            + getRoles().stream()</span>
+<span class="fc" id="L2300">                .map(Role::getId).collect(Collectors.joining()));</span>
+<span class="fc" id="L2301">    }</span>
+    // end @compat 0.10.x
+
+    /**
+     * Specification backward compatibility for the spec in general.
+     */
+    private void fixSpec() {
+<span class="fc" id="L2308">        handleModifiers();</span>
+
+        // @compat 0.10.7
+        // model.ability.missionary was split into distinct parts,
+        // which should be fixed by the roles work, but the Brebeuf
+        // scope was left hanging.
+<span class="fc" id="L2314">        FoundingFather brebeuf</span>
+<span class="fc" id="L2315">            = getFoundingFather(&quot;model.foundingFather.fatherJeanDeBrebeuf&quot;);</span>
+<span class="fc" id="L2316">        iterateAbilities(brebeuf);</span>
+
+        // Coronado gained an ability in freecol
+<span class="fc" id="L2319">        FoundingFather coronado = checkCoronadoGainedAbility();</span>
+
+        // Require the scopes added to founding fathers in git.8971674
+<span class="fc" id="L2322">        fatherGoodsFixMapScope();</span>
+<span class="fc" id="L2323">        requireScopestoFoundingFather();</span>
+
+        // Nation FOUND_COLONY -&gt; FOUNDS_COLONIES
+<span class="fc" id="L2326">        foundColonies();</span>
+
+        // Fix REF roles, soldier -&gt; infantry, dragoon -&gt; cavalry
+        // Older specs (&lt;= 0.10.5 ?) had refSize directly under difficulty
+        // level, later moved it under the monarch group.
+<span class="fc" id="L2331">        difficultyLevels();</span>
+
+<span class="fc" id="L2333">        unitListOptions();</span>
+
+        // The REF is also an independent nation, which is a required
+        // ability to have man-o-war.  Older specs used
+        // INDEPENDENCE_DECLARED but we can not directly use that or
+        // the REF gets access to colonialRegulars.
+<span class="fc" id="L2339">        iterateEuropeanNationTypes();</span>
+
+        // Resource type modifiers had the wrong priority
+<span class="fc" id="L2342">        iterateResourceTypeList();</span>
+
+        // Unit type indexes moved into the spec
+<span class="fc" id="L2345">        iterateUnitTypeList();</span>
+
+        // Father production modifiers have moved to the spec
+<span class="fc" id="L2348">        moveFatherProdtoSpec();</span>
+
+        // Tile improvement type modifier index has moved to the spec
+<span class="fc" id="L2351">        moveTileImprovementSpec();</span>
+
+        // Building type modifier indexes have moved to the spec
+<span class="fc" id="L2354">        moveBuildingTypeSpec();</span>
+
+        // European nation type production modifier indexes moved to the spec
+<span class="fc" id="L2357">        moveEuropeanNationTypeSpec();</span>
+
+        // TownHall, Chapel et al now have unattended production types
+        // (replacing modifiers).
+<span class="fc" id="L2361">        initializeLocations();</span>
+        // Country and stables production is now defined as unattended.
+<span class="fc" id="L2363">        iterateCountryStableProduction();</span>
+
+        // 0.10.x had no unknown enemy nation, just an unknown enemy player
+<span class="pc bpc" id="L2366" title="1 of 2 branches missed.">        if (getNation(Nation.UNKNOWN_NATION_ID) == null) {</span>
+<span class="nc" id="L2367">            Nation ue = new Nation(Nation.UNKNOWN_NATION_ID, this);</span>
+<span class="nc" id="L2368">            ue.setColor(Nation.UNKNOWN_NATION_COLOR);</span>
+        }
+
+        // Ambush terrain ability not present in older specs.
+<span class="fc" id="L2372">        getAmbushTerrain();</span>
+
+        // is-military was added to goods type
+<span class="fc" id="L2375">        setGoodsTypeHorses();</span>
+
+        // automaticEquipment scope types are now roles
+<span class="fc" id="L2378">        iterateIndianNationTypes();</span>
+        {
+<span class="fc" id="L2380">            iterateFoundingFatherAbilities();</span>
+        }
+        // end @compat 0.10.7
+
+        // @compat 0.11.0
+        // Bolivar changed from being an event, then to a liberty modifier,
+        // and now to a SoL% modifier.
+<span class="fc" id="L2387">        FoundingFather bolivar</span>
+<span class="fc" id="L2388">            = getFoundingFather(&quot;model.foundingFather.simonBolivar&quot;);</span>
+<span class="fc" id="L2389">        boolean bolivarAdd = false;</span>
+<span class="fc" id="L2390">        bolivarAdd = checkBoliverEvents(bolivar, bolivarAdd);</span>
+<span class="fc" id="L2391">        checkBolivarAdd(bolivar, bolivarAdd);</span>
+
+        // The COASTAL_ONLY attribute was added to customs house.
+<span class="fc" id="L2394">        BuildingType customs = getBuildingType(&quot;model.building.customHouse&quot;);</span>
+<span class="fc" id="L2395">        checkCustomsHasAbility(customs);</span>
+        // end @compat 0.11.0
+
+        // @compat 0.11.3
+        // Added the cargo penalty modifier
+<span class="pc bpc" id="L2400" title="1 of 2 branches missed.">        if (getModifiers(Modifier.CARGO_PENALTY).isEmpty()) {</span>
+<span class="nc" id="L2401">            addCargoModifiers();</span>
+        }
+
+        // Backwards compatibility for the fixes to BR#2873.
+<span class="fc" id="L2405">        Event event = getEvent(&quot;model.event.declareIndependence&quot;);</span>
+<span class="fc" id="L2406">        checkEvents(event);</span>
+        // end @compat 0.11.3
+
+        // @compat 0.11.5
+        // Added a modifier to hardy pioneer
+<span class="fc" id="L2411">        UnitType hardyPioneer = getUnitType(&quot;model.unit.hardyPioneer&quot;);</span>
+<span class="fc" id="L2412">        addHardyPioneerModifier(hardyPioneer);</span>
+
+        // Added modifier to Coronado
+<span class="fc bfc" id="L2415" title="All 2 branches covered.">        if (!coronado.hasModifier(Modifier.EXPOSED_TILES_RADIUS)) {</span>
+<span class="fc" id="L2416">            addCoronadoModifier(coronado);</span>
+        }
+        // end @compat 0.11.5
+<span class="fc" id="L2419">    }</span>
+
+
+	/**
+	 * @param hardyPioneer
+	 */
+	private void addHardyPioneerModifier(UnitType hardyPioneer) {
+<span class="fc" id="L2426">		if (hardyPioneer.getModifiers(Modifier.TILE_TYPE_CHANGE_PRODUCTION)</span>
+<span class="pc bpc" id="L2427" title="1 of 2 branches missed.">            .isEmpty()) {</span>
+<span class="nc" id="L2428">            addModifiertoPioneer(hardyPioneer);</span>
+        }
+<span class="fc" id="L2430">	}</span>
+
+
+	/**
+	 * @param event
+	 */
+	private void checkEvents(Event event) {
+<span class="pc bpc" id="L2437" title="1 of 2 branches missed.">		if (event != null) {</span>
+<span class="fc" id="L2438">            Limit limit = event.getLimit(&quot;model.limit.independence.coastalColonies&quot;);</span>
+<span class="pc bpc" id="L2439" title="1 of 2 branches missed.">            if (limit != null) {</span>
+<span class="fc" id="L2440">                setLimitProperties(limit);</span>
+            }
+        }
+<span class="fc" id="L2443">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void addCargoModifiers() {
+<span class="nc" id="L2450">		addModifier(new Modifier(Modifier.CARGO_PENALTY, -12.5f,</span>
+<span class="nc" id="L2451">		        Modifier.ModifierType.PERCENTAGE, CARGO_PENALTY_SOURCE,</span>
+<span class="nc" id="L2452">		        Modifier.GENERAL_COMBAT_INDEX));</span>
+<span class="nc" id="L2453">	}</span>
+
+
+	/**
+	 * @param customs
+	 */
+	private void checkCustomsHasAbility(BuildingType customs) {
+<span class="pc bpc" id="L2460" title="1 of 2 branches missed.">		if (!customs.hasAbility(Ability.COASTAL_ONLY)) {</span>
+<span class="fc" id="L2461">            customsAddAbility(customs);</span>
+        }
+<span class="fc" id="L2463">	}</span>
+
+
+	/**
+	 * @param bolivar
+	 * @param bolivarAdd
+	 * @return
+	 */
+	private boolean checkBoliverEvents(FoundingFather bolivar, boolean bolivarAdd) {
+<span class="pc bpc" id="L2472" title="1 of 2 branches missed.">		if (!bolivar.getEvents().isEmpty()) {</span>
+<span class="nc" id="L2473">            bolivarAdd = setBolivarEvents(bolivar);</span>
+<span class="pc bpc" id="L2474" title="1 of 2 branches missed.">        } else if (bolivar.hasModifier(Modifier.LIBERTY)) {</span>
+<span class="nc" id="L2475">            bolivarAdd = removeBolivarModifiers(bolivar);</span>
+        }
+<span class="fc" id="L2477">		return bolivarAdd;</span>
+	}
+
+
+	/**
+	 * @param bolivar
+	 * @param bolivarAdd
+	 */
+	private void checkBolivarAdd(FoundingFather bolivar, boolean bolivarAdd) {
+<span class="pc bpc" id="L2486" title="1 of 2 branches missed.">		if (bolivarAdd) {</span>
+<span class="nc" id="L2487">            bolivarAddModifier(bolivar);</span>
+        }
+<span class="fc" id="L2489">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void iterateCountryStableProduction() {
+<span class="fc bfc" id="L2496" title="All 2 branches covered.">		for (BuildingType bt : new BuildingType[] {</span>
+<span class="fc" id="L2497">                getBuildingType(&quot;model.building.country&quot;),</span>
+<span class="fc" id="L2498">                getBuildingType(&quot;model.building.stables&quot;) }) {</span>
+<span class="pc bpc" id="L2499" title="1 of 2 branches missed.">            for (ProductionType pt : bt.getAvailableProductionTypes(false)) {</span>
+<span class="nc" id="L2500">                pt.setUnattended(true);</span>
+<span class="nc" id="L2501">                logSwitchedProduction(bt, pt);</span>
+            }
+        }
+<span class="fc" id="L2504">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void iterateFoundingFatherAbilities() {
+<span class="fc" id="L2511">		FoundingFather revere</span>
+<span class="fc" id="L2512">		    = getFoundingFather(&quot;model.foundingFather.paulRevere&quot;);</span>
+<span class="fc bfc" id="L2513" title="All 2 branches covered.">		for (Ability ability : revere.getAbilities(Ability.AUTOMATIC_EQUIPMENT)) {</span>
+<span class="fc bfc" id="L2514" title="All 2 branches covered.">		    for (Scope scope : ability.getScopes()) {</span>
+<span class="fc" id="L2515">		        String type = scope.getType();</span>
+<span class="pc bpc" id="L2516" title="1 of 2 branches missed.">		        if (&quot;model.equipment.muskets&quot;.equals(type)) {</span>
+<span class="nc" id="L2517">		            setScopeTypeSoldier(scope);</span>
+		        }
+		    }
+		}
+<span class="fc" id="L2521">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void initializeLocations() {
+<span class="fc" id="L2528">		BuildingType townHallType = getBuildingType(&quot;model.building.townHall&quot;);</span>
+<span class="fc" id="L2529">        checkTownHallType(townHallType);</span>
+<span class="fc" id="L2530">        GoodsType crossesType = getGoodsType(&quot;model.goods.crosses&quot;);</span>
+<span class="fc" id="L2531">        int a = 1;</span>
+<span class="fc" id="L2532">        a = getBuildingType(crossesType, a);</span>
+<span class="fc" id="L2533">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void requireScopestoFoundingFather() {
+<span class="fc bfc" id="L2540" title="All 2 branches covered.">		for (Entry&lt;String, String&gt; e : fatherGoodsFixMap.entrySet()) {</span>
+<span class="fc" id="L2541">            FoundingFather father = getFoundingFather(e.getKey());</span>
+<span class="fc bfc" id="L2542" title="All 2 branches covered.">            for (Modifier m : father.getModifiers(e.getValue())) {</span>
+<span class="fc" id="L2543">                m.requireNegatedPersonScope();</span>
+            }
+        }
+<span class="fc" id="L2546">	}</span>
+
+
+	/**
+	 * @return
+	 */
+	private FoundingFather checkCoronadoGainedAbility() {
+<span class="fc" id="L2553">		FoundingFather coronado</span>
+<span class="fc" id="L2554">            = getFoundingFather(&quot;model.foundingFather.franciscoDeCoronado&quot;);</span>
+<span class="fc bfc" id="L2555" title="All 2 branches covered.">        if (&quot;freecol&quot;.equals(getId())</span>
+<span class="pc bpc" id="L2556" title="1 of 2 branches missed.">            &amp;&amp; !coronado.hasAbility(Ability.SEE_ALL_COLONIES)) {</span>
+<span class="nc" id="L2557">            coronadoAddNewAbility(coronado);</span>
+        }
+<span class="fc" id="L2559">		return coronado;</span>
+	}
+
+
+	/**
+	 * @param brebeuf
+	 */
+	private void iterateAbilities(FoundingFather brebeuf) {
+<span class="fc bfc" id="L2567" title="All 2 branches covered.">		for (Ability ability : brebeuf.getAbilities()) {</span>
+<span class="fc bfc" id="L2568" title="All 2 branches covered.">            for (Scope scope : ability.getScopes()) {</span>
+<span class="pc bpc" id="L2569" title="1 of 2 branches missed.">                if (&quot;model.ability.missionary&quot;.equals(scope.getAbilityId())) {</span>
+<span class="nc" id="L2570">                    setScopeAbilityId(scope);</span>
+                }
+            }
+        }
+<span class="fc" id="L2574">	}</span>
+
+
+	/**
+	 * @param coronado
+	 */
+	private void addCoronadoModifier(FoundingFather coronado) {
+<span class="fc" id="L2581">		coronado.addModifier(new Modifier(Modifier.EXPOSED_TILES_RADIUS,</span>
+<span class="fc" id="L2582">		        3.0f, Modifier.ModifierType.ADDITIVE, coronado, 0));</span>
+<span class="fc" id="L2583">	}</span>
+
+
+	/**
+	 * @param hardyPioneer
+	 */
+	private void addModifiertoPioneer(UnitType hardyPioneer) {
+<span class="nc" id="L2590">		Modifier m = new Modifier(Modifier.TILE_TYPE_CHANGE_PRODUCTION,</span>
+<span class="nc" id="L2591">		    2.0f, Modifier.ModifierType.MULTIPLICATIVE);</span>
+<span class="nc" id="L2592">		Scope scope = new Scope();</span>
+<span class="nc" id="L2593">		scope.setType(&quot;model.goods.lumber&quot;);</span>
+<span class="nc" id="L2594">		m.addScope(scope);</span>
+<span class="nc" id="L2595">		hardyPioneer.addModifier(m);</span>
+<span class="nc" id="L2596">	}</span>
+
+
+	/**
+	 * @param limit
+	 */
+	private void setLimitProperties(Limit limit) {
+<span class="fc" id="L2603">		limit.setOperator(Limit.Operator.GE);</span>
+<span class="fc" id="L2604">		limit.getRightHandSide().setValue(1);</span>
+<span class="fc" id="L2605">	}</span>
+
+
+	/**
+	 * @param customs
+	 */
+	private void customsAddAbility(BuildingType customs) {
+<span class="fc" id="L2612">		customs.addAbility(new Ability(Ability.COASTAL_ONLY, null, false));</span>
+<span class="fc" id="L2613">	}</span>
+
+
+	/**
+	 * @param bolivar
+	 */
+	private void bolivarAddModifier(FoundingFather bolivar) {
+<span class="nc" id="L2620">		bolivar.addModifier(new Modifier(Modifier.SOL, 20,</span>
+<span class="nc" id="L2621">		        Modifier.ModifierType.ADDITIVE, bolivar, 0));</span>
+<span class="nc" id="L2622">	}</span>
+
+
+	/**
+	 * @param bolivar
+	 * @return
+	 */
+	private boolean removeBolivarModifiers(FoundingFather bolivar) {
+		boolean bolivarAdd;
+<span class="nc" id="L2631">		bolivar.removeModifiers(Modifier.LIBERTY);</span>
+<span class="nc" id="L2632">		bolivarAdd = true;</span>
+<span class="nc" id="L2633">		return bolivarAdd;</span>
+	}
+
+
+	/**
+	 * @param bolivar
+	 * @return
+	 */
+	private boolean setBolivarEvents(FoundingFather bolivar) {
+		boolean bolivarAdd;
+<span class="nc" id="L2643">		bolivar.setEvents(Collections.&lt;Event&gt;emptyList());</span>
+<span class="nc" id="L2644">		bolivarAdd = true;</span>
+<span class="nc" id="L2645">		return bolivarAdd;</span>
+	}
+
+
+	/**
+	 * @param scope
+	 */
+	private void setScopeTypeSoldier(Scope scope) {
+<span class="nc" id="L2653">		scope.setType(&quot;model.role.soldier&quot;);</span>
+<span class="nc" id="L2654">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void setGoodsTypeHorses() {
+<span class="fc" id="L2661">		GoodsType goodsType = getGoodsType(&quot;model.goods.horses&quot;);</span>
+<span class="fc" id="L2662">        goodsType.setMilitary();</span>
+<span class="fc" id="L2663">        goodsType = getGoodsType(&quot;model.goods.muskets&quot;);</span>
+<span class="fc" id="L2664">        goodsType.setMilitary();</span>
+<span class="fc" id="L2665">	}</span>
+
+
+	/**
+	 * @param bt
+	 * @param pt
+	 */
+	private void logSwitchedProduction(BuildingType bt, ProductionType pt) {
+<span class="nc" id="L2673">		logger.info(&quot;Switched production &quot; + pt</span>
+<span class="nc" id="L2674">		    + &quot; to unattended at &quot; + bt);</span>
+<span class="nc" id="L2675">	}</span>
+
+
+	/**
+	 * @param coronado
+	 */
+	private void coronadoAddNewAbility(FoundingFather coronado) {
+<span class="nc" id="L2682">		coronado.addAbility(new Ability(Ability.SEE_ALL_COLONIES,</span>
+<span class="nc" id="L2683">		                                coronado, true));</span>
+<span class="nc" id="L2684">	}</span>
+
+
+	/**
+	 * @param scope
+	 */
+	private void setScopeAbilityId(Scope scope) {
+<span class="nc" id="L2691">		scope.setAbilityId(Ability.ESTABLISH_MISSION);</span>
+<span class="nc" id="L2692">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void iterateIndianNationTypes() {
+<span class="fc bfc" id="L2699" title="All 2 branches covered.">		for (NationType nt : indianNationTypes) {</span>
+<span class="fc bfc" id="L2700" title="All 2 branches covered.">            for (Ability ability : nt.getAbilities(Ability.AUTOMATIC_EQUIPMENT)) {</span>
+<span class="fc bfc" id="L2701" title="All 2 branches covered.">                for (Scope scope : ability.getScopes()) {</span>
+<span class="fc" id="L2702">                    String type = scope.getType();</span>
+<span class="pc bpc" id="L2703" title="1 of 2 branches missed.">                    if (&quot;model.equipment.indian.muskets&quot;.equals(type)) {</span>
+<span class="nc" id="L2704">                        scope.setType(&quot;model.role.nativeDragoon&quot;);</span>
+<span class="pc bpc" id="L2705" title="1 of 2 branches missed.">                    } else if (&quot;model.equipment.indian.horses&quot;.equals(type)) {</span>
+<span class="nc" id="L2706">                        scope.setType(&quot;model.role.armedBrave&quot;);</span>
+                    }
+                }
+            }
+        }
+<span class="fc" id="L2711">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void getAmbushTerrain() {
+<span class="pc bpc" id="L2718" title="1 of 2 branches missed.">		if (getAbilities(Ability.AMBUSH_TERRAIN) == null) {</span>
+<span class="nc" id="L2719">            Ability ambush = new Ability(Ability.AMBUSH_TERRAIN, null, true);</span>
+<span class="nc" id="L2720">            addAbility(ambush);</span>
+<span class="nc bnc" id="L2721" title="All 2 branches missed.">            for (TileType tt : getTileTypeList()) {</span>
+<span class="nc bnc" id="L2722" title="All 4 branches missed.">                if ((tt.isElevation() || tt.isForested())</span>
+<span class="nc bnc" id="L2723" title="All 2 branches missed.">                    &amp;&amp; !tt.hasAbility(Ability.AMBUSH_TERRAIN)) {</span>
+<span class="nc" id="L2724">                    tt.addAbility(new Ability(Ability.AMBUSH_TERRAIN, tt, true));</span>
+                }
+            }
+        }
+<span class="fc" id="L2728">	}</span>
+
+
+	/**
+	 * @param crossesType
+	 * @param a
+	 * @return
+	 */
+	private int getBuildingType(GoodsType crossesType, int a) {
+<span class="fc bfc" id="L2737" title="All 2 branches covered.">		for (BuildingType bt : new BuildingType[] {</span>
+<span class="fc" id="L2738">                getBuildingType(&quot;model.building.chapel&quot;),</span>
+<span class="fc" id="L2739">                getBuildingType(&quot;model.building.church&quot;),</span>
+<span class="fc" id="L2740">                getBuildingType(&quot;model.building.cathedral&quot;) }) {</span>
+<span class="pc bpc" id="L2741" title="1 of 2 branches missed.">            if (bt.hasModifier(&quot;model.goods.crosses&quot;)) {</span>
+<span class="nc" id="L2742">                AbstractGoods ag = new AbstractGoods(crossesType, a);</span>
+<span class="nc" id="L2743">                a++;</span>
+<span class="nc" id="L2744">                ProductionType pt = new ProductionType(ag, true, null);</span>
+<span class="nc" id="L2745">                bt.addProductionType(pt);</span>
+<span class="nc" id="L2746">                bt.removeModifiers(&quot;model.goods.crosses&quot;);</span>
+<span class="nc" id="L2747">                logger.info(&quot;Added backward compatibility production &quot; + pt</span>
+<span class="nc" id="L2748">                    + &quot; to &quot; + bt);</span>
+            }
+        }
+<span class="fc" id="L2751">		return a;</span>
+	}
+
+
+	/**
+	 * @param townHallType
+	 */
+	private void checkTownHallType(BuildingType townHallType) {
+<span class="pc bpc" id="L2759" title="1 of 2 branches missed.">		if (townHallType.hasModifier(&quot;model.goods.bells&quot;)) {</span>
+<span class="nc" id="L2760">            GoodsType bellsType = getGoodsType(&quot;model.goods.bells&quot;);</span>
+<span class="nc" id="L2761">            AbstractGoods ag = new AbstractGoods(bellsType, 1);</span>
+<span class="nc" id="L2762">            ProductionType pt = new ProductionType(ag, true, null);</span>
+<span class="nc" id="L2763">            townHallType.addProductionType(pt);</span>
+<span class="nc" id="L2764">            townHallType.removeModifiers(&quot;model.goods.bells&quot;);</span>
+<span class="nc" id="L2765">            logger.info(&quot;Added backward compatibility production &quot; + pt</span>
+<span class="nc" id="L2766">                + &quot; to &quot; + townHallType);</span>
+        }
+<span class="fc" id="L2768">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void moveEuropeanNationTypeSpec() {
+<span class="fc bfc" id="L2775" title="All 2 branches covered.">		for (EuropeanNationType et : europeanNationTypes) {</span>
+<span class="fc bfc" id="L2776" title="All 2 branches covered.">            for (Modifier m : et.getModifiers()) {</span>
+<span class="fc bfc" id="L2777" title="All 2 branches covered.">                if (allTypes.get(m.getId()) instanceof GoodsType) {</span>
+<span class="fc" id="L2778">                    m.setModifierIndex(Modifier.NATION_PRODUCTION_INDEX);</span>
+                }
+            }
+        }
+<span class="fc" id="L2782">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void moveBuildingTypeSpec() {
+<span class="fc bfc" id="L2789" title="All 2 branches covered.">		for (BuildingType bt : buildingTypeList) {</span>
+<span class="fc bfc" id="L2790" title="All 2 branches covered.">            for (Modifier m : bt.getModifiers()) {</span>
+<span class="fc bfc" id="L2791" title="All 2 branches covered.">                if (allTypes.get(m.getId()) instanceof GoodsType) {</span>
+<span class="fc bfc" id="L2792" title="All 2 branches covered.">                    m.setModifierIndex((bt.hasAbility(Ability.AUTO_PRODUCTION))</span>
+<span class="fc" id="L2793">                        ? Modifier.AUTO_PRODUCTION_INDEX</span>
+<span class="fc" id="L2794">                        : Modifier.BUILDING_PRODUCTION_INDEX);</span>
+                }
+            }
+        }
+<span class="fc" id="L2798">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void moveTileImprovementSpec() {
+<span class="fc bfc" id="L2805" title="All 2 branches covered.">		for (TileImprovementType ti : tileImprovementTypeList) {</span>
+<span class="fc bfc" id="L2806" title="All 2 branches covered.">            for (Modifier m : ti.getModifiers()) {</span>
+<span class="pc bpc" id="L2807" title="1 of 2 branches missed.">                if (allTypes.get(m.getId()) instanceof GoodsType) {</span>
+<span class="fc" id="L2808">                    m.setModifierIndex(Modifier.IMPROVEMENT_PRODUCTION_INDEX);</span>
+                }
+            }
+        }
+<span class="fc" id="L2812">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void moveFatherProdtoSpec() {
+<span class="fc bfc" id="L2819" title="All 2 branches covered.">		for (FoundingFather ff : foundingFathers) {</span>
+<span class="fc bfc" id="L2820" title="All 2 branches covered.">            for (Modifier m : ff.getModifiers()) {</span>
+<span class="fc bfc" id="L2821" title="All 2 branches covered.">                if (allTypes.get(m.getId()) instanceof GoodsType) {</span>
+<span class="fc" id="L2822">                    m.setModifierIndex(Modifier.FATHER_PRODUCTION_INDEX);</span>
+                }
+            }
+        }
+<span class="fc" id="L2826">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void iterateUnitTypeList() {
+<span class="fc bfc" id="L2833" title="All 2 branches covered.">		for (UnitType ut : unitTypeList) {</span>
+<span class="fc bfc" id="L2834" title="All 2 branches covered.">            for (Modifier m : ut.getModifiers()) {</span>
+<span class="fc bfc" id="L2835" title="All 2 branches covered.">                if (allTypes.get(m.getId()) instanceof GoodsType) {</span>
+<span class="fc" id="L2836">                    m.setModifierIndex(Modifier.EXPERT_PRODUCTION_INDEX);</span>
+                }
+            }
+        }
+<span class="fc" id="L2840">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void iterateResourceTypeList() {
+<span class="fc bfc" id="L2847" title="All 2 branches covered.">		for (ResourceType rt : resourceTypeList) {</span>
+<span class="fc bfc" id="L2848" title="All 2 branches covered.">            for (Modifier m : rt.getModifiers()) {</span>
+<span class="fc" id="L2849">                m.setModifierIndex(Modifier.RESOURCE_PRODUCTION_INDEX);</span>
+            }
+        }
+<span class="fc" id="L2852">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void iterateEuropeanNationTypes() {
+<span class="fc bfc" id="L2859" title="All 2 branches covered.">		for (NationType nt : europeanNationTypes) {</span>
+<span class="fc bfc" id="L2860" title="All 2 branches covered.">            if (!nt.isREF()) continue;</span>
+<span class="pc bpc" id="L2861" title="1 of 2 branches missed.">            if (!nt.hasAbility(Ability.INDEPENDENT_NATION)) {</span>
+<span class="nc" id="L2862">                nt.addAbility(new Ability(Ability.INDEPENDENT_NATION));</span>
+            }
+        }
+<span class="fc" id="L2865">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void foundColonies() {
+<span class="fc bfc" id="L2872" title="All 2 branches covered.">		for (EuropeanNationType ent : europeanNationTypes) {</span>
+<span class="pc bpc" id="L2873" title="1 of 2 branches missed.">            if (ent.hasAbility(Ability.FOUND_COLONY)) {</span>
+<span class="nc" id="L2874">                ent.removeAbilities(Ability.FOUND_COLONY);</span>
+<span class="nc" id="L2875">                ent.addAbility(new Ability(Ability.FOUNDS_COLONIES, ent, true));</span>
+            }
+        }
+<span class="fc" id="L2878">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void fatherGoodsFixMapScope() {
+<span class="fc" id="L2885">		fatherGoodsFixMap.clear();</span>
+<span class="fc" id="L2886">        fatherGoodsFixMap.put(&quot;model.foundingFather.thomasJefferson&quot;,</span>
+<span class="fc" id="L2887">                              &quot;model.goods.bells&quot;);</span>
+<span class="fc" id="L2888">        fatherGoodsFixMap.put(&quot;model.foundingFather.thomasPaine&quot;,</span>
+<span class="fc" id="L2889">                              &quot;model.goods.bells&quot;);</span>
+<span class="fc" id="L2890">        fatherGoodsFixMap.put(&quot;model.foundingFather.williamPenn&quot;,</span>
+<span class="fc" id="L2891">                              &quot;model.goods.crosses&quot;);</span>
+<span class="fc" id="L2892">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void unitListOptions() {
+		// Fix all other UnitListOptions
+<span class="fc" id="L2900">        List&lt;Option&gt; todo = new ArrayList&lt;&gt;(getDifficultyLevels());</span>
+<span class="fc bfc" id="L2901" title="All 2 branches covered.">        while (!todo.isEmpty()) {</span>
+<span class="fc" id="L2902">            Option o = todo.remove(0);</span>
+<span class="fc bfc" id="L2903" title="All 2 branches covered.">            if (o instanceof OptionGroup) {</span>
+<span class="fc" id="L2904">                initializeUnitListOptions(todo, o);</span>
+<span class="fc bfc" id="L2905" title="All 2 branches covered.">            } else if (o instanceof UnitListOption) {</span>
+<span class="fc bfc" id="L2906" title="All 2 branches covered.">                for (AbstractUnit au : ((UnitListOption)o).getOptionValues()) {</span>
+<span class="fc" id="L2907">                    String roleId = au.getRoleId();</span>
+<span class="fc" id="L2908">                    checkRoleId(au, roleId);</span>
+                }
+            }
+        }
+<span class="fc" id="L2912">	}</span>
+
+
+	/**
+	 * @param au
+	 * @param roleId
+	 */
+	private void checkRoleId(AbstractUnit au, String roleId) {
+<span class="pc bpc" id="L2920" title="1 of 2 branches missed.">		if (roleId == null) {</span>
+<span class="nc" id="L2921">		    setAuRoleId(au);</span>
+<span class="pc bpc" id="L2922" title="1 of 2 branches missed.">		} else if (au.getRoleId().startsWith(&quot;model.role.&quot;)) {</span>
+		    ; // OK
+<span class="pc bnc" id="L2924" title="All 2 branches missed.">		} else if (&quot;DEFAULT&quot;.equals(au.getRoleId())) {</span>
+<span class="nc" id="L2925">		    setAuRoleId(au);</span>
+<span class="nc bnc" id="L2926" title="All 2 branches missed.">		} else if (&quot;DRAGOON&quot;.equals(au.getRoleId())) {</span>
+<span class="nc" id="L2927">		    setAuRoleIdDragoon(au);</span>
+<span class="nc bnc" id="L2928" title="All 2 branches missed.">		} else if (&quot;MISSIONARY&quot;.equals(au.getRoleId())) {</span>
+<span class="nc" id="L2929">		    setAURoleIdMissionary(au);</span>
+<span class="nc bnc" id="L2930" title="All 2 branches missed.">		} else if (&quot;PIONEER&quot;.equals(au.getRoleId())) {</span>
+<span class="nc" id="L2931">		    setAURoleIdPioneer(au);</span>
+<span class="nc bnc" id="L2932" title="All 2 branches missed.">		} else if (&quot;MISSIONARY&quot;.equals(au.getRoleId())) {</span>
+<span class="nc" id="L2933">		    setAURoleIdMissionary(au);</span>
+<span class="nc bnc" id="L2934" title="All 2 branches missed.">		} else if (&quot;SCOUT&quot;.equals(au.getRoleId())) {</span>
+<span class="nc" id="L2935">		    setAURoleIdScout(au);</span>
+<span class="nc bnc" id="L2936" title="All 2 branches missed.">		} else if (&quot;SOLDIER&quot;.equals(au.getRoleId())) {</span>
+<span class="nc" id="L2937">		    setAURoleIdSoldier(au);</span>
+<span class="nc" id="L2938">		} else {</span>
+<span class="nc" id="L2939">		    setAuRoleId(au);</span>
+		}
+<span class="fc" id="L2941">	}</span>
+
+
+	/**
+	 * @param au
+	 */
+	private void setAURoleIdSoldier(AbstractUnit au) {
+<span class="nc" id="L2948">		au.setRoleId(&quot;model.role.soldier&quot;);</span>
+<span class="nc" id="L2949">	}</span>
+
+
+	/**
+	 * @param au
+	 */
+	private void setAURoleIdScout(AbstractUnit au) {
+<span class="nc" id="L2956">		au.setRoleId(&quot;model.role.scout&quot;);</span>
+<span class="nc" id="L2957">	}</span>
+
+
+	/**
+	 * @param au
+	 */
+	private void setAURoleIdPioneer(AbstractUnit au) {
+<span class="nc" id="L2964">		au.setRoleId(&quot;model.role.pioneer&quot;);</span>
+<span class="nc" id="L2965">	}</span>
+
+
+	/**
+	 * @param au
+	 */
+	private void setAURoleIdMissionary(AbstractUnit au) {
+<span class="nc" id="L2972">		au.setRoleId(&quot;model.role.missionary&quot;);</span>
+<span class="nc" id="L2973">	}</span>
+
+
+	/**
+	 * @param au
+	 */
+	private void setAuRoleIdDragoon(AbstractUnit au) {
+<span class="nc" id="L2980">		au.setRoleId(&quot;model.role.dragoon&quot;);</span>
+<span class="nc" id="L2981">	}</span>
+
+
+	/**
+	 * @param todo
+	 * @param o
+	 */
+	private void initializeUnitListOptions(List&lt;Option&gt; todo, Option o) {
+<span class="fc" id="L2989">		List&lt;Option&gt; next = ((OptionGroup)o).getOptions();</span>
+<span class="fc" id="L2990">		todo.addAll(new ArrayList&lt;&gt;(next));</span>
+<span class="fc" id="L2991">	}</span>
+
+
+	/**
+	 * 
+	 */
+	private void difficultyLevels() {
+<span class="fc bfc" id="L2998" title="All 2 branches covered.">		for (OptionGroup level : getDifficultyLevels()) {</span>
+<span class="fc" id="L2999">            Option refSize = initializeMonarchRefSize(level);</span>
+<span class="pc bpc" id="L3000" title="1 of 2 branches missed.">            if (refSize == null</span>
+<span class="pc bpc" id="L3001" title="1 of 2 branches missed.">                || !(refSize instanceof UnitListOption)) continue;</span>
+<span class="fc bfc" id="L3002" title="All 2 branches covered.">            for (AbstractUnit au</span>
+<span class="fc" id="L3003">                     : ((UnitListOption)refSize).getOptionValues()) {</span>
+<span class="fc" id="L3004">                checkRoleIds(au);</span>
+            }
+        }
+<span class="fc" id="L3007">	}</span>
+
+
+	/**
+	 * @param au
+	 */
+	private void checkRoleIds(AbstractUnit au) {
+<span class="pc bpc" id="L3014" title="1 of 2 branches missed.">		if (&quot;DEFAULT&quot;.equals(au.getRoleId())) {</span>
+<span class="nc" id="L3015">		    setAuRoleId(au);</span>
+<span class="pc bpc" id="L3016" title="1 of 2 branches missed.">		} else if (&quot;model.role.soldier&quot;.equals(au.getRoleId())</span>
+<span class="pc bpc" id="L3017" title="1 of 2 branches missed.">		    || &quot;SOLDIER&quot;.equals(au.getRoleId())) {</span>
+<span class="nc" id="L3018">		    setInfantryAURoleId(au);</span>
+<span class="pc bpc" id="L3019" title="1 of 2 branches missed.">		} else if (&quot;model.role.dragoon&quot;.equals(au.getRoleId())</span>
+<span class="pc bpc" id="L3020" title="1 of 2 branches missed.">		    || &quot;DRAGOON&quot;.equals(au.getRoleId())) {</span>
+<span class="nc" id="L3021">		    setCavalryAURoleId(au);</span>
+		}
+<span class="fc" id="L3023">	}</span>
+
+
+	/**
+	 * @param au
+	 */
+	private void setCavalryAURoleId(AbstractUnit au) {
+<span class="nc" id="L3030">		au.setRoleId(&quot;model.role.cavalry&quot;);</span>
+<span class="nc" id="L3031">	}</span>
+
+
+	/**
+	 * @param au
+	 */
+	private void setInfantryAURoleId(AbstractUnit au) {
+<span class="nc" id="L3038">		au.setRoleId(&quot;model.role.infantry&quot;);</span>
+<span class="nc" id="L3039">	}</span>
+
+
+	/**
+	 * @param au
+	 */
+	private void setAuRoleId(AbstractUnit au) {
+<span class="nc" id="L3046">		au.setRoleId(DEFAULT_ROLE_ID);</span>
+<span class="nc" id="L3047">	}</span>
+
+
+	/**
+	 * @param level
+	 * @return
+	 */
+	private Option initializeMonarchRefSize(OptionGroup level) {
+<span class="fc" id="L3055">		Option monarch = level.getOption(GameOptions.DIFFICULTY_MONARCH);</span>
+<span class="pc bpc" id="L3056" title="1 of 2 branches missed.">		Option refSize = ((OptionGroup)((monarch instanceof OptionGroup)</span>
+<span class="pc" id="L3057">		        ? monarch : level)).getOption(GameOptions.REF_FORCE);</span>
+<span class="fc" id="L3058">		return refSize;</span>
+	}
+
+
+	/**
+	 * 
+	 */
+	private void handleModifiers() {
+		// @compat 0.10.0
+<span class="pc bpc" id="L3067" title="1 of 2 branches missed.">        if (getModifiers(Modifier.SHIP_TRADE_PENALTY) == null) {</span>
+<span class="nc" id="L3068">            addModifier(new Modifier(Modifier.SHIP_TRADE_PENALTY,</span>
+<span class="nc" id="L3069">                                     -30.0f, Modifier.ModifierType.PERCENTAGE,</span>
+<span class="nc" id="L3070">                                     Specification.SHIP_TRADE_PENALTY_SOURCE));</span>
+        }
+        // end @compat
+<span class="fc" id="L3073">	}</span>
+
+    /**
+     * Backward compatibility code to make sure this specification
+     * contains a default value for every difficulty option.
+     *
+     * When a new difficulty option is added to the spec, add a
+     * sensible default here.
+     *
+     * @return True if an option was missing and added.
+     */
+    private boolean fixDifficultyOptions() {
+<span class="fc" id="L3085">        boolean ret = false;</span>
+        String id;
+        AbstractOption op;
+        OptionGroup og;
+        UnitListOption ulo;
+
+        // SAVEGAME_VERSION == 11
+
+        // For 0.10.6 we moved from a three level structure:
+        //   difficultyLevels/&lt;difficulty&gt;/&lt;option&gt;
+        // to a four level structure
+        //   difficultyLevels/&lt;difficulty&gt;/&lt;group&gt;/&lt;option&gt;
+        // so add the groups in, and move the options that could be present
+        // in anything up to 0.10.5 into their destination groups.
+<span class="fc" id="L3099">        ret |= checkDifficultyOptionGroup(GameOptions.DIFFICULTY_IMMIGRATION,</span>
+<span class="fc" id="L3100">            GameOptions.CROSSES_INCREMENT,</span>
+<span class="fc" id="L3101">            GameOptions.RECRUIT_PRICE_INCREASE,</span>
+<span class="fc" id="L3102">            GameOptions.LOWER_CAP_INCREASE,</span>
+<span class="fc" id="L3103">            GameOptions.PRICE_INCREASE + &quot;.artillery&quot;,</span>
+<span class="fc" id="L3104">            GameOptions.PRICE_INCREASE_PER_TYPE,</span>
+<span class="fc" id="L3105">            GameOptions.EXPERT_STARTING_UNITS,</span>
+<span class="fc" id="L3106">            GameOptions.IMMIGRANTS);</span>
+<span class="fc" id="L3107">        ret |= checkDifficultyOptionGroup(GameOptions.DIFFICULTY_NATIVES,</span>
+<span class="fc" id="L3108">            GameOptions.LAND_PRICE_FACTOR,</span>
+<span class="fc" id="L3109">            GameOptions.NATIVE_CONVERT_PROBABILITY,</span>
+<span class="fc" id="L3110">            GameOptions.BURN_PROBABILITY,</span>
+<span class="fc" id="L3111">            GameOptions.NATIVE_DEMANDS,</span>
+<span class="fc" id="L3112">            GameOptions.RUMOUR_DIFFICULTY,</span>
+<span class="fc" id="L3113">            GameOptions.SHIP_TRADE_PENALTY,</span>
+<span class="fc" id="L3114">            GameOptions.BUILD_ON_NATIVE_LAND,</span>
+<span class="fc" id="L3115">            GameOptions.SETTLEMENT_NUMBER);</span>
+<span class="fc" id="L3116">        ret |= checkDifficultyOptionGroup(GameOptions.DIFFICULTY_MONARCH,</span>
+<span class="fc" id="L3117">            GameOptions.MONARCH_MEDDLING,</span>
+<span class="fc" id="L3118">            GameOptions.TAX_ADJUSTMENT,</span>
+<span class="fc" id="L3119">            GameOptions.MERCENARY_PRICE,</span>
+<span class="fc" id="L3120">            GameOptions.MAXIMUM_TAX,</span>
+<span class="fc" id="L3121">            GameOptions.MONARCH_SUPPORT,</span>
+<span class="fc" id="L3122">            GameOptions.TREASURE_TRANSPORT_FEE,</span>
+<span class="fc" id="L3123">            GameOptions.REF_FORCE,</span>
+<span class="fc" id="L3124">            GameOptions.INTERVENTION_BELLS,</span>
+<span class="fc" id="L3125">            GameOptions.INTERVENTION_TURNS,</span>
+<span class="fc" id="L3126">            GameOptions.INTERVENTION_FORCE,</span>
+<span class="fc" id="L3127">            GameOptions.MERCENARY_FORCE);</span>
+<span class="fc" id="L3128">        ret |= checkDifficultyOptionGroup(GameOptions.DIFFICULTY_GOVERNMENT,</span>
+<span class="fc" id="L3129">            GameOptions.BAD_GOVERNMENT_LIMIT,</span>
+<span class="fc" id="L3130">            GameOptions.VERY_BAD_GOVERNMENT_LIMIT,</span>
+<span class="fc" id="L3131">            GameOptions.GOOD_GOVERNMENT_LIMIT,</span>
+<span class="fc" id="L3132">            GameOptions.VERY_GOOD_GOVERNMENT_LIMIT);</span>
+<span class="fc" id="L3133">        ret |= checkDifficultyOptionGroup(GameOptions.DIFFICULTY_OTHER,</span>
+<span class="fc" id="L3134">            GameOptions.STARTING_MONEY,</span>
+<span class="fc" id="L3135">            GameOptions.FOUNDING_FATHER_FACTOR,</span>
+<span class="fc" id="L3136">            GameOptions.ARREARS_FACTOR,</span>
+<span class="fc" id="L3137">            GameOptions.UNITS_THAT_USE_NO_BELLS,</span>
+<span class="fc" id="L3138">            GameOptions.TILE_PRODUCTION);</span>
+<span class="fc" id="L3139">        ret |= checkDifficultyOptionGroup(GameOptions.DIFFICULTY_CHEAT,</span>
+<span class="fc" id="L3140">            GameOptions.LIFT_BOYCOTT_CHEAT,</span>
+<span class="fc" id="L3141">            GameOptions.EQUIP_SCOUT_CHEAT,</span>
+<span class="fc" id="L3142">            GameOptions.LAND_UNIT_CHEAT,</span>
+<span class="fc" id="L3143">            GameOptions.OFFENSIVE_NAVAL_UNIT_CHEAT,</span>
+<span class="fc" id="L3144">            GameOptions.TRANSPORT_NAVAL_UNIT_CHEAT);</span>
+
+        // @compat 0.10.0
+        // This used to be a game option.
+<span class="fc" id="L3148">        ret |= checkDifficultyIntegerOption(GameOptions.SHIP_TRADE_PENALTY,</span>
+<span class="fc" id="L3149">                                            GameOptions.DIFFICULTY_NATIVES,</span>
+<span class="fc" id="L3150">                                            -30);</span>
+        // end @compat 0.10.0
+
+        // SAVEGAME_VERSION == 12
+
+        // @compat 0.10.4
+<span class="fc" id="L3156">        id = GameOptions.REF_FORCE; // Yes, really &quot;refSize&quot;</span>
+<span class="fc" id="L3157">        ulo = checkDifficultyUnitListOption(id, GameOptions.DIFFICULTY_MONARCH);</span>
+<span class="pc bpc" id="L3158" title="1 of 2 branches missed.">        if (ulo != null) {</span>
+<span class="nc" id="L3159">            AbstractUnitOption regulars</span>
+<span class="nc" id="L3160">                = new AbstractUnitOption(id + &quot;.regulars&quot;, this);</span>
+<span class="nc" id="L3161">            regulars.setValue(new AbstractUnit(&quot;model.unit.kingsRegular&quot;,</span>
+<span class="nc" id="L3162">                                               &quot;model.role.infantry&quot;, 31));</span>
+<span class="nc" id="L3163">            ulo.getValue().add(regulars);</span>
+<span class="nc" id="L3164">            AbstractUnitOption dragoons</span>
+<span class="nc" id="L3165">                = new AbstractUnitOption(id + &quot;.dragoons&quot;, this);</span>
+<span class="nc" id="L3166">            dragoons.setValue(new AbstractUnit(&quot;model.unit.kingsRegular&quot;,</span>
+<span class="nc" id="L3167">                                               &quot;model.role.cavalry&quot;, 15));</span>
+<span class="nc" id="L3168">            ulo.getValue().add(dragoons);</span>
+<span class="nc" id="L3169">            AbstractUnitOption artillery</span>
+<span class="nc" id="L3170">                = new AbstractUnitOption(id + &quot;.artillery&quot;, this);</span>
+<span class="nc" id="L3171">            artillery.setValue(new AbstractUnit(&quot;model.unit.artillery&quot;,</span>
+<span class="nc" id="L3172">                                                DEFAULT_ROLE_ID, 14));</span>
+<span class="nc" id="L3173">            ulo.getValue().add(artillery);</span>
+<span class="nc" id="L3174">            AbstractUnitOption menOfWar</span>
+<span class="nc" id="L3175">                = new AbstractUnitOption(id + &quot;.menOfWar&quot;, this);</span>
+<span class="nc" id="L3176">            menOfWar.setValue(new AbstractUnit(&quot;model.unit.manOWar&quot;,</span>
+<span class="nc" id="L3177">                                               DEFAULT_ROLE_ID, 8));</span>
+<span class="nc" id="L3178">            ulo.getValue().add(menOfWar);</span>
+<span class="nc" id="L3179">            ret = true;</span>
+        }
+<span class="fc" id="L3181">        id = GameOptions.IMMIGRANTS;</span>
+<span class="fc" id="L3182">        ulo = checkDifficultyUnitListOption(id, GameOptions.DIFFICULTY_IMMIGRATION);</span>
+<span class="fc bfc" id="L3183" title="All 2 branches covered.">        if (ulo != null) {</span>
+<span class="fc" id="L3184">            AbstractUnitOption i1</span>
+<span class="fc" id="L3185">                = new AbstractUnitOption(id + &quot;.1&quot;, this);</span>
+<span class="fc" id="L3186">            i1.setValue(new AbstractUnit(&quot;model.unit.masterCarpenter&quot;,</span>
+<span class="fc" id="L3187">                                         DEFAULT_ROLE_ID, 1));</span>
+<span class="fc" id="L3188">            ulo.getValue().add(i1);</span>
+<span class="fc" id="L3189">            ret = true;</span>
+        }
+        // end @compat 0.10.4
+
+        // @compat 0.10.5
+<span class="fc" id="L3194">        ret |= checkDifficultyIntegerOption(GameOptions.INTERVENTION_BELLS,</span>
+<span class="fc" id="L3195">                                            GameOptions.DIFFICULTY_MONARCH,</span>
+<span class="fc" id="L3196">                                            5000);</span>
+<span class="fc" id="L3197">        ret |= checkDifficultyIntegerOption(GameOptions.INTERVENTION_TURNS,</span>
+<span class="fc" id="L3198">                                            GameOptions.DIFFICULTY_MONARCH,</span>
+<span class="fc" id="L3199">                                            52);</span>
+<span class="fc" id="L3200">        id = GameOptions.INTERVENTION_FORCE;</span>
+<span class="fc" id="L3201">        ulo = checkDifficultyUnitListOption(id, GameOptions.DIFFICULTY_MONARCH);</span>
+<span class="pc bpc" id="L3202" title="1 of 2 branches missed.">        if (ulo != null) {</span>
+<span class="nc" id="L3203">            AbstractUnitOption regulars</span>
+<span class="nc" id="L3204">                = new AbstractUnitOption(id + &quot;.regulars&quot;, this);</span>
+<span class="nc" id="L3205">            regulars.setValue(new AbstractUnit(&quot;model.unit.colonialRegular&quot;,</span>
+<span class="nc" id="L3206">                                               &quot;model.role.soldier&quot;, 2));</span>
+<span class="nc" id="L3207">            ulo.getValue().add(regulars);</span>
+<span class="nc" id="L3208">            AbstractUnitOption dragoons</span>
+<span class="nc" id="L3209">                = new AbstractUnitOption(id + &quot;.dragoons&quot;, this);</span>
+<span class="nc" id="L3210">            dragoons.setValue(new AbstractUnit(&quot;model.unit.colonialRegular&quot;,</span>
+<span class="nc" id="L3211">                                               &quot;model.role.dragoon&quot;, 2));</span>
+<span class="nc" id="L3212">            ulo.getValue().add(dragoons);</span>
+<span class="nc" id="L3213">            AbstractUnitOption artillery</span>
+<span class="nc" id="L3214">                = new AbstractUnitOption(id + &quot;.artillery&quot;, this);</span>
+<span class="nc" id="L3215">            artillery.setValue(new AbstractUnit(&quot;model.unit.artillery&quot;,</span>
+<span class="nc" id="L3216">                                                DEFAULT_ROLE_ID, 2));</span>
+<span class="nc" id="L3217">            ulo.getValue().add(artillery);</span>
+<span class="nc" id="L3218">            AbstractUnitOption menOfWar</span>
+<span class="nc" id="L3219">                = new AbstractUnitOption(id + &quot;.menOfWar&quot;, this);</span>
+<span class="nc" id="L3220">            menOfWar.setValue(new AbstractUnit(&quot;model.unit.manOWar&quot;,</span>
+<span class="nc" id="L3221">                                               DEFAULT_ROLE_ID, 2));</span>
+<span class="nc" id="L3222">            ulo.getValue().add(menOfWar);</span>
+<span class="nc" id="L3223">            ret = true;</span>
+        }
+<span class="fc" id="L3225">        id = GameOptions.MERCENARY_FORCE;</span>
+<span class="fc" id="L3226">        ulo = checkDifficultyUnitListOption(id, GameOptions.DIFFICULTY_MONARCH);</span>
+<span class="pc bpc" id="L3227" title="1 of 2 branches missed.">        if (ulo != null) {</span>
+<span class="nc" id="L3228">            AbstractUnitOption regulars</span>
+<span class="nc" id="L3229">                = new AbstractUnitOption(id + &quot;.regulars&quot;, this);</span>
+<span class="nc" id="L3230">            regulars.setValue(new AbstractUnit(&quot;model.unit.veteranSoldier&quot;,</span>
+<span class="nc" id="L3231">                                               &quot;model.role.soldier&quot;, 2));</span>
+<span class="nc" id="L3232">            ulo.getValue().add(regulars);</span>
+<span class="nc" id="L3233">            AbstractUnitOption dragoons</span>
+<span class="nc" id="L3234">                = new AbstractUnitOption(id + &quot;.dragoons&quot;, this);</span>
+<span class="nc" id="L3235">            dragoons.setValue(new AbstractUnit(&quot;model.unit.veteranSoldier&quot;,</span>
+<span class="nc" id="L3236">                                               &quot;model.role.dragoon&quot;, 2));</span>
+<span class="nc" id="L3237">            ulo.getValue().add(dragoons);</span>
+<span class="nc" id="L3238">            AbstractUnitOption artillery</span>
+<span class="nc" id="L3239">                = new AbstractUnitOption(id + &quot;.artillery&quot;, this);</span>
+<span class="nc" id="L3240">            artillery.setValue(new AbstractUnit(&quot;model.unit.artillery&quot;,</span>
+<span class="nc" id="L3241">                                                DEFAULT_ROLE_ID, 2));</span>
+<span class="nc" id="L3242">            ulo.getValue().add(artillery);</span>
+<span class="nc" id="L3243">            AbstractUnitOption menOfWar</span>
+<span class="nc" id="L3244">                = new AbstractUnitOption(id + &quot;.menOfWar&quot;, this);</span>
+<span class="nc" id="L3245">            menOfWar.setValue(new AbstractUnit(&quot;model.unit.manOWar&quot;,</span>
+<span class="nc" id="L3246">                                               DEFAULT_ROLE_ID, 2));</span>
+<span class="nc" id="L3247">            ulo.getValue().add(menOfWar);</span>
+<span class="nc" id="L3248">            ret = true;</span>
+        }
+<span class="fc" id="L3250">        ret |= checkDifficultyIntegerOption(GameOptions.GOOD_GOVERNMENT_LIMIT,</span>
+<span class="fc" id="L3251">                                            GameOptions.DIFFICULTY_GOVERNMENT,</span>
+<span class="fc" id="L3252">                                            50);</span>
+<span class="fc" id="L3253">        ret |= checkDifficultyIntegerOption(GameOptions.VERY_GOOD_GOVERNMENT_LIMIT,</span>
+<span class="fc" id="L3254">                                            GameOptions.DIFFICULTY_GOVERNMENT,</span>
+<span class="fc" id="L3255">                                            100);</span>
+<span class="fc" id="L3256">        ret |= checkDifficultyIntegerOption(GameOptions.LIFT_BOYCOTT_CHEAT,</span>
+<span class="fc" id="L3257">                                            GameOptions.DIFFICULTY_CHEAT,</span>
+<span class="fc" id="L3258">                                            10);</span>
+<span class="fc" id="L3259">        ret |= checkDifficultyIntegerOption(GameOptions.EQUIP_SCOUT_CHEAT,</span>
+<span class="fc" id="L3260">                                            GameOptions.DIFFICULTY_CHEAT,</span>
+<span class="fc" id="L3261">                                            10);</span>
+<span class="fc" id="L3262">        ret |= checkDifficultyIntegerOption(GameOptions.LAND_UNIT_CHEAT,</span>
+<span class="fc" id="L3263">                                            GameOptions.DIFFICULTY_CHEAT,</span>
+<span class="fc" id="L3264">                                            10);</span>
+<span class="fc" id="L3265">        ret |= checkDifficultyIntegerOption(GameOptions.OFFENSIVE_NAVAL_UNIT_CHEAT,</span>
+<span class="fc" id="L3266">                                            GameOptions.DIFFICULTY_CHEAT,</span>
+<span class="fc" id="L3267">                                            10);</span>
+<span class="fc" id="L3268">        ret |= checkDifficultyIntegerOption(GameOptions.TRANSPORT_NAVAL_UNIT_CHEAT,</span>
+<span class="fc" id="L3269">                                            GameOptions.DIFFICULTY_CHEAT,</span>
+<span class="fc" id="L3270">                                            10);</span>
+        // end @compat 0.10.5
+
+        // SAVEGAME_VERSION == 13
+
+        // @compat 0.10.7
+<span class="fc" id="L3276">        ret |= checkDifficultyIntegerOption(GameOptions.DESTROY_SETTLEMENT_SCORE,</span>
+<span class="fc" id="L3277">                                            GameOptions.DIFFICULTY_NATIVES,</span>
+<span class="fc" id="L3278">                                            -5);</span>
+<span class="fc" id="L3279">        ret |= checkDifficultyIntegerOption(GameOptions.BAD_RUMOUR,</span>
+<span class="fc" id="L3280">                                            GameOptions.DIFFICULTY_OTHER,</span>
+<span class="fc" id="L3281">                                            23);</span>
+<span class="fc" id="L3282">        ret |= checkDifficultyIntegerOption(GameOptions.GOOD_RUMOUR,</span>
+<span class="fc" id="L3283">                                            GameOptions.DIFFICULTY_OTHER,</span>
+<span class="fc" id="L3284">                                            48);</span>
+<span class="fc" id="L3285">        ret |= checkDifficultyIntegerOption(GameOptions.OFFENSIVE_LAND_UNIT_CHEAT,</span>
+<span class="fc" id="L3286">                                            GameOptions.DIFFICULTY_CHEAT,</span>
+<span class="fc" id="L3287">                                            4);</span>
+<span class="fc" id="L3288">        ret |= checkDifficultyIntegerOption(GameOptions.EQUIP_PIONEER_CHEAT,</span>
+<span class="fc" id="L3289">                                            GameOptions.DIFFICULTY_CHEAT,</span>
+<span class="fc" id="L3290">                                            10);</span>
+        // end @compat 0.10.7
+
+        // @compat 0.11.3
+<span class="fc" id="L3294">        id = GameOptions.WAR_SUPPORT_FORCE;</span>
+<span class="fc" id="L3295">        ulo = checkDifficultyUnitListOption(id, GameOptions.DIFFICULTY_MONARCH);</span>
+<span class="pc bpc" id="L3296" title="1 of 2 branches missed.">        if (ulo != null) {</span>
+<span class="nc" id="L3297">            AbstractUnitOption support = new AbstractUnitOption(id, this);</span>
+<span class="nc" id="L3298">            support.setValue(new AbstractUnit(&quot;model.unit.veteranSoldier&quot;,</span>
+<span class="nc" id="L3299">                                              &quot;model.role.soldier&quot;, 4));</span>
+<span class="nc" id="L3300">            ulo.getValue().add(support);</span>
+<span class="nc" id="L3301">            ret = true;</span>
+        }
+<span class="fc" id="L3303">        ret |= checkDifficultyIntegerOption(GameOptions.WAR_SUPPORT_GOLD,</span>
+<span class="fc" id="L3304">                                            GameOptions.DIFFICULTY_MONARCH,</span>
+<span class="fc" id="L3305">                                            1500);</span>
+        // end @compat 0.11.3
+
+<span class="fc" id="L3308">        return ret;</span>
+    }
+
+    private boolean checkDifficultyOptionGroup(String gr, String... ids) {
+<span class="fc" id="L3312">        logger.info(&quot;Check group &quot; + gr);</span>
+<span class="fc" id="L3313">        boolean ret = false;</span>
+<span class="fc bfc" id="L3314" title="All 2 branches covered.">        for (OptionGroup level : getDifficultyLevels()) {</span>
+<span class="fc" id="L3315">            Option op = level.getOption(gr);</span>
+            OptionGroup og;
+<span class="pc bpc" id="L3317" title="1 of 2 branches missed.">            if (op instanceof OptionGroup) {</span>
+<span class="fc" id="L3318">                og = (OptionGroup)op;</span>
+<span class="fc" id="L3319">            } else {</span>
+<span class="nc" id="L3320">                og = new OptionGroup(gr, this);</span>
+<span class="nc" id="L3321">                level.add(og);</span>
+<span class="nc" id="L3322">                og.setGroup(level.getId());</span>
+<span class="nc" id="L3323">                ret = true;</span>
+            }
+<span class="fc bfc" id="L3325" title="All 2 branches covered.">            for (String id : ids) {</span>
+<span class="fc" id="L3326">                op = level.remove(id);</span>
+<span class="fc bfc" id="L3327" title="All 2 branches covered.">                if (op != null) {</span>
+<span class="pc bpc" id="L3328" title="1 of 2 branches missed.">                    if (op instanceof AbstractOption) {</span>
+<span class="fc" id="L3329">                        ((AbstractOption)op).setGroup(og.getId());</span>
+                    }
+<span class="fc" id="L3331">                    og.add(op);</span>
+<span class="fc" id="L3332">                    ret = true;</span>
+                }
+            }
+        }
+<span class="fc" id="L3336">        return ret;</span>
+    }
+
+    private boolean checkDifficultyIntegerOption(String id, String gr,
+                                                 int defaultValue) {
+<span class="fc" id="L3341">        boolean ret = false;</span>
+<span class="fc bfc" id="L3342" title="All 2 branches covered.">        for (OptionGroup level : getDifficultyLevels()) {</span>
+<span class="fc" id="L3343">            Option op = level.getOption(gr);</span>
+<span class="pc bpc" id="L3344" title="1 of 2 branches missed.">            if (op instanceof OptionGroup) {</span>
+<span class="fc" id="L3345">                OptionGroup og = (OptionGroup)op;</span>
+<span class="pc bpc" id="L3346" title="1 of 2 branches missed.">                if ((op = og.getOption(id)) != null) continue;</span>
+<span class="nc" id="L3347">                IntegerOption iop = new IntegerOption(id, this);</span>
+<span class="nc" id="L3348">                iop.setGroup(gr);</span>
+<span class="nc" id="L3349">                iop.setValue(defaultValue);</span>
+<span class="nc" id="L3350">                og.add(iop);</span>
+<span class="nc" id="L3351">                ret = true;</span>
+            }
+        }
+<span class="pc bpc" id="L3354" title="1 of 2 branches missed.">        if (ret) {</span>
+<span class="nc" id="L3355">            logger.info(&quot;Added difficulty integer option: &quot; + id);</span>
+        }
+<span class="fc" id="L3357">        return ret;</span>
+    }
+        
+    private UnitListOption checkDifficultyUnitListOption(String id, String gr) {
+<span class="fc" id="L3361">        UnitListOption ulo = null;</span>
+<span class="fc bfc" id="L3362" title="All 2 branches covered.">        for (OptionGroup level : getDifficultyLevels()) {</span>
+<span class="fc" id="L3363">            Option op = level.getOption(gr);</span>
+<span class="pc bpc" id="L3364" title="1 of 2 branches missed.">            if (op instanceof OptionGroup) {</span>
+<span class="fc" id="L3365">                OptionGroup og = (OptionGroup)op;</span>
+<span class="fc bfc" id="L3366" title="All 2 branches covered.">                if (og.getOption(id) instanceof UnitListOption) continue;</span>
+<span class="fc bfc" id="L3367" title="All 2 branches covered.">                if (ulo == null) ulo = new UnitListOption(id, this);</span>
+<span class="fc" id="L3368">                og.add(ulo);</span>
+            }
+        }
+<span class="fc bfc" id="L3371" title="All 2 branches covered.">        if (ulo != null) {</span>
+<span class="fc" id="L3372">            logger.info(&quot;Added difficulty unit list option: &quot; + id);</span>
+        }
+<span class="fc" id="L3374">        return ulo;</span>
+    }
+
+    /**
+     * Backward compatibility code to make sure this specification
+     * contains a default value for every game option.
+     *
+     * When a new game option is added to the spec, add a sensible
+     * default here.
+     *
+     * @return True if an option was missing and added.
+     */
+    public boolean fixGameOptions() {
+<span class="fc" id="L3387">        boolean ret = false;</span>
+        // SAVEGAME_VERSION == 11
+
+        // @compat 0.10.0
+<span class="fc" id="L3391">        ret |= checkOptionGroup(GameOptions.GAMEOPTIONS_YEARS);</span>
+<span class="fc" id="L3392">        String[] years = {</span>
+<span class="fc" id="L3393">            GameOptions.STARTING_YEAR,</span>
+<span class="fc" id="L3394">            GameOptions.SEASON_YEAR,</span>
+<span class="fc" id="L3395">            GameOptions.MANDATORY_COLONY_YEAR,</span>
+<span class="fc" id="L3396">            GameOptions.LAST_YEAR,</span>
+<span class="fc" id="L3397">            GameOptions.LAST_COLONIAL_YEAR,</span>
+        };
+<span class="fc" id="L3399">        int[] values = { 1492, 1600, 1600, 1850, 1800 };</span>
+<span class="fc bfc" id="L3400" title="All 2 branches covered.">        for (int index = 0; index &lt; years.length; index++) {</span>
+<span class="fc" id="L3401">            ret |= checkIntegerOption(years[index],</span>
+<span class="fc" id="L3402">                                      GameOptions.GAMEOPTIONS_YEARS,</span>
+<span class="fc" id="L3403">                                      values[index]);</span>
+        }
+<span class="fc" id="L3405">        ret |= checkBooleanOption(GameOptions.ENHANCED_MISSIONARIES,</span>
+<span class="fc" id="L3406">                                  GameOptions.GAMEOPTIONS_MAP, false);</span>
+<span class="fc" id="L3407">        ret |= checkBooleanOption(GameOptions.CONTINUE_FOUNDING_FATHER_RECRUITMENT,</span>
+<span class="fc" id="L3408">                                  GameOptions.GAMEOPTIONS_MAP, false);</span>
+<span class="fc" id="L3409">        ret |= checkIntegerOption(GameOptions.SETTLEMENT_LIMIT_MODIFIER,</span>
+<span class="fc" id="L3410">                                  GameOptions.GAMEOPTIONS_MAP, 0);</span>
+<span class="fc" id="L3411">        ret |= checkBooleanOption(GameOptions.SETTLEMENT_ACTIONS_CONTACT_CHIEF,</span>
+<span class="fc" id="L3412">                                  GameOptions.GAMEOPTIONS_MAP, false);</span>
+<span class="fc" id="L3413">        ret |= checkIntegerOption(GameOptions.STARTING_POSITIONS,</span>
+<span class="fc" id="L3414">                                  GameOptions.GAMEOPTIONS_MAP, 0);</span>
+<span class="fc" id="L3415">        ret |= checkBooleanOption(GameOptions.TELEPORT_REF,</span>
+<span class="fc" id="L3416">                                  GameOptions.GAMEOPTIONS_MAP, false);</span>
+        // end @compat 0.10.0
+
+        // SAVEGAME_VERSION == 12
+
+        // @compat 0.10.5
+<span class="fc" id="L3422">        ret |= checkBooleanOption(GameOptions.ENABLE_UPKEEP,</span>
+<span class="fc" id="L3423">                                  GameOptions.GAMEOPTIONS_COLONY, false);</span>
+<span class="fc" id="L3424">        ret |= checkIntegerOption(GameOptions.NATURAL_DISASTERS,</span>
+<span class="fc" id="L3425">                                  GameOptions.GAMEOPTIONS_COLONY, 0);</span>
+<span class="fc" id="L3426">        ret |= checkIntegerOption(GameOptions.GIFT_PROBABILITY,</span>
+<span class="fc" id="L3427">                                  GameOptions.GAMEOPTIONS_MAP, 5);</span>
+<span class="fc" id="L3428">        ret |= checkIntegerOption(GameOptions.DEMAND_PROBABILITY,</span>
+<span class="fc" id="L3429">                                  GameOptions.GAMEOPTIONS_MAP, 10);</span>
+<span class="fc" id="L3430">        ret |= checkBooleanOption(GameOptions.EMPTY_TRADERS,</span>
+<span class="fc" id="L3431">                                  GameOptions.GAMEOPTIONS_MAP, false);</span>
+        // end @compat 0.10.5
+
+        // SAVEGAME_VERSION == 13
+
+        // @compat 0.10.7
+<span class="fc" id="L3437">        ret |= checkBooleanOption(GameOptions.ONLY_NATURAL_IMPROVEMENTS,</span>
+<span class="fc" id="L3438">                                  GameOptions.GAMEOPTIONS_COLONY, true);</span>
+<span class="fc" id="L3439">        ret |= checkIntegerOption(GameOptions.PEACE_PROBABILITY,</span>
+<span class="fc" id="L3440">                                  GameOptions.GAMEOPTIONS_MAP, 90);</span>
+<span class="fc" id="L3441">        ret |= checkIntegerOption(GameOptions.INITIAL_IMMIGRATION,</span>
+<span class="fc" id="L3442">                                  GameOptions.GAMEOPTIONS_MAP, 15);</span>
+<span class="fc" id="L3443">        ret |= checkIntegerOption(GameOptions.EUROPEAN_UNIT_IMMIGRATION_PENALTY,</span>
+<span class="fc" id="L3444">                                  GameOptions.GAMEOPTIONS_MAP, -4);</span>
+<span class="fc" id="L3445">        ret |= checkIntegerOption(GameOptions.PLAYER_IMMIGRATION_BONUS,</span>
+<span class="fc" id="L3446">                                  GameOptions.GAMEOPTIONS_MAP, 2);</span>
+<span class="fc" id="L3447">        ret |= checkBooleanOption(GameOptions.FOUND_COLONY_DURING_REBELLION,</span>
+<span class="fc" id="L3448">                                  GameOptions.GAMEOPTIONS_COLONY, true);</span>
+        // end @compat 0.10.7
+
+        // @compat 0.11.0
+<span class="fc" id="L3452">        ret |= checkBooleanOption(GameOptions.BELL_ACCUMULATION_CAPPED,</span>
+<span class="fc" id="L3453">                                  GameOptions.GAMEOPTIONS_COLONY, false);</span>
+<span class="fc" id="L3454">        ret |= checkBooleanOption(GameOptions.CAPTURE_UNITS_UNDER_REPAIR,</span>
+<span class="fc" id="L3455">                                  GameOptions.GAMEOPTIONS_COLONY, false);</span>
+<span class="fc" id="L3456">        ret |= checkBooleanOption(GameOptions.PAY_FOR_BUILDING,</span>
+<span class="fc" id="L3457">                                  GameOptions.GAMEOPTIONS_COLONY, true);</span>
+<span class="fc" id="L3458">        ret |= checkBooleanOption(GameOptions.CLEAR_HAMMERS_ON_CONSTRUCTION_SWITCH,</span>
+<span class="fc" id="L3459">                                  GameOptions.GAMEOPTIONS_COLONY, false);</span>
+<span class="fc" id="L3460">        ret |= checkBooleanOption(GameOptions.CUSTOMS_ON_COAST,</span>
+<span class="fc" id="L3461">                                  GameOptions.GAMEOPTIONS_COLONY, false);</span>
+<span class="fc" id="L3462">        ret |= checkBooleanOption(GameOptions.EQUIP_EUROPEAN_RECRUITS,</span>
+<span class="fc" id="L3463">                                  GameOptions.GAMEOPTIONS_COLONY, true);</span>
+        // end @compat 0.11.0
+
+        // @compat 0.11.3
+<span class="fc" id="L3467">        ret |= checkIntegerOption(GameOptions.MISSION_INFLUENCE,</span>
+<span class="fc" id="L3468">                                  GameOptions.GAMEOPTIONS_MAP, -10);</span>
+<span class="fc" id="L3469">        ret |= checkIntegerOption(GameOptions.INDEPENDENCE_TURN,</span>
+<span class="fc" id="L3470">                                  GameOptions.GAMEOPTIONS_YEARS, 468);</span>
+<span class="fc" id="L3471">        ret |= checkTextOption(GameOptions.AGES,</span>
+<span class="fc" id="L3472">                               GameOptions.GAMEOPTIONS_YEARS, &quot;1600,1700&quot;);</span>
+<span class="fc" id="L3473">        ret |= checkIntegerOption(GameOptions.SEASONS,</span>
+<span class="fc" id="L3474">                                  GameOptions.GAMEOPTIONS_YEARS, 2);</span>
+<span class="fc" id="L3475">        ret |= checkBooleanOption(GameOptions.DISEMBARK_IN_COLONY,</span>
+<span class="fc" id="L3476">                                  GameOptions.GAMEOPTIONS_COLONY, false);</span>
+        // end @compat 0.11.3
+
+<span class="fc" id="L3479">        return ret;</span>
+    }
+
+    /**
+     * Backward compatibility code to make sure this specification
+     * contains a default value for every map option.
+     *
+     * When a new map option is added to the spec, add a sensible
+     * default here.
+     *
+     * @return True if an option was missing and added.
+     */
+    public boolean fixMapGeneratorOptions() {
+<span class="fc" id="L3492">        boolean ret = false;</span>
+        // SAVEGAME_VERSION == 11
+
+        // @compat 0.10.0
+<span class="fc" id="L3496">        ret |= checkIntegerOption(MapGeneratorOptions.MINIMUM_LATITUDE,</span>
+<span class="fc" id="L3497">                                  MapGeneratorOptions.MAPGENERATOROPTIONS_TERRAIN_GENERATOR,</span>
+<span class="fc" id="L3498">                                  -90);</span>
+<span class="fc" id="L3499">        ret |= checkIntegerOption(MapGeneratorOptions.MAXIMUM_LATITUDE,</span>
+<span class="fc" id="L3500">                                  MapGeneratorOptions.MAPGENERATOROPTIONS_TERRAIN_GENERATOR,</span>
+<span class="fc" id="L3501">                                  90);</span>
+        // end @compat 0.10.0
+
+        // SAVEGAME_VERSION == 12
+        // SAVEGAME_VERSION == 13
+
+<span class="fc" id="L3507">        return ret;</span>
+    }
+
+    private boolean checkOptionGroup(String id) {
+<span class="pc bpc" id="L3511" title="1 of 2 branches missed.">        if (allOptionGroups.containsKey(id)) return false;</span>
+<span class="nc" id="L3512">        OptionGroup og = new OptionGroup(id, this);</span>
+<span class="nc" id="L3513">        allOptionGroups.put(id, og);</span>
+<span class="nc" id="L3514">        return true;</span>
+    }
+
+    private boolean checkBooleanOption(String id, String gr, boolean defaultValue) {
+<span class="pc bpc" id="L3518" title="1 of 2 branches missed.">        if (hasOption(id)) return false;</span>
+<span class="nc" id="L3519">        BooleanOption op = new BooleanOption(id, this);</span>
+<span class="nc" id="L3520">        op.setGroup(gr);</span>
+<span class="nc" id="L3521">        op.setValue(defaultValue);</span>
+<span class="nc" id="L3522">        return checkOption(op);</span>
+    }
+
+    private boolean checkIntegerOption(String id, String gr, int defaultValue) {
+<span class="pc bpc" id="L3526" title="1 of 2 branches missed.">        if (hasOption(id)) return false;</span>
+<span class="nc" id="L3527">        IntegerOption op = new IntegerOption(id, this);</span>
+<span class="nc" id="L3528">        op.setGroup(gr);</span>
+<span class="nc" id="L3529">        op.setValue(defaultValue);</span>
+<span class="nc" id="L3530">        return checkOption(op);</span>
+    }
+
+    private boolean checkStringOption(String id, String gr, String defaultValue) {
+<span class="nc bnc" id="L3534" title="All 2 branches missed.">        if (hasOption(id)) return false;</span>
+<span class="nc" id="L3535">        StringOption op = new StringOption(id, this);</span>
+<span class="nc" id="L3536">        op.setGroup(gr);</span>
+<span class="nc" id="L3537">        op.setValue(defaultValue);</span>
+<span class="nc" id="L3538">        return checkOption(op);</span>
+    }
+
+    private boolean checkTextOption(String id, String gr, String defaultValue) {
+<span class="pc bpc" id="L3542" title="1 of 2 branches missed.">        if (hasOption(id)) return false;</span>
+<span class="nc" id="L3543">        TextOption op = new TextOption(id, this);</span>
+<span class="nc" id="L3544">        op.setGroup(gr);</span>
+<span class="nc" id="L3545">        op.setValue(defaultValue);</span>
+<span class="nc" id="L3546">        return checkOption(op);</span>
+    }
+
+    private boolean checkOption(AbstractOption option) {
+<span class="nc" id="L3550">        getOptionGroup(option.getGroup()).add(option);</span>
+<span class="nc" id="L3551">        addAbstractOption(option);</span>
+<span class="nc" id="L3552">        return true;</span>
+    }
+        
+
+
+    // Serialization
+
+    private static final String BUILDING_TYPES_TAG = &quot;building-types&quot;;
+    private static final String DIFFICULTY_LEVEL_TAG = &quot;difficulty-level&quot;;
+    private static final String DISASTERS_TAG = &quot;disasters&quot;;
+    private static final String EUROPEAN_NATION_TYPES_TAG = &quot;european-nation-types&quot;;
+    private static final String EVENTS_TAG = &quot;events&quot;;
+    private static final String FOUNDING_FATHERS_TAG = &quot;founding-fathers&quot;;
+    private static final String GOODS_TYPES_TAG = &quot;goods-types&quot;;
+    private static final String INDIAN_NATION_TYPES_TAG = &quot;indian-nation-types&quot;;
+    private static final String MODIFIERS_TAG = &quot;modifiers&quot;;
+    private static final String NATIONS_TAG = &quot;nations&quot;;
+    private static final String OPTIONS_TAG = &quot;options&quot;;
+    private static final String RESOURCE_TYPES_TAG = &quot;resource-types&quot;;
+    private static final String ROLES_TAG = &quot;roles&quot;;
+    private static final String TILE_TYPES_TAG = &quot;tile-types&quot;;
+    private static final String TILE_IMPROVEMENT_TYPES_TAG = &quot;tile-improvement-types&quot;;
+    private static final String UNIT_TYPES_TAG = &quot;unit-types&quot;;
+    private static final String VERSION_TAG = &quot;version&quot;;
+    // @compat 0.10.x
+    private static final String EQUIPMENT_TYPES_TAG = &quot;equipment-types&quot;;
+    // end @compat 0.10.x
+    // @compat 0.11.3
+    private static final String OLD_DIFFICULTY_LEVEL_TAG = &quot;difficultyLevel&quot;;
+<span class="fc" id="L3581">    private static final String OLD_TILEIMPROVEMENT_TYPES_TAG = &quot;tileimprovement-types&quot;;</span>
+    // end @compat 0.11.3
+
+    /**
+     * Write an XML-representation of this object to the given stream.
+     *
+     * @param xw The &lt;code&gt;FreeColXMLWriter&lt;/code&gt; to write to.
+     * @exception XMLStreamException if there are any problems writing
+     *      to the stream.
+     */
+    protected void toXML(FreeColXMLWriter xw) throws XMLStreamException {
+        // Start element
+<span class="fc" id="L3593">        xw.writeStartElement(getXMLElementTagName());</span>
+
+        // Add attributes
+<span class="fc" id="L3596">        xw.writeAttribute(FreeColObject.ID_ATTRIBUTE_TAG, getId());</span>
+<span class="pc bpc" id="L3597" title="1 of 2 branches missed.">        if (difficultyLevel != null) {</span>
+<span class="fc" id="L3598">            xw.writeAttribute(DIFFICULTY_LEVEL_TAG, difficultyLevel);</span>
+        }
+<span class="pc bpc" id="L3600" title="1 of 2 branches missed.">        if (version != null) {</span>
+<span class="fc" id="L3601">            xw.writeAttribute(VERSION_TAG, version);</span>
+        }
+
+        // copy the order of section in specification.xml
+<span class="fc" id="L3605">        writeSection(xw, MODIFIERS_TAG, specialModifiers);</span>
+<span class="fc" id="L3606">        writeSection(xw, EVENTS_TAG, events);</span>
+<span class="fc" id="L3607">        writeSection(xw, DISASTERS_TAG, disasters);</span>
+<span class="fc" id="L3608">        writeSection(xw, GOODS_TYPES_TAG, goodsTypeList);</span>
+<span class="fc" id="L3609">        writeSection(xw, RESOURCE_TYPES_TAG, resourceTypeList);</span>
+<span class="fc" id="L3610">        writeSection(xw, TILE_TYPES_TAG, tileTypeList);</span>
+<span class="fc" id="L3611">        writeSection(xw, ROLES_TAG, roles);</span>
+<span class="fc" id="L3612">        writeSection(xw, TILE_IMPROVEMENT_TYPES_TAG, tileImprovementTypeList);</span>
+<span class="fc" id="L3613">        writeSection(xw, UNIT_TYPES_TAG, unitTypeList);</span>
+<span class="fc" id="L3614">        writeSection(xw, BUILDING_TYPES_TAG, buildingTypeList);</span>
+<span class="fc" id="L3615">        writeSection(xw, FOUNDING_FATHERS_TAG, foundingFathers);</span>
+<span class="fc" id="L3616">        writeSection(xw, EUROPEAN_NATION_TYPES_TAG, europeanNationTypes);</span>
+<span class="fc" id="L3617">        writeSection(xw, EUROPEAN_NATION_TYPES_TAG, REFNationTypes);</span>
+<span class="fc" id="L3618">        writeSection(xw, INDIAN_NATION_TYPES_TAG, indianNationTypes);</span>
+<span class="fc" id="L3619">        writeSection(xw, NATIONS_TAG, nations);</span>
+
+        // option tree has been flattened
+<span class="fc" id="L3622">        xw.writeStartElement(OPTIONS_TAG);</span>
+<span class="fc bfc" id="L3623" title="All 2 branches covered.">        for (OptionGroup item : allOptionGroups.values()) {</span>
+<span class="fc bfc" id="L3624" title="All 2 branches covered.">            if (item.getGroup().isEmpty()) item.toXML(xw);</span>
+        }
+<span class="fc" id="L3626">        xw.writeEndElement();</span>
+
+        // End element
+<span class="fc" id="L3629">        xw.writeEndElement();</span>
+
+<span class="fc" id="L3631">    }</span>
+
+    private &lt;T extends FreeColObject&gt; void writeSection(FreeColXMLWriter xw,
+        String section, Collection&lt;T&gt; items) throws XMLStreamException {
+<span class="fc" id="L3635">        xw.writeStartElement(section);</span>
+
+<span class="fc bfc" id="L3637" title="All 2 branches covered.">        for (T item : items) item.toXML(xw);</span>
+
+<span class="fc" id="L3639">        xw.writeEndElement();</span>
+<span class="fc" id="L3640">    }</span>
+
+    /**
+     * Initializes this object from its XML-representation.
+     *
+     * @param xr The &lt;code&gt;FreeColXMLReader&lt;/code&gt; to read from.
+     * @exception XMLStreamException if there are any problems reading
+     *     the stream.
+     */
+    public void readFromXML(FreeColXMLReader xr) throws XMLStreamException {
+<span class="fc" id="L3650">        String newId = xr.readId();</span>
+<span class="fc" id="L3651">        checkIdNull(newId);</span>
+
+<span class="fc" id="L3653">        checkDifficultLevelNullAttr(xr);</span>
+
+<span class="fc" id="L3655">        version = xr.getAttribute(VERSION_TAG, (String)null);</span>
+
+<span class="fc" id="L3657">        logSpecificationDifficultyVersion(newId);</span>
+
+<span class="fc" id="L3659">        String parentId = xr.getAttribute(FreeColGameObjectType.EXTENDS_TAG,</span>
+<span class="fc" id="L3660">                                          (String)null);</span>
+<span class="fc bfc" id="L3661" title="All 2 branches covered.">        if (parentId != null) {</span>
+<span class="fc" id="L3662">            openParentSpec(parentId);</span>
+        }
+
+<span class="fc bfc" id="L3665" title="All 2 branches covered.">        while (xr.nextTag() != XMLStreamConstants.END_ELEMENT) {</span>
+<span class="fc" id="L3666">            String childName = xr.getLocalName();</span>
+            // @compat 0.10.x
+            // Ideally we would handle role backward compatibility in
+            // the type reader triggered by the &quot;roles&quot; section of the
+            // spec.  Alas, specs pre-0.10.6 had no roles section.
+            // The next section after roles in modern specs is
+            // &quot;equipment-types&quot;, which is also the first place roles
+            // are referred to directly, and better still is completely
+            // replaced by roles in 0.11.x.  So this is the last chance
+            // to fix any role omissions.
+<span class="fc bfc" id="L3676" title="All 2 branches covered.">            if (&quot;equipment-types&quot;.equals(childName)) fixRoles();</span>
+            // end @compat 0.10.x
+<span class="fc" id="L3678">            ChildReader reader = readerMap.get(childName);</span>
+<span class="pc bpc" id="L3679" title="1 of 2 branches missed.">            if (reader == null) {</span>
+<span class="nc" id="L3680">                logNoChildName(childName);</span>
+<span class="nc" id="L3681">            } else {  </span>
+<span class="fc" id="L3682">                reader.readChildren(xr);</span>
+            }
+        }
+<span class="fc" id="L3685">    }</span>
+
+
+	/**
+	 * @param childName
+	 */
+	private void logNoChildName(String childName) {
+<span class="nc" id="L3692">		logger.warning(&quot;No reader found for: &quot; + childName);</span>
+<span class="nc" id="L3693">	}</span>
+
+
+	/**
+	 * @param parentId
+	 * @throws XMLStreamException
+	 */
+	private void openParentSpec(String parentId) throws XMLStreamException {
+		try {
+<span class="fc" id="L3702">		    FreeColTcFile parent = new FreeColTcFile(parentId);</span>
+<span class="fc" id="L3703">		    load(parent.getSpecificationInputStream());</span>
+<span class="fc" id="L3704">		    initialized = false;</span>
+<span class="pc" id="L3705">		} catch (IOException e) {</span>
+<span class="nc" id="L3706">		    throw new XMLStreamException(&quot;Failed to open parent specification: &quot;, e);</span>
+		}
+<span class="fc" id="L3708">	}</span>
+
+
+	/**
+	 * @param newId
+	 */
+	private void logSpecificationDifficultyVersion(String newId) {
+<span class="fc" id="L3715">		logger.fine(&quot;Reading specification &quot; + newId</span>
+<span class="fc" id="L3716">            + &quot; difficulty=&quot; + difficultyLevel</span>
+<span class="fc" id="L3717">            + &quot; version=&quot; + version);</span>
+<span class="fc" id="L3718">	}</span>
+
+
+	/**
+	 * @param xr
+	 */
+	private void checkDifficultLevelNullAttr(FreeColXMLReader xr) {
+<span class="pc bpc" id="L3725" title="1 of 2 branches missed.">		if (difficultyLevel == null) {</span>
+<span class="fc" id="L3726">            difficultyLevel = xr.getAttribute(DIFFICULTY_LEVEL_TAG,</span>
+<span class="fc" id="L3727">                                              (String)null);</span>
+            // @compat 0.11.3
+<span class="fc" id="L3729">            checkDifficultyLevelNull(xr);</span>
+            // end @compat 0.11.3
+        }
+<span class="fc" id="L3732">	}</span>
+
+
+	/**
+	 * @param xr
+	 */
+	private void checkDifficultyLevelNull(FreeColXMLReader xr) {
+<span class="fc bfc" id="L3739" title="All 2 branches covered.">		if (difficultyLevel == null) {</span>
+<span class="fc" id="L3740">		    difficultyLevel = xr.getAttribute(OLD_DIFFICULTY_LEVEL_TAG,</span>
+<span class="fc" id="L3741">		                                      (String)null);</span>
+		}
+<span class="fc" id="L3743">	}</span>
+
+
+	/**
+	 * @param newId
+	 */
+	private void checkIdNull(String newId) {
+<span class="fc bfc" id="L3750" title="All 2 branches covered.">		if (id == null) id = newId; // don't overwrite id with parent id!</span>
+<span class="fc" id="L3751">	}</span>
+
+    /**
+     * Gets the tag name of the root element representing this object.
+     *
+     * @return &quot;freecol-specification&quot;.
+     */
+    public static String getXMLElementTagName() {
+<span class="fc" id="L3759">        return &quot;freecol-specification&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

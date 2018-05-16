@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ServerPlayerTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">test/src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.server.model</a> &gt; <span class="el_source">ServerPlayerTest.java</span></div><h1>ServerPlayerTest.java</h1><pre class="source lang-java linenums">/**
+ *  Copyright (C) 2002-2015  The FreeCol Team
+ *
+ *  This file is part of FreeCol.
+ *
+ *  FreeCol is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  FreeCol is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with FreeCol.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package net.sf.freecol.server.model;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import net.sf.freecol.common.model.Colony;
+import net.sf.freecol.common.model.Europe;
+import net.sf.freecol.common.model.Game;
+import net.sf.freecol.common.model.GoodsContainer;
+import net.sf.freecol.common.model.GoodsType;
+import net.sf.freecol.common.model.Map;
+import net.sf.freecol.common.model.Market;
+import net.sf.freecol.common.model.Modifier;
+import net.sf.freecol.common.model.Tile;
+import net.sf.freecol.common.model.TileType;
+import net.sf.freecol.common.model.Turn;
+import net.sf.freecol.common.model.Unit;
+import net.sf.freecol.common.model.UnitType;
+import net.sf.freecol.server.ServerTestHelper;
+import net.sf.freecol.server.control.InGameController;
+import net.sf.freecol.util.test.FreeColTestCase;
+import net.sf.freecol.util.test.MockPseudoRandom;
+
+
+<span class="fc" id="L45">public class ServerPlayerTest extends FreeColTestCase {	</span>
+
+<span class="fc" id="L47">    private static final GoodsType cottonType</span>
+<span class="fc" id="L48">        = spec().getGoodsType(&quot;model.goods.cotton&quot;);</span>
+<span class="fc" id="L49">    private static final GoodsType foodType</span>
+<span class="fc" id="L50">        = spec().getPrimaryFoodType();</span>
+<span class="fc" id="L51">    private static final GoodsType musketsType</span>
+<span class="fc" id="L52">        = spec().getGoodsType(&quot;model.goods.muskets&quot;);</span>
+<span class="fc" id="L53">    private static final GoodsType silverType</span>
+<span class="fc" id="L54">        = spec().getGoodsType(&quot;model.goods.silver&quot;);</span>
+
+<span class="fc" id="L56">    private static final TileType plains</span>
+<span class="fc" id="L57">        = spec().getTileType(&quot;model.tile.plains&quot;);</span>
+    
+<span class="fc" id="L59">    private static final UnitType colonistType</span>
+<span class="fc" id="L60">        = spec().getUnitType(&quot;model.unit.freeColonist&quot;);</span>
+<span class="fc" id="L61">    private static final UnitType wagonTrainType</span>
+<span class="fc" id="L62">        = spec().getUnitType(&quot;model.unit.wagonTrain&quot;);</span>
+<span class="fc" id="L63">    private static final UnitType caravelType</span>
+<span class="fc" id="L64">        = spec().getUnitType(&quot;model.unit.caravel&quot;);</span>
+<span class="fc" id="L65">    private static final UnitType galleonType</span>
+<span class="fc" id="L66">        = spec().getUnitType(&quot;model.unit.galleon&quot;);</span>
+<span class="fc" id="L67">    private static final UnitType privateerType</span>
+<span class="fc" id="L68">        = spec().getUnitType(&quot;model.unit.privateer&quot;);</span>
+
+
+    @Override
+    public void tearDown() throws Exception {
+<span class="fc" id="L73">        ServerTestHelper.stopServerGame();</span>
+<span class="fc" id="L74">        super.tearDown();</span>
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * If we wait a number of turns after selling, the market should
+     * recover and finally settle back to the initial levels.  Also
+     * test that selling reduces the price for other players.
+     */
+    public void testMarketRecovery() {
+<span class="fc" id="L83">        Game game = ServerTestHelper.startServerGame(getTestMap());</span>
+<span class="fc" id="L84">        InGameController igc = ServerTestHelper.getInGameController();</span>
+
+<span class="fc" id="L86">        ServerPlayer french = (ServerPlayer) game.getPlayerByNationId(&quot;model.nation.french&quot;);</span>
+<span class="fc" id="L87">        ServerPlayer english = (ServerPlayer) game.getPlayerByNationId(&quot;model.nation.english&quot;);</span>
+<span class="fc" id="L88">        Market frenchMarket = french.getMarket();</span>
+<span class="fc" id="L89">        Market englishMarket = english.getMarket();</span>
+<span class="fc" id="L90">        int frenchGold = french.getGold();</span>
+<span class="fc" id="L91">        int silverPrice = spec().getInitialPrice(silverType);</span>
+
+        // Sell lightly in the English market to check that the good
+        // is now considered &quot;traded&quot;.
+<span class="fc" id="L95">        Random random = new Random();</span>
+<span class="fc" id="L96">        int m = english.sell(null, silverType, 1);</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (m &gt; 0) english.propagateToEuropeanMarkets(silverType, m, random);</span>
+<span class="fc" id="L98">        assertTrue(englishMarket.hasBeenTraded(silverType));</span>
+<span class="fc" id="L99">        int englishAmount = englishMarket.getAmountInMarket(silverType);</span>
+
+        // Sell heavily in the French market, price should drop.
+<span class="fc" id="L102">        m = french.sell(null, silverType, 200);</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (m &gt; 0) french.propagateToEuropeanMarkets(silverType, m, random);</span>
+<span class="fc" id="L104">        assertEquals(frenchGold + silverPrice * 200, french.getGold());</span>
+<span class="fc" id="L105">        assertTrue(frenchMarket.hasBeenTraded(silverType));</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        assertTrue(frenchMarket.getSalePrice(silverType, 1) &lt; silverPrice);</span>
+
+        // Price might have dropped in the English market too, but
+        // not as much as for the French.
+<span class="fc" id="L110">        assertTrue(&quot;English silver increases due to French sales&quot;,</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">            englishMarket.getAmountInMarket(silverType) &gt; englishAmount);</span>
+<span class="fc" id="L112">        assertTrue(&quot;English silver price might drop due to French sales&quot;,</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">            englishMarket.getSalePrice(silverType, 1) &lt;= silverPrice);</span>
+<span class="fc" id="L114">        assertTrue(&quot;English silver price should drop less than French&quot;,</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">            englishMarket.getSalePrice(silverType, 1)</span>
+<span class="fc" id="L116">            &gt;= frenchMarket.getSalePrice(silverType, 1));</span>
+
+        // Pretend time is passing.
+        // Have to advance time as yearly goods removal is initially low.
+<span class="fc" id="L120">        game.setTurn(new Turn(200));</span>
+<span class="fc" id="L121">        List&lt;Integer&gt; setValues = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L122">        setValues.add(20);</span>
+<span class="fc" id="L123">        MockPseudoRandom mockRandom = new MockPseudoRandom(setValues, true);</span>
+<span class="fc" id="L124">        ServerTestHelper.setRandom(mockRandom);</span>
+<span class="fc" id="L125">        boolean frenchRecovered = false;</span>
+<span class="fc" id="L126">        boolean englishRecovered = false;</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        for (int i = 0; i &lt; 100; i++) {</span>
+<span class="fc" id="L128">            igc.yearlyGoodsAdjust((ServerPlayer) french);</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">            if (frenchMarket.getSalePrice(silverType, 1) &gt;= silverPrice) {</span>
+<span class="fc" id="L130">                frenchRecovered = true;</span>
+            }
+<span class="fc" id="L132">            igc.yearlyGoodsAdjust((ServerPlayer) english);</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">            if (englishMarket.getSalePrice(silverType, 1) &gt;= silverPrice) {</span>
+<span class="fc" id="L134">                englishRecovered = true;</span>
+            }
+        }
+
+        // Prices should have recovered.
+<span class="fc" id="L139">        assertTrue(&quot;French silver price should have recovered&quot;,</span>
+<span class="fc" id="L140">                   frenchRecovered);</span>
+<span class="fc" id="L141">        assertTrue(&quot;English silver price should have recovered&quot;,</span>
+<span class="fc" id="L142">                   englishRecovered);</span>
+<span class="fc" id="L143">    }</span>
+
+    public void testHasExploredTile() {
+<span class="fc" id="L146">        Game game = ServerTestHelper.startServerGame(getTestMap());</span>
+        
+<span class="fc" id="L148">        Map map = game.getMap();</span>
+<span class="fc" id="L149">        ServerPlayer dutch = (ServerPlayer) game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+<span class="fc" id="L150">        ServerPlayer french = (ServerPlayer) game.getPlayerByNationId(&quot;model.nation.french&quot;);</span>
+<span class="fc" id="L151">        InGameController igc = ServerTestHelper.getInGameController();</span>
+<span class="fc" id="L152">        Tile tile0 = map.getTile(0, 0);</span>
+<span class="fc" id="L153">        Tile tile1 = map.getTile(6, 8);</span>
+<span class="fc" id="L154">        Tile tile2 = map.getTile(8, 6);</span>
+<span class="fc" id="L155">        assertFalse(&quot;Setup error, tile1 should not be explored by dutch player&quot;,dutch.hasExplored(tile1));</span>
+<span class="fc" id="L156">        assertFalse(&quot;Setup error, tile1 should not be explored by french player&quot;,french.hasExplored(tile1));</span>
+<span class="fc" id="L157">        assertFalse(&quot;Setup error, tile2 should not be explored by dutch player&quot;,dutch.hasExplored(tile2));</span>
+<span class="fc" id="L158">        assertFalse(&quot;Setup error, tile2 should not be explored by french player&quot;,french.hasExplored(tile2));</span>
+
+<span class="fc" id="L160">        igc.move(dutch, new ServerUnit(game, tile0, dutch, colonistType),</span>
+<span class="fc" id="L161">                 tile1);</span>
+<span class="fc" id="L162">        igc.move(french, new ServerUnit(game, tile0, french, colonistType),</span>
+<span class="fc" id="L163">                 tile2);</span>
+<span class="fc" id="L164">        assertTrue(&quot;Tile1 is explored&quot;, tile1.isExplored());</span>
+<span class="fc" id="L165">        assertTrue(&quot;Tile2 is explored&quot;, tile2.isExplored());</span>
+<span class="fc" id="L166">        assertTrue(&quot;Tile1 should be explored by dutch player&quot;,dutch.hasExplored(tile1));</span>
+<span class="fc" id="L167">        assertFalse(&quot;Tile1 should not be explored by french player&quot;,french.hasExplored(tile1));</span>
+<span class="fc" id="L168">        assertFalse(&quot;Tile2 should not be explored by dutch player&quot;,dutch.hasExplored(tile2));</span>
+<span class="fc" id="L169">        assertTrue(&quot;Tile2 should be explored by french player&quot;,french.hasExplored(tile2));</span>
+<span class="fc" id="L170">    }</span>
+
+    public void testLoadInColony() {
+<span class="fc" id="L173">        Game game = ServerTestHelper.startServerGame(getTestMap());</span>
+<span class="fc" id="L174">        Map map = game.getMap();</span>
+<span class="fc" id="L175">        InGameController igc = ServerTestHelper.getInGameController();</span>
+        
+<span class="fc" id="L177">        Colony colony = getStandardColony();</span>
+<span class="fc" id="L178">        colony.addGoods(cottonType, 200);</span>
+<span class="fc" id="L179">        ServerPlayer dutch</span>
+<span class="fc" id="L180">            = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+<span class="fc" id="L181">        Unit wagonInColony</span>
+<span class="fc" id="L182">            = new ServerUnit(game, colony.getTile(), dutch, wagonTrainType);</span>
+<span class="fc" id="L183">        Unit wagonNotInColony</span>
+<span class="fc" id="L184">            = new ServerUnit(game, map.getTile(10, 10), dutch, wagonTrainType);</span>
+
+        // Fail to move to wagon not in colony
+<span class="fc" id="L187">        igc.loadGoods(dutch, colony, cottonType, 50, wagonNotInColony);</span>
+<span class="fc" id="L188">        assertEquals(0, wagonNotInColony.getGoodsCount(cottonType));</span>
+<span class="fc" id="L189">        assertEquals(200, colony.getGoodsCount(cottonType));</span>
+
+        // Check colony to wagon
+<span class="fc" id="L192">        igc.loadGoods(dutch, colony, cottonType, 10, wagonInColony);</span>
+<span class="fc" id="L193">        assertEquals(10, wagonInColony.getGoodsCount(cottonType));</span>
+<span class="fc" id="L194">        assertEquals(190, colony.getGoodsCount(cottonType));</span>
+
+        // Check wagon to colony
+<span class="fc" id="L197">        igc.unloadGoods(dutch, cottonType, 5, wagonInColony);</span>
+<span class="fc" id="L198">        assertEquals(5, wagonInColony.getGoodsCount(cottonType));</span>
+<span class="fc" id="L199">        assertEquals(195, colony.getGoodsCount(cottonType));</span>
+
+        // Fail to load more than present
+<span class="fc" id="L202">        igc.loadGoods(dutch, colony, cottonType, 200, wagonInColony);</span>
+<span class="fc" id="L203">        assertEquals(5, wagonInColony.getGoodsCount(cottonType));</span>
+<span class="fc" id="L204">        assertEquals(195, colony.getGoodsCount(cottonType));</span>
+
+        // Fill wagon
+<span class="fc" id="L207">        igc.loadGoods(dutch, colony, cottonType, 195, wagonInColony);</span>
+<span class="fc" id="L208">        assertEquals(200, wagonInColony.getGoodsCount(cottonType));</span>
+<span class="fc" id="L209">        assertEquals(0, colony.getGoodsCount(cottonType));</span>
+<span class="fc" id="L210">        assertFalse(wagonInColony.hasSpaceLeft());</span>
+
+        // Fail to add more
+<span class="fc" id="L213">        colony.addGoods(cottonType, 1);</span>
+<span class="fc" id="L214">        igc.loadGoods(dutch, colony, cottonType, 1, wagonInColony);</span>
+<span class="fc" id="L215">        assertEquals(200, wagonInColony.getGoodsCount(cottonType));</span>
+<span class="fc" id="L216">        assertEquals(1, colony.getGoodsCount(cottonType));</span>
+<span class="fc" id="L217">    }</span>
+
+    public void testLoadInEurope() {
+<span class="fc" id="L220">        Game game = ServerTestHelper.startServerGame(getTestMap());</span>
+<span class="fc" id="L221">        Map map = game.getMap();</span>
+<span class="fc" id="L222">        InGameController igc = ServerTestHelper.getInGameController();</span>
+
+<span class="fc" id="L224">        ServerPlayer dutch</span>
+<span class="fc" id="L225">            = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+<span class="fc" id="L226">        Europe europe = dutch.getEurope();</span>
+<span class="fc" id="L227">        Unit privateer1</span>
+<span class="fc" id="L228">            = new ServerUnit(game, europe, dutch, privateerType);</span>
+<span class="fc" id="L229">        Unit privateer2</span>
+<span class="fc" id="L230">            = new ServerUnit(game, map.getTile(1,1), dutch, privateerType);</span>
+
+        // Check Europe to privateer, should fail due to funds
+<span class="fc" id="L233">        igc.loadGoods(dutch, europe, cottonType, 10, privateer1);</span>
+<span class="fc" id="L234">        assertEquals(0, privateer1.getGoodsCount(cottonType));</span>
+
+        // Add gold and succeed
+<span class="fc" id="L237">        dutch.setGold(10000);</span>
+<span class="fc" id="L238">        igc.loadGoods(dutch, europe, cottonType, 10, privateer1);</span>
+<span class="fc" id="L239">        assertEquals(10, privateer1.getGoodsCount(cottonType));</span>
+
+        // Check Privateer to Europe
+<span class="fc" id="L242">        igc.unloadGoods(dutch, cottonType, 5, privateer1);</span>
+<span class="fc" id="L243">        assertEquals(5, privateer1.getGoodsCount(cottonType));</span>
+
+        // Fail to load to privateer not in Europe
+<span class="fc" id="L246">        igc.loadGoods(dutch, europe, cottonType, 10, privateer2);</span>
+<span class="fc" id="L247">        assertEquals(0, privateer2.getGoodsCount(cottonType));</span>
+
+        // Establish boycott and fail again
+<span class="fc" id="L250">        dutch.getMarket().setArrears(cottonType, 1);</span>
+<span class="fc" id="L251">        igc.loadGoods(dutch, europe, cottonType, 10, privateer1);</span>
+<span class="fc" id="L252">        assertEquals(5, privateer1.getGoodsCount(cottonType));</span>
+<span class="fc" id="L253">    }</span>
+
+    public void testCheckGameOverNoUnits() {
+<span class="fc" id="L256">        Game game = ServerTestHelper.startServerGame(getTestMap());</span>
+<span class="fc" id="L257">        ServerPlayer dutch = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+
+<span class="fc" id="L259">        dutch.setGold(0);</span>
+<span class="fc" id="L260">        assertEquals(&quot;Should not have units&quot;, 0, dutch.getUnits().size());</span>
+<span class="fc" id="L261">        assertEquals(&quot;Should be game over due to no carrier&quot;, -1,</span>
+<span class="fc" id="L262">                     dutch.checkForDeath());</span>
+<span class="fc" id="L263">    }</span>
+
+    public void testCheckNoGameOverEnoughMoney() {
+<span class="fc" id="L266">        Game game = ServerTestHelper.startServerGame(getTestMap());</span>
+<span class="fc" id="L267">        ServerPlayer dutch = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+
+<span class="fc" id="L269">        dutch.setGold(10000);</span>
+<span class="fc" id="L270">        assertEquals(&quot;Should not be game, enough money&quot;, 0,</span>
+<span class="fc" id="L271">                     dutch.checkForDeath());</span>
+<span class="fc" id="L272">    }</span>
+
+    public void testCheckNoGameOverHasColonistInNewWorld() {
+<span class="fc" id="L275">        Game game = ServerTestHelper.startServerGame(getTestMap());</span>
+<span class="fc" id="L276">        Map map = game.getMap();</span>
+<span class="fc" id="L277">        ServerPlayer dutch = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+<span class="fc" id="L278">        dutch.setGold(0);</span>
+
+<span class="fc" id="L280">        new ServerUnit(game, map.getTile(4, 7), dutch, colonistType);</span>
+<span class="fc" id="L281">        assertEquals(&quot;Should not be game over, has units&quot;, 0,</span>
+<span class="fc" id="L282">                     dutch.checkForDeath());</span>
+<span class="fc" id="L283">    }</span>
+
+    public void testCheckGameOver1600Threshold() {
+<span class="fc" id="L286">        Game game = ServerTestHelper.startServerGame(getTestMap());</span>
+<span class="fc" id="L287">        ServerPlayer dutch = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+<span class="fc" id="L288">        dutch.setGold(0);</span>
+
+<span class="fc" id="L290">        new ServerUnit(game, dutch.getEurope(), dutch, galleonType);</span>
+<span class="fc" id="L291">        assertEquals(&quot;Should have 1 unit&quot;, 1, dutch.getUnits().size());</span>
+<span class="fc" id="L292">        assertEquals(&quot;Should not be game over, not 1600 yet, autorecruit&quot;, 1,</span>
+<span class="fc" id="L293">                     dutch.checkForDeath());</span>
+
+<span class="fc" id="L295">        new ServerUnit(game, dutch.getEurope(), dutch, colonistType);</span>
+<span class="fc" id="L296">        assertEquals(&quot;Should have 2 units&quot;, 2, dutch.getUnits().size());</span>
+<span class="fc" id="L297">        assertEquals(&quot;Should not be game over, not 1600 yet&quot;, 0,</span>
+<span class="fc" id="L298">                     dutch.checkForDeath());</span>
+
+<span class="fc" id="L300">        game.setTurn(new Turn(1600));</span>
+<span class="fc" id="L301">        assertEquals(&quot;Should be game over, no new world presence &gt;= 1600&quot;, -1,</span>
+<span class="fc" id="L302">                     dutch.checkForDeath());</span>
+<span class="fc" id="L303">    }</span>
+
+    public void testCheckGameOverUnitsGoingToEurope() {
+<span class="fc" id="L306">        Game game = ServerTestHelper.startServerGame(getTestMap(spec().getTileType(&quot;model.tile.highSeas&quot;)));</span>
+<span class="fc" id="L307">        Map map = game.getMap();</span>
+<span class="fc" id="L308">        InGameController igc = ServerTestHelper.getInGameController();</span>
+<span class="fc" id="L309">        ServerPlayer dutch = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+<span class="fc" id="L310">        dutch.setGold(0);</span>
+
+<span class="fc" id="L312">        Unit galleon = new ServerUnit(game, map.getTile(6, 8), dutch,</span>
+<span class="fc" id="L313">                                      galleonType);</span>
+<span class="fc" id="L314">        Unit colonist = new ServerUnit(game, galleon, dutch, colonistType);</span>
+<span class="fc" id="L315">        assertTrue(&quot;Colonist should be aboard the galleon&quot;,</span>
+<span class="pc bpc" id="L316" title="1 of 2 branches missed.">                   colonist.getLocation() == galleon);</span>
+<span class="fc" id="L317">        assertEquals(&quot;Galleon should have a colonist onboard&quot;,</span>
+<span class="fc" id="L318">                     1, galleon.getUnitCount());</span>
+<span class="fc" id="L319">        igc.moveTo(dutch, galleon, dutch.getEurope());</span>
+
+<span class="fc" id="L321">        assertEquals(&quot;Should not be game over, units between new world and europe&quot;, 0,</span>
+<span class="fc" id="L322">                     dutch.checkForDeath());</span>
+
+<span class="fc" id="L324">        game.setTurn(new Turn(1600));</span>
+<span class="fc" id="L325">        assertEquals(&quot;Should be game over, no new world presence &gt;= 1600&quot;, -1,</span>
+<span class="fc" id="L326">                     dutch.checkForDeath());</span>
+<span class="fc" id="L327">    }</span>
+
+    public void testCheckGameOverUnitsGoingToNewWorld() {
+<span class="fc" id="L330">        Game game = ServerTestHelper.startServerGame(getTestMap());</span>
+<span class="fc" id="L331">        Map map = game.getMap();</span>
+<span class="fc" id="L332">        InGameController igc = ServerTestHelper.getInGameController();</span>
+<span class="fc" id="L333">        ServerPlayer dutch = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+<span class="fc" id="L334">        dutch.setGold(0);</span>
+
+<span class="fc" id="L336">        Unit galleon = new ServerUnit(game, dutch.getEurope(), dutch,</span>
+<span class="fc" id="L337">                                      galleonType);</span>
+<span class="fc" id="L338">        Unit colonist = new ServerUnit(game, galleon, dutch, colonistType);</span>
+<span class="fc" id="L339">        assertEquals(&quot;Colonist should be aboard the galleon&quot;, galleon,</span>
+<span class="fc" id="L340">                     colonist.getLocation());</span>
+<span class="fc" id="L341">        assertEquals(&quot;Galleon should have a colonist onboard&quot;, 1,</span>
+<span class="fc" id="L342">                     galleon.getUnitCount());</span>
+<span class="fc" id="L343">        igc.moveTo(dutch, galleon, map);</span>
+
+<span class="fc" id="L345">        assertEquals(&quot;Should not be game over, units between new world and europe&quot;, 0,</span>
+<span class="fc" id="L346">                     dutch.checkForDeath());</span>
+
+<span class="fc" id="L348">        game.setTurn(new Turn(1600));</span>
+<span class="fc" id="L349">        assertEquals(&quot;Should be game over, no new world presence &gt;= 1600&quot;, -1,</span>
+<span class="fc" id="L350">                     dutch.checkForDeath());</span>
+<span class="fc" id="L351">    }</span>
+
+    public void testSellingMakesPricesFall() {
+<span class="fc" id="L354">        Game g = ServerTestHelper.startServerGame(getTestMap());</span>
+<span class="fc" id="L355">        ServerPlayer p = (ServerPlayer)g.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+
+<span class="fc" id="L357">        Market dm = p.getMarket();</span>
+<span class="fc" id="L358">        int previousGold = p.getGold();</span>
+<span class="fc" id="L359">        int price = spec().getInitialPrice(silverType);</span>
+<span class="fc" id="L360">        p.sell(null, silverType, 1000);</span>
+
+<span class="fc" id="L362">        assertEquals(previousGold + price * 1000, p.getGold());</span>
+<span class="pc bpc" id="L363" title="1 of 2 branches missed.">        assertTrue(dm.getSalePrice(silverType, 1) &lt; price);</span>
+<span class="fc" id="L364">    }</span>
+
+    public void testBuyingMakesPricesRaise() {
+<span class="fc" id="L367">        Game game = ServerTestHelper.startServerGame(getTestMap());</span>
+<span class="fc" id="L368">        ServerPlayer player = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+
+<span class="fc" id="L370">        Market dm = player.getMarket();</span>
+<span class="fc" id="L371">        player.modifyGold(1000000);</span>
+<span class="fc" id="L372">        int price = dm.getCostToBuy(foodType);</span>
+<span class="fc" id="L373">        int n = player.buy(new GoodsContainer(game, player.getEurope()),</span>
+<span class="fc" id="L374">                                              foodType, 10000);</span>
+<span class="fc" id="L375">        assertEquals(1000000 - 10000 * price, player.getGold());</span>
+<span class="pc bpc" id="L376" title="1 of 2 branches missed.">        assertTrue(dm.getBidPrice(foodType, 1) &gt; price);</span>
+<span class="fc" id="L377">    }</span>
+
+    /**
+     * Helper Method for finding out how much of a good to sell until
+     * the price drops.
+     */
+    public int sellUntilPriceDrop(Game game, ServerPlayer player,
+                                  GoodsType type) {
+<span class="fc" id="L385">        int result = 0;</span>
+<span class="fc" id="L386">        Market market = player.getMarket();</span>
+<span class="fc" id="L387">        int price = market.getSalePrice(type, 1);</span>
+<span class="pc bpc" id="L388" title="1 of 2 branches missed.">        if (price == 0) {</span>
+<span class="nc" id="L389">            throw new IllegalArgumentException(&quot;Price is already 0 for selling &quot; + type);</span>
+        }
+
+<span class="fc bfc" id="L392" title="All 2 branches covered.">        while (price == market.getSalePrice(type, 1)) {</span>
+<span class="fc" id="L393">            player.sell(null, type, 10);</span>
+<span class="fc" id="L394">            result++;</span>
+        }
+<span class="fc" id="L396">        return result;</span>
+    }
+
+    /*
+     * Helper method for finding out how much to buy of a good before
+     * the prices rises.
+     */
+    public int buyUntilPriceRise(Game game, ServerPlayer player,
+                                 GoodsType type) {
+<span class="fc" id="L405">        Game g = ServerTestHelper.startServerGame(getTestMap());</span>
+<span class="fc" id="L406">        Random random = new Random();</span>
+<span class="fc" id="L407">        int result = 0;</span>
+<span class="fc" id="L408">        Market market = player.getMarket();</span>
+<span class="fc" id="L409">        int price = market.getBidPrice(type, 1);</span>
+
+<span class="pc bpc" id="L411" title="1 of 2 branches missed.">        if (price == 20) {</span>
+<span class="nc" id="L412">            throw new IllegalArgumentException(&quot;Price is already 20 for buying &quot; + type);</span>
+        }
+
+<span class="fc" id="L415">        GoodsContainer container</span>
+<span class="fc" id="L416">            = new GoodsContainer(game, player.getEurope());</span>
+<span class="fc bfc" id="L417" title="All 2 branches covered.">        while (price == market.getBidPrice(type, 1)) {</span>
+<span class="fc" id="L418">            player.buy(container, type, 10);</span>
+<span class="fc" id="L419">            result++;</span>
+        }
+<span class="fc" id="L421">        return result;</span>
+    }
+
+    /**
+     * Assert that the dutch nation has more stable prices than the other
+     * nations
+     */
+    public void testDutchMarket() {
+
+<span class="fc" id="L430">        Game game = getStandardGame();</span>
+<span class="fc" id="L431">        ServerPlayer dutch = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+<span class="fc" id="L432">        ServerPlayer french = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.french&quot;);</span>
+<span class="fc" id="L433">        assertEquals(&quot;model.nationType.trade&quot;, dutch.getNationType().getId());</span>
+<span class="fc" id="L434">        assertTrue(dutch.getNationType().hasModifier(Modifier.TRADE_BONUS));</span>
+<span class="fc" id="L435">        assertTrue(dutch.hasModifier(Modifier.TRADE_BONUS));</span>
+
+        {// Test that the dutch can sell more goods until the price drops
+<span class="fc" id="L438">            int dutchSellAmount = sellUntilPriceDrop(game, dutch, silverType);</span>
+
+<span class="fc" id="L440">            Game g2 = getStandardGame();</span>
+<span class="fc" id="L441">            ServerPlayer french2 = (ServerPlayer)g2.getPlayerByNationId(&quot;model.nation.french&quot;);</span>
+<span class="fc" id="L442">            int frenchSellAmount = sellUntilPriceDrop(g2, french2, silverType);</span>
+
+<span class="pc bpc" id="L444" title="1 of 2 branches missed.">            assertTrue(dutchSellAmount &gt; frenchSellAmount);</span>
+        }
+        {// Test that the dutch can buy more goods until the price rises
+<span class="fc" id="L447">            dutch.modifyGold(10000);</span>
+<span class="fc" id="L448">            french.modifyGold(10000);</span>
+<span class="fc" id="L449">            int dutchBuyAmount = buyUntilPriceRise(getStandardGame(), dutch, musketsType);</span>
+
+<span class="fc" id="L451">            int frenchBuyAmount = buyUntilPriceRise(getStandardGame(), french, musketsType);</span>
+
+<span class="pc bpc" id="L453" title="1 of 2 branches missed.">            assertTrue(dutchBuyAmount &gt; frenchBuyAmount);</span>
+        }
+<span class="fc" id="L455">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

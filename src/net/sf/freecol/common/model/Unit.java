@@ -312,65 +312,80 @@ public class Unit extends GoodsLocation
         }
 
         switch (ult) {
-        case PLAIN:
-            return Messages.getUnitLabel(getName(), type.getId(), 1, null,
-                                         role.getId(), null);
-
-        case NATIONAL:
-            if (role.getMaximumCount() > 1) {
-                // If the amount of equipment can vary an equipment
-                // label is required, so fall through into the FULL case.
-            } else {
-                return Messages.getUnitLabel(getName(), type.getId(), 1,
-                                             owner.getNationId(), role.getId(),
-                                             null);
-            }
-            // Fall through
-
-        case FULL:
-            StringTemplate extra = null;
-            if (role.isDefaultRole()) {
-                if (canCarryTreasure()) {
-                    extra = StringTemplate.template("goldAmount")
-                        .addAmount("%amount%", getTreasureAmount());
-                } else {
-                    boolean noEquipment = false;
-                    // unequipped expert has no-equipment label
-                    List<Role> expertRoles = type.getExpertRoles();
-                    for (Role someRole : expertRoles) {
-                        String key = someRole.getId() + ".noequipment";
-                        if (Messages.containsKey(key)) {
-                            extra = StringTemplate.key(key);
-                            break;
-                        }
-                    }
-                }
-            } else {
-                String equipmentKey = role.getId() + ".equipment";
-                if (Messages.containsKey(equipmentKey)) {
-                    // Currently only used for missionary which does not
-                    // have equipment that directly corresponds to goods.
-                    extra = AbstractGoods.getLabel(equipmentKey, 1);
-                } else {
-                    // Other roles can be characterized by their goods.
-                    List<AbstractGoods> requiredGoods
-                        = role.getRequiredGoods(getRoleCount());
-                    boolean first = true;
-                    extra = StringTemplate.label("");
-                    for (AbstractGoods ag : requiredGoods) {
-                        if (first) first = false; else extra.addName(" ");
-                        extra.addStringTemplate(ag.getLabel());
-                    }
-                }
-            }
-            return Messages.getUnitLabel(getName(), type.getId(), 1,
-                                         owner.getNationId(), role.getId(),
-                                         extra);
-        default: // Can not happen
-            break;
+	        case PLAIN:
+	            return Messages.getUnitLabel(getName(), type.getId(), 1, null,
+	                                         role.getId(), null);
+	
+	        case NATIONAL:
+	            if (role.getMaximumCount() <= 1) {
+	                // If the amount of equipment can vary an equipment
+	                // label is required, so fall through into the FULL case.
+	                return Messages.getUnitLabel(getName(), type.getId(), 1,
+	                                             owner.getNationId(), role.getId(),
+	                                             null);
+	            }
+	            // Fall through
+	
+	        case FULL:
+	            return getLabelFullUnitType(type, role, owner);
+	            
+	        default: // Can not happen
+	            break;
         }
         return null;
     }
+
+	private StringTemplate getLabelFullUnitType(final UnitType type, final Role role, final Player owner) {
+		StringTemplate extra = null;
+		if (role.isDefaultRole()) {
+		    extra = getLabelDefaultRole(type, extra);
+		} else {
+		    extra = getLabelNotDefaultRole(role);
+		}
+		return Messages.getUnitLabel(getName(), type.getId(), 1,
+		                             owner.getNationId(), role.getId(),
+		                             extra);
+	}
+
+	private StringTemplate getLabelNotDefaultRole(final Role role) {
+		StringTemplate extra;
+		String equipmentKey = role.getId() + ".equipment";
+		if (Messages.containsKey(equipmentKey)) {
+		    // Currently only used for missionary which does not
+		    // have equipment that directly corresponds to goods.
+		    extra = AbstractGoods.getLabel(equipmentKey, 1);
+		} else {
+		    // Other roles can be characterized by their goods.
+		    List<AbstractGoods> requiredGoods
+		        = role.getRequiredGoods(getRoleCount());
+		    boolean first = true;
+		    extra = StringTemplate.label("");
+		    for (AbstractGoods ag : requiredGoods) {
+		        if (first) first = false; else extra.addName(" ");
+		        extra.addStringTemplate(ag.getLabel());
+		    }
+		}
+		return extra;
+	}
+
+	private StringTemplate getLabelDefaultRole(final UnitType type, StringTemplate extra) {
+		if (canCarryTreasure()) {
+		    extra = StringTemplate.template("goldAmount")
+		        .addAmount("%amount%", getTreasureAmount());
+		} else {
+		    boolean noEquipment = false;
+		    // unequipped expert has no-equipment label
+		    List<Role> expertRoles = type.getExpertRoles();
+		    for (Role someRole : expertRoles) {
+		        String key = someRole.getId() + ".noequipment";
+		        if (Messages.containsKey(key)) {
+		            extra = StringTemplate.key(key);
+		            break;
+		        }
+		    }
+		}
+		return extra;
+	}
 
     /**
      * Get the basic i18n description for this unit.
@@ -3774,22 +3789,10 @@ public class Unit extends GoodsLocation
         }
 
         // Move out of the old location.
-        if (location == null) {
-            ; // do nothing
-        } else if (!location.remove(this)) {//-vis
-            // "Should not happen" (should always be able to remove)
-            throw new RuntimeException("Failed to remove " + this
-                + " from " + location.getId());
-        }
+        setLocationMoveFromOldLocation();
 
         // Move in to the new location.
-        if (newLocation == null) {
-            setLocationNoUpdate(null);//-vis
-        } else if (!newLocation.add(this)) {//-vis
-            // "Should not happen" (canAdd was checked above)
-            throw new RuntimeException("Failed to add "
-                + this + " to " + newLocation.getId());
-        }
+        setLocationMoveToNewLocation(newLocation);
 
         // See if education needs to be re-enabled.
         if (newColony != null && !preserveEducation) {
@@ -3797,12 +3800,36 @@ public class Unit extends GoodsLocation
         }
 
         // Update population of any colonies involved.
-        if (!withinColony) {
+        setLocationUpdatePopulation(oldColony, newColony, withinColony);
+        return true;
+    }
+
+	private void setLocationMoveFromOldLocation() {
+		if (location == null) {
+            ; // do nothing
+        } else if (!location.remove(this)) {//-vis
+            // "Should not happen" (should always be able to remove)
+            throw new RuntimeException("Failed to remove " + this
+                + " from " + location.getId());
+        }
+	}
+
+	private void setLocationMoveToNewLocation(Location newLocation) {
+		if (newLocation == null) {
+            setLocationNoUpdate(null);//-vis
+        } else if (!newLocation.add(this)) {//-vis
+            // "Should not happen" (canAdd was checked above)
+            throw new RuntimeException("Failed to add "
+                + this + " to " + newLocation.getId());
+        }
+	}
+
+	private void setLocationUpdatePopulation(Colony oldColony, Colony newColony, boolean withinColony) {
+		if (!withinColony) {
             if (oldColony != null) oldColony.updatePopulation();
             if (newColony != null) newColony.updatePopulation();
         }
-        return true;
-    }
+	}
 
     /**
      * Checks if this <code>Unit</code> is located in Europe.  That
@@ -4435,50 +4462,7 @@ public class Unit extends GoodsLocation
         // @compat 0.10.x
         if (roleCount < 0) {
             // If roleCount was not present, set it from equipment
-            final Specification spec = getSpecification();
-            Role role = spec.getDefaultRole();
-            boolean horses = false, muskets = false;
-            int count = 1;
-            for (EquipmentType type : equipment.keySet()) {
-                if ("model.equipment.horses".equals(type.getId())
-                    || "model.equipment.indian.horses".equals(type.getId())) {
-                    horses = true;
-                } else if ("model.equipment.muskets".equals(type.getId())
-                    || "model.equipment.indian.muskets".equals(type.getId())) {
-                    muskets = true;
-                } else {
-                    role = type.getRole();
-                    if ("model.equipment.tools".equals(type.getId())) {
-                        count = equipment.getCount(type);
-                    }
-                }
-            }
-            if (horses && muskets) {
-                if (owner.isIndian()) {
-                    role = spec.getRole("model.role.nativeDragoon");
-                } else if (owner.isREF() && hasAbility(Ability.REF_UNIT)) {
-                    role = spec.getRole("model.role.cavalry");
-                } else {
-                    role = spec.getRole("model.role.dragoon");
-                }
-            } else if (horses) {
-                if (owner.isIndian()) {
-                    role = spec.getRole("model.role.mountedBrave");
-                } else if (owner.isREF() && hasAbility(Ability.REF_UNIT)) {
-                    logger.warning("Undefined role: REF Scout");
-                } else {
-                    role = spec.getRole("model.role.scout");
-                }
-            } else if (muskets) {
-                if (owner.isIndian()) {
-                    role = spec.getRole("model.role.armedBrave");
-                } else if (owner.isREF() && hasAbility(Ability.REF_UNIT)) {
-                    role = spec.getRole("model.role.infantry");
-                } else {
-                    role = spec.getRole("model.role.soldier");
-                }
-            }
-            setRoleCount(Math.min(role.getMaximumCount(), count));
+            readChildrenRoleCountLessThenZero();
         } else {
             // If roleCount was present, we are now ignoring equipment.
             equipment.clear();
@@ -4499,6 +4483,70 @@ public class Unit extends GoodsLocation
         }
         // end @compat 0.10.x
     }
+
+	private void readChildrenRoleCountLessThenZero() {
+		final Specification spec = getSpecification();
+		Role role = spec.getDefaultRole();
+		boolean horses = false, muskets = false;
+		int count = 1;
+		for (EquipmentType type : equipment.keySet()) {
+		    if ("model.equipment.horses".equals(type.getId())
+		        || "model.equipment.indian.horses".equals(type.getId())) {
+		        horses = true;
+		    } else if ("model.equipment.muskets".equals(type.getId())
+		        || "model.equipment.indian.muskets".equals(type.getId())) {
+		        muskets = true;
+		    } else {
+		        role = type.getRole();
+		        if ("model.equipment.tools".equals(type.getId())) {
+		            count = equipment.getCount(type);
+		        }
+		    }
+		}
+		if (horses && muskets) {
+		    role = getRoleThatHasHorsesAndMuskets(spec);
+		} else if (horses) {
+		    role = getRoleThatHasHorses(spec, role);
+		} else if (muskets) {
+		    role = getRoleThatHasMuskets(spec);
+		}
+		setRoleCount(Math.min(role.getMaximumCount(), count));
+	}
+
+	private Role getRoleThatHasMuskets(final Specification spec) {
+		Role role;
+		if (owner.isIndian()) {
+		    role = spec.getRole("model.role.armedBrave");
+		} else if (owner.isREF() && hasAbility(Ability.REF_UNIT)) {
+		    role = spec.getRole("model.role.infantry");
+		} else {
+		    role = spec.getRole("model.role.soldier");
+		}
+		return role;
+	}
+
+	private Role getRoleThatHasHorses(final Specification spec, Role role) {
+		if (owner.isIndian()) {
+		    role = spec.getRole("model.role.mountedBrave");
+		} else if (owner.isREF() && hasAbility(Ability.REF_UNIT)) {
+		    logger.warning("Undefined role: REF Scout");
+		} else {
+		    role = spec.getRole("model.role.scout");
+		}
+		return role;
+	}
+
+	private Role getRoleThatHasHorsesAndMuskets(final Specification spec) {
+		Role role;
+		if (owner.isIndian()) {
+		    role = spec.getRole("model.role.nativeDragoon");
+		} else if (owner.isREF() && hasAbility(Ability.REF_UNIT)) {
+		    role = spec.getRole("model.role.cavalry");
+		} else {
+		    role = spec.getRole("model.role.dragoon");
+		}
+		return role;
+	}
 
     /**
      * {@inheritDoc}

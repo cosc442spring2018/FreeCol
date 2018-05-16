@@ -1,0 +1,1106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/net/sf/freecol/client/gui/Canvas.java" line="2164" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="07d03f95-dd95-42d2-8849-5d949a3ae485" name="Default" comment="" />
+    <ignored path="$PROJECT_DIR$/bin/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/FreeCol$AllTests.ic" NAME="AllTests Coverage Results" MODIFIED="1525550928595" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>net.sf.freecol.common.model.*</FILTER>
+    </SUITE>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="PlayerLibertyTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PlayerLibertyTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="450">
+              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlayerFoundingFatherTest.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PlayerFoundingFatherTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="140">
+              <caret line="57" column="34" lean-forward="true" selection-start-line="57" selection-start-column="34" selection-end-line="57" selection-end-column="34" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#481#482#0" expanded="true" />
+                <element signature="e#504#505#0" expanded="true" />
+                <element signature="e#1429#1445#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Player.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Player.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="188">
+              <caret line="1523" column="15" selection-start-line="1523" selection-start-column="15" selection-end-line="1523" selection-end-column="15" />
+              <folding>
+                <element signature="e#26306#26307#0" expanded="true" />
+                <element signature="e#26359#26360#0" expanded="true" />
+                <element signature="e#36975#36976#0" expanded="true" />
+                <element signature="e#37030#37031#0" expanded="true" />
+                <element signature="e#37909#37910#0" expanded="true" />
+                <element signature="e#37972#37973#0" expanded="true" />
+                <element signature="e#44631#44632#0" expanded="true" />
+                <element signature="e#44676#44677#0" expanded="true" />
+                <element signature="e#45315#45316#0" expanded="true" />
+                <element signature="e#45351#45352#0" expanded="true" />
+                <element signature="e#45829#45830#0" expanded="true" />
+                <element signature="e#45866#45867#0" expanded="true" />
+                <element signature="e#56507#56508#0" expanded="true" />
+                <element signature="e#56536#56537#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClientOptions.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/client/ClientOptions.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="25">
+              <caret line="79" column="13" selection-start-line="79" selection-start-column="13" selection-end-line="79" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Option.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/option/Option.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-710">
+              <caret line="34" column="17" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Game.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Game.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="178">
+              <caret line="245" column="18" lean-forward="true" selection-start-line="245" selection-start-column="18" selection-end-line="245" selection-end-column="18" />
+              <folding>
+                <element signature="e#8510#8511#0" expanded="true" />
+                <element signature="e#8546#8547#0" expanded="true" />
+                <element signature="e#9010#9011#0" expanded="true" />
+                <element signature="e#9063#9064#0" expanded="true" />
+                <element signature="e#24972#24973#0" expanded="true" />
+                <element signature="e#24998#24999#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OptionGroup.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/option/OptionGroup.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="188">
+              <caret line="153" column="18" selection-start-line="153" selection-start-column="18" selection-end-line="153" selection-end-column="18" />
+              <folding>
+                <element signature="e#4345#4346#0" expanded="true" />
+                <element signature="e#4385#4386#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Specification.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Specification.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="388">
+              <caret line="1696" column="23" selection-start-line="1696" selection-start-column="23" selection-end-line="1696" selection-end-column="23" />
+              <folding>
+                <element signature="e#43308#43309#0" expanded="true" />
+                <element signature="e#43372#43373#0" expanded="true" />
+                <element signature="e#58145#58146#0" expanded="true" />
+                <element signature="e#58218#58219#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FoundingFatherTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/FoundingFatherTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-412">
+              <caret line="113" column="46" lean-forward="true" selection-start-line="113" selection-start-column="46" selection-end-line="113" selection-end-column="46" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GameOptions.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/GameOptions.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="188">
+              <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>immigration</find>
+      <find>immigra</find>
+      <find>religious</find>
+      <find>Turn</find>
+      <find>colonies</find>
+      <find>settlements.Add</find>
+      <find>Colony(</find>
+      <find>specificat</find>
+      <find>map</find>
+      <find>Colony</find>
+      <find>ModelMess</find>
+      <find>GameOption</find>
+      <find>FOUNDING_FATHER</find>
+      <find>kql;dqkl;dkmqskl;dmqolfj oplj rfoij fopwjfo mn flsdjnkjisnd fl;sndm flnjdf nwjnopifjwpojwplkjpldk</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PathNodeTest.groovy" />
+        <option value="$PROJECT_DIR$/src/net/sf/freecol/common/model/Modifier.java" />
+        <option value="$PROJECT_DIR$/src/net/sf/freecol/common/model/Player.java" />
+        <option value="$PROJECT_DIR$/src/net/sf/freecol/common/i18n/Messages.java" />
+        <option value="$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PlayerImmigrationTest.java" />
+        <option value="$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PlayerLibertyTest.java" />
+        <option value="$PROJECT_DIR$/src/net/sf/freecol/common/option/OptionGroup.java" />
+        <option value="$PROJECT_DIR$/src/net/sf/freecol/common/option/Option.java" />
+        <option value="$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PlayerFoundingFatherTest.java" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="260" />
+    <option name="y" value="20" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="freecol" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="freecol" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="freecol" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="freecol" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="freecol" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FreeCol" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FreeCol-finalproject" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="freecol" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="Groovy JUnit" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Groovy JUnit" value="groovy.util.GroovyTestCase" />
+    <property name="create.test.in.the.same.root" value="true" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/test/src/net/sf/freecol/common/model" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="net.sf.freecol.common.model" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="groovy.util.GroovyTestCase" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.PlayerFoundingFatherTest.testGetTotalFoundingFatherCost">
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    </configuration>
+    <configuration name="PlayerFoundingFatherTest.testGetCurrentFather" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FreeCol" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="net.sf.freecol.common.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="net.sf.freecol.common.model" />
+      <option name="MAIN_CLASS_NAME" value="net.sf.freecol.common.model.PlayerFoundingFatherTest" />
+      <option name="METHOD_NAME" value="testGetCurrentFather" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration name="PlayerFoundingFatherTest.testGetOfferedFathers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FreeCol" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="net.sf.freecol.common.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="net.sf.freecol.common.model" />
+      <option name="MAIN_CLASS_NAME" value="net.sf.freecol.common.model.PlayerFoundingFatherTest" />
+      <option name="METHOD_NAME" value="testGetOfferedFathers" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration name="PlayerFoundingFatherTest.testGetSetClearOfferedFathers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FreeCol" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="net.sf.freecol.common.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="net.sf.freecol.common.model" />
+      <option name="MAIN_CLASS_NAME" value="net.sf.freecol.common.model.PlayerFoundingFatherTest" />
+      <option name="METHOD_NAME" value="testGetSetClearOfferedFathers" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration name="PlayerFoundingFatherTest.testGetSetOfferedFathers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FreeCol" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="net.sf.freecol.common.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="net.sf.freecol.common.model" />
+      <option name="MAIN_CLASS_NAME" value="net.sf.freecol.common.model.PlayerFoundingFatherTest" />
+      <option name="METHOD_NAME" value="testGetSetOfferedFathers" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration name="PlayerFoundingFatherTest.testGetTotalFoundingFatherCost" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="FreeCol" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="net.sf.freecol.common.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="net.sf.freecol.common.model" />
+      <option name="MAIN_CLASS_NAME" value="net.sf.freecol.common.model.PlayerFoundingFatherTest" />
+      <option name="METHOD_NAME" value="testGetTotalFoundingFatherCost" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <properties />
+      <listeners />
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.PlayerFoundingFatherTest.testGetCurrentFather" />
+      <item itemvalue="JUnit.PlayerFoundingFatherTest.testGetOfferedFathers" />
+      <item itemvalue="JUnit.PlayerFoundingFatherTest.testGetSetOfferedFathers" />
+      <item itemvalue="JUnit.PlayerFoundingFatherTest.testGetSetClearOfferedFathers" />
+      <item itemvalue="JUnit.PlayerFoundingFatherTest.testGetTotalFoundingFatherCost" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.PlayerFoundingFatherTest.testGetTotalFoundingFatherCost" />
+        <item itemvalue="JUnit.PlayerFoundingFatherTest.testGetSetClearOfferedFathers" />
+        <item itemvalue="JUnit.PlayerFoundingFatherTest.testGetSetOfferedFathers" />
+        <item itemvalue="JUnit.PlayerFoundingFatherTest.testGetOfferedFathers" />
+        <item itemvalue="JUnit.PlayerFoundingFatherTest.testGetCurrentFather" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="07d03f95-dd95-42d2-8849-5d949a3ae485" name="Default" comment="" />
+      <created>1525034578842</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1525034578842</updated>
+      <workItem from="1525034584135" duration="628000" />
+      <workItem from="1525035227721" duration="12921000" />
+      <workItem from="1525158054957" duration="3869000" />
+      <workItem from="1525270307334" duration="5314000" />
+      <workItem from="1525550469138" duration="8420000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="PlayerFoundingFatherTest_testGetTotalFoundingFatherCost - 2018.05.05 at 18h 03m 37s.xml">
+      <configuration name="PlayerFoundingFatherTest.testGetTotalFoundingFatherCost" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerFoundingFatherTest_testGetTotalFoundingFatherCost - 2018.05.05 at 18h 05m 42s.xml">
+      <configuration name="PlayerFoundingFatherTest.testGetTotalFoundingFatherCost" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerFoundingFatherTest_testGetTotalFoundingFatherCost - 2018.05.05 at 18h 15m 48s.xml">
+      <configuration name="PlayerFoundingFatherTest.testGetTotalFoundingFatherCost" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerFoundingFatherTest_testGetTotalFoundingFatherCost - 2018.05.05 at 18h 15m 50s.xml">
+      <configuration name="PlayerFoundingFatherTest.testGetTotalFoundingFatherCost" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerFoundingFatherTest_testGetTotalFoundingFatherCost - 2018.05.05 at 18h 18m 29s.xml">
+      <configuration name="PlayerFoundingFatherTest.testGetTotalFoundingFatherCost" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerFoundingFatherTest_testGetTotalFoundingFatherCost - 2018.05.05 at 18h 18m 58s.xml">
+      <configuration name="PlayerFoundingFatherTest.testGetTotalFoundingFatherCost" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerFoundingFatherTest_testGetTotalFoundingFatherCost - 2018.05.05 at 18h 19m 02s.xml">
+      <configuration name="PlayerFoundingFatherTest.testGetTotalFoundingFatherCost" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerFoundingFatherTest_testGetTotalFoundingFatherCost - 2018.05.05 at 18h 19m 07s.xml">
+      <configuration name="PlayerFoundingFatherTest.testGetTotalFoundingFatherCost" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerFoundingFatherTest_testGetTotalFoundingFatherCost - 2018.05.05 at 18h 20m 24s.xml">
+      <configuration name="PlayerFoundingFatherTest.testGetTotalFoundingFatherCost" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerFoundingFatherTest_testGetTotalFoundingFatherCost - 2018.05.05 at 18h 21m 37s.xml">
+      <configuration name="PlayerFoundingFatherTest.testGetTotalFoundingFatherCost" configurationId="JUnit" />
+    </history-entry>
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="31152000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.32943678" />
+      <window_info anchor="right" id="Palette&#9;" order="4" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32943678" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="right" id="Coverage" side_tool="true" weight="0.3296875" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info id="Designer" order="2" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.87004757" visible="true" weight="0.18020834" />
+      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32943678" />
+      <window_info id="Structure" order="1" sideWeight="0.12995246" side_tool="true" visible="true" weight="0.18020834" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3995749" />
+      <window_info id="Favorites" order="3" side_tool="true" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" visible="true" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+    </layout>
+    <layout-to-restore>
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" visible="true" weight="0.25" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32943678" />
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18020834" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32943678" />
+      <window_info id="Designer" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3995749" />
+      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="Palette&#9;" order="5" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Messages" order="8" weight="0.32943678" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" visible="true" weight="0.3296875" />
+      <window_info id="Favorites" order="3" side_tool="true" />
+    </layout-to-restore>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Colony.java</url>
+          <line>2675</line>
+          <properties />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/net/sf/freecol/common/model/WorkLocation.java</url>
+          <line>515</line>
+          <properties />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/net/sf/freecol/common/i18n/Messages.java</url>
+          <line>729</line>
+          <properties />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/net/sf/freecol/common/model/StringTemplate.java</url>
+          <line>231</line>
+          <properties />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Player.java</url>
+          <line>1611</line>
+          <properties />
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="11" />
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/FeatureContainer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="281" column="24" selection-start-line="281" selection-start-column="24" selection-end-line="281" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/FreeColGameObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="277" column="25" selection-start-line="277" selection-start-column="25" selection-end-line="277" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/server/model/ServerColony.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="85" column="14" selection-start-line="85" selection-start-column="11" selection-end-line="85" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/ColonyProductionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="81" column="28" selection-start-line="81" selection-start-column="28" selection-end-line="81" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Settlement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="39" column="22" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Map.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="2297" column="16" selection-start-line="2297" selection-start-column="16" selection-end-line="2297" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/Program Files/Java/jre/lib/rt.jar!/sun/reflect/NativeMethodAccessorImpl.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="849">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/util/test/FreeColTestCase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="181" column="33" selection-start-line="181" selection-start-column="30" selection-end-line="181" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/Program Files/Java/src.zip!/java/util/Collection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="638">
+          <caret line="579" column="22" selection-start-line="579" selection-start-column="22" selection-end-line="579" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Occupation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Europe.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="242" column="15" selection-start-line="242" selection-start-column="15" selection-end-line="242" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/Program Files/Java/src.zip!/java/util/Map.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="341" column="18" selection-start-line="341" selection-start-column="18" selection-end-line="341" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/BuildingType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="541">
+          <caret line="72" column="11" selection-start-line="72" selection-start-column="11" selection-end-line="72" selection-end-column="11" />
+          <folding>
+            <element signature="e#2457#2458#0" expanded="true" />
+            <element signature="e#2497#2498#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/GoodsLocation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="281" column="19" selection-start-line="281" selection-start-column="19" selection-end-line="281" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/GoodsType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/ProductionInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="825">
+          <caret line="59" column="22" selection-start-line="59" selection-start-column="22" selection-end-line="59" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Goods.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="39" column="13" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Building.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7800">
+          <caret line="349" column="19" selection-start-line="349" selection-start-column="19" selection-end-line="349" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/AbstractGoods.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1125">
+          <caret line="74" column="11" selection-start-line="74" selection-start-column="11" selection-end-line="74" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/ProductionCache.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5700">
+          <caret line="258" column="39" selection-start-line="258" selection-start-column="15" selection-end-line="258" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/WorkLocation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11025">
+          <caret line="491" column="44" selection-start-line="491" selection-start-column="27" selection-end-line="491" selection-end-column="44" />
+          <folding>
+            <element signature="e#18007#18008#0" expanded="true" />
+            <element signature="e#18065#18066#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/server/model/ServerPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="421">
+          <caret line="2290" column="29" selection-start-line="2290" selection-start-column="19" selection-end-line="2290" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/server/control/ChangeSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="1628" column="10" selection-start-line="1628" selection-start-column="10" selection-end-line="1628" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/client/gui/GUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="1276" column="16" selection-start-line="1276" selection-start-column="16" selection-end-line="1276" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/client/gui/SwingGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="296">
+          <caret line="1273" column="22" lean-forward="true" selection-start-line="1273" selection-start-column="22" selection-end-line="1273" selection-end-column="22" />
+          <folding>
+            <element signature="e#40373#40374#0" expanded="true" />
+            <element signature="e#40428#40429#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/i18n/MessagesTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="394" column="49" selection-start-line="394" selection-start-column="49" selection-end-line="394" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/client/control/InGameController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="388">
+          <caret line="3606" column="24" selection-start-line="3606" selection-start-column="24" selection-end-line="3606" selection-end-column="24" />
+          <folding>
+            <element signature="e#26105#26106#0" expanded="true" />
+            <element signature="e#26164#26165#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/FreeColObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="96" column="18" selection-start-line="96" selection-start-column="18" selection-end-line="96" selection-end-column="18" />
+          <folding>
+            <element signature="e#3228#3229#0" expanded="true" />
+            <element signature="e#3253#3254#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/client/gui/Canvas.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50450">
+          <caret line="2164" column="31" selection-start-line="2164" selection-start-column="23" selection-end-line="2164" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Unit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4750">
+          <caret line="239" column="14" selection-start-line="239" selection-start-column="11" selection-end-line="239" selection-end-column="15" />
+          <folding>
+            <element signature="e#7274#7275#0" expanded="true" />
+            <element signature="e#7305#7306#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/UnitTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1200">
+          <caret line="76" column="50" selection-start-line="76" selection-start-column="10" selection-end-line="76" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/server/model/ServerUnit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="106" column="11" selection-start-line="106" selection-start-column="11" selection-end-line="106" selection-end-column="11" />
+          <folding>
+            <element signature="e#3619#3620#0" expanded="true" />
+            <element signature="e#3650#3651#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/ModelMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="176" column="11" selection-start-line="176" selection-start-column="11" selection-end-line="176" selection-end-column="11" />
+          <folding>
+            <element signature="e#7618#7619#0" expanded="true" />
+            <element signature="e#7650#7651#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/ModelMessageTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="92" column="37" selection-start-line="92" selection-start-column="37" selection-end-line="92" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/i18n/Messages.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="730" column="59" selection-start-line="730" selection-start-column="59" selection-end-line="730" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/StringTemplate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="291">
+          <caret line="233" column="43" selection-start-line="233" selection-start-column="43" selection-end-line="233" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Colony.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="848">
+          <caret line="1140" column="19" selection-start-line="1140" selection-start-column="19" selection-end-line="1140" selection-end-column="19" />
+          <folding>
+            <element signature="e#5178#5179#0" expanded="true" />
+            <element signature="e#5224#5225#0" expanded="true" />
+            <element signature="e#5560#5561#0" expanded="true" />
+            <element signature="e#5591#5592#0" expanded="true" />
+            <element signature="e#6328#6329#0" expanded="true" />
+            <element signature="e#6396#6397#0" expanded="true" />
+            <element signature="e#72292#72293#0" expanded="true" />
+            <element signature="e#72356#72357#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/MonarchTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="85" column="49" selection-start-line="85" selection-start-column="49" selection-end-line="85" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/Program Files/Java/src.zip!/java/util/List.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="110" column="17" selection-start-line="110" selection-start-column="17" selection-end-line="110" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/FoundingFather.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="90" column="21" lean-forward="true" selection-start-line="90" selection-start-column="21" selection-end-line="90" selection-end-column="21" />
+          <folding>
+            <element signature="e#2753#2754#0" expanded="true" />
+            <element signature="e#2793#2794#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PlayerImmigrationTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2668">
+          <caret line="29" column="104" lean-forward="true" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="104" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Specification.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="388">
+          <caret line="1696" column="23" selection-start-line="1696" selection-start-column="23" selection-end-line="1696" selection-end-column="23" />
+          <folding>
+            <element signature="e#43308#43309#0" expanded="true" />
+            <element signature="e#43372#43373#0" expanded="true" />
+            <element signature="e#58145#58146#0" expanded="true" />
+            <element signature="e#58218#58219#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="245" column="18" lean-forward="true" selection-start-line="245" selection-start-column="18" selection-end-line="245" selection-end-column="18" />
+          <folding>
+            <element signature="e#8510#8511#0" expanded="true" />
+            <element signature="e#8546#8547#0" expanded="true" />
+            <element signature="e#9010#9011#0" expanded="true" />
+            <element signature="e#9063#9064#0" expanded="true" />
+            <element signature="e#24972#24973#0" expanded="true" />
+            <element signature="e#24998#24999#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/option/Option.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-710">
+          <caret line="34" column="17" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/option/OptionGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="153" column="18" selection-start-line="153" selection-start-column="18" selection-end-line="153" selection-end-column="18" />
+          <folding>
+            <element signature="e#4345#4346#0" expanded="true" />
+            <element signature="e#4385#4386#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/client/ClientOptions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="79" column="13" selection-start-line="79" selection-start-column="13" selection-end-line="79" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/GameOptions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PlayerLibertyTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/FoundingFatherTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-412">
+          <caret line="113" column="46" lean-forward="true" selection-start-line="113" selection-start-column="46" selection-end-line="113" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/sf/freecol/common/model/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="1523" column="15" selection-start-line="1523" selection-start-column="15" selection-end-line="1523" selection-end-column="15" />
+          <folding>
+            <element signature="e#26306#26307#0" expanded="true" />
+            <element signature="e#26359#26360#0" expanded="true" />
+            <element signature="e#36975#36976#0" expanded="true" />
+            <element signature="e#37030#37031#0" expanded="true" />
+            <element signature="e#37909#37910#0" expanded="true" />
+            <element signature="e#37972#37973#0" expanded="true" />
+            <element signature="e#44631#44632#0" expanded="true" />
+            <element signature="e#44676#44677#0" expanded="true" />
+            <element signature="e#45315#45316#0" expanded="true" />
+            <element signature="e#45351#45352#0" expanded="true" />
+            <element signature="e#45829#45830#0" expanded="true" />
+            <element signature="e#45866#45867#0" expanded="true" />
+            <element signature="e#56507#56508#0" expanded="true" />
+            <element signature="e#56536#56537#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/src/net/sf/freecol/common/model/PlayerFoundingFatherTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="57" column="34" lean-forward="true" selection-start-line="57" selection-start-column="34" selection-end-line="57" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#481#482#0" expanded="true" />
+            <element signature="e#504#505#0" expanded="true" />
+            <element signature="e#1429#1445#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

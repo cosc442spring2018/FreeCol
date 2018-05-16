@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ConfirmDeclarationDialog.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.client.gui.panel</a> &gt; <span class="el_source">ConfirmDeclarationDialog.java</span></div><h1>ConfirmDeclarationDialog.java</h1><pre class="source lang-java linenums">/**
+ *  Copyright (C) 2002-2015   The FreeCol Team
+ *
+ *  This file is part of FreeCol.
+ *
+ *  FreeCol is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  FreeCol is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with FreeCol.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+
+package net.sf.freecol.client.gui.panel;
+
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import net.miginfocom.swing.MigLayout;
+
+import net.sf.freecol.client.FreeColClient;
+import net.sf.freecol.client.gui.ChoiceItem;
+import net.sf.freecol.client.gui.panel.Flag.Background;
+import net.sf.freecol.client.gui.panel.Flag.Decoration;
+import net.sf.freecol.client.gui.panel.Flag.UnionPosition;
+import net.sf.freecol.client.gui.panel.Flag.UnionShape;
+import net.sf.freecol.client.gui.plaf.FreeColComboBoxRenderer;
+import net.sf.freecol.common.i18n.Messages;
+import net.sf.freecol.common.model.Player;
+import net.sf.freecol.common.model.StringTemplate;
+
+
+/**
+ * A dialog used to confirm the declaration of independence.
+ */
+public class ConfirmDeclarationDialog extends FreeColDialog&lt;List&lt;String&gt;&gt;
+    implements ActionListener, ItemListener {
+
+    @SuppressWarnings(&quot;unused&quot;)
+<span class="nc" id="L63">    private static final Logger logger = Logger.getLogger(ConfirmDeclarationDialog.class.getName());</span>
+
+    /** A button for a colour.  Public for FlagTest. */
+    public static class ColorButton extends JButton {
+
+<span class="nc" id="L68">        private Color color = null;</span>
+
+
+<span class="nc" id="L71">        public ColorButton(Color color) {</span>
+<span class="nc" id="L72">            setColor(color);</span>
+<span class="nc" id="L73">        }</span>
+
+        public final Color getColor() {
+<span class="nc" id="L76">            return color;</span>
+        }
+
+        public final void setColor(Color color) {
+<span class="nc" id="L80">            this.color = color;</span>
+<span class="nc" id="L81">            setBackground(color);</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">            setText(color == null ? &quot;X&quot; : null);</span>
+<span class="nc" id="L83">        }</span>
+
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getUIClassID() {
+<span class="nc" id="L91">            return &quot;ColorButtonUI&quot;;</span>
+        }
+    }
+
+    /** Simple renderer for Messages with a prefix. */
+    private static class EnumRenderer&lt;T&gt; extends FreeColComboBoxRenderer&lt;T&gt; {
+
+        private final String prefix;
+
+
+<span class="nc" id="L101">        public EnumRenderer(String prefix) {</span>
+<span class="nc" id="L102">            this.prefix = prefix;</span>
+<span class="nc" id="L103">        }</span>
+
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void setLabelValues(JLabel c, T value) {
+<span class="nc" id="L111">            c.setText(Messages.message(prefix + value.toString()));</span>
+<span class="nc" id="L112">        }</span>
+    }
+
+
+    // based on the flag of Venezuela (Colombia and Ecuador are
+    // similar)
+<span class="nc" id="L118">    public static final Flag SPANISH_FLAG</span>
+<span class="nc" id="L119">        = new Flag(Background.FESSES, Decoration.NONE, UnionPosition.MIDDLE)</span>
+<span class="nc" id="L120">        .setStripes(3)</span>
+<span class="nc" id="L121">        .setUnionColor(null)</span>
+<span class="nc" id="L122">        .setBackgroundColors(new Color(0xcf, 0x14, 0x2b),</span>
+<span class="nc" id="L123">                             new Color(0, 0x24, 0x7d),</span>
+<span class="nc" id="L124">                             new Color(255, 204, 0));</span>
+
+    // based on the flag of Brazil, particularly the Provisional
+    // Flag of Republic of the United States of Brazil (November
+<span class="nc" id="L128">    public static final Flag PORTUGUESE_FLAG</span>
+<span class="nc" id="L129">        = new Flag(Background.FESSES, Decoration.NONE, UnionPosition.CANTON)</span>
+<span class="nc" id="L130">        .setUnionColor(new Color(62, 64, 149))</span>
+<span class="nc" id="L131">        .setBackgroundColors(new Color(0, 168, 89),</span>
+<span class="nc" id="L132">                             new Color(255, 204, 41));</span>
+
+    // based on the current flag of the United States and its
+    // various predecessors
+<span class="nc" id="L136">    public static final Flag ENGLISH_FLAG</span>
+<span class="nc" id="L137">        = new Flag(Background.FESSES, Decoration.NONE, UnionPosition.CANTON)</span>
+<span class="nc" id="L138">        .setUnionColor(new Color(.234f, .233f, .430f))</span>
+<span class="nc" id="L139">        .setBackgroundColors(new Color(.698f, .132f, .203f),</span>
+<span class="nc" id="L140">                             Color.WHITE);</span>
+
+    // based on the flag of Louisiana in 1861 and other similar
+    // French colonial flags
+<span class="nc" id="L144">    public static final Flag FRENCH_FLAG</span>
+<span class="nc" id="L145">        = new Flag(Background.PALES, Decoration.NONE, UnionPosition.LEFT)</span>
+<span class="nc" id="L146">        .setStripes(3)</span>
+<span class="nc" id="L147">        .setUnionColor(null)</span>
+<span class="nc" id="L148">        .setBackgroundColors(new Color(0, 0x23, 0x95),</span>
+<span class="nc" id="L149">                             Color.WHITE,</span>
+<span class="nc" id="L150">                             new Color(0xed, 0x29, 0x39));</span>
+
+    // Dutch flag
+<span class="nc" id="L153">    public static final Flag DUTCH_FLAG</span>
+<span class="nc" id="L154">        = new Flag(Background.FESSES, Decoration.NONE, UnionPosition.TOP)</span>
+<span class="nc" id="L155">        .setStripes(3)</span>
+<span class="nc" id="L156">        .setUnionColor(null)</span>
+<span class="nc" id="L157">        .setBackgroundColors(new Color(0xae, 0x1c, 0x28),</span>
+<span class="nc" id="L158">                             Color.WHITE,</span>
+<span class="nc" id="L159">                             new Color(0x21, 0x46, 0x6b));</span>
+
+    // Swedish flag
+<span class="nc" id="L162">    public static final Flag SWEDISH_FLAG</span>
+<span class="nc" id="L163">        = new Flag(Background.QUARTERLY, Decoration.SCANDINAVIAN_CROSS, UnionPosition.CANTON)</span>
+<span class="nc" id="L164">        .setUnionColor(null)</span>
+<span class="nc" id="L165">        .setDecorationColor(new Color(0xFE, 0xCB, 0))</span>
+<span class="nc" id="L166">        .setBackgroundColors(new Color(0, 0x52, 0x93));</span>
+
+    // Danish flag
+<span class="nc" id="L169">    public static final Flag DANISH_FLAG</span>
+<span class="nc" id="L170">        = new Flag(Background.QUARTERLY, Decoration.SCANDINAVIAN_CROSS, UnionPosition.CANTON)</span>
+<span class="nc" id="L171">        .setUnionColor(null)</span>
+<span class="nc" id="L172">        .setDecorationColor(Color.WHITE)</span>
+<span class="nc" id="L173">        .setBackgroundColors(new Color(0xC6, 0x0C, 0x30));</span>
+
+    // Russian flag
+<span class="nc" id="L176">    public static final Flag RUSSIAN_FLAG</span>
+<span class="nc" id="L177">        = new Flag(Background.FESSES, Decoration.NONE, UnionPosition.MIDDLE)</span>
+<span class="nc" id="L178">        .setStripes(3)</span>
+<span class="nc" id="L179">        .setUnionColor(null)</span>
+<span class="nc" id="L180">        .setBackgroundColors(Color.WHITE,</span>
+<span class="nc" id="L181">                             new Color(0, 0x39, 0xa6),</span>
+<span class="nc" id="L182">                             new Color(0xd5, 0x2b, 0x1e));</span>
+
+    /** A map of default nation flags. */
+<span class="nc" id="L185">    private static final Map&lt;String, Flag&gt; defaultFlags = new HashMap&lt;&gt;();</span>
+    static {
+<span class="nc" id="L187">        defaultFlags.put(&quot;model.nation.dutch&quot;,      DUTCH_FLAG);</span>
+<span class="nc" id="L188">        defaultFlags.put(&quot;model.nation.english&quot;,    ENGLISH_FLAG);</span>
+<span class="nc" id="L189">        defaultFlags.put(&quot;model.nation.french&quot;,     FRENCH_FLAG);</span>
+<span class="nc" id="L190">        defaultFlags.put(&quot;model.nation.spanish&quot;,    SPANISH_FLAG);</span>
+<span class="nc" id="L191">        defaultFlags.put(&quot;model.nation.danish&quot;,     DANISH_FLAG);</span>
+<span class="nc" id="L192">        defaultFlags.put(&quot;model.nation.portuguese&quot;, PORTUGUESE_FLAG);</span>
+<span class="nc" id="L193">        defaultFlags.put(&quot;model.nation.russian&quot;,    RUSSIAN_FLAG);</span>
+<span class="nc" id="L194">        defaultFlags.put(&quot;model.nation.swedish&quot;,    SWEDISH_FLAG);</span>
+<span class="nc" id="L195">    }</span>
+
+    /** Independent country name. */
+    private final JTextField countryField;
+
+    /** Independent nation name. */
+    private final JTextField nationField;
+
+    /** Label with the icon of the flag. */
+    private final JLabel label;
+
+    /** The flag to use for the new nation. */
+    private Flag flag;
+
+    /** A box to select the flag background from. */
+<span class="nc" id="L210">    private final JComboBox&lt;Background&gt; background</span>
+<span class="nc" id="L211">        = new JComboBox&lt;&gt;(Background.values());</span>
+
+    /** A box to select the flag decoration from. */
+<span class="nc" id="L214">    private final JComboBox&lt;Decoration&gt; decoration</span>
+<span class="nc" id="L215">        = new JComboBox&lt;&gt;(Decoration.values());</span>
+
+    /** A box to select the union position with. */
+<span class="nc" id="L218">    private final JComboBox&lt;UnionPosition&gt; unionPosition</span>
+<span class="nc" id="L219">        = new JComboBox&lt;&gt;(UnionPosition.values());</span>
+
+    /** A box to select the union shap with. */
+<span class="nc" id="L222">    private final JComboBox&lt;UnionShape&gt; unionShape</span>
+<span class="nc" id="L223">        = new JComboBox&lt;&gt;(UnionShape.values());</span>
+
+    /** A box to select the number of stars with. */
+<span class="nc" id="L226">    private final JComboBox&lt;String&gt; stars</span>
+<span class="nc" id="L227">        = new JComboBox&lt;&gt;(getNumbers(50));</span>
+
+    /** A box to select the number of stripes with. */
+<span class="nc" id="L230">    private final JComboBox&lt;String&gt; stripes</span>
+<span class="nc" id="L231">        = new JComboBox&lt;&gt;(getNumbers(13));</span>
+
+    /** The selected decoration colour. */
+<span class="nc" id="L234">    private final ColorButton decorationColor = new ColorButton(Color.WHITE);</span>
+
+    /** The selected union colour. */
+<span class="nc" id="L237">    private final ColorButton unionColor = new ColorButton(Color.BLUE);</span>
+
+    /** The selected star colour. */
+<span class="nc" id="L240">    private final ColorButton starColor = new ColorButton(Color.WHITE);</span>
+
+    /** The selected background colours. */
+<span class="nc" id="L243">    private final ColorButton[] backgroundColors = {</span>
+<span class="nc" id="L244">        new ColorButton(null), new ColorButton(null), new ColorButton(null),</span>
+<span class="nc" id="L245">        new ColorButton(null), new ColorButton(null), new ColorButton(null)</span>
+    };
+
+
+    /**
+     * The constructor that will add the items to this panel.
+     *
+     * @param freeColClient The &lt;code&gt;FreeColClient&lt;/code&gt; for the game.
+     * @param frame The owner frame.
+     */
+    public ConfirmDeclarationDialog(FreeColClient freeColClient, JFrame frame) {
+<span class="nc" id="L256">        super(freeColClient, frame);</span>
+
+<span class="nc" id="L258">        final Player player = freeColClient.getMyPlayer();</span>
+<span class="nc" id="L259">        this.flag = defaultFlags.get(player.getNationId());</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">        if (this.flag == null) this.flag = ENGLISH_FLAG; // default to USA-style</span>
+
+<span class="nc" id="L262">        StringTemplate sure = StringTemplate</span>
+<span class="nc" id="L263">            .template(&quot;confirmDeclarationDialog.areYouSure.text&quot;)</span>
+<span class="nc" id="L264">            .addNamed(&quot;%monarch%&quot;, player.getMonarch());</span>
+
+<span class="nc" id="L266">        StringTemplate country = StringTemplate</span>
+<span class="nc" id="L267">            .template(&quot;confirmDeclarationDialog.defaultCountry&quot;)</span>
+<span class="nc" id="L268">            .addName(&quot;%nation%&quot;, player.getNewLandName());</span>
+<span class="nc" id="L269">        this.countryField = new JTextField(Messages.message(country), 20);</span>
+
+<span class="nc" id="L271">        StringTemplate nation = StringTemplate</span>
+<span class="nc" id="L272">            .template(&quot;confirmDeclarationDialog.defaultNation&quot;)</span>
+<span class="nc" id="L273">            .addStringTemplate(&quot;%nation%&quot;, player.getNationLabel());</span>
+<span class="nc" id="L274">        this.nationField = new JTextField(Messages.message(nation), 20);</span>
+
+<span class="nc" id="L276">        this.label = new JLabel();</span>
+<span class="nc" id="L277">        this.label.setIcon(new ImageIcon(this.flag.getImage()));</span>
+
+        // Create the main panel
+<span class="nc" id="L280">        MigPanel panel = new MigPanel(new MigLayout(&quot;wrap 2&quot;, &quot;[][fill]&quot;,</span>
+<span class="nc" id="L281">                                                    &quot;[fill]&quot;));</span>
+<span class="nc" id="L282">        panel.add(Utility.localizedTextArea(sure), &quot;span&quot;);</span>
+<span class="nc" id="L283">        panel.add(Utility.localizedTextArea(&quot;confirmDeclarationDialog.enterCountry&quot;), &quot;span&quot;);</span>
+<span class="nc" id="L284">        panel.add(this.countryField, &quot;span&quot;);</span>
+<span class="nc" id="L285">        panel.add(Utility.localizedTextArea(&quot;confirmDeclarationDialog.enterNation&quot;), &quot;span&quot;);</span>
+<span class="nc" id="L286">        panel.add(this.nationField, &quot;span&quot;);</span>
+<span class="nc" id="L287">        panel.add(Utility.localizedTextArea(&quot;confirmDeclarationDialog.createFlag&quot;), &quot;span&quot;);</span>
+
+<span class="nc" id="L289">        panel.add(this.label, &quot;skip, width 200, height 100&quot;);</span>
+
+<span class="nc" id="L291">        addComboBox(panel, this.background, &quot;flag.background.&quot;,</span>
+<span class="nc" id="L292">                    this.flag.getBackground());</span>
+<span class="nc" id="L293">        addComboBox(panel, this.decoration, &quot;flag.decoration.&quot;,</span>
+<span class="nc" id="L294">                    this.flag.getDecoration());</span>
+<span class="nc" id="L295">        addComboBox(panel, this.unionPosition, &quot;flag.unionPosition.&quot;,</span>
+<span class="nc" id="L296">                    this.flag.getUnionPosition());</span>
+<span class="nc" id="L297">        addComboBox(panel, this.unionShape, &quot;flag.unionShape.&quot;,</span>
+<span class="nc" id="L298">                    this.flag.getUnionShape());</span>
+
+<span class="nc" id="L300">        this.stars.setSelectedIndex(this.flag.getStars() - 1);</span>
+<span class="nc" id="L301">        this.stars.addItemListener(this);</span>
+<span class="nc" id="L302">        panel.add(Utility.localizedLabel(&quot;flag.stars.label&quot;));</span>
+<span class="nc" id="L303">        panel.add(this.stars);</span>
+
+<span class="nc" id="L305">        this.stripes.setSelectedIndex(this.flag.getStripes() - 1);</span>
+<span class="nc" id="L306">        this.stripes.addItemListener(this);</span>
+<span class="nc" id="L307">        panel.add(Utility.localizedLabel(&quot;flag.stripes.label&quot;));</span>
+<span class="nc" id="L308">        panel.add(this.stripes);</span>
+
+<span class="nc" id="L310">        this.unionColor.setColor(this.flag.getUnionColor());</span>
+<span class="nc" id="L311">        this.unionColor.addActionListener(this);</span>
+<span class="nc" id="L312">        panel.add(Utility.localizedLabel(&quot;flag.unionColor.label&quot;));</span>
+<span class="nc" id="L313">        panel.add(this.unionColor, &quot;sg colorButton&quot;);</span>
+
+<span class="nc" id="L315">        this.decorationColor.setColor(this.flag.getDecorationColor());</span>
+<span class="nc" id="L316">        this.decorationColor.addActionListener(this);</span>
+<span class="nc" id="L317">        panel.add(Utility.localizedLabel(&quot;flag.decorationColor.label&quot;));</span>
+<span class="nc" id="L318">        panel.add(this.decorationColor);</span>
+
+<span class="nc" id="L320">        this.starColor.setColor(this.flag.getStarColor());</span>
+<span class="nc" id="L321">        this.starColor.addActionListener(this);</span>
+<span class="nc" id="L322">        panel.add(Utility.localizedLabel(&quot;flag.starColor.label&quot;));</span>
+<span class="nc" id="L323">        panel.add(this.starColor);</span>
+
+<span class="nc" id="L325">        List&lt;Color&gt; flagColors = this.flag.getBackgroundColors();</span>
+<span class="nc" id="L326">        int colors = flagColors.size();</span>
+<span class="nc" id="L327">        panel.add(Utility.localizedLabel(&quot;flag.backgroundColors.label&quot;));</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">        for (int index = 0; index &lt; this.backgroundColors.length; index++) {</span>
+<span class="nc" id="L329">            ColorButton button = this.backgroundColors[index];</span>
+<span class="nc bnc" id="L330" title="All 2 branches missed.">            if (index &lt; colors) button.setColor(flagColors.get(index));</span>
+<span class="nc" id="L331">            button.addActionListener(this);</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">            if (index == 0) {</span>
+<span class="nc" id="L333">                panel.add(button, &quot;split 3, sg colorButton&quot;);</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">            } else if (index % 3 == 0) {</span>
+<span class="nc" id="L335">                panel.add(button, &quot;skip, split 3, sg colorButton&quot;);</span>
+<span class="nc" id="L336">            } else {</span>
+<span class="nc" id="L337">                panel.add(button, &quot;sg colorButton&quot;);</span>
+            }
+        }
+
+<span class="nc" id="L341">        panel.setPreferredSize(panel.getPreferredSize()); // Prevent NPE</span>
+
+        // Use the coat of arms image icon.  Is there something better?
+<span class="nc" id="L344">        ImageIcon icon = new ImageIcon(getImageLibrary().getSmallMiscIconImage(player.getNation()));</span>
+
+<span class="nc" id="L346">        final List&lt;String&gt; fake = null;</span>
+<span class="nc" id="L347">        List&lt;ChoiceItem&lt;List&lt;String&gt;&gt;&gt; c = choices();</span>
+<span class="nc" id="L348">        c.add(new ChoiceItem&lt;&gt;(Messages.message(&quot;confirmDeclarationDialog.areYouSure.yes&quot;),</span>
+<span class="nc" id="L349">                fake).okOption());</span>
+<span class="nc" id="L350">        c.add(new ChoiceItem&lt;&gt;(Messages.message(&quot;confirmDeclarationDialog.areYouSure.no&quot;),</span>
+<span class="nc" id="L351">                fake).cancelOption().defaultOption());</span>
+<span class="nc" id="L352">        initializeDialog(frame, DialogType.QUESTION, true, panel, icon, c);</span>
+<span class="nc" id="L353">    }</span>
+
+
+    private &lt;T&gt; void addComboBox(JPanel panel, JComboBox&lt;T&gt; box,
+                                 String prefix, T value) {
+<span class="nc" id="L358">        box.setRenderer(new EnumRenderer&lt;T&gt;(prefix));</span>
+<span class="nc" id="L359">        box.setSelectedItem(value);</span>
+<span class="nc" id="L360">        box.addItemListener(this);</span>
+<span class="nc" id="L361">        panel.add(Utility.localizedLabel(prefix + &quot;label&quot;));</span>
+<span class="nc" id="L362">        panel.add(box);</span>
+<span class="nc" id="L363">    }</span>
+
+    private void setColors() {
+<span class="nc" id="L366">        this.flag.setUnionColor(this.unionColor.getColor());</span>
+<span class="nc" id="L367">        this.flag.setStarColor(this.starColor.getColor());</span>
+<span class="nc" id="L368">        this.flag.setDecorationColor(this.decorationColor.getColor());</span>
+<span class="nc" id="L369">        List&lt;Color&gt; colors = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">        for (ColorButton button : this.backgroundColors) {</span>
+<span class="nc" id="L371">            Color color = button.getColor();</span>
+<span class="nc bnc" id="L372" title="All 2 branches missed.">            if (color != null) {</span>
+<span class="nc" id="L373">                colors.add(color);</span>
+            }
+<span class="nc" id="L375">            this.flag.setBackgroundColors(colors);</span>
+        }
+<span class="nc" id="L377">    }</span>
+
+    private String[] getNumbers(int count) {
+<span class="nc" id="L380">        String[] result = new String[count];</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">        for (int index = 0; index &lt; count; index++) {</span>
+<span class="nc" id="L382">            result[index] = Integer.toString(index + 1);</span>
+        }
+<span class="nc" id="L384">        return result;</span>
+    }
+
+
+    // Interface ActionListener
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L395">        ColorButton button = (ColorButton)ae.getSource();</span>
+<span class="nc" id="L396">        Color color = JColorChooser.showDialog(this, this.label.getText(),</span>
+<span class="nc" id="L397">                                               button.getBackground());</span>
+<span class="nc" id="L398">        button.setColor(color);</span>
+<span class="nc" id="L399">        setColors();</span>
+<span class="nc" id="L400">        this.label.setIcon(new ImageIcon(this.flag.getImage()));</span>
+<span class="nc" id="L401">    }</span>
+
+
+    // Interface ItemListener
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+<span class="nc" id="L411">        Background newBackground</span>
+<span class="nc" id="L412">            = (Background)this.background.getSelectedItem();</span>
+<span class="nc" id="L413">        Decoration newDecoration</span>
+<span class="nc" id="L414">            = (Decoration)this.decoration.getSelectedItem();</span>
+<span class="nc" id="L415">        UnionPosition newPosition</span>
+<span class="nc" id="L416">            = (UnionPosition)this.unionPosition.getSelectedItem();</span>
+<span class="nc" id="L417">        UnionShape newShape</span>
+<span class="nc" id="L418">            = (UnionShape)this.unionShape.getSelectedItem();</span>
+<span class="nc" id="L419">        this.flag = new Flag(newBackground, newDecoration,</span>
+<span class="nc" id="L420">                             newPosition, newShape);</span>
+<span class="nc" id="L421">        this.flag.setStars(this.stars.getSelectedIndex() + 1);</span>
+<span class="nc" id="L422">        this.flag.setStripes(this.stripes.getSelectedIndex() + 1);</span>
+<span class="nc" id="L423">        setColors();</span>
+<span class="nc" id="L424">        this.label.setIcon(new ImageIcon(this.flag.getImage()));</span>
+<span class="nc" id="L425">    }</span>
+
+
+    // Override FreeColDialog
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List&lt;String&gt; getResponse() {
+<span class="nc" id="L435">        Object value = getValue();</span>
+<span class="nc bnc" id="L436" title="All 2 branches missed.">        if (options.get(0).equals(value)) {</span>
+<span class="nc" id="L437">            List&lt;String&gt; result = new ArrayList&lt;&gt;();</span>
+            // Sanitize user input, used in save file name
+<span class="nc" id="L439">            result.add(this.nationField.getText().replaceAll(&quot;[^\\s\\w]&quot;, &quot;&quot;));</span>
+<span class="nc" id="L440">            result.add(this.countryField.getText());</span>
+<span class="nc" id="L441">            return result;</span>
+        }
+<span class="nc" id="L443">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>
