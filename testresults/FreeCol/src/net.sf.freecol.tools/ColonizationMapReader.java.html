@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ColonizationMapReader.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.tools</a> &gt; <span class="el_source">ColonizationMapReader.java</span></div><h1>ColonizationMapReader.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ColonizationMapReader.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.tools</a> &gt; <span class="el_source">ColonizationMapReader.java</span></div><h1>ColonizationMapReader.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -62,48 +62,48 @@ import java.util.Arrays;
     public static final int HEIGHT = 2;
 
 <span class="nc" id="L64">    private static final char[] tiletypes = {</span>
-        't', // 0x00 tundra
-        'd', // 0x01 desert
-        'p', // 0x02 plains
-        'r', // 0x03 prairie
-        'g', // 0x04 grassland
-        'v', // 0x05 savannah
-        'm', // 0x06 marsh
-        's', // 0x07 swamp
+<span class="nc" id="L65">        't', // 0x00 tundra</span>
+<span class="nc" id="L66">        'd', // 0x01 desert</span>
+<span class="nc" id="L67">        'p', // 0x02 plains</span>
+<span class="nc" id="L68">        'r', // 0x03 prairie</span>
+<span class="nc" id="L69">        'g', // 0x04 grassland</span>
+<span class="nc" id="L70">        'v', // 0x05 savannah</span>
+<span class="nc" id="L71">        'm', // 0x06 marsh</span>
+<span class="nc" id="L72">        's', // 0x07 swamp</span>
 
-        'B', // 0x08 boreal (tundra with forest)
-        'S', // 0x09 scrub (desert with forest)
-        'M', // 0x0a mixed (plains with forest)
-        'L', // 0x0b broadleaf (prairie with forest)
-        'C', // 0x0c conifer (grassland with forest)
-        'T', // 0x0d tropical (savannah with forest)
-        'W', // 0x0e wetland (marsh with forest)
-        'R', // 0x0f rain (swamp with forest)
+<span class="nc" id="L74">        'B', // 0x08 boreal (tundra with forest)</span>
+<span class="nc" id="L75">        'S', // 0x09 scrub (desert with forest)</span>
+<span class="nc" id="L76">        'M', // 0x0a mixed (plains with forest)</span>
+<span class="nc" id="L77">        'L', // 0x0b broadleaf (prairie with forest)</span>
+<span class="nc" id="L78">        'C', // 0x0c conifer (grassland with forest)</span>
+<span class="nc" id="L79">        'T', // 0x0d tropical (savannah with forest)</span>
+<span class="nc" id="L80">        'W', // 0x0e wetland (marsh with forest)</span>
+<span class="nc" id="L81">        'R', // 0x0f rain (swamp with forest)</span>
 
-        'B', // 0x10 boreal (tundra with forest)
-        'S', // 0x11 scrub (desert with forest)
-        'M', // 0x12 mixed (plains with forest)
-        'L', // 0x13 broadleaf (prairie with forest)
-        'C', // 0x14 conifer (grassland with forest)
-        'T', // 0x15 tropical (savannah with forest)
-        'W', // 0x16 wetland (marsh with forest)
-        'R', // 0x17 rain (swamp with forest)
+<span class="nc" id="L83">        'B', // 0x10 boreal (tundra with forest)</span>
+<span class="nc" id="L84">        'S', // 0x11 scrub (desert with forest)</span>
+<span class="nc" id="L85">        'M', // 0x12 mixed (plains with forest)</span>
+<span class="nc" id="L86">        'L', // 0x13 broadleaf (prairie with forest)</span>
+<span class="nc" id="L87">        'C', // 0x14 conifer (grassland with forest)</span>
+<span class="nc" id="L88">        'T', // 0x15 tropical (savannah with forest)</span>
+<span class="nc" id="L89">        'W', // 0x16 wetland (marsh with forest)</span>
+<span class="nc" id="L90">        'R', // 0x17 rain (swamp with forest)</span>
 
-        '_', // 0x18 ice
-        '.', // 0x19 ocean
-        ':', // 0x1a sea lane
-        '?', // undefined
-        '?', // undefined
-        '?', // undefined
-        '?', // undefined
-        '?', // undefined
+<span class="nc" id="L92">        '_', // 0x18 ice</span>
+<span class="nc" id="L93">        '.', // 0x19 ocean</span>
+<span class="nc" id="L94">        ':', // 0x1a sea lane</span>
+<span class="nc" id="L95">        '?', // undefined</span>
+<span class="nc" id="L96">        '?', // undefined</span>
+<span class="nc" id="L97">        '?', // undefined</span>
+<span class="nc" id="L98">        '?', // undefined</span>
+<span class="nc" id="L99">        '?', // undefined</span>
     };
 
 
 <span class="nc" id="L103">    private static final byte[] header = {</span>
-        58, 0, 72, 0, 4, 0
+<span class="nc" id="L104">        58, 0, 72, 0, 4, 0</span>
     };
-    private static byte[] layer1;
+<span class="nc" id="L106">    private static byte[] layer1;</span>
 
     public static void main(String[] args) throws Exception {
 
@@ -175,4 +175,4 @@ import java.util.Arrays;
 <span class="nc" id="L175">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

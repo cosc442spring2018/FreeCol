@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FSGConverter.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.tools</a> &gt; <span class="el_source">FSGConverter.java</span></div><h1>FSGConverter.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FSGConverter.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.tools</a> &gt; <span class="el_source">FSGConverter.java</span></div><h1>FSGConverter.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -159,9 +159,9 @@ public class FSGConverter {
 <span class="nc bnc" id="L159" title="All 4 branches missed.">                } else if (c != '\n' &amp;&amp; c != '\r') {</span>
 <span class="nc" id="L160">                    out.write(c);</span>
                 }           
-<span class="nc" id="L162">            }</span>
+            }
 
-        } finally {
+<span class="nc" id="L164">        } finally {</span>
 <span class="nc" id="L165">            in.close();</span>
 <span class="nc" id="L166">            out.close();</span>
 <span class="nc" id="L167">        }</span>
@@ -196,7 +196,7 @@ public class FSGConverter {
             File out;
 <span class="nc bnc" id="L197" title="All 2 branches missed.">            if (args.length &gt;= 3) {</span>
 <span class="nc" id="L198">                out = new File(args[2]);</span>
-            } else {
+<span class="nc" id="L199">            } else {</span>
 <span class="nc" id="L200">                String filename = in.getName()</span>
 <span class="nc" id="L201">                    .replaceAll(&quot;.&quot; + FreeCol.FREECOL_SAVE_EXTENSION, &quot;.xml&quot;);</span>
 <span class="nc bnc" id="L202" title="All 2 branches missed.">                if (filename.equals(in.getName())) {</span>
@@ -211,11 +211,11 @@ public class FSGConverter {
 <span class="nc" id="L211">                System.out.println(&quot;An error occured while converting the file.&quot;);</span>
 <span class="nc" id="L212">                e.printStackTrace();</span>
 <span class="nc" id="L213">                System.exit(1);</span>
-<span class="nc" id="L214">            }</span>
+            }
 <span class="nc" id="L215">        } else {</span>
 <span class="nc" id="L216">            printUsage();</span>
 <span class="nc" id="L217">            System.exit(1);</span>
         }
 <span class="nc" id="L219">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

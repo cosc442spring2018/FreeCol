@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TranslationReport.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.tools</a> &gt; <span class="el_source">TranslationReport.java</span></div><h1>TranslationReport.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TranslationReport.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.tools</a> &gt; <span class="el_source">TranslationReport.java</span></div><h1>TranslationReport.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">/**</span>
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -88,7 +88,7 @@ import java.util.TreeSet;
 <span class="nc" id="L88">                String value = properties.getProperty(key, null);</span>
 <span class="nc bnc" id="L89" title="All 2 branches missed.">                if (value == null) {</span>
 <span class="nc" id="L90">                    missingKeys.add(key);</span>
-                } else {
+<span class="nc" id="L91">                } else {</span>
 <span class="nc" id="L92">                    String masterValue = master.getProperty(key);</span>
 <span class="nc" id="L93">                    int lastIndex = 0;</span>
 <span class="nc" id="L94">                    boolean inVariable = false;</span>
@@ -120,16 +120,16 @@ import java.util.TreeSet;
                         }
                     }
                 }
-<span class="nc" id="L123">            }</span>
+            }
             
 <span class="nc bnc" id="L125" title="All 2 branches missed.">            if (!missingKeys.isEmpty()) {</span>
 <span class="nc" id="L126">                System.out.println(&quot;** Total of &quot; + missingKeys.size() + &quot; properties missing:\n&quot;);</span>
 <span class="nc bnc" id="L127" title="All 2 branches missed.">                for (String key : sort(missingKeys)) {</span>
 <span class="nc" id="L128">                    System.out.println(key + &quot;=&quot; + master.getProperty(key));</span>
-<span class="nc" id="L129">                }</span>
+                }
 <span class="nc" id="L130">                lstat.missingKeys = missingKeys.size();</span>
 <span class="nc" id="L131">                System.out.println(&quot;&quot;);</span>
-            } else {
+<span class="nc" id="L132">            } else {</span>
 <span class="nc" id="L133">                System.out.println(&quot;** No properties missing.\n&quot;);</span>
             }
             
@@ -137,10 +137,10 @@ import java.util.TreeSet;
 <span class="nc" id="L137">                System.out.println(&quot;** Total of &quot; + copiedFromMaster.size() + &quot; properties copied from master properties:\n&quot;);</span>
 <span class="nc bnc" id="L138" title="All 2 branches missed.">                for (String key : sort(copiedFromMaster)) {</span>
 <span class="nc" id="L139">                    System.out.println(key + &quot;=&quot; + master.getProperty(key));</span>
-<span class="nc" id="L140">                }</span>
+                }
 <span class="nc" id="L141">                lstat.copiedKeys = copiedFromMaster.size();</span>
 <span class="nc" id="L142">                System.out.println(&quot;&quot;);</span>
-            } else {
+<span class="nc" id="L143">            } else {</span>
 <span class="nc" id="L144">                System.out.println(&quot;** No properties copied.\n&quot;);</span>
             }
 
@@ -149,10 +149,10 @@ import java.util.TreeSet;
 <span class="nc bnc" id="L149" title="All 2 branches missed.">                for (String key : sort(missingVariables)) {</span>
 <span class="nc" id="L150">                    System.out.println(&quot;* CORRECT: &quot; + key + &quot;=&quot; + master.getProperty(key));</span>
 <span class="nc" id="L151">                    System.out.println(&quot;INCORRECT: &quot; + key + &quot;=&quot; + properties.getProperty(key));</span>
-<span class="nc" id="L152">                }</span>
+                }
 <span class="nc" id="L153">                lstat.missingVariables = missingVariables.size();</span>
 <span class="nc" id="L154">                System.out.println(&quot;&quot;);</span>
-            } else {
+<span class="nc" id="L155">            } else {</span>
 <span class="nc" id="L156">                System.out.println(&quot;** No properties with missing variables.\n&quot;);</span>
             }
 
@@ -164,7 +164,7 @@ import java.util.TreeSet;
 <span class="nc" id="L164">                String value = master.getProperty(key, null);</span>
 <span class="nc bnc" id="L165" title="All 2 branches missed.">                if (value == null) {</span>
 <span class="nc" id="L166">                    superfluousKeys.add(key);</span>
-                } else {
+<span class="nc" id="L167">                } else {</span>
 <span class="nc" id="L168">                    String propertiesValue = properties.getProperty(key);</span>
 <span class="nc" id="L169">                    int lastIndex = 0;</span>
 <span class="nc" id="L170">                    boolean inVariable = false;</span>
@@ -187,29 +187,29 @@ import java.util.TreeSet;
                         }
                     }
                 }
-<span class="nc" id="L190">            }</span>
+            }
 
 <span class="nc bnc" id="L192" title="All 2 branches missed.">            if (!superfluousKeys.isEmpty()) {</span>
 <span class="nc" id="L193">                System.out.println(&quot;** Total of &quot; + superfluousKeys.size() + &quot; superfluous properties:\n&quot;);</span>
 <span class="nc bnc" id="L194" title="All 2 branches missed.">                for (String key : sort(superfluousKeys)) {</span>
 <span class="nc" id="L195">                    System.out.println(key + &quot;=&quot; + properties.getProperty(key));</span>
-<span class="nc" id="L196">                }</span>
+                }
 <span class="nc" id="L197">                lstat.superfluousKeys = superfluousKeys.size();</span>
 <span class="nc" id="L198">                System.out.println(&quot;&quot;);</span>
-            } else {
+<span class="nc" id="L199">            } else {</span>
 <span class="nc" id="L200">                System.out.println(&quot;** No superfluous properties.\n&quot;);</span>
             }
             
 <span class="nc bnc" id="L203" title="All 2 branches missed.">            if (!superfluousVariables.isEmpty()) {</span>
 <span class="nc" id="L204">                System.out.println(&quot;** Total of &quot; + superfluousVariables.size() +</span>
-                                   &quot; properties with superfluous variables:\n&quot;);
+<span class="nc" id="L205">                                   &quot; properties with superfluous variables:\n&quot;);</span>
 <span class="nc bnc" id="L206" title="All 2 branches missed.">                for (String key : sort(superfluousVariables)) {</span>
 <span class="nc" id="L207">                    System.out.println(&quot;* CORRECT: &quot; + key + &quot;=&quot; + master.getProperty(key));</span>
 <span class="nc" id="L208">                    System.out.println(&quot;INCORRECT: &quot; + key + &quot;=&quot; + properties.getProperty(key));</span>
-<span class="nc" id="L209">                }</span>
+                }
 <span class="nc" id="L210">                lstat.superfluousVariables = superfluousVariables.size();</span>
 <span class="nc" id="L211">                System.out.println(&quot;&quot;);</span>
-            } else {
+<span class="nc" id="L212">            } else {</span>
 <span class="nc" id="L213">                System.out.println(&quot;** No properties with superfluous variables.\n&quot;);</span>
             }
 
@@ -240,7 +240,7 @@ import java.util.TreeSet;
 <span class="nc" id="L240">                output.append(percentageDone).append(&quot;% finished.&quot;);</span>
                 
 <span class="nc" id="L242">                System.out.println(output.toString());</span>
-<span class="nc" id="L243">            }</span>
+            }
         }
 <span class="nc" id="L245">    }</span>
 
@@ -273,4 +273,4 @@ import java.util.TreeSet;
 
 }
 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

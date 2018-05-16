@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PlayerImmigrationTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">test/src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">PlayerImmigrationTest.java</span></div><h1>PlayerImmigrationTest.java</h1><pre class="source lang-java linenums">package net.sf.freecol.common.model;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>PlayerImmigrationTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">test/src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">PlayerImmigrationTest.java</span></div><h1>PlayerImmigrationTest.java</h1><pre class="source lang-java linenums">package net.sf.freecol.common.model;
 
 
 import net.sf.freecol.common.i18n.Messages;
@@ -16,148 +16,148 @@ public class PlayerImmigrationTest extends FreeColTestCase {
 	ServerPlayer dutchPlayer; //This player is always creating in standard game
 	
 	public PlayerImmigrationTest() {
-<span class="nc" id="L19">		super();</span>
-<span class="nc" id="L20">	}</span>
+<span class="fc" id="L19">		super();</span>
+<span class="fc" id="L20">	}</span>
 
 	protected void setUp() throws Exception
 	{
-<span class="nc" id="L24">		super.setUp();</span>
-<span class="nc" id="L25">		game = getStandardGame();</span>
-<span class="nc" id="L26">		dutchPlayer = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
-<span class="nc" id="L27">	}</span>
+<span class="fc" id="L24">		super.setUp();</span>
+<span class="fc" id="L25">		game = getStandardGame();</span>
+<span class="fc" id="L26">		dutchPlayer = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.dutch&quot;);</span>
+<span class="fc" id="L27">	}</span>
 	
 	//Only colonists should have immigrants because we're colonizing the americas 
 	public void testGetImmigration() {
-<span class="nc" id="L31">		ServerPlayer nativeAmericanPlayer = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.inca&quot;);</span>
-<span class="nc" id="L32">		int sampleImmigrationNum = 100;</span>
+<span class="fc" id="L31">		ServerPlayer nativeAmericanPlayer = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.inca&quot;);</span>
+<span class="fc" id="L32">		int sampleImmigrationNum = 100;</span>
 		
-<span class="nc" id="L34">		nativeAmericanPlayer.immigration = sampleImmigrationNum;</span>
-<span class="nc" id="L35">		assertEquals(nativeAmericanPlayer.getImmigration(), 0);</span>
+<span class="fc" id="L34">		nativeAmericanPlayer.immigration = sampleImmigrationNum;</span>
+<span class="fc" id="L35">		assertEquals(nativeAmericanPlayer.getImmigration(), 0);</span>
 		
-<span class="nc" id="L37">		dutchPlayer.immigration = sampleImmigrationNum;</span>
-<span class="nc" id="L38">		assertEquals(dutchPlayer.getImmigration(), 100);</span>
-<span class="nc" id="L39">	}</span>
+<span class="fc" id="L37">		dutchPlayer.immigration = sampleImmigrationNum;</span>
+<span class="fc" id="L38">		assertEquals(dutchPlayer.getImmigration(), 100);</span>
+<span class="fc" id="L39">	}</span>
 	
 	//Only colonists can have their immigration set as well
 	public void testSetImmigration() {
-<span class="nc" id="L43">		int sampleImmigrationNum = 100;</span>
-<span class="nc" id="L44">		ServerPlayer nativeAmericanPlayer = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.inca&quot;);</span>
-<span class="nc" id="L45">		nativeAmericanPlayer.setImmigration(sampleImmigrationNum);</span>
-<span class="nc" id="L46">		assertEquals(nativeAmericanPlayer.getImmigration(),0);</span>
-<span class="nc" id="L47">		dutchPlayer.setImmigration(sampleImmigrationNum);</span>
-<span class="nc" id="L48">		assertEquals(dutchPlayer.getImmigration(), 100);</span>
-<span class="nc" id="L49">	}</span>
+<span class="fc" id="L43">		int sampleImmigrationNum = 100;</span>
+<span class="fc" id="L44">		ServerPlayer nativeAmericanPlayer = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.inca&quot;);</span>
+<span class="fc" id="L45">		nativeAmericanPlayer.setImmigration(sampleImmigrationNum);</span>
+<span class="fc" id="L46">		assertEquals(nativeAmericanPlayer.getImmigration(),0);</span>
+<span class="fc" id="L47">		dutchPlayer.setImmigration(sampleImmigrationNum);</span>
+<span class="fc" id="L48">		assertEquals(dutchPlayer.getImmigration(), 100);</span>
+<span class="fc" id="L49">	}</span>
 	
 	/**
 	 * This test is used when an immigrant finally leaves from Europe
 	 */
 	public void testReduceImmigration() {
-<span class="nc" id="L55">		dutchPlayer.setImmigration(100);</span>
-<span class="nc" id="L56">		assertEquals(dutchPlayer.getImmigration(), 100);</span>
+<span class="fc" id="L55">		dutchPlayer.setImmigration(100);</span>
+<span class="fc" id="L56">		assertEquals(dutchPlayer.getImmigration(), 100);</span>
 
-<span class="nc" id="L58">		int immigrationNum = dutchPlayer.getImmigration();</span>
-<span class="nc" id="L59">		dutchPlayer.reduceImmigration();</span>
+<span class="fc" id="L58">		int immigrationNum = dutchPlayer.getImmigration();</span>
+<span class="fc" id="L59">		dutchPlayer.reduceImmigration();</span>
 
-<span class="nc bnc" id="L61" title="All 2 branches missed.">		if(dutchPlayer.getSpecification().getBoolean(GameOptions.SAVE_PRODUCTION_OVERFLOW))</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">		if(dutchPlayer.getSpecification().getBoolean(GameOptions.SAVE_PRODUCTION_OVERFLOW))</span>
 <span class="nc" id="L62">			assertEquals(dutchPlayer.getImmigration(), immigrationNum - dutchPlayer.getImmigrationRequired());</span>
 		else
-<span class="nc" id="L64">			assertEquals(dutchPlayer.getImmigration(), 0);</span>
-<span class="nc" id="L65">	}</span>
+<span class="fc" id="L64">			assertEquals(dutchPlayer.getImmigration(), 0);</span>
+<span class="fc" id="L65">	}</span>
 
 	public void testModifyImmigration() {
-<span class="nc" id="L68">		int sampleModifyAmount = 50;</span>
-<span class="nc" id="L69">		int sampleModifyAmount2 = -100;</span>
-<span class="nc" id="L70">		int initialImmigration = dutchPlayer.getImmigration();</span>
+<span class="fc" id="L68">		int sampleModifyAmount = 50;</span>
+<span class="fc" id="L69">		int sampleModifyAmount2 = -100;</span>
+<span class="fc" id="L70">		int initialImmigration = dutchPlayer.getImmigration();</span>
 
-<span class="nc" id="L72">		dutchPlayer.modifyImmigration(sampleModifyAmount);</span>
-<span class="nc" id="L73">		assertEquals(dutchPlayer.getImmigration(), sampleModifyAmount + initialImmigration);</span>
-<span class="nc" id="L74">		dutchPlayer.modifyImmigration(sampleModifyAmount2);</span>
-<span class="nc" id="L75">		assertEquals(dutchPlayer.getImmigration(), 0);</span>
-<span class="nc" id="L76">	}</span>
+<span class="fc" id="L72">		dutchPlayer.modifyImmigration(sampleModifyAmount);</span>
+<span class="fc" id="L73">		assertEquals(dutchPlayer.getImmigration(), sampleModifyAmount + initialImmigration);</span>
+<span class="fc" id="L74">		dutchPlayer.modifyImmigration(sampleModifyAmount2);</span>
+<span class="fc" id="L75">		assertEquals(dutchPlayer.getImmigration(), 0);</span>
+<span class="fc" id="L76">	}</span>
 		
 	/**
 	 * Run the void setImmigrationRequired(int) method test
 	 */
 	public void testSetImmigrationRequired() {
-<span class="nc" id="L82">		int newRequiredImmigrationAmt = 100;</span>
-<span class="nc" id="L83">		dutchPlayer.setImmigrationRequired(newRequiredImmigrationAmt);</span>
-<span class="nc" id="L84">		assertEquals(dutchPlayer.getImmigrationRequired(), newRequiredImmigrationAmt);</span>
-<span class="nc" id="L85">	}</span>
+<span class="fc" id="L82">		int newRequiredImmigrationAmt = 100;</span>
+<span class="fc" id="L83">		dutchPlayer.setImmigrationRequired(newRequiredImmigrationAmt);</span>
+<span class="fc" id="L84">		assertEquals(dutchPlayer.getImmigrationRequired(), newRequiredImmigrationAmt);</span>
+<span class="fc" id="L85">	}</span>
 
 	/**
 	 * Run the void updateImmigrationRequired() method test
 	 */
 	public void testUpdateImmigrationRequired() {
-<span class="nc" id="L91">		ServerPlayer nativeAmericanPlayer = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.inca&quot;);</span>
-<span class="nc" id="L92">		nativeAmericanPlayer.updateImmigrationRequired();</span>
-<span class="nc" id="L93">		assertEquals(nativeAmericanPlayer.getImmigration(), 0);</span>
+<span class="fc" id="L91">		ServerPlayer nativeAmericanPlayer = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.inca&quot;);</span>
+<span class="fc" id="L92">		nativeAmericanPlayer.updateImmigrationRequired();</span>
+<span class="fc" id="L93">		assertEquals(nativeAmericanPlayer.getImmigration(), 0);</span>
 
-<span class="nc" id="L95">		int immigrationAmt = 100;</span>
-<span class="nc" id="L96">		dutchPlayer.setImmigration(immigrationAmt);</span>
+<span class="fc" id="L95">		int immigrationAmt = 100;</span>
+<span class="fc" id="L96">		dutchPlayer.setImmigration(immigrationAmt);</span>
 
-<span class="nc" id="L98">		int oldImmigrationReq = dutchPlayer.getImmigrationRequired();</span>
-<span class="nc" id="L99">		int base = getGame().getSpecification().getInteger(GameOptions.CROSSES_INCREMENT);</span>
+<span class="fc" id="L98">		int oldImmigrationReq = dutchPlayer.getImmigrationRequired();</span>
+<span class="fc" id="L99">		int base = getGame().getSpecification().getInteger(GameOptions.CROSSES_INCREMENT);</span>
 
-<span class="nc" id="L101">		dutchPlayer.updateImmigrationRequired();</span>
+<span class="fc" id="L101">		dutchPlayer.updateImmigrationRequired();</span>
 
-<span class="nc" id="L103">		int unreduced = Math.round(oldImmigrationReq</span>
-<span class="nc" id="L104">				/ dutchPlayer.applyModifiers(1f, getGame().getTurn(), Modifier.RELIGIOUS_UNREST_BONUS));</span>
-<span class="nc" id="L105">		assertEquals(dutchPlayer.getImmigrationRequired(), (int)dutchPlayer.applyModifiers(unreduced + base, getGame().getTurn(),</span>
-<span class="nc" id="L106">				Modifier.RELIGIOUS_UNREST_BONUS));</span>
-<span class="nc" id="L107">	}</span>
+<span class="fc" id="L103">		int unreduced = Math.round(oldImmigrationReq</span>
+<span class="fc" id="L104">				/ dutchPlayer.applyModifiers(1f, getGame().getTurn(), Modifier.RELIGIOUS_UNREST_BONUS));</span>
+<span class="fc" id="L105">		assertEquals(dutchPlayer.getImmigrationRequired(), (int)dutchPlayer.applyModifiers(unreduced + base, getGame().getTurn(),</span>
+<span class="fc" id="L106">				Modifier.RELIGIOUS_UNREST_BONUS));</span>
+<span class="fc" id="L107">	}</span>
 
 	public void testCheckEmigrate() {
-<span class="nc" id="L110">		int amtImmigrationReq = 100;</span>
-<span class="nc" id="L111">		dutchPlayer.setImmigrationRequired(amtImmigrationReq);</span>
-<span class="nc" id="L112">		assertFalse(dutchPlayer.checkEmigrate());</span>
-<span class="nc" id="L113">		dutchPlayer.setImmigration(amtImmigrationReq);</span>
-<span class="nc" id="L114">		assertTrue(dutchPlayer.checkEmigrate());</span>
+<span class="fc" id="L110">		int amtImmigrationReq = 100;</span>
+<span class="fc" id="L111">		dutchPlayer.setImmigrationRequired(amtImmigrationReq);</span>
+<span class="fc" id="L112">		assertFalse(dutchPlayer.checkEmigrate());</span>
+<span class="fc" id="L113">		dutchPlayer.setImmigration(amtImmigrationReq);</span>
+<span class="fc" id="L114">		assertTrue(dutchPlayer.checkEmigrate());</span>
 
-<span class="nc" id="L116">		ServerPlayer nativeAmericanPlayer = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.inca&quot;);</span>
-<span class="nc" id="L117">		assertFalse(nativeAmericanPlayer.checkEmigrate());</span>
-<span class="nc" id="L118">	}</span>
+<span class="fc" id="L116">		ServerPlayer nativeAmericanPlayer = (ServerPlayer)game.getPlayerByNationId(&quot;model.nation.inca&quot;);</span>
+<span class="fc" id="L117">		assertFalse(nativeAmericanPlayer.checkEmigrate());</span>
+<span class="fc" id="L118">	}</span>
 	
 	public void testGetTotalImmigrationProduction() {
-<span class="nc" id="L121">		game.setMap(getTestMap());</span>
-<span class="nc" id="L122">		ServerPlayer nativeAmericanPlayer = (ServerPlayer) game.getPlayerByNationId(&quot;model.nation.inca&quot;);</span>
-<span class="nc" id="L123">		assertEquals(0, nativeAmericanPlayer.getTotalImmigrationProduction());</span>
+<span class="fc" id="L121">		game.setMap(getTestMap());</span>
+<span class="fc" id="L122">		ServerPlayer nativeAmericanPlayer = (ServerPlayer) game.getPlayerByNationId(&quot;model.nation.inca&quot;);</span>
+<span class="fc" id="L123">		assertEquals(0, nativeAmericanPlayer.getTotalImmigrationProduction());</span>
 
-<span class="nc" id="L125">		String colonyName = &quot;AnthonyAsimNoobville&quot;;</span>
-<span class="nc" id="L126">		int goodsAmt = 100;</span>
+<span class="fc" id="L125">		String colonyName = &quot;AnthonyAsimNoobville&quot;;</span>
+<span class="fc" id="L126">		int goodsAmt = 100;</span>
 
-<span class="nc" id="L128">		final List&lt;GoodsType&gt; immigrationGoodsTypes = getGame().getSpecification().getImmigrationGoodsTypeList();</span>
-<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (immigrationGoodsTypes.size() &gt; 0) {</span>
+<span class="fc" id="L128">		final List&lt;GoodsType&gt; immigrationGoodsTypes = getGame().getSpecification().getImmigrationGoodsTypeList();</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">		if (immigrationGoodsTypes.size() &gt; 0) {</span>
 
-<span class="nc" id="L131">			Colony newColony = new ServerColony(getGame(), dutchPlayer, colonyName, getTestMap().getTile(0, 0));</span>
-<span class="nc" id="L132">			Building newBuilding = new Building(getGame(), newColony, new BuildingType(&quot;model.building.church&quot;, getGame().getSpecification()));</span>
-<span class="nc" id="L133">			Goods goods = new Goods(game, newColony, immigrationGoodsTypes.get(0), goodsAmt);</span>
-<span class="nc" id="L134">			newColony.addBuilding(newBuilding);</span>
-<span class="nc" id="L135">			newBuilding.getProductionInfo().addProduction(goods);</span>
+<span class="fc" id="L131">			Colony newColony = new ServerColony(getGame(), dutchPlayer, colonyName, getTestMap().getTile(0, 0));</span>
+<span class="fc" id="L132">			Building newBuilding = new Building(getGame(), newColony, new BuildingType(&quot;model.building.church&quot;, getGame().getSpecification()));</span>
+<span class="fc" id="L133">			Goods goods = new Goods(game, newColony, immigrationGoodsTypes.get(0), goodsAmt);</span>
+<span class="fc" id="L134">			newColony.addBuilding(newBuilding);</span>
+<span class="fc" id="L135">			newBuilding.getProductionInfo().addProduction(goods);</span>
 
-<span class="nc" id="L137">			assertEquals(dutchPlayer.getTotalImmigrationProduction(), dutchPlayer.europe.getImmigration(0));</span>
+<span class="fc" id="L137">			assertEquals(dutchPlayer.getTotalImmigrationProduction(), dutchPlayer.europe.getImmigration(0));</span>
 
-<span class="nc" id="L139">			newColony.addBuilding(newBuilding);</span>
+<span class="fc" id="L139">			newColony.addBuilding(newBuilding);</span>
 
-<span class="nc" id="L141">			dutchPlayer.addSettlement(newColony);</span>
+<span class="fc" id="L141">			dutchPlayer.addSettlement(newColony);</span>
 
-<span class="nc" id="L143">			Europe eu = dutchPlayer.getEurope();</span>
-<span class="nc" id="L144">			int production = newColony.getTotalProductionOf(immigrationGoodsTypes.get(0));</span>
+<span class="fc" id="L143">			Europe eu = dutchPlayer.getEurope();</span>
+<span class="fc" id="L144">			int production = newColony.getTotalProductionOf(immigrationGoodsTypes.get(0));</span>
 
-<span class="nc bnc" id="L146" title="All 2 branches missed.">			if (eu != null) {</span>
-<span class="nc" id="L147">				assertEquals(dutchPlayer.getTotalImmigrationProduction(), newColony.getTotalProductionOf(immigrationGoodsTypes.get(0)) + eu.getImmigration(production));</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">			if (eu != null) {</span>
+<span class="fc" id="L147">				assertEquals(dutchPlayer.getTotalImmigrationProduction(), newColony.getTotalProductionOf(immigrationGoodsTypes.get(0)) + eu.getImmigration(production));</span>
 			}
 
-<span class="nc" id="L150">			dutchPlayer.setEurope(null);</span>
-<span class="nc" id="L151">			assertEquals(dutchPlayer.getTotalImmigrationProduction(), newColony.getTotalProductionOf(immigrationGoodsTypes.get(0)));</span>
+<span class="fc" id="L150">			dutchPlayer.setEurope(null);</span>
+<span class="fc" id="L151">			assertEquals(dutchPlayer.getTotalImmigrationProduction(), newColony.getTotalProductionOf(immigrationGoodsTypes.get(0)));</span>
 			;
-<span class="nc" id="L153">		}</span>
+<span class="fc" id="L153">		}</span>
 		else
 <span class="nc" id="L155">			fail(&quot;No immigration good types found in this game mode&quot;);</span>
-<span class="nc" id="L156">	}</span>
+<span class="fc" id="L156">	}</span>
 	
 	public void testGetEmigrationMessage() {
-<span class="nc" id="L159">		Unit galleon = new ServerUnit(game, null, dutchPlayer, getGame().getSpecification().getUnitType(&quot;model.unit.galleon&quot;));</span>
-<span class="nc" id="L160">		assertEquals(Messages.message(dutchPlayer.getEmigrationMessage(galleon)), &quot;In Amsterdam, Galleon has decided to emigrate.&quot;);</span>
-<span class="nc" id="L161">	}</span>
+<span class="fc" id="L159">		Unit galleon = new ServerUnit(game, null, dutchPlayer, getGame().getSpecification().getUnitType(&quot;model.unit.galleon&quot;));</span>
+<span class="fc" id="L160">		assertEquals(Messages.message(dutchPlayer.getEmigrationMessage(galleon)), &quot;In Amsterdam, Galleon has decided to emigrate.&quot;);</span>
+<span class="fc" id="L161">	}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ListOptionUI.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.client.gui.option</a> &gt; <span class="el_source">ListOptionUI.java</span></div><h1>ListOptionUI.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ListOptionUI.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.client.gui.option</a> &gt; <span class="el_source">ListOptionUI.java</span></div><h1>ListOptionUI.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -79,7 +79,7 @@ public final class ListOptionUI&lt;T&gt; extends OptionUI&lt;ListOption&lt;T&gt;
 
 <span class="nc" id="L80">        this.panel = new JPanel();</span>
 <span class="nc" id="L81">        this.panel.setBorder(Utility.localizedBorder(super.getJLabel().getText(),</span>
-                                                 Utility.BORDER_COLOR));
+<span class="nc" id="L82">                                                 Utility.BORDER_COLOR));</span>
 <span class="nc" id="L83">        this.panel.setLayout(new MigLayout(&quot;wrap 2, fill&quot;, &quot;[fill, grow]20[fill]&quot;));</span>
 
 <span class="nc" id="L85">        this.model = new DefaultListModel&lt;&gt;();</span>
@@ -89,8 +89,8 @@ public final class ListOptionUI&lt;T&gt; extends OptionUI&lt;ListOption&lt;T&gt;
 <span class="nc" id="L89">                this.model.addElement(c);</span>
 <span class="nc" id="L90">            } catch (CloneNotSupportedException e) {</span>
 <span class="nc" id="L91">                logger.log(Level.WARNING, &quot;Can not clone &quot; + o.getId(), e);</span>
-<span class="nc" id="L92">            }</span>
-<span class="nc" id="L93">        }</span>
+            }
+        }
 <span class="nc" id="L94">        list = new JList&lt;&gt;(this.model);</span>
 <span class="nc bnc" id="L95" title="All 2 branches missed.">        AbstractOption&lt;T&gt; o = option.getValue().isEmpty()</span>
 <span class="nc" id="L96">            ? option.getTemplate()</span>
@@ -104,7 +104,7 @@ public final class ListOptionUI&lt;T&gt; extends OptionUI&lt;ListOption&lt;T&gt;
 <span class="nc" id="L104">        this.panel.add(pane, &quot;grow, spany 5&quot;);</span>
 
 <span class="nc bnc" id="L106" title="All 2 branches missed.">        for (JButton button : new JButton[] {</span>
-                editButton, addButton, removeButton, upButton, downButton }) {
+<span class="nc" id="L107">                editButton, addButton, removeButton, upButton, downButton }) {</span>
 <span class="nc" id="L108">            button.setEnabled(editable);</span>
 <span class="nc" id="L109">            this.panel.add(button);</span>
         }
@@ -124,7 +124,7 @@ public final class ListOptionUI&lt;T&gt; extends OptionUI&lt;ListOption&lt;T&gt;
                     }
 <span class="nc" id="L125">                } catch (CloneNotSupportedException e) {</span>
 <span class="nc" id="L126">                    logger.log(Level.WARNING, &quot;Can not clone: &quot; + oldValue, e);</span>
-<span class="nc" id="L127">                }</span>
+                }
 <span class="nc" id="L128">            });</span>
 <span class="nc" id="L129">        editButton.addActionListener((ActionEvent ae) -&gt; {</span>
 <span class="nc" id="L130">                Object object = list.getSelectedValue();</span>
@@ -211,7 +211,7 @@ public final class ListOptionUI&lt;T&gt; extends OptionUI&lt;ListOption&lt;T&gt;
 <span class="nc" id="L211">        model.clear();</span>
 <span class="nc bnc" id="L212" title="All 2 branches missed.">        for (AbstractOption&lt;T&gt; o : getOption().getValue()) {</span>
 <span class="nc" id="L213">            model.addElement(o);</span>
-<span class="nc" id="L214">        }</span>
+        }
 <span class="nc" id="L215">    }</span>
 
     // Interface ListSelectionListener
@@ -230,4 +230,4 @@ public final class ListOptionUI&lt;T&gt; extends OptionUI&lt;ListOption&lt;T&gt;
         }
 <span class="nc" id="L231">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

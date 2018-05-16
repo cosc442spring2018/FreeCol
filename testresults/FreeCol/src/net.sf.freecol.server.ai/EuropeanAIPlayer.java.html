@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>EuropeanAIPlayer.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.server.ai</a> &gt; <span class="el_source">EuropeanAIPlayer.java</span></div><h1>EuropeanAIPlayer.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">/**</span>
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>EuropeanAIPlayer.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.server.ai</a> &gt; <span class="el_source">EuropeanAIPlayer.java</span></div><h1>EuropeanAIPlayer.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">/**</span>
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -423,15 +423,15 @@ public class EuropeanAIPlayer extends AIPlayer {
      * @param lb A &lt;code&gt;LogBuilder&lt;/code&gt; to log to.
      */
     public void cheatGold(int amount, LogBuilder lb) {
-<span class="fc" id="L426">        final Player player = getPlayer();</span>
-<span class="fc" id="L427">        int gold = player.getGold();</span>
-<span class="pc bpc" id="L428" title="1 of 2 branches missed.">        if (gold &lt; amount) {</span>
-<span class="fc" id="L429">            amount -= gold;</span>
-<span class="fc" id="L430">            player.modifyGold(amount);</span>
-<span class="fc" id="L431">            lb.add(&quot;added &quot;, amount, &quot; gold&quot;);</span>
+<span class="nc" id="L426">        final Player player = getPlayer();</span>
+<span class="nc" id="L427">        int gold = player.getGold();</span>
+<span class="nc bnc" id="L428" title="All 2 branches missed.">        if (gold &lt; amount) {</span>
+<span class="nc" id="L429">            amount -= gold;</span>
+<span class="nc" id="L430">            player.modifyGold(amount);</span>
+<span class="nc" id="L431">            lb.add(&quot;added &quot;, amount, &quot; gold&quot;);</span>
         }
-<span class="fc" id="L433">        player.logCheat(amount + &quot; gold&quot;);</span>
-<span class="fc" id="L434">    }</span>
+<span class="nc" id="L433">        player.logCheat(amount + &quot; gold&quot;);</span>
+<span class="nc" id="L434">    }</span>
 
     /**
      * Cheats for the AI.  Please try to centralize cheats here.
@@ -519,9 +519,9 @@ public class EuropeanAIPlayer extends AIPlayer {
         }
 
 <span class="pc bpc" id="L521" title="1 of 2 branches missed.">        if (randoms[cheatIndex++] &lt; landUnitCheatPercent) {</span>
-<span class="fc" id="L522">            WorkerWish bestWish = null;</span>
-<span class="fc" id="L523">            int bestValue = Integer.MIN_VALUE;</span>
-<span class="pc bpc" id="L524" title="1 of 2 branches missed.">            for (UnitType ut : workerWishes.keySet()) {</span>
+<span class="nc" id="L522">            WorkerWish bestWish = null;</span>
+<span class="nc" id="L523">            int bestValue = Integer.MIN_VALUE;</span>
+<span class="nc bnc" id="L524" title="All 2 branches missed.">            for (UnitType ut : workerWishes.keySet()) {</span>
 <span class="nc" id="L525">                List&lt;WorkerWish&gt; wl = workerWishes.get(ut);</span>
 <span class="nc bnc" id="L526" title="All 2 branches missed.">                if (wl == null</span>
 <span class="nc bnc" id="L527" title="All 2 branches missed.">                    || wl.isEmpty()</span>
@@ -536,19 +536,19 @@ public class EuropeanAIPlayer extends AIPlayer {
             }
 
             int cost;
-<span class="pc bpc" id="L539" title="1 of 2 branches missed.">            if (bestWish != null) {</span>
+<span class="nc bnc" id="L539" title="All 2 branches missed.">            if (bestWish != null) {</span>
 <span class="nc" id="L540">                cost = europe.getUnitPrice(bestWish.getUnitType());</span>
-<span class="pc" id="L541">            } else if (player.getImmigration()</span>
-<span class="pc bpc" id="L542" title="1 of 2 branches missed.">                &lt; player.getImmigrationRequired() / 2) {</span>
-<span class="fc" id="L543">                cost = player.getRecruitPrice();</span>
-<span class="fc" id="L544">            } else {</span>
+<span class="nc" id="L541">            } else if (player.getImmigration()</span>
+<span class="nc bnc" id="L542" title="All 2 branches missed.">                &lt; player.getImmigrationRequired() / 2) {</span>
+<span class="nc" id="L543">                cost = player.getRecruitPrice();</span>
+<span class="nc" id="L544">            } else {</span>
 <span class="nc" id="L545">                cost = INFINITY;</span>
             }
-<span class="pc bpc" id="L547" title="1 of 2 branches missed.">            if (cost != INFINITY) {</span>
-<span class="fc" id="L548">                cheatGold(cost, lb);</span>
+<span class="nc bnc" id="L547" title="All 2 branches missed.">            if (cost != INFINITY) {</span>
+<span class="nc" id="L548">                cheatGold(cost, lb);</span>
                 AIUnit aiu;
-<span class="pc bpc" id="L550" title="1 of 2 branches missed.">                if (bestWish == null) {</span>
-<span class="pc bpc" id="L551" title="1 of 2 branches missed.">                    if ((aiu = recruitAIUnitInEurope(-1)) != null) {</span>
+<span class="nc bnc" id="L550" title="All 2 branches missed.">                if (bestWish == null) {</span>
+<span class="nc bnc" id="L551" title="All 2 branches missed.">                    if ((aiu = recruitAIUnitInEurope(-1)) != null) {</span>
                         // let giveNormalMissions look after the mission
 <span class="nc" id="L553">                        lb.add(&quot; to recruit &quot;, aiu.getUnit(), &quot;, &quot;);</span>
                     }
@@ -562,7 +562,7 @@ public class EuropeanAIPlayer extends AIPlayer {
                         }
                     }
                 }
-<span class="pc bpc" id="L565" title="1 of 2 branches missed.">                if (aiu != null) player.logCheat(&quot;Make &quot; + aiu.getUnit());</span>
+<span class="nc bnc" id="L565" title="All 2 branches missed.">                if (aiu != null) player.logCheat(&quot;Make &quot; + aiu.getUnit());</span>
             }
         }
 
@@ -1487,22 +1487,22 @@ public class EuropeanAIPlayer extends AIPlayer {
      * @return The new AIUnit created by this action or null on failure.
      */
     public AIUnit recruitAIUnitInEurope(int slot) {
-<span class="fc" id="L1490">        AIUnit aiUnit = null;</span>
-<span class="fc" id="L1491">        Europe europe = getPlayer().getEurope();</span>
-<span class="pc bpc" id="L1492" title="1 of 2 branches missed.">        if (europe == null) return null;</span>
-<span class="fc" id="L1493">        int n = europe.getUnitCount();</span>
-<span class="fc" id="L1494">        final String selectAbility = Ability.SELECT_RECRUIT;</span>
-<span class="pc bpc" id="L1495" title="1 of 2 branches missed.">        if (!Europe.MigrationType.validMigrantSlot(slot)) {</span>
-<span class="pc bpc" id="L1496" title="1 of 2 branches missed.">            slot = (getPlayer().hasAbility(selectAbility))</span>
+<span class="nc" id="L1490">        AIUnit aiUnit = null;</span>
+<span class="nc" id="L1491">        Europe europe = getPlayer().getEurope();</span>
+<span class="nc bnc" id="L1492" title="All 2 branches missed.">        if (europe == null) return null;</span>
+<span class="nc" id="L1493">        int n = europe.getUnitCount();</span>
+<span class="nc" id="L1494">        final String selectAbility = Ability.SELECT_RECRUIT;</span>
+<span class="nc bnc" id="L1495" title="All 2 branches missed.">        if (!Europe.MigrationType.validMigrantSlot(slot)) {</span>
+<span class="nc bnc" id="L1496" title="All 2 branches missed.">            slot = (getPlayer().hasAbility(selectAbility))</span>
 <span class="nc" id="L1497">                ? Europe.MigrationType.getDefaultSlot()</span>
-<span class="fc" id="L1498">                : Europe.MigrationType.getUnspecificSlot();</span>
+<span class="nc" id="L1498">                : Europe.MigrationType.getUnspecificSlot();</span>
         }
-<span class="pc bpc" id="L1500" title="1 of 2 branches missed.">        if (AIMessage.askEmigrate(this, slot)</span>
+<span class="nc bnc" id="L1500" title="All 2 branches missed.">        if (AIMessage.askEmigrate(this, slot)</span>
 <span class="nc bnc" id="L1501" title="All 2 branches missed.">            &amp;&amp; europe.getUnitCount() == n+1) {</span>
 <span class="nc" id="L1502">            aiUnit = getAIUnit(europe.getUnitList().get(n));</span>
 <span class="nc bnc" id="L1503" title="All 2 branches missed.">            if (aiUnit != null) addAIUnit(aiUnit);</span>
         }
-<span class="fc" id="L1505">        return aiUnit;</span>
+<span class="nc" id="L1505">        return aiUnit;</span>
     }
 
     /**
@@ -2835,4 +2835,4 @@ public class EuropeanAIPlayer extends AIPlayer {
     @Override
 <span class="fc" id="L2836">    public String getXMLTagName() { return getXMLElementTagName(); }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

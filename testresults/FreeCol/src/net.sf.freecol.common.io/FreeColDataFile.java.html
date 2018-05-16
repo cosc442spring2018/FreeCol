@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FreeColDataFile.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.io</a> &gt; <span class="el_source">FreeColDataFile.java</span></div><h1>FreeColDataFile.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FreeColDataFile.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.io</a> &gt; <span class="el_source">FreeColDataFile.java</span></div><h1>FreeColDataFile.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -60,7 +60,7 @@ public class FreeColDataFile {
     private static final String RESOURCE_FILE_SUFFIX = &quot;.properties&quot;;
 
     /** A fake URI scheme for resources delegating to other resources. */
-    private static final String resourceScheme = &quot;resource:&quot;;
+<span class="fc" id="L63">    private static final String resourceScheme = &quot;resource:&quot;;</span>
 
     /** The file this object represents. */
     private final File file;
@@ -96,7 +96,7 @@ public class FreeColDataFile {
      */
     private static String findJarDirectory(File file) {
 <span class="fc" id="L98">        String expected = file.getName().substring(0, file.getName().lastIndexOf('.'));</span>
-<span class="pc" id="L99">        try (</span>
+<span class="fc" id="L99">        try (</span>
 <span class="fc" id="L100">            JarFile jf = new JarFile(file);</span>
         ) {
 <span class="fc" id="L102">            final JarEntry entry = jf.entries().nextElement();</span>
@@ -106,8 +106,8 @@ public class FreeColDataFile {
 <span class="pc bpc" id="L106" title="1 of 2 branches missed.">            if (index &gt; 0) {</span>
 <span class="nc" id="L107">                name = en.substring(0, index + 1);</span>
             }
-<span class="fc" id="L109">            return name;</span>
-<span class="pc bpc" id="L110" title="6 of 8 branches missed.">        } catch (Exception e) {</span>
+<span class="pc" id="L109">            return name;</span>
+<span class="pc bpc" id="L110" title="7 of 8 branches missed.">        } catch (Exception e) {</span>
 <span class="nc" id="L111">            logger.log(Level.WARNING, &quot;Exception while reading data file.&quot;, e);</span>
 <span class="nc" id="L112">            return expected;</span>
         }
@@ -149,8 +149,8 @@ public class FreeColDataFile {
      * @return A list of resource file names.
      */
     public static List&lt;String&gt; getResourceFileNames() {
-<span class="nc" id="L152">        return getFileNames(RESOURCE_FILE_PREFIX, RESOURCE_FILE_SUFFIX,</span>
-<span class="nc" id="L153">                            Locale.getDefault());</span>
+<span class="fc" id="L152">        return getFileNames(RESOURCE_FILE_PREFIX, RESOURCE_FILE_SUFFIX,</span>
+<span class="fc" id="L153">                            Locale.getDefault());</span>
     }
 
     /**
@@ -161,23 +161,23 @@ public class FreeColDataFile {
      */
     protected URI getURI(String name) {
         try {
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">            if (name.startsWith(&quot;urn:&quot;)) {</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">            if (name.startsWith(&quot;urn:&quot;)) {</span>
                 try {
-<span class="nc" id="L166">                    return new URI(name);</span>
+<span class="fc" id="L166">                    return new URI(name);</span>
 <span class="nc" id="L167">                } catch (URISyntaxException e) {</span>
 <span class="nc" id="L168">                    logger.log(Level.WARNING, &quot;Resource creation failure with: &quot;</span>
-                        + name, e);
+<span class="nc" id="L169">                        + name, e);</span>
 <span class="nc" id="L170">                    return null;</span>
                 }
 <span class="fc bfc" id="L172" title="All 2 branches covered.">            } else if (file.isDirectory()) {</span>
 <span class="fc" id="L173">                return new File(file, name).toURI();</span>
             } else {
 <span class="fc" id="L175">                return new URI(&quot;jar:file&quot;, file + &quot;!/&quot; + jarDirectory + name,</span>
-                               null);
+<span class="fc" id="L176">                               null);</span>
             }
 <span class="nc" id="L178">        } catch (URISyntaxException e) {</span>
 <span class="nc" id="L179">            logger.log(Level.WARNING, &quot;Failed to lookup: &quot; + file + &quot;/&quot; + name,</span>
-                       e);
+<span class="nc" id="L180">                       e);</span>
 <span class="nc" id="L181">            return null;</span>
         }
     }
@@ -208,65 +208,65 @@ public class FreeColDataFile {
      *     there is no resource mapping file.
      */
     public ResourceMapping getResourceMapping() {
-<span class="nc" id="L211">        final Properties properties = new Properties();</span>
-<span class="nc" id="L212">        LogBuilder lb = new LogBuilder(64);</span>
-<span class="nc" id="L213">        lb.add(&quot;Resource mapping&quot;);</span>
-<span class="nc" id="L214">        lb.mark();</span>
-<span class="nc bnc" id="L215" title="All 2 branches missed.">        for (String fileName : getResourceFileNames()) {</span>
-<span class="nc" id="L216">            try (</span>
-<span class="nc" id="L217">                final InputStream is = getInputStream(fileName);</span>
+<span class="fc" id="L211">        final Properties properties = new Properties();</span>
+<span class="fc" id="L212">        LogBuilder lb = new LogBuilder(64);</span>
+<span class="fc" id="L213">        lb.add(&quot;Resource mapping&quot;);</span>
+<span class="fc" id="L214">        lb.mark();</span>
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        for (String fileName : getResourceFileNames()) {</span>
+<span class="fc" id="L216">            try (</span>
+<span class="fc" id="L217">                final InputStream is = getInputStream(fileName);</span>
             ) {
-<span class="nc" id="L219">                properties.load(is);</span>
-<span class="nc" id="L220">                lb.add(&quot;, &quot;, file, &quot;/&quot;, fileName, &quot; loaded&quot;);</span>
-<span class="nc bnc" id="L221" title="All 8 branches missed.">            } catch (FileNotFoundException e) { // Expected failure</span>
-<span class="nc" id="L222">                lb.add(&quot;, &quot;, file, &quot;/&quot;, fileName, &quot; not found&quot;);</span>
+<span class="fc" id="L219">                properties.load(is);</span>
+<span class="fc" id="L220">                lb.add(&quot;, &quot;, file, &quot;/&quot;, fileName, &quot; loaded&quot;);</span>
+<span class="pc bpc" id="L221" title="6 of 8 branches missed.">            } catch (FileNotFoundException e) { // Expected failure</span>
+<span class="fc" id="L222">                lb.add(&quot;, &quot;, file, &quot;/&quot;, fileName, &quot; not found&quot;);</span>
 <span class="nc" id="L223">            } catch (IOException e) {</span>
 <span class="nc" id="L224">                logger.log(Level.WARNING, &quot;ResourceMapping read exception: &quot;</span>
-                    + file + &quot;/&quot; + fileName, e);
+<span class="nc" id="L225">                    + file + &quot;/&quot; + fileName, e);</span>
 <span class="nc" id="L226">                return null;</span>
-<span class="nc" id="L227">            }</span>
-<span class="nc" id="L228">        }</span>
+            }
+        }
 
-<span class="nc" id="L230">        ResourceMapping rc = new ResourceMapping();</span>
-<span class="nc" id="L231">        List&lt;String&gt; todo = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L232">        Enumeration&lt;?&gt; pn = properties.propertyNames();</span>
-<span class="nc" id="L233">        ResourceMapper rm = new ResourceMapper(rc);</span>
-<span class="nc bnc" id="L234" title="All 2 branches missed.">        while (pn.hasMoreElements()) {</span>
-<span class="nc" id="L235">            final String key = (String) pn.nextElement();</span>
-<span class="nc" id="L236">            final String value = properties.getProperty(key);</span>
-<span class="nc bnc" id="L237" title="All 2 branches missed.">            if (value.startsWith(resourceScheme)) {</span>
-<span class="nc" id="L238">                todo.add(key);</span>
-            } else {
-<span class="nc" id="L240">                URI uri = getURI(value);</span>
-<span class="nc bnc" id="L241" title="All 2 branches missed.">                if (uri != null) {</span>
-<span class="nc" id="L242">                    rm.setKey(key);</span>
-<span class="nc" id="L243">                    ResourceFactory.createResource(uri, rm);</span>
+<span class="fc" id="L230">        ResourceMapping rc = new ResourceMapping();</span>
+<span class="fc" id="L231">        List&lt;String&gt; todo = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L232">        Enumeration&lt;?&gt; pn = properties.propertyNames();</span>
+<span class="fc" id="L233">        ResourceMapper rm = new ResourceMapper(rc);</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">        while (pn.hasMoreElements()) {</span>
+<span class="fc" id="L235">            final String key = (String) pn.nextElement();</span>
+<span class="fc" id="L236">            final String value = properties.getProperty(key);</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">            if (value.startsWith(resourceScheme)) {</span>
+<span class="fc" id="L238">                todo.add(key);</span>
+<span class="fc" id="L239">            } else {</span>
+<span class="fc" id="L240">                URI uri = getURI(value);</span>
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">                if (uri != null) {</span>
+<span class="fc" id="L242">                    rm.setKey(key);</span>
+<span class="fc" id="L243">                    ResourceFactory.createResource(uri, rm);</span>
                 }
             }
-<span class="nc" id="L246">        }</span>
-<span class="nc" id="L247">        boolean progress = true;</span>
-<span class="nc" id="L248">        List&lt;String&gt; miss = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L249" title="All 4 branches missed.">        while (progress &amp;&amp; !todo.isEmpty()) {</span>
-<span class="nc" id="L250">            miss.clear();</span>
-<span class="nc" id="L251">            progress = false;</span>
-<span class="nc bnc" id="L252" title="All 2 branches missed.">            while (!todo.isEmpty()) {</span>
-<span class="nc" id="L253">                final String key = todo.remove(0);</span>
-<span class="nc" id="L254">                final String value = properties.getProperty(key)</span>
-<span class="nc" id="L255">                    .substring(resourceScheme.length());</span>
-<span class="nc bnc" id="L256" title="All 2 branches missed.">                if (!rc.duplicateResource(value, key)) {</span>
-<span class="nc" id="L257">                    miss.add(key);</span>
-                } else {
-<span class="nc" id="L259">                    progress = true;</span>
-                }
-<span class="nc" id="L261">            }</span>
-<span class="nc" id="L262">            todo.addAll(miss);</span>
         }
-<span class="nc bnc" id="L264" title="All 2 branches missed.">        if (!todo.isEmpty()) {</span>
+<span class="fc" id="L247">        boolean progress = true;</span>
+<span class="fc" id="L248">        List&lt;String&gt; miss = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L249" title="1 of 4 branches missed.">        while (progress &amp;&amp; !todo.isEmpty()) {</span>
+<span class="fc" id="L250">            miss.clear();</span>
+<span class="fc" id="L251">            progress = false;</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">            while (!todo.isEmpty()) {</span>
+<span class="fc" id="L253">                final String key = todo.remove(0);</span>
+<span class="fc" id="L254">                final String value = properties.getProperty(key)</span>
+<span class="fc" id="L255">                    .substring(resourceScheme.length());</span>
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">                if (!rc.duplicateResource(value, key)) {</span>
+<span class="nc" id="L257">                    miss.add(key);</span>
+<span class="nc" id="L258">                } else {</span>
+<span class="fc" id="L259">                    progress = true;</span>
+                }
+            }
+<span class="fc" id="L262">            todo.addAll(miss);</span>
+        }
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">        if (!todo.isEmpty()) {</span>
 <span class="nc" id="L265">            lb.add(&quot;, could not resolve virtual resource/s: &quot;,</span>
 <span class="nc" id="L266">                   join(&quot; &quot;, todo));</span>
         }
-<span class="nc bnc" id="L268" title="All 2 branches missed.">        if (lb.grew()) lb.log(logger, Level.INFO);</span>
-<span class="nc" id="L269">        return rc;</span>
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">        if (lb.grew()) lb.log(logger, Level.INFO);</span>
+<span class="fc" id="L269">        return rc;</span>
     }
 
     /**
@@ -281,13 +281,13 @@ public class FreeColDataFile {
                                             final String... endings) {
 <span class="fc" id="L282">        return f -&gt; {</span>
 <span class="fc" id="L283">            final String name = f.getName();</span>
-<span class="pc bpc" id="L284" title="2 of 4 branches missed.">            return (name.startsWith(&quot;.&quot;))</span>
-                ? false
-<span class="fc bfc" id="L286" title="All 2 branches covered.">                : (requiredFile != null &amp;&amp; f.isDirectory())</span>
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">            return (name.startsWith(&quot;.&quot;))</span>
+<span class="nc" id="L285">                ? false</span>
+<span class="pc bpc" id="L286" title="1 of 4 branches missed.">                : (requiredFile != null &amp;&amp; f.isDirectory())</span>
 <span class="fc" id="L287">                ? new File(f, requiredFile).exists()</span>
 <span class="pc bpc" id="L288" title="1 of 2 branches missed.">                : any(endings, e -&gt; name.endsWith(&quot;.&quot; + e)</span>
 <span class="pc bpc" id="L289" title="1 of 2 branches missed.">                    &amp;&amp; name.length() &gt; e.length());</span>
         };
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

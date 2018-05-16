@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ClientOptions.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.client</a> &gt; <span class="el_source">ClientOptions.java</span></div><h1>ClientOptions.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ClientOptions.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.client</a> &gt; <span class="el_source">ClientOptions.java</span></div><h1>ClientOptions.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -527,11 +527,11 @@ public class ClientOptions extends OptionGroup {
 <span class="pc bpc" id="L527" title="1 of 2 branches missed.">        if (xr == null) return false;</span>
         try {
 <span class="fc" id="L529">            xr.nextTag();</span>
-<span class="nc" id="L530">            readFromXML(xr);</span>
-<span class="nc" id="L531">        } catch (XMLStreamException xse) {</span>
+<span class="fc" id="L530">            readFromXML(xr);</span>
+<span class="pc" id="L531">        } catch (XMLStreamException xse) {</span>
 <span class="nc" id="L532">            logger.log(Level.WARNING, &quot;Failed to read client option&quot;, xse);</span>
         }
-<span class="nc" id="L534">        return true;</span>
+<span class="fc" id="L534">        return true;</span>
     }
     
     /**
@@ -544,7 +544,7 @@ public class ClientOptions extends OptionGroup {
     private boolean load(BufferedInputStream bis) {
 <span class="pc bpc" id="L545" title="1 of 2 branches missed.">        if (bis == null) return false;</span>
         try {
-<span class="nc" id="L547">            return load(new FreeColXMLReader(bis));</span>
+<span class="fc" id="L547">            return load(new FreeColXMLReader(bis));</span>
 <span class="nc" id="L548">        } catch (IOException ioe) {</span>
 <span class="nc" id="L549">            logger.log(Level.WARNING, &quot;Failed to open FreeColXMLReader&quot;, ioe);</span>
         }
@@ -558,7 +558,7 @@ public class ClientOptions extends OptionGroup {
      * @return True if the options were loaded without error.
      */
     private boolean load(InputStream is) {
-<span class="nc bnc" id="L561" title="All 2 branches missed.">        return (is == null) ? false : load(new BufferedInputStream(is));</span>
+<span class="pc bpc" id="L561" title="1 of 2 branches missed.">        return (is == null) ? false : load(new BufferedInputStream(is));</span>
     }
 
     /**
@@ -570,7 +570,7 @@ public class ClientOptions extends OptionGroup {
     public boolean load(File file) {
 <span class="pc bpc" id="L571" title="1 of 2 branches missed.">        if (file == null) return false;</span>
         try {
-<span class="nc" id="L573">            return load(new FileInputStream(file));</span>
+<span class="fc" id="L573">            return load(new FileInputStream(file));</span>
 <span class="nc" id="L574">        } catch (FileNotFoundException fnfe) {</span>
 <span class="nc" id="L575">            logger.log(Level.WARNING, &quot;Could not open file input stream&quot;, fnfe);</span>
         }
@@ -841,4 +841,4 @@ public class ClientOptions extends OptionGroup {
 <span class="fc" id="L841">        return &quot;clientOptions&quot;;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

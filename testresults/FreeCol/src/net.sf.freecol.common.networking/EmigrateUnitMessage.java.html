@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>EmigrateUnitMessage.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.networking</a> &gt; <span class="el_source">EmigrateUnitMessage.java</span></div><h1>EmigrateUnitMessage.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>EmigrateUnitMessage.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.networking</a> &gt; <span class="el_source">EmigrateUnitMessage.java</span></div><h1>EmigrateUnitMessage.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -45,10 +45,10 @@ public class EmigrateUnitMessage extends DOMMessage {
      * @param slot The slot to select the migrant from.
      */
     public EmigrateUnitMessage(int slot) {
-<span class="fc" id="L48">        super(getXMLElementTagName());</span>
+<span class="nc" id="L48">        super(getXMLElementTagName());</span>
 
-<span class="fc" id="L50">        this.slotString = Integer.toString(slot);</span>
-<span class="fc" id="L51">    }</span>
+<span class="nc" id="L50">        this.slotString = Integer.toString(slot);</span>
+<span class="nc" id="L51">    }</span>
 
     /**
      * Create a new &lt;code&gt;EmigrateUnitMessage&lt;/code&gt; from a supplied element.
@@ -124,8 +124,8 @@ public class EmigrateUnitMessage extends DOMMessage {
      */
     @Override
     public Element toXMLElement() {
-<span class="fc" id="L127">        return createMessage(getXMLElementTagName(),</span>
-<span class="fc" id="L128">            &quot;slot&quot;, slotString);</span>
+<span class="nc" id="L127">        return createMessage(getXMLElementTagName(),</span>
+<span class="nc" id="L128">            &quot;slot&quot;, slotString);</span>
     }
 
     /**
@@ -137,4 +137,4 @@ public class EmigrateUnitMessage extends DOMMessage {
 <span class="fc" id="L137">        return &quot;emigrateUnit&quot;;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

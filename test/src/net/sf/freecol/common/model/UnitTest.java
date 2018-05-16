@@ -344,7 +344,13 @@ public class UnitTest extends FreeColTestCase {
 
 //	@Test
 //	public void testFindIntermediatePort() {
-//		fail("Not yet implemented");
+//		Game game = getStandardGame();
+//        Player dutch = game.getPlayerByNationId("model.nation.dutch");
+//        Map map = getTestMap(plains, true);
+//        game.setMap(map);
+//        Unit i = new ServerUnit(game, map.getTile(3, 7), dutch, galleonType);
+//        PathNode tempPort = i.findIntermediatePort(map.getTile(6, 6));
+//        assertNotNull(tempPort.fullPathToString());
 //	}
 
 	@Test

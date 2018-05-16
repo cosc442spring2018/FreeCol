@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Playlist.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.sound</a> &gt; <span class="el_source">Playlist.java</span></div><h1>Playlist.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Playlist.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.sound</a> &gt; <span class="el_source">Playlist.java</span></div><h1>Playlist.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -91,7 +91,7 @@ public final class Playlist {
 <span class="nc bnc" id="L91" title="All 2 branches missed.">            for (int i = 0; i &lt; playedSounds.length; i++) {</span>
 <span class="nc" id="L92">                playedSounds[i] = Integer.MAX_VALUE;</span>
             }
-        }
+<span class="nc" id="L94">        }</span>
         else {
 <span class="nc" id="L96">            playedSounds = null;</span>
         }
@@ -133,18 +133,18 @@ public final class Playlist {
             // Let's pick a first sound.
 <span class="nc bnc" id="L134" title="All 2 branches missed.">            if (pickMode == FORWARDS) {</span>
 <span class="nc" id="L135">                num = 0;</span>
-            }
+<span class="nc" id="L136">            }</span>
 <span class="nc bnc" id="L137" title="All 2 branches missed.">            else if (pickMode == BACKWARDS) {</span>
 <span class="nc" id="L138">                num = soundFiles.length - 1;</span>
-            }
+<span class="nc" id="L139">            }</span>
             else { // SHUFFLE mode
 <span class="nc" id="L141">                num = (int)(Math.random() * soundFiles.length);</span>
 <span class="nc" id="L142">                playedSounds[0] = num;</span>
             }
-        }
+<span class="nc" id="L144">        }</span>
 <span class="nc bnc" id="L145" title="All 2 branches missed.">        else if (repeatMode == PLAY_ONE) {</span>
 <span class="nc" id="L146">            num = -2;</span>
-        }
+<span class="nc" id="L147">        }</span>
 <span class="nc bnc" id="L148" title="All 2 branches missed.">        else if (repeatMode == REPEAT_ONE) {</span>
             // num stays the same
         }
@@ -152,7 +152,7 @@ public final class Playlist {
 <span class="nc bnc" id="L152" title="All 2 branches missed.">            if (playedSounds[playedSounds.length - 1] != Integer.MAX_VALUE) {</span>
 <span class="nc bnc" id="L153" title="All 2 branches missed.">                if (repeatMode == PLAY_ALL) {</span>
 <span class="nc" id="L154">                    num = -2;</span>
-                }
+<span class="nc" id="L155">                }</span>
                 else { // (repeatMode == REPEAT_ALL)
 <span class="nc bnc" id="L157" title="All 2 branches missed.">                    for (int i = 1; i &lt; playedSounds.length; i++) {</span>
 <span class="nc" id="L158">                        playedSounds[i] = Integer.MAX_VALUE;</span>
@@ -160,7 +160,7 @@ public final class Playlist {
 <span class="nc" id="L160">                    num = (int)(Math.random() * soundFiles.length);</span>
 <span class="nc" id="L161">                    playedSounds[0] = num;</span>
                 }
-            }
+<span class="nc" id="L163">            }</span>
             else {
 <span class="nc" id="L165">                int i = 0;</span>
 <span class="nc bnc" id="L166" title="All 2 branches missed.">                for (; i &lt; playedSounds.length; i++) {</span>
@@ -182,8 +182,8 @@ public final class Playlist {
 
 <span class="nc" id="L183">                playedSounds[i] = num;</span>
 <span class="nc" id="L184">                Arrays.sort(playedSounds);</span>
-<span class="nc" id="L185">            }</span>
-        } else {
+            }
+<span class="nc" id="L186">        } else {</span>
 <span class="nc bnc" id="L187" title="All 3 branches missed.">            switch (repeatMode) {</span>
             case PLAY_ALL:
 <span class="nc bnc" id="L189" title="All 2 branches missed.">                if (pickMode == FORWARDS) {</span>
@@ -191,26 +191,26 @@ public final class Playlist {
 <span class="nc bnc" id="L191" title="All 2 branches missed.">                    if (num == soundFiles.length) {</span>
 <span class="nc" id="L192">                        num = -2;</span>
                     }
-                } else { // (pickMode == BACKWARDS)
+<span class="nc" id="L194">                } else { // (pickMode == BACKWARDS)</span>
 <span class="nc" id="L195">                    num--;</span>
 <span class="nc bnc" id="L196" title="All 2 branches missed.">                    if (num == -1) {</span>
 <span class="nc" id="L197">                        num = -2;</span>
                     }
                 }
-                break;
+<span class="nc" id="L200">                break;</span>
             case REPEAT_ALL:
 <span class="nc bnc" id="L202" title="All 2 branches missed.">                if (pickMode == FORWARDS) {</span>
 <span class="nc" id="L203">                    num++;</span>
 <span class="nc bnc" id="L204" title="All 2 branches missed.">                    if (num == soundFiles.length) {</span>
 <span class="nc" id="L205">                        num = 0;</span>
                     }
-                } else { // (pickMode == BACKWARDS)
+<span class="nc" id="L207">                } else { // (pickMode == BACKWARDS)</span>
 <span class="nc" id="L208">                    num--;</span>
 <span class="nc bnc" id="L209" title="All 2 branches missed.">                    if (num == -1) {</span>
 <span class="nc" id="L210">                        num = soundFiles.length - 1;</span>
                     }
                 }
-                break;
+<span class="nc" id="L213">                break;</span>
             default:
                 break;
             }
@@ -238,9 +238,9 @@ public final class Playlist {
 <span class="nc" id="L238">                return false;</span>
             }
             else {
-<span class="nc bnc" id="L241" title="All 12 branches missed.">                if (((pickMode == FORWARDS) &amp;&amp; (num == soundFiles.length - 1))</span>
-                        || ((pickMode == BACKWARDS) &amp;&amp; (num == 0))
-                        || ((pickMode == SHUFFLE) &amp;&amp; (playedSounds[playedSounds.length - 1] != Integer.MAX_VALUE))) {
+<span class="nc bnc" id="L241" title="All 4 branches missed.">                if (((pickMode == FORWARDS) &amp;&amp; (num == soundFiles.length - 1))</span>
+<span class="nc bnc" id="L242" title="All 4 branches missed.">                        || ((pickMode == BACKWARDS) &amp;&amp; (num == 0))</span>
+<span class="nc bnc" id="L243" title="All 4 branches missed.">                        || ((pickMode == SHUFFLE) &amp;&amp; (playedSounds[playedSounds.length - 1] != Integer.MAX_VALUE))) {</span>
 <span class="nc" id="L244">                    return false;</span>
                 }
                 else {
@@ -261,4 +261,4 @@ public final class Playlist {
         }
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

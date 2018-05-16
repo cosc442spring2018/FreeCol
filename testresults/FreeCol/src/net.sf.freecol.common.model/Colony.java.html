@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Colony.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">Colony.java</span></div><h1>Colony.java</h1><pre class="source lang-java linenums"><span class="pc" id="L1">/**</span>
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Colony.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">Colony.java</span></div><h1>Colony.java</h1><pre class="source lang-java linenums"><span class="pc" id="L1">/**</span>
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -943,58 +943,82 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     public NoBuildReason getNoBuildReason(BuildableType buildableType,
                                           List&lt;BuildableType&gt; assumeBuilt) {
-<span class="fc bfc" id="L946" title="All 2 branches covered.">        if (buildableType == null) {</span>
-<span class="fc" id="L947">            return NoBuildReason.NOT_BUILDING;</span>
-<span class="fc bfc" id="L948" title="All 2 branches covered.">        } else if (!buildableType.needsGoodsToBuild()) {</span>
-<span class="fc" id="L949">            return NoBuildReason.NOT_BUILDABLE;</span>
-<span class="fc bfc" id="L950" title="All 2 branches covered.">        } else if (buildableType.getRequiredPopulation() &gt; getUnitCount()) {</span>
-<span class="fc" id="L951">            return NoBuildReason.POPULATION_TOO_SMALL;</span>
-<span class="pc bpc" id="L952" title="1 of 2 branches missed.">        } else if (buildableType.hasAbility(Ability.COASTAL_ONLY)</span>
-<span class="nc bnc" id="L953" title="All 2 branches missed.">            &amp;&amp; !getTile().isCoastland()) {</span>
-<span class="nc" id="L954">            return NoBuildReason.COASTAL;</span>
-        } else {
-<span class="fc" id="L956">            if (!all(buildableType.getRequiredAbilities().entrySet(),</span>
-<span class="fc bfc" id="L957" title="All 4 branches covered.">                    e -&gt; e.getValue() == hasAbility(e.getKey()))) {</span>
-<span class="fc" id="L958">                return NoBuildReason.MISSING_ABILITY;</span>
-            }
-<span class="fc bfc" id="L960" title="All 2 branches covered.">            if (!all(buildableType.getLimits(), l -&gt; l.evaluate(this))) {</span>
-<span class="fc" id="L961">                return NoBuildReason.LIMIT_EXCEEDED;</span>
-            }
+<span class="fc" id="L946">        NoBuildReason result = checkNoBuildReasonPrimary(buildableType);</span>
+<span class="fc bfc" id="L947" title="All 2 branches covered.">        if (assumeBuilt == null) {</span>
+<span class="fc" id="L948">            assumeBuilt = Collections.&lt;BuildableType&gt;emptyList();</span>
         }
-<span class="fc bfc" id="L964" title="All 2 branches covered.">        if (assumeBuilt == null) {</span>
-<span class="fc" id="L965">            assumeBuilt = Collections.&lt;BuildableType&gt;emptyList();</span>
+<span class="fc bfc" id="L950" title="All 2 branches covered.">        if(result == null) {</span>
+<span class="fc" id="L951">        	result = checkNoBuildReasonSecondary(buildableType, assumeBuilt);</span>
         }
-<span class="fc bfc" id="L967" title="All 2 branches covered.">        if (buildableType instanceof BuildingType) {</span>
-<span class="fc" id="L968">            BuildingType newBuildingType = (BuildingType) buildableType;</span>
-<span class="fc" id="L969">            Building colonyBuilding = this.getBuilding(newBuildingType);</span>
-<span class="fc bfc" id="L970" title="All 2 branches covered.">            if (colonyBuilding == null) {</span>
+<span class="fc bfc" id="L953" title="All 2 branches covered.">        if(result != null) {</span>
+<span class="fc" id="L954">        	return result;</span>
+        }
+<span class="fc" id="L956">        return NoBuildReason.NONE;</span>
+    }
+
+	/**
+	 * @param buildableType
+	 * @param assumeBuilt
+	 * Second part of getNoBuildReason extracted
+	 */
+	private NoBuildReason checkNoBuildReasonSecondary(BuildableType buildableType, List&lt;BuildableType&gt; assumeBuilt) {
+<span class="fc bfc" id="L965" title="All 2 branches covered.">		if (buildableType instanceof BuildingType) {</span>
+<span class="fc" id="L966">            BuildingType newBuildingType = (BuildingType) buildableType;</span>
+<span class="fc" id="L967">            Building colonyBuilding = this.getBuilding(newBuildingType);</span>
+<span class="fc bfc" id="L968" title="All 2 branches covered.">            if (colonyBuilding == null) {</span>
                 // the colony has no similar building yet
-<span class="fc" id="L972">                BuildingType from = newBuildingType.getUpgradesFrom();</span>
-<span class="pc bpc" id="L973" title="1 of 4 branches missed.">                if (from != null &amp;&amp; !assumeBuilt.contains(from)) {</span>
+<span class="fc" id="L970">                BuildingType from = newBuildingType.getUpgradesFrom();</span>
+<span class="pc bpc" id="L971" title="1 of 4 branches missed.">                if (from != null &amp;&amp; !assumeBuilt.contains(from)) {</span>
                     // we are trying to build an advanced factory, we
                     // should build lower level shop first
-<span class="fc" id="L976">                    return NoBuildReason.WRONG_UPGRADE;</span>
+<span class="fc" id="L974">                    return NoBuildReason.WRONG_UPGRADE;</span>
                 }
             } else {
                 // a building of the same family already exists
-<span class="fc" id="L980">                BuildingType from = colonyBuilding.getType().getUpgradesTo();</span>
-<span class="pc bpc" id="L981" title="1 of 4 branches missed.">                if (from != newBuildingType &amp;&amp; !assumeBuilt.contains(from)) {</span>
+<span class="fc" id="L978">                BuildingType from = colonyBuilding.getType().getUpgradesTo();</span>
+<span class="pc bpc" id="L979" title="1 of 4 branches missed.">                if (from != newBuildingType &amp;&amp; !assumeBuilt.contains(from)) {</span>
                     // the existing building's next upgrade is not the
                     // new one we want to build
-<span class="fc" id="L984">                    return NoBuildReason.WRONG_UPGRADE;</span>
+<span class="fc" id="L982">                    return NoBuildReason.WRONG_UPGRADE;</span>
                 }
             }
-<span class="pc bpc" id="L987" title="1 of 2 branches missed.">        } else if (buildableType instanceof UnitType) {</span>
+<span class="pc bpc" id="L985" title="1 of 2 branches missed.">        } else if (buildableType instanceof UnitType) {</span>
             // Non-person units need a BUILD ability, present or assumed.
-<span class="fc bfc" id="L989" title="All 2 branches covered.">            if (!buildableType.hasAbility(Ability.PERSON)</span>
-<span class="fc bfc" id="L990" title="All 2 branches covered.">                &amp;&amp; !hasAbility(Ability.BUILD, buildableType)</span>
-<span class="pc" id="L991">                &amp;&amp; none(assumeBuilt, bt -&gt; bt.hasAbility(Ability.BUILD,</span>
-<span class="pc bpc" id="L992" title="1 of 2 branches missed.">                        buildableType))) {</span>
-<span class="fc" id="L993">                return NoBuildReason.MISSING_BUILD_ABILITY;</span>
+<span class="fc bfc" id="L987" title="All 2 branches covered.">            if (!buildableType.hasAbility(Ability.PERSON)</span>
+<span class="fc bfc" id="L988" title="All 2 branches covered.">                &amp;&amp; !hasAbility(Ability.BUILD, buildableType)</span>
+<span class="pc" id="L989">                &amp;&amp; none(assumeBuilt, bt -&gt; bt.hasAbility(Ability.BUILD,</span>
+<span class="pc bpc" id="L990" title="1 of 2 branches missed.">                        buildableType))) {</span>
+<span class="fc" id="L991">                return NoBuildReason.MISSING_BUILD_ABILITY;</span>
             }
         }
-<span class="fc" id="L996">        return NoBuildReason.NONE;</span>
-    }
+<span class="fc" id="L994">		return null;</span>
+	}
+
+	/**
+	 * @param buildableType
+	 * First part of getNoBuildReason extracted
+	 */
+	private NoBuildReason checkNoBuildReasonPrimary(BuildableType buildableType) {
+<span class="fc bfc" id="L1002" title="All 2 branches covered.">		if (buildableType == null) {</span>
+<span class="fc" id="L1003">            return NoBuildReason.NOT_BUILDING;</span>
+<span class="fc bfc" id="L1004" title="All 2 branches covered.">        } else if (!buildableType.needsGoodsToBuild()) {</span>
+<span class="fc" id="L1005">            return NoBuildReason.NOT_BUILDABLE;</span>
+<span class="fc bfc" id="L1006" title="All 2 branches covered.">        } else if (buildableType.getRequiredPopulation() &gt; getUnitCount()) {</span>
+<span class="fc" id="L1007">            return NoBuildReason.POPULATION_TOO_SMALL;</span>
+<span class="pc bpc" id="L1008" title="1 of 2 branches missed.">        } else if (buildableType.hasAbility(Ability.COASTAL_ONLY)</span>
+<span class="nc bnc" id="L1009" title="All 2 branches missed.">            &amp;&amp; !getTile().isCoastland()) {</span>
+<span class="nc" id="L1010">            return NoBuildReason.COASTAL;</span>
+        } else {
+<span class="fc" id="L1012">            if (!all(buildableType.getRequiredAbilities().entrySet(),</span>
+<span class="fc bfc" id="L1013" title="All 4 branches covered.">                    e -&gt; e.getValue() == hasAbility(e.getKey()))) {</span>
+<span class="fc" id="L1014">                return NoBuildReason.MISSING_ABILITY;</span>
+            }
+<span class="fc bfc" id="L1016" title="All 2 branches covered.">            if (!all(buildableType.getLimits(), l -&gt; l.evaluate(this))) {</span>
+<span class="fc" id="L1017">                return NoBuildReason.LIMIT_EXCEEDED;</span>
+            }
+        }
+<span class="fc" id="L1020">		return null;</span>
+	}
 
     /**
      * Returns the price for the remaining hammers and tools for the
@@ -1004,7 +1028,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @see net.sf.freecol.client.control.InGameController#payForBuilding
      */
     public int getPriceForBuilding() {
-<span class="nc" id="L1007">        return getPriceForBuilding(getCurrentlyBuilding());</span>
+<span class="nc" id="L1031">        return getPriceForBuilding(getCurrentlyBuilding());</span>
     }
 
     /**
@@ -1015,7 +1039,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @see net.sf.freecol.client.control.InGameController#payForBuilding
      */
     public int getPriceForBuilding(BuildableType type) {
-<span class="nc" id="L1018">        return priceGoodsForBuilding(getRequiredGoods(type));</span>
+<span class="nc" id="L1042">        return priceGoodsForBuilding(getRequiredGoods(type));</span>
     }
 
     /**
@@ -1026,11 +1050,11 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @see net.sf.freecol.client.control.InGameController#payForBuilding
      */
     public int priceGoodsForBuilding(List&lt;AbstractGoods&gt; required) {
-<span class="nc" id="L1029">        final Market market = getOwner().getMarket();</span>
+<span class="nc" id="L1053">        final Market market = getOwner().getMarket();</span>
         // FIXME: magic number!
-<span class="nc bnc" id="L1031" title="All 2 branches missed.">        return required.stream().mapToInt(ag -&gt; (ag.getType().isStorable())</span>
-<span class="nc" id="L1032">            ? (market.getBidPrice(ag.getType(), ag.getAmount()) * 110) / 100</span>
-<span class="nc" id="L1033">            : ag.getType().getPrice() * ag.getAmount()).sum();</span>
+<span class="nc bnc" id="L1055" title="All 2 branches missed.">        return required.stream().mapToInt(ag -&gt; (ag.getType().isStorable())</span>
+<span class="nc" id="L1056">            ? (market.getBidPrice(ag.getType(), ag.getAmount()) * 110) / 100</span>
+<span class="nc" id="L1057">            : ag.getType().getPrice() * ag.getAmount()).sum();</span>
     }
 
     /**
@@ -1041,15 +1065,15 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return The map to completion.
      */
     public List&lt;AbstractGoods&gt; getRequiredGoods(BuildableType type) {
-<span class="nc" id="L1044">        List&lt;AbstractGoods&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L1045" title="All 2 branches missed.">        for (AbstractGoods goods : type.getRequiredGoods()) {</span>
-<span class="nc" id="L1046">            GoodsType goodsType = goods.getType();</span>
-<span class="nc" id="L1047">            int remaining = goods.getAmount() - getGoodsCount(goodsType);</span>
-<span class="nc bnc" id="L1048" title="All 2 branches missed.">            if (remaining &gt; 0) {</span>
-<span class="nc" id="L1049">                result.add(new AbstractGoods(goodsType, remaining));</span>
+<span class="nc" id="L1068">        List&lt;AbstractGoods&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L1069" title="All 2 branches missed.">        for (AbstractGoods goods : type.getRequiredGoods()) {</span>
+<span class="nc" id="L1070">            GoodsType goodsType = goods.getType();</span>
+<span class="nc" id="L1071">            int remaining = goods.getAmount() - getGoodsCount(goodsType);</span>
+<span class="nc bnc" id="L1072" title="All 2 branches missed.">            if (remaining &gt; 0) {</span>
+<span class="nc" id="L1073">                result.add(new AbstractGoods(goodsType, remaining));</span>
             }
         }
-<span class="nc" id="L1052">        return result;</span>
+<span class="nc" id="L1076">        return result;</span>
     }
 
     /**
@@ -1066,20 +1090,20 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A list of required abstract goods.
      */
     public List&lt;AbstractGoods&gt; getFullRequiredGoods(BuildableType buildable) {
-<span class="pc bpc" id="L1069" title="1 of 2 branches missed.">        if (buildable == null) return Collections.&lt;AbstractGoods&gt;emptyList();</span>
+<span class="pc bpc" id="L1093" title="1 of 2 branches missed.">        if (buildable == null) return Collections.&lt;AbstractGoods&gt;emptyList();</span>
 
-<span class="fc" id="L1071">        List&lt;AbstractGoods&gt; required = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L1072" title="All 2 branches covered.">        for (AbstractGoods ag : buildable.getRequiredGoods()) {</span>
-<span class="fc" id="L1073">            int amount = ag.getAmount();</span>
-<span class="fc" id="L1074">            GoodsType type = ag.getType();</span>
-<span class="fc bfc" id="L1075" title="All 2 branches covered.">            while (type != null) {</span>
-<span class="fc bfc" id="L1076" title="All 2 branches covered.">                if (amount &lt;= this.getGoodsCount(type)) break; // Shortcut</span>
-<span class="fc" id="L1077">                required.add(0, new AbstractGoods(type,</span>
-<span class="fc" id="L1078">                        amount - this.getGoodsCount(type)));</span>
-<span class="fc" id="L1079">                type = type.getInputType();</span>
+<span class="fc" id="L1095">        List&lt;AbstractGoods&gt; required = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L1096" title="All 2 branches covered.">        for (AbstractGoods ag : buildable.getRequiredGoods()) {</span>
+<span class="fc" id="L1097">            int amount = ag.getAmount();</span>
+<span class="fc" id="L1098">            GoodsType type = ag.getType();</span>
+<span class="fc bfc" id="L1099" title="All 2 branches covered.">            while (type != null) {</span>
+<span class="fc bfc" id="L1100" title="All 2 branches covered.">                if (amount &lt;= this.getGoodsCount(type)) break; // Shortcut</span>
+<span class="fc" id="L1101">                required.add(0, new AbstractGoods(type,</span>
+<span class="fc" id="L1102">                        amount - this.getGoodsCount(type)));</span>
+<span class="fc" id="L1103">                type = type.getInputType();</span>
             }
         }
-<span class="fc" id="L1082">        return required;</span>
+<span class="fc" id="L1106">        return required;</span>
     }
 
     /**
@@ -1091,7 +1115,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @see #getPriceForBuilding
      */
     public boolean canPayToFinishBuilding() {
-<span class="nc" id="L1094">        return canPayToFinishBuilding(getCurrentlyBuilding());</span>
+<span class="nc" id="L1118">        return canPayToFinishBuilding(getCurrentlyBuilding());</span>
     }
 
     /**
@@ -1105,8 +1129,8 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @see #getPriceForBuilding
      */
     public boolean canPayToFinishBuilding(BuildableType buildableType) {
-<span class="nc bnc" id="L1108" title="All 2 branches missed.">        return buildableType != null</span>
-<span class="nc bnc" id="L1109" title="All 2 branches missed.">            &amp;&amp; getOwner().checkGold(getPriceForBuilding(buildableType));</span>
+<span class="nc bnc" id="L1132" title="All 2 branches missed.">        return buildableType != null</span>
+<span class="nc bnc" id="L1133" title="All 2 branches missed.">            &amp;&amp; getOwner().checkGold(getPriceForBuilding(buildableType));</span>
     }
 
 
@@ -1119,17 +1143,17 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @param amount The number of liberty to add.
      */
     public void addLiberty(int amount) {
-<span class="fc" id="L1122">        List&lt;GoodsType&gt; libertyTypeList = getSpecification()</span>
-<span class="fc" id="L1123">            .getLibertyGoodsTypeList();</span>
-<span class="fc" id="L1124">        final int uc = getUnitCount();</span>
-<span class="pc bpc" id="L1125" title="1 of 2 branches missed.">        if (calculateRebels(uc, sonsOfLiberty) &lt;= uc + 1</span>
-<span class="fc bfc" id="L1126" title="All 2 branches covered.">            &amp;&amp; amount &gt; 0</span>
-<span class="pc bpc" id="L1127" title="1 of 2 branches missed.">            &amp;&amp; !libertyTypeList.isEmpty()) {</span>
-<span class="fc" id="L1128">            addGoods(libertyTypeList.get(0), amount);</span>
+<span class="fc" id="L1146">        List&lt;GoodsType&gt; libertyTypeList = getSpecification()</span>
+<span class="fc" id="L1147">            .getLibertyGoodsTypeList();</span>
+<span class="fc" id="L1148">        final int uc = getUnitCount();</span>
+<span class="pc bpc" id="L1149" title="1 of 2 branches missed.">        if (calculateRebels(uc, sonsOfLiberty) &lt;= uc + 1</span>
+<span class="fc bfc" id="L1150" title="All 2 branches covered.">            &amp;&amp; amount &gt; 0</span>
+<span class="pc bpc" id="L1151" title="1 of 2 branches missed.">            &amp;&amp; !libertyTypeList.isEmpty()) {</span>
+<span class="fc" id="L1152">            addGoods(libertyTypeList.get(0), amount);</span>
         }
-<span class="fc" id="L1130">        updateSoL();</span>
-<span class="fc" id="L1131">        updateProductionBonus();</span>
-<span class="fc" id="L1132">    }</span>
+<span class="fc" id="L1154">        updateSoL();</span>
+<span class="fc" id="L1155">        updateProductionBonus();</span>
+<span class="fc" id="L1156">    }</span>
 
     /**
      * Modify the liberty points by amount given.
@@ -1138,35 +1162,35 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     public void modifyLiberty(int amount) {
         // Produced liberty always applies to the player (for FFs etc)
-<span class="fc" id="L1141">        getOwner().modifyLiberty(amount);</span>
+<span class="fc" id="L1165">        getOwner().modifyLiberty(amount);</span>
 
-<span class="fc" id="L1143">        liberty += amount;</span>
+<span class="fc" id="L1167">        liberty += amount;</span>
         // Liberty can not meaningfully go negative.
-<span class="fc" id="L1145">        liberty = Math.max(0, liberty);</span>
+<span class="fc" id="L1169">        liberty = Math.max(0, liberty);</span>
 
-<span class="fc" id="L1147">        updateSoL();</span>
-<span class="fc" id="L1148">        updateProductionBonus();</span>
+<span class="fc" id="L1171">        updateSoL();</span>
+<span class="fc" id="L1172">        updateProductionBonus();</span>
 
         // If the bell accumulation cap option is set, and the colony
         // has reached 100%, liberty can not rise higher.
-<span class="fc" id="L1152">        boolean capped = getSpecification()</span>
-<span class="fc" id="L1153">            .getBoolean(GameOptions.BELL_ACCUMULATION_CAPPED);</span>
-<span class="pc bpc" id="L1154" title="3 of 4 branches missed.">        if (capped &amp;&amp; sonsOfLiberty &gt;= 100) {</span>
-<span class="nc" id="L1155">            liberty = LIBERTY_PER_REBEL * getUnitCount();</span>
+<span class="fc" id="L1176">        boolean capped = getSpecification()</span>
+<span class="fc" id="L1177">            .getBoolean(GameOptions.BELL_ACCUMULATION_CAPPED);</span>
+<span class="pc bpc" id="L1178" title="3 of 4 branches missed.">        if (capped &amp;&amp; sonsOfLiberty &gt;= 100) {</span>
+<span class="nc" id="L1179">            liberty = LIBERTY_PER_REBEL * getUnitCount();</span>
         }
-<span class="fc" id="L1157">    }</span>
+<span class="fc" id="L1181">    }</span>
 
     /**
      * Calculates the current SoL membership of the colony based on
      * the liberty value and colonists.
      */
     public void updateSoL() {
-<span class="fc" id="L1164">        int uc = getUnitCount();</span>
-<span class="fc" id="L1165">        oldSonsOfLiberty = sonsOfLiberty;</span>
-<span class="fc" id="L1166">        oldTories = tories;</span>
-<span class="fc" id="L1167">        sonsOfLiberty = calculateSoLPercentage(uc, getLiberty());</span>
-<span class="fc" id="L1168">        tories = uc - calculateRebels(uc, sonsOfLiberty);</span>
-<span class="fc" id="L1169">    }</span>
+<span class="fc" id="L1188">        int uc = getUnitCount();</span>
+<span class="fc" id="L1189">        oldSonsOfLiberty = sonsOfLiberty;</span>
+<span class="fc" id="L1190">        oldTories = tories;</span>
+<span class="fc" id="L1191">        sonsOfLiberty = calculateSoLPercentage(uc, getLiberty());</span>
+<span class="fc" id="L1192">        tories = uc - calculateRebels(uc, sonsOfLiberty);</span>
+<span class="fc" id="L1193">    }</span>
 
     /**
      * Calculate the SoL membership percentage of the colony based on the
@@ -1177,17 +1201,17 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return The percentage of SoLs, negative if not calculable.
      */
     private int calculateSoLPercentage(int uc, int liberty) {
-<span class="fc bfc" id="L1180" title="All 2 branches covered.">        if (uc &lt;= 0) return -1;</span>
+<span class="fc bfc" id="L1204" title="All 2 branches covered.">        if (uc &lt;= 0) return -1;</span>
 
-<span class="fc" id="L1182">        float membership = (liberty * 100.0f) / (LIBERTY_PER_REBEL * uc);</span>
-<span class="fc" id="L1183">        membership = applyModifiers(membership, getGame().getTurn(),</span>
-<span class="fc" id="L1184">                                    getOwner().getModifiers(Modifier.SOL));</span>
-<span class="pc bpc" id="L1185" title="1 of 2 branches missed.">        if (membership &lt; 0.0f) {</span>
-<span class="nc" id="L1186">            membership = 0.0f;</span>
-<span class="pc bfc" id="L1187" title="All 2 branches covered.">        } else if (membership &gt; 100.0f) {</span>
-<span class="fc" id="L1188">            membership = 100.0f;</span>
+<span class="fc" id="L1206">        float membership = (liberty * 100.0f) / (LIBERTY_PER_REBEL * uc);</span>
+<span class="fc" id="L1207">        membership = applyModifiers(membership, getGame().getTurn(),</span>
+<span class="fc" id="L1208">                                    getOwner().getModifiers(Modifier.SOL));</span>
+<span class="pc bpc" id="L1209" title="1 of 2 branches missed.">        if (membership &lt; 0.0f) {</span>
+<span class="nc" id="L1210">            membership = 0.0f;</span>
+<span class="pc bfc" id="L1211" title="All 2 branches covered.">        } else if (membership &gt; 100.0f) {</span>
+<span class="fc" id="L1212">            membership = 100.0f;</span>
         }
-<span class="fc" id="L1190">        return (int)membership;</span>
+<span class="fc" id="L1214">        return (int)membership;</span>
     }
 
     /**
@@ -1196,7 +1220,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return The percentage of SoLs, negative if not calculable.
      */
     public int getSoLPercentage() {
-<span class="nc" id="L1199">        return calculateSoLPercentage(getUnitCount(), getLiberty());</span>
+<span class="nc" id="L1223">        return calculateSoLPercentage(getUnitCount(), getLiberty());</span>
     }
 
     /**
@@ -1206,7 +1230,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @param solPercent The percentage of SoLs.
      */
     public static int calculateRebels(int uc, int solPercent) {
-<span class="fc" id="L1209">        return (int)Math.floor(0.01 * solPercent * uc);</span>
+<span class="fc" id="L1233">        return (int)Math.floor(0.01 * solPercent * uc);</span>
     }
 
     /**
@@ -1215,7 +1239,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return The current Tory membership of the colony.
      */
     public int getTory() {
-<span class="fc" id="L1218">        return 100 - getSoL();</span>
+<span class="fc" id="L1242">        return 100 - getSoL();</span>
     }
 
     /**
@@ -1224,26 +1248,26 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return True if the bonus changed.
      */
     protected boolean updateProductionBonus() {
-<span class="fc" id="L1227">        final Specification spec = getSpecification();</span>
-<span class="fc" id="L1228">        final int veryBadGovernment</span>
-<span class="fc" id="L1229">            = spec.getInteger(&quot;model.option.veryBadGovernmentLimit&quot;);</span>
-<span class="fc" id="L1230">        final int badGovernment</span>
-<span class="fc" id="L1231">            = spec.getInteger(&quot;model.option.badGovernmentLimit&quot;);</span>
-<span class="fc" id="L1232">        final int veryGoodGovernment</span>
-<span class="fc" id="L1233">            = spec.getInteger(&quot;model.option.veryGoodGovernmentLimit&quot;);</span>
-<span class="fc" id="L1234">        final int goodGovernment</span>
-<span class="fc" id="L1235">            = spec.getInteger(&quot;model.option.goodGovernmentLimit&quot;);</span>
-<span class="fc bfc" id="L1236" title="All 2 branches covered.">        int newBonus = (sonsOfLiberty &gt;= veryGoodGovernment) ? 2</span>
-<span class="fc bfc" id="L1237" title="All 2 branches covered.">            : (sonsOfLiberty &gt;= goodGovernment) ? 1</span>
-<span class="pc bpc" id="L1238" title="1 of 2 branches missed.">            : (tories &gt; veryBadGovernment) ? -2</span>
-<span class="fc bfc" id="L1239" title="All 2 branches covered.">            : (tories &gt; badGovernment) ? -1</span>
-<span class="fc" id="L1240">            : 0;</span>
-<span class="fc bfc" id="L1241" title="All 2 branches covered.">        if (productionBonus != newBonus) {</span>
-<span class="fc" id="L1242">            invalidateCache();</span>
-<span class="fc" id="L1243">            productionBonus = newBonus;</span>
-<span class="fc" id="L1244">            return true;</span>
+<span class="fc" id="L1251">        final Specification spec = getSpecification();</span>
+<span class="fc" id="L1252">        final int veryBadGovernment</span>
+<span class="fc" id="L1253">            = spec.getInteger(&quot;model.option.veryBadGovernmentLimit&quot;);</span>
+<span class="fc" id="L1254">        final int badGovernment</span>
+<span class="fc" id="L1255">            = spec.getInteger(&quot;model.option.badGovernmentLimit&quot;);</span>
+<span class="fc" id="L1256">        final int veryGoodGovernment</span>
+<span class="fc" id="L1257">            = spec.getInteger(&quot;model.option.veryGoodGovernmentLimit&quot;);</span>
+<span class="fc" id="L1258">        final int goodGovernment</span>
+<span class="fc" id="L1259">            = spec.getInteger(&quot;model.option.goodGovernmentLimit&quot;);</span>
+<span class="fc bfc" id="L1260" title="All 2 branches covered.">        int newBonus = (sonsOfLiberty &gt;= veryGoodGovernment) ? 2</span>
+<span class="fc bfc" id="L1261" title="All 2 branches covered.">            : (sonsOfLiberty &gt;= goodGovernment) ? 1</span>
+<span class="pc bpc" id="L1262" title="1 of 2 branches missed.">            : (tories &gt; veryBadGovernment) ? -2</span>
+<span class="fc bfc" id="L1263" title="All 2 branches covered.">            : (tories &gt; badGovernment) ? -1</span>
+<span class="fc" id="L1264">            : 0;</span>
+<span class="fc bfc" id="L1265" title="All 2 branches covered.">        if (productionBonus != newBonus) {</span>
+<span class="fc" id="L1266">            invalidateCache();</span>
+<span class="fc" id="L1267">            productionBonus = newBonus;</span>
+<span class="fc" id="L1268">            return true;</span>
         }
-<span class="fc" id="L1246">        return false;</span>
+<span class="fc" id="L1270">        return false;</span>
     }
 
     /**
@@ -1256,20 +1280,20 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *      the negation of the number of units to remove.
      */
     public int getPreferredSizeChange() {
-<span class="nc" id="L1259">        int i, limit, pop = getUnitCount();</span>
-<span class="nc bnc" id="L1260" title="All 2 branches missed.">        if (productionBonus &lt; 0) {</span>
-<span class="nc" id="L1261">            limit = pop;</span>
-<span class="nc bnc" id="L1262" title="All 2 branches missed.">            for (i = 1; i &lt; limit; i++) {</span>
-<span class="nc bnc" id="L1263" title="All 2 branches missed.">                if (governmentChange(pop - i) == 1) break;</span>
+<span class="nc" id="L1283">        int i, limit, pop = getUnitCount();</span>
+<span class="nc bnc" id="L1284" title="All 2 branches missed.">        if (productionBonus &lt; 0) {</span>
+<span class="nc" id="L1285">            limit = pop;</span>
+<span class="nc bnc" id="L1286" title="All 2 branches missed.">            for (i = 1; i &lt; limit; i++) {</span>
+<span class="nc bnc" id="L1287" title="All 2 branches missed.">                if (governmentChange(pop - i) == 1) break;</span>
             }
-<span class="nc" id="L1265">            return -i;</span>
+<span class="nc" id="L1289">            return -i;</span>
         } else {
-<span class="nc" id="L1267">            final Specification spec = getSpecification();</span>
-<span class="nc" id="L1268">            limit = spec.getInteger(&quot;model.option.badGovernmentLimit&quot;);</span>
-<span class="nc bnc" id="L1269" title="All 2 branches missed.">            for (i = 1; i &lt; limit; i++) {</span>
-<span class="nc bnc" id="L1270" title="All 2 branches missed.">                if (governmentChange(pop + i) == -1) break;</span>
+<span class="nc" id="L1291">            final Specification spec = getSpecification();</span>
+<span class="nc" id="L1292">            limit = spec.getInteger(&quot;model.option.badGovernmentLimit&quot;);</span>
+<span class="nc bnc" id="L1293" title="All 2 branches missed.">            for (i = 1; i &lt; limit; i++) {</span>
+<span class="nc bnc" id="L1294" title="All 2 branches missed.">                if (governmentChange(pop + i) == -1) break;</span>
             }
-<span class="nc" id="L1272">            return i - 1;</span>
+<span class="nc" id="L1296">            return i - 1;</span>
         }
     }
 
@@ -1283,16 +1307,16 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return True if the add succeeds.
      */
     public boolean joinColony(Unit unit) {
-<span class="fc" id="L1286">        Occupation occupation = getOccupationFor(unit, false);</span>
-<span class="pc bpc" id="L1287" title="1 of 2 branches missed.">        if (occupation == null) {</span>
-<span class="nc bnc" id="L1288" title="All 2 branches missed.">            if (!traceOccupation) {</span>
-<span class="nc" id="L1289">                LogBuilder lb = new LogBuilder(64);</span>
-<span class="nc" id="L1290">                getOccupationFor(unit, false, lb);</span>
-<span class="nc" id="L1291">                lb.log(logger, Level.WARNING);</span>
+<span class="fc" id="L1310">        Occupation occupation = getOccupationFor(unit, false);</span>
+<span class="pc bpc" id="L1311" title="1 of 2 branches missed.">        if (occupation == null) {</span>
+<span class="nc bnc" id="L1312" title="All 2 branches missed.">            if (!traceOccupation) {</span>
+<span class="nc" id="L1313">                LogBuilder lb = new LogBuilder(64);</span>
+<span class="nc" id="L1314">                getOccupationFor(unit, false, lb);</span>
+<span class="nc" id="L1315">                lb.log(logger, Level.WARNING);</span>
             }
-<span class="nc" id="L1293">            return false;</span>
+<span class="nc" id="L1317">            return false;</span>
         }
-<span class="fc" id="L1295">        return occupation.install(unit);</span>
+<span class="fc" id="L1319">        return occupation.install(unit);</span>
     }
 
     /**
@@ -1304,8 +1328,8 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return True if the population can be reduced.
      */
     public boolean canReducePopulation() {
-<span class="nc bnc" id="L1307" title="All 2 branches missed.">        return getUnitCount() &gt; applyModifiers(0f, getGame().getTurn(),</span>
-<span class="nc" id="L1308">                                               Modifier.MINIMUM_COLONY_SIZE);</span>
+<span class="nc bnc" id="L1331" title="All 2 branches missed.">        return getUnitCount() &gt; applyModifiers(0f, getGame().getTurn(),</span>
+<span class="nc" id="L1332">                                               Modifier.MINIMUM_COLONY_SIZE);</span>
     }
 
     /**
@@ -1316,12 +1340,12 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     can not reduce its population, or null if it can.
      */
     public StringTemplate getReducePopulationMessage() {
-<span class="nc bnc" id="L1319" title="All 2 branches missed.">        if (canReducePopulation()) return null;</span>
-<span class="nc" id="L1320">        Set&lt;Modifier&gt; modifierSet = getModifiers(Modifier.MINIMUM_COLONY_SIZE);</span>
-<span class="nc bnc" id="L1321" title="All 2 branches missed.">        if (modifierSet.isEmpty()) return null;</span>
-<span class="nc" id="L1322">        Modifier modifier = modifierSet.iterator().next();</span>
-<span class="nc" id="L1323">        FreeColObject source = modifier.getSource();</span>
-<span class="nc bnc" id="L1324" title="All 2 branches missed.">        if (source instanceof BuildingType) {</span>
+<span class="nc bnc" id="L1343" title="All 2 branches missed.">        if (canReducePopulation()) return null;</span>
+<span class="nc" id="L1344">        Set&lt;Modifier&gt; modifierSet = getModifiers(Modifier.MINIMUM_COLONY_SIZE);</span>
+<span class="nc bnc" id="L1345" title="All 2 branches missed.">        if (modifierSet.isEmpty()) return null;</span>
+<span class="nc" id="L1346">        Modifier modifier = modifierSet.iterator().next();</span>
+<span class="nc" id="L1347">        FreeColObject source = modifier.getSource();</span>
+<span class="nc bnc" id="L1348" title="All 2 branches missed.">        if (source instanceof BuildingType) {</span>
             // If the modifier source is a building type, use the
             // building in the colony, which may be of a different
             // level to the modifier source.
@@ -1329,10 +1353,10 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
             // colony-fort, and thus the message attributing the
             // failure to reduce population to a non-existing
             // stockade, BR#3522055.
-<span class="nc" id="L1332">            source = getBuilding((BuildingType)source).getType();</span>
+<span class="nc" id="L1356">            source = getBuilding((BuildingType)source).getType();</span>
         }
-<span class="nc" id="L1334">        return StringTemplate.template(&quot;model.colony.minimumColonySize&quot;)</span>
-<span class="nc" id="L1335">            .addName(&quot;%object%&quot;, source);</span>
+<span class="nc" id="L1358">        return StringTemplate.template(&quot;model.colony.minimumColonySize&quot;)</span>
+<span class="nc" id="L1359">            .addName(&quot;%object%&quot;, source);</span>
     }
 
     /**
@@ -1342,10 +1366,10 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A &lt;code&gt;ModelMessage&lt;/code&gt; describing the build failure.
      */
     public ModelMessage getUnbuildableMessage(BuildableType buildable) {
-<span class="nc" id="L1345">        return new ModelMessage(ModelMessage.MessageType.WARNING,</span>
-<span class="nc" id="L1346">            &quot;model.colony.unbuildable&quot;, this, buildable)</span>
-<span class="nc" id="L1347">            .addName(&quot;%colony%&quot;, getName())</span>
-<span class="nc" id="L1348">            .addNamed(&quot;%object%&quot;, buildable);</span>
+<span class="nc" id="L1369">        return new ModelMessage(ModelMessage.MessageType.WARNING,</span>
+<span class="nc" id="L1370">            &quot;model.colony.unbuildable&quot;, this, buildable)</span>
+<span class="nc" id="L1371">            .addName(&quot;%colony%&quot;, getName())</span>
+<span class="nc" id="L1372">            .addNamed(&quot;%object%&quot;, buildable);</span>
     }
 
     /**
@@ -1357,118 +1381,132 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return 1, 0 or -1.
      */
     public int governmentChange(int unitCount) {
-<span class="nc" id="L1360">        final Specification spec = getSpecification();</span>
-<span class="nc" id="L1361">        final int veryBadGovernment</span>
-<span class="nc" id="L1362">            = spec.getInteger(GameOptions.VERY_BAD_GOVERNMENT_LIMIT);</span>
-<span class="nc" id="L1363">        final int badGovernment</span>
-<span class="nc" id="L1364">            = spec.getInteger(GameOptions.BAD_GOVERNMENT_LIMIT);</span>
-<span class="nc" id="L1365">        final int veryGoodGovernment</span>
-<span class="nc" id="L1366">            = spec.getInteger(GameOptions.VERY_GOOD_GOVERNMENT_LIMIT);</span>
-<span class="nc" id="L1367">        final int goodGovernment</span>
-<span class="nc" id="L1368">            = spec.getInteger(GameOptions.GOOD_GOVERNMENT_LIMIT);</span>
+<span class="fc" id="L1384">        final Specification spec = getSpecification();</span>
+<span class="fc" id="L1385">        final int veryBadGovernment</span>
+<span class="fc" id="L1386">            = spec.getInteger(GameOptions.VERY_BAD_GOVERNMENT_LIMIT);</span>
+<span class="fc" id="L1387">        final int badGovernment</span>
+<span class="fc" id="L1388">            = spec.getInteger(GameOptions.BAD_GOVERNMENT_LIMIT);</span>
+<span class="fc" id="L1389">        final int veryGoodGovernment</span>
+<span class="fc" id="L1390">            = spec.getInteger(GameOptions.VERY_GOOD_GOVERNMENT_LIMIT);</span>
+<span class="fc" id="L1391">        final int goodGovernment</span>
+<span class="fc" id="L1392">            = spec.getInteger(GameOptions.GOOD_GOVERNMENT_LIMIT);</span>
 
-<span class="nc" id="L1370">        int rebelPercent = calculateSoLPercentage(unitCount, getLiberty());</span>
-<span class="nc" id="L1371">        int rebelCount = calculateRebels(unitCount, rebelPercent);</span>
-<span class="nc" id="L1372">        int loyalistCount = unitCount - rebelCount;</span>
+<span class="fc" id="L1394">        int rebelPercent = calculateSoLPercentage(unitCount, getLiberty());</span>
+<span class="fc" id="L1395">        int rebelCount = calculateRebels(unitCount, rebelPercent);</span>
+<span class="fc" id="L1396">        int loyalistCount = unitCount - rebelCount;</span>
 
-<span class="nc" id="L1374">        int result = 0;</span>
-<span class="nc bnc" id="L1375" title="All 2 branches missed.">        if (rebelPercent &gt;= veryGoodGovernment) { // There are no tories left.</span>
-<span class="nc bnc" id="L1376" title="All 2 branches missed.">            if (sonsOfLiberty &lt; veryGoodGovernment) {</span>
-<span class="nc" id="L1377">                result = 1;</span>
+<span class="fc" id="L1398">        int result = 0;</span>
+<span class="pc bpc" id="L1399" title="1 of 2 branches missed.">        if (rebelPercent &gt;= veryGoodGovernment) { // There are no tories left.</span>
+<span class="nc bnc" id="L1400" title="All 2 branches missed.">            if (sonsOfLiberty &lt; veryGoodGovernment) {</span>
+<span class="nc" id="L1401">                result = 1;</span>
             }
-<span class="nc bnc" id="L1379" title="All 2 branches missed.">        } else if (rebelPercent &gt;= goodGovernment) {</span>
-<span class="nc bnc" id="L1380" title="All 2 branches missed.">            if (sonsOfLiberty &gt;= veryGoodGovernment) {</span>
-<span class="nc" id="L1381">                result = -1;</span>
-<span class="nc bnc" id="L1382" title="All 2 branches missed.">            } else if (sonsOfLiberty &lt; goodGovernment) {</span>
-<span class="nc" id="L1383">                result = 1;</span>
+<span class="pc bpc" id="L1403" title="1 of 2 branches missed.">        } else if (rebelPercent &gt;= goodGovernment) {</span>
+<span class="nc bnc" id="L1404" title="All 2 branches missed.">            if (sonsOfLiberty &gt;= veryGoodGovernment) {</span>
+<span class="nc" id="L1405">                result = -1;</span>
+<span class="nc bnc" id="L1406" title="All 2 branches missed.">            } else if (sonsOfLiberty &lt; goodGovernment) {</span>
+<span class="nc" id="L1407">                result = 1;</span>
             }
-<span class="nc" id="L1385">        } else {</span>
-<span class="nc bnc" id="L1386" title="All 2 branches missed.">            if (sonsOfLiberty &gt;= goodGovernment) {</span>
-<span class="nc" id="L1387">                result = -1;</span>
-<span class="nc" id="L1388">            } else { // Now that no bonus is applied, penalties may.</span>
-<span class="nc bnc" id="L1389" title="All 2 branches missed.">                if (loyalistCount &gt; veryBadGovernment) {</span>
-<span class="nc bnc" id="L1390" title="All 2 branches missed.">                    if (tories &lt;= veryBadGovernment) {</span>
-<span class="nc" id="L1391">                        result = -1;</span>
-                    }
-<span class="nc bnc" id="L1393" title="All 2 branches missed.">                } else if (loyalistCount &gt; badGovernment) {</span>
-<span class="nc bnc" id="L1394" title="All 2 branches missed.">                    if (tories &lt;= badGovernment) {</span>
-<span class="nc" id="L1395">                        result = -1;</span>
-<span class="nc bnc" id="L1396" title="All 2 branches missed.">                    } else if (tories &gt; veryBadGovernment) {</span>
-<span class="nc" id="L1397">                        result = 1;</span>
-                    }
-<span class="nc" id="L1399">                } else {</span>
-<span class="nc bnc" id="L1400" title="All 2 branches missed.">                    if (tories &gt; badGovernment) {</span>
-<span class="nc" id="L1401">                        result = 1;</span>
-                    }
-                }
+<span class="nc" id="L1409">        } else {</span>
+<span class="fc bfc" id="L1410" title="All 2 branches covered.">            if (sonsOfLiberty &gt;= goodGovernment) {</span>
+<span class="fc" id="L1411">                result = -1;</span>
+<span class="fc" id="L1412">            } else { // Now that no bonus is applied, penalties may.</span>
+<span class="fc" id="L1413">                result = checkLoyalistCount(veryBadGovernment, badGovernment, loyalistCount, result);</span>
             }
         }
-<span class="nc" id="L1406">        return result;</span>
+<span class="fc" id="L1416">        return result;</span>
     }
 
-    public ModelMessage checkForGovMgtChangeMessage() {
-<span class="nc" id="L1410">        final Specification spec = getSpecification();</span>
-<span class="nc" id="L1411">        final int veryBadGovernment</span>
-<span class="nc" id="L1412">            = spec.getInteger(GameOptions.VERY_BAD_GOVERNMENT_LIMIT);</span>
-<span class="nc" id="L1413">        final int badGovernment</span>
-<span class="nc" id="L1414">            = spec.getInteger(GameOptions.BAD_GOVERNMENT_LIMIT);</span>
-<span class="nc" id="L1415">        final int veryGoodGovernment</span>
-<span class="nc" id="L1416">            = spec.getInteger(GameOptions.VERY_GOOD_GOVERNMENT_LIMIT);</span>
-<span class="nc" id="L1417">        final int goodGovernment</span>
-<span class="nc" id="L1418">            = spec.getInteger(GameOptions.GOOD_GOVERNMENT_LIMIT);</span>
+	/**
+	 * Extracted from governmentChange()
+	 * @param veryBadGovernment
+	 * @param badGovernment
+	 * @param loyalistCount
+	 * @param result
+	 * @return
+	 */
+	private int checkLoyalistCount(final int veryBadGovernment, final int badGovernment, int loyalistCount,
+			int result) {
+<span class="pc bpc" id="L1429" title="1 of 2 branches missed.">		if (loyalistCount &gt; veryBadGovernment) {</span>
+<span class="nc bnc" id="L1430" title="All 2 branches missed.">		    if (tories &lt;= veryBadGovernment) {</span>
+<span class="nc" id="L1431">		        result = -1;</span>
+		    }
+<span class="pc bpc" id="L1433" title="1 of 2 branches missed.">		} else if (loyalistCount &gt; badGovernment) {</span>
+<span class="nc bnc" id="L1434" title="All 2 branches missed.">		    if (tories &lt;= badGovernment) {</span>
+<span class="nc" id="L1435">		        result = -1;</span>
+<span class="nc bnc" id="L1436" title="All 2 branches missed.">		    } else if (tories &gt; veryBadGovernment) {</span>
+<span class="nc" id="L1437">		        result = 1;</span>
+		    }
+<span class="nc" id="L1439">		} else {</span>
+<span class="pc bpc" id="L1440" title="1 of 2 branches missed.">		    if (tories &gt; badGovernment) {</span>
+<span class="nc" id="L1441">		        result = 1;</span>
+		    }
+		}
+<span class="fc" id="L1444">		return result;</span>
+	}
 
-<span class="nc" id="L1420">        String msgId = null;</span>
-<span class="nc" id="L1421">        int number = 0;</span>
-<span class="nc" id="L1422">        ModelMessage.MessageType msgType = ModelMessage.MessageType.GOVERNMENT_EFFICIENCY;</span>
-<span class="nc bnc" id="L1423" title="All 2 branches missed.">        if (sonsOfLiberty &gt;= veryGoodGovernment) {</span>
+    public ModelMessage checkForGovMgtChangeMessage() {
+<span class="nc" id="L1448">        final Specification spec = getSpecification();</span>
+<span class="nc" id="L1449">        final int veryBadGovernment</span>
+<span class="nc" id="L1450">            = spec.getInteger(GameOptions.VERY_BAD_GOVERNMENT_LIMIT);</span>
+<span class="nc" id="L1451">        final int badGovernment</span>
+<span class="nc" id="L1452">            = spec.getInteger(GameOptions.BAD_GOVERNMENT_LIMIT);</span>
+<span class="nc" id="L1453">        final int veryGoodGovernment</span>
+<span class="nc" id="L1454">            = spec.getInteger(GameOptions.VERY_GOOD_GOVERNMENT_LIMIT);</span>
+<span class="nc" id="L1455">        final int goodGovernment</span>
+<span class="nc" id="L1456">            = spec.getInteger(GameOptions.GOOD_GOVERNMENT_LIMIT);</span>
+
+<span class="nc" id="L1458">        String msgId = null;</span>
+<span class="nc" id="L1459">        int number = 0;</span>
+<span class="nc" id="L1460">        ModelMessage.MessageType msgType = ModelMessage.MessageType.GOVERNMENT_EFFICIENCY;</span>
+<span class="nc bnc" id="L1461" title="All 2 branches missed.">        if (sonsOfLiberty &gt;= veryGoodGovernment) {</span>
             // there are no tories left
-<span class="nc bnc" id="L1425" title="All 2 branches missed.">            if (oldSonsOfLiberty &lt; veryGoodGovernment) {</span>
-<span class="nc" id="L1426">                msgId = &quot;model.colony.veryGoodGovernment&quot;;</span>
-<span class="nc" id="L1427">                msgType = ModelMessage.MessageType.SONS_OF_LIBERTY;</span>
-<span class="nc" id="L1428">                number = veryGoodGovernment;</span>
+<span class="nc bnc" id="L1463" title="All 2 branches missed.">            if (oldSonsOfLiberty &lt; veryGoodGovernment) {</span>
+<span class="nc" id="L1464">                msgId = &quot;model.colony.veryGoodGovernment&quot;;</span>
+<span class="nc" id="L1465">                msgType = ModelMessage.MessageType.SONS_OF_LIBERTY;</span>
+<span class="nc" id="L1466">                number = veryGoodGovernment;</span>
             }
-<span class="nc bnc" id="L1430" title="All 2 branches missed.">        } else if (sonsOfLiberty &gt;= goodGovernment) {</span>
-<span class="nc bnc" id="L1431" title="All 2 branches missed.">            if (oldSonsOfLiberty == veryGoodGovernment) {</span>
-<span class="nc" id="L1432">                msgId = &quot;model.colony.lostVeryGoodGovernment&quot;;</span>
-<span class="nc" id="L1433">                msgType = ModelMessage.MessageType.SONS_OF_LIBERTY;</span>
-<span class="nc" id="L1434">                number = veryGoodGovernment;</span>
-<span class="nc bnc" id="L1435" title="All 2 branches missed.">            } else if (oldSonsOfLiberty &lt; goodGovernment) {</span>
-<span class="nc" id="L1436">                msgId = &quot;model.colony.goodGovernment&quot;;</span>
-<span class="nc" id="L1437">                msgType = ModelMessage.MessageType.SONS_OF_LIBERTY;</span>
-<span class="nc" id="L1438">                number = goodGovernment;</span>
+<span class="nc bnc" id="L1468" title="All 2 branches missed.">        } else if (sonsOfLiberty &gt;= goodGovernment) {</span>
+<span class="nc bnc" id="L1469" title="All 2 branches missed.">            if (oldSonsOfLiberty == veryGoodGovernment) {</span>
+<span class="nc" id="L1470">                msgId = &quot;model.colony.lostVeryGoodGovernment&quot;;</span>
+<span class="nc" id="L1471">                msgType = ModelMessage.MessageType.SONS_OF_LIBERTY;</span>
+<span class="nc" id="L1472">                number = veryGoodGovernment;</span>
+<span class="nc bnc" id="L1473" title="All 2 branches missed.">            } else if (oldSonsOfLiberty &lt; goodGovernment) {</span>
+<span class="nc" id="L1474">                msgId = &quot;model.colony.goodGovernment&quot;;</span>
+<span class="nc" id="L1475">                msgType = ModelMessage.MessageType.SONS_OF_LIBERTY;</span>
+<span class="nc" id="L1476">                number = goodGovernment;</span>
             }
-<span class="nc" id="L1440">        } else {</span>
-<span class="nc bnc" id="L1441" title="All 2 branches missed.">            if (oldSonsOfLiberty &gt;= goodGovernment) {</span>
-<span class="nc" id="L1442">                msgId = &quot;model.colony.lostGoodGovernment&quot;;</span>
-<span class="nc" id="L1443">                msgType = ModelMessage.MessageType.SONS_OF_LIBERTY;</span>
-<span class="nc" id="L1444">                number = goodGovernment;</span>
+<span class="nc" id="L1478">        } else {</span>
+<span class="nc bnc" id="L1479" title="All 2 branches missed.">            if (oldSonsOfLiberty &gt;= goodGovernment) {</span>
+<span class="nc" id="L1480">                msgId = &quot;model.colony.lostGoodGovernment&quot;;</span>
+<span class="nc" id="L1481">                msgType = ModelMessage.MessageType.SONS_OF_LIBERTY;</span>
+<span class="nc" id="L1482">                number = goodGovernment;</span>
             }
 
             // Now that no bonus is applied, penalties may.
-<span class="nc bnc" id="L1448" title="All 2 branches missed.">            if (tories &gt; veryBadGovernment) {</span>
-<span class="nc bnc" id="L1449" title="All 2 branches missed.">                if (oldTories &lt;= veryBadGovernment) {</span>
+<span class="nc bnc" id="L1486" title="All 2 branches missed.">            if (tories &gt; veryBadGovernment) {</span>
+<span class="nc bnc" id="L1487" title="All 2 branches missed.">                if (oldTories &lt;= veryBadGovernment) {</span>
                     // government has become very bad
-<span class="nc" id="L1451">                    msgId = &quot;model.colony.veryBadGovernment&quot;;</span>
+<span class="nc" id="L1489">                    msgId = &quot;model.colony.veryBadGovernment&quot;;</span>
                 }
-<span class="nc bnc" id="L1453" title="All 2 branches missed.">            } else if (tories &gt; badGovernment) {</span>
-<span class="nc bnc" id="L1454" title="All 2 branches missed.">                if (oldTories &lt;= badGovernment) {</span>
+<span class="nc bnc" id="L1491" title="All 2 branches missed.">            } else if (tories &gt; badGovernment) {</span>
+<span class="nc bnc" id="L1492" title="All 2 branches missed.">                if (oldTories &lt;= badGovernment) {</span>
                     // government has become bad
-<span class="nc" id="L1456">                    msgId = &quot;model.colony.badGovernment&quot;;</span>
-<span class="nc bnc" id="L1457" title="All 2 branches missed.">                } else if (oldTories &gt; veryBadGovernment) {</span>
+<span class="nc" id="L1494">                    msgId = &quot;model.colony.badGovernment&quot;;</span>
+<span class="nc bnc" id="L1495" title="All 2 branches missed.">                } else if (oldTories &gt; veryBadGovernment) {</span>
                     // government has improved, but is still bad
-<span class="nc" id="L1459">                    msgId = &quot;model.colony.governmentImproved1&quot;;</span>
+<span class="nc" id="L1497">                    msgId = &quot;model.colony.governmentImproved1&quot;;</span>
                 }
-<span class="nc bnc" id="L1461" title="All 2 branches missed.">            } else if (oldTories &gt; badGovernment) {</span>
+<span class="nc bnc" id="L1499" title="All 2 branches missed.">            } else if (oldTories &gt; badGovernment) {</span>
                 // government was bad, but has improved
-<span class="nc" id="L1463">                msgId = &quot;model.colony.governmentImproved2&quot;;</span>
+<span class="nc" id="L1501">                msgId = &quot;model.colony.governmentImproved2&quot;;</span>
             }
         }
 
-<span class="nc" id="L1467">        GoodsType bells = getSpecification().getGoodsType(&quot;model.goods.bells&quot;);</span>
-<span class="nc bnc" id="L1468" title="All 2 branches missed.">        return (msgId == null) ? null</span>
-<span class="nc" id="L1469">            : new ModelMessage(msgType, msgId, this, bells)</span>
-<span class="nc" id="L1470">            .addName(&quot;%colony%&quot;, getName())</span>
-<span class="nc" id="L1471">            .addAmount(&quot;%number%&quot;, number);</span>
+<span class="nc" id="L1505">        GoodsType bells = getSpecification().getGoodsType(&quot;model.goods.bells&quot;);</span>
+<span class="nc bnc" id="L1506" title="All 2 branches missed.">        return (msgId == null) ? null</span>
+<span class="nc" id="L1507">            : new ModelMessage(msgType, msgId, this, bells)</span>
+<span class="nc" id="L1508">            .addName(&quot;%colony%&quot;, getName())</span>
+<span class="nc" id="L1509">            .addAmount(&quot;%number%&quot;, number);</span>
     }
 
     /**
@@ -1477,12 +1515,12 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * colony, but *not* if it is moving within the colony.
      */
     public void updatePopulation() {
-<span class="fc" id="L1480">        updateSoL();</span>
-<span class="fc" id="L1481">        updateProductionBonus();</span>
-<span class="fc bfc" id="L1482" title="All 2 branches covered.">        if (getOwner().isAI()) {</span>
-<span class="fc" id="L1483">            firePropertyChange(Colony.REARRANGE_WORKERS, true, false);</span>
+<span class="fc" id="L1518">        updateSoL();</span>
+<span class="fc" id="L1519">        updateProductionBonus();</span>
+<span class="fc bfc" id="L1520" title="All 2 branches covered.">        if (getOwner().isAI()) {</span>
+<span class="fc" id="L1521">            firePropertyChange(Colony.REARRANGE_WORKERS, true, false);</span>
         }
-<span class="fc" id="L1485">    }</span>
+<span class="fc" id="L1523">    }</span>
 
     /**
      * Signal to the colony that a unit is moving in or out or
@@ -1496,49 +1534,49 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     clear existing ones.
      */
     public void updateEducation(Unit unit, boolean enable) {
-<span class="fc" id="L1499">        WorkLocation wl = unit.getWorkLocation();</span>
-<span class="pc bpc" id="L1500" title="1 of 2 branches missed.">        if (wl == null) {</span>
-<span class="nc" id="L1501">            throw new RuntimeException(&quot;updateEducation(&quot; + unit</span>
-<span class="nc" id="L1502">                + &quot;) unit not at work location.&quot;);</span>
-<span class="pc bpc" id="L1503" title="1 of 2 branches missed.">        } else if (wl.getColony() != this) {</span>
-<span class="nc" id="L1504">            throw new RuntimeException(&quot;updateEducation(&quot; + unit</span>
-<span class="nc" id="L1505">                + &quot;) unit not at work location in this colony.&quot;);</span>
+<span class="fc" id="L1537">        WorkLocation wl = unit.getWorkLocation();</span>
+<span class="pc bpc" id="L1538" title="1 of 2 branches missed.">        if (wl == null) {</span>
+<span class="nc" id="L1539">            throw new RuntimeException(&quot;updateEducation(&quot; + unit</span>
+<span class="nc" id="L1540">                + &quot;) unit not at work location.&quot;);</span>
+<span class="pc bpc" id="L1541" title="1 of 2 branches missed.">        } else if (wl.getColony() != this) {</span>
+<span class="nc" id="L1542">            throw new RuntimeException(&quot;updateEducation(&quot; + unit</span>
+<span class="nc" id="L1543">                + &quot;) unit not at work location in this colony.&quot;);</span>
         }
-<span class="fc bfc" id="L1507" title="All 2 branches covered.">        if (enable) {</span>
-<span class="fc bfc" id="L1508" title="All 2 branches covered.">            if (wl.canTeach()) {</span>
-<span class="fc" id="L1509">                Unit student = unit.getStudent();</span>
-<span class="pc bpc" id="L1510" title="1 of 2 branches missed.">                if (student == null</span>
-<span class="fc bfc" id="L1511" title="All 2 branches covered.">                    &amp;&amp; (student = findStudent(unit)) != null) {</span>
-<span class="fc" id="L1512">                    unit.setStudent(student);</span>
-<span class="fc" id="L1513">                    student.setTeacher(unit);</span>
-<span class="fc" id="L1514">                    unit.setTurnsOfTraining(0);// Teacher starts teaching</span>
-<span class="fc" id="L1515">                    unit.changeWorkType(null);</span>
+<span class="fc bfc" id="L1545" title="All 2 branches covered.">        if (enable) {</span>
+<span class="fc bfc" id="L1546" title="All 2 branches covered.">            if (wl.canTeach()) {</span>
+<span class="fc" id="L1547">                Unit student = unit.getStudent();</span>
+<span class="pc bpc" id="L1548" title="1 of 2 branches missed.">                if (student == null</span>
+<span class="fc bfc" id="L1549" title="All 2 branches covered.">                    &amp;&amp; (student = findStudent(unit)) != null) {</span>
+<span class="fc" id="L1550">                    unit.setStudent(student);</span>
+<span class="fc" id="L1551">                    student.setTeacher(unit);</span>
+<span class="fc" id="L1552">                    unit.setTurnsOfTraining(0);// Teacher starts teaching</span>
+<span class="fc" id="L1553">                    unit.changeWorkType(null);</span>
                 }
-<span class="fc" id="L1517">            } else {</span>
-<span class="fc" id="L1518">                Unit teacher = unit.getTeacher();</span>
-<span class="pc bpc" id="L1519" title="1 of 2 branches missed.">                if (teacher == null</span>
-<span class="fc bfc" id="L1520" title="All 2 branches covered.">                    &amp;&amp; (teacher = findTeacher(unit)) != null) {</span>
-<span class="fc" id="L1521">                    unit.setTeacher(teacher);</span>
-<span class="fc" id="L1522">                    teacher.setStudent(unit);</span>
+<span class="fc" id="L1555">            } else {</span>
+<span class="fc" id="L1556">                Unit teacher = unit.getTeacher();</span>
+<span class="pc bpc" id="L1557" title="1 of 2 branches missed.">                if (teacher == null</span>
+<span class="fc bfc" id="L1558" title="All 2 branches covered.">                    &amp;&amp; (teacher = findTeacher(unit)) != null) {</span>
+<span class="fc" id="L1559">                    unit.setTeacher(teacher);</span>
+<span class="fc" id="L1560">                    teacher.setStudent(unit);</span>
                 }
             }
-<span class="fc" id="L1525">        } else {</span>
-<span class="fc bfc" id="L1526" title="All 2 branches covered.">            if (wl.canTeach()) {</span>
-<span class="fc" id="L1527">                Unit student = unit.getStudent();</span>
-<span class="fc bfc" id="L1528" title="All 2 branches covered.">                if (student != null) {</span>
-<span class="fc" id="L1529">                    student.setTeacher(null);</span>
-<span class="fc" id="L1530">                    unit.setStudent(null);</span>
-<span class="fc" id="L1531">                    unit.setTurnsOfTraining(0);// Teacher stops teaching</span>
+<span class="fc" id="L1563">        } else {</span>
+<span class="fc bfc" id="L1564" title="All 2 branches covered.">            if (wl.canTeach()) {</span>
+<span class="fc" id="L1565">                Unit student = unit.getStudent();</span>
+<span class="fc bfc" id="L1566" title="All 2 branches covered.">                if (student != null) {</span>
+<span class="fc" id="L1567">                    student.setTeacher(null);</span>
+<span class="fc" id="L1568">                    unit.setStudent(null);</span>
+<span class="fc" id="L1569">                    unit.setTurnsOfTraining(0);// Teacher stops teaching</span>
                 }
-<span class="fc" id="L1533">            } else {</span>
-<span class="fc" id="L1534">                Unit teacher = unit.getTeacher();</span>
-<span class="fc bfc" id="L1535" title="All 2 branches covered.">                if (teacher != null) {</span>
-<span class="fc" id="L1536">                    teacher.setStudent(null);</span>
-<span class="fc" id="L1537">                    unit.setTeacher(null);</span>
+<span class="fc" id="L1571">            } else {</span>
+<span class="fc" id="L1572">                Unit teacher = unit.getTeacher();</span>
+<span class="fc bfc" id="L1573" title="All 2 branches covered.">                if (teacher != null) {</span>
+<span class="fc" id="L1574">                    teacher.setStudent(null);</span>
+<span class="fc" id="L1575">                    unit.setTeacher(null);</span>
                 }
             }
         }
-<span class="fc" id="L1541">    }</span>
+<span class="fc" id="L1579">    }</span>
 
     /**
      * Does this colony have undead units?
@@ -1546,8 +1584,8 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return True if this colony has undead units.
      */
     public boolean isUndead() {
-<span class="nc" id="L1549">        Unit u = getFirstUnit();</span>
-<span class="nc bnc" id="L1550" title="All 4 branches missed.">        return u != null &amp;&amp; u.isUndead();</span>
+<span class="nc" id="L1587">        Unit u = getFirstUnit();</span>
+<span class="nc bnc" id="L1588" title="All 4 branches missed.">        return u != null &amp;&amp; u.isUndead();</span>
     }
 
     /**
@@ -1557,7 +1595,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return The apparent number of &lt;code&gt;Unit&lt;/code&gt;s at this colony.
      */
     public int getDisplayUnitCount() {
-<span class="pc bpc" id="L1560" title="1 of 2 branches missed.">        return (displayUnitCount &gt; 0) ? displayUnitCount : getUnitCount();</span>
+<span class="pc bpc" id="L1598" title="1 of 2 branches missed.">        return (displayUnitCount &gt; 0) ? displayUnitCount : getUnitCount();</span>
     }
 
     /**
@@ -1568,8 +1606,8 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     this colony.
      */
     public void setDisplayUnitCount(int count) {
-<span class="fc" id="L1571">        this.displayUnitCount = count;</span>
-<span class="fc" id="L1572">    }</span>
+<span class="fc" id="L1609">        this.displayUnitCount = count;</span>
+<span class="fc" id="L1610">    }</span>
 
 
     // Defence, offense and trade response
@@ -1580,17 +1618,17 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return The best available defender type.
      */
     public UnitType getBestDefenderType() {
-<span class="fc" id="L1583">        UnitType bestDefender = null;</span>
-<span class="fc bfc" id="L1584" title="All 2 branches covered.">        for (UnitType unitType : getSpecification().getUnitTypeList()) {</span>
-<span class="fc bfc" id="L1585" title="All 2 branches covered.">            if (unitType.getDefence() &gt; 0</span>
-<span class="fc bfc" id="L1586" title="All 2 branches covered.">                &amp;&amp; (bestDefender == null</span>
-<span class="fc bfc" id="L1587" title="All 2 branches covered.">                    || bestDefender.getDefence() &lt; unitType.getDefence())</span>
-<span class="fc bfc" id="L1588" title="All 2 branches covered.">                &amp;&amp; !unitType.hasAbility(Ability.NAVAL_UNIT)</span>
-<span class="fc bfc" id="L1589" title="All 2 branches covered.">                &amp;&amp; unitType.isAvailableTo(getOwner())) {</span>
-<span class="fc" id="L1590">                bestDefender = unitType;</span>
+<span class="fc" id="L1621">        UnitType bestDefender = null;</span>
+<span class="fc bfc" id="L1622" title="All 2 branches covered.">        for (UnitType unitType : getSpecification().getUnitTypeList()) {</span>
+<span class="fc bfc" id="L1623" title="All 2 branches covered.">            if (unitType.getDefence() &gt; 0</span>
+<span class="fc bfc" id="L1624" title="All 2 branches covered.">                &amp;&amp; (bestDefender == null</span>
+<span class="fc bfc" id="L1625" title="All 2 branches covered.">                    || bestDefender.getDefence() &lt; unitType.getDefence())</span>
+<span class="fc bfc" id="L1626" title="All 2 branches covered.">                &amp;&amp; !unitType.hasAbility(Ability.NAVAL_UNIT)</span>
+<span class="fc bfc" id="L1627" title="All 2 branches covered.">                &amp;&amp; unitType.isAvailableTo(getOwner())) {</span>
+<span class="fc" id="L1628">                bestDefender = unitType;</span>
             }
         }
-<span class="fc" id="L1593">        return bestDefender;</span>
+<span class="fc" id="L1631">        return bestDefender;</span>
     }
 
     /**
@@ -1599,10 +1637,10 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return The total defence power.
      */
     public double getTotalDefencePower() {
-<span class="fc" id="L1602">        final CombatModel cm = getGame().getCombatModel();</span>
-<span class="fc" id="L1603">        return getTile().getUnitList().stream()</span>
-<span class="fc" id="L1604">            .filter(Unit::isDefensiveUnit)</span>
-<span class="pc" id="L1605">            .mapToDouble(u -&gt; cm.getDefencePower(null, u)).sum();</span>
+<span class="fc" id="L1640">        final CombatModel cm = getGame().getCombatModel();</span>
+<span class="fc" id="L1641">        return getTile().getUnitList().stream()</span>
+<span class="fc" id="L1642">            .filter(Unit::isDefensiveUnit)</span>
+<span class="pc" id="L1643">            .mapToDouble(u -&gt; cm.getDefencePower(null, u)).sum();</span>
     }
 
     /**
@@ -1614,14 +1652,14 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return True if the attacker can pillage this colony.
      */
     public boolean canBePillaged(Unit attacker) {
-<span class="pc bpc" id="L1617" title="1 of 2 branches missed.">        return !hasStockade()</span>
-<span class="pc bpc" id="L1618" title="1 of 2 branches missed.">            &amp;&amp; attacker.hasAbility(Ability.PILLAGE_UNPROTECTED_COLONY)</span>
-<span class="fc bfc" id="L1619" title="All 2 branches covered.">            &amp;&amp; !(getBurnableBuildings().isEmpty()</span>
-<span class="fc bfc" id="L1620" title="All 2 branches covered.">                &amp;&amp; getTile().getNavalUnits().isEmpty()</span>
-<span class="fc bfc" id="L1621" title="All 2 branches covered.">                &amp;&amp; (getLootableGoodsList().isEmpty()</span>
-<span class="pc bpc" id="L1622" title="1 of 2 branches missed.">                    || !attacker.getType().canCarryGoods()</span>
-<span class="pc bpc" id="L1623" title="1 of 2 branches missed.">                    || !attacker.hasSpaceLeft())</span>
-<span class="fc bfc" id="L1624" title="All 2 branches covered.">                &amp;&amp; !canBePlundered());</span>
+<span class="pc bpc" id="L1655" title="1 of 2 branches missed.">        return !hasStockade()</span>
+<span class="pc bpc" id="L1656" title="1 of 2 branches missed.">            &amp;&amp; attacker.hasAbility(Ability.PILLAGE_UNPROTECTED_COLONY)</span>
+<span class="fc bfc" id="L1657" title="All 2 branches covered.">            &amp;&amp; !(getBurnableBuildings().isEmpty()</span>
+<span class="fc bfc" id="L1658" title="All 2 branches covered.">                &amp;&amp; getTile().getNavalUnits().isEmpty()</span>
+<span class="fc bfc" id="L1659" title="All 2 branches covered.">                &amp;&amp; (getLootableGoodsList().isEmpty()</span>
+<span class="pc bpc" id="L1660" title="1 of 2 branches missed.">                    || !attacker.getType().canCarryGoods()</span>
+<span class="pc bpc" id="L1661" title="1 of 2 branches missed.">                    || !attacker.hasSpaceLeft())</span>
+<span class="fc bfc" id="L1662" title="All 2 branches covered.">                &amp;&amp; !canBePlundered());</span>
     }
 
     /**
@@ -1632,7 +1670,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     colony.
      */
     public boolean canBePlundered() {
-<span class="fc" id="L1635">        return owner.checkGold(1);</span>
+<span class="fc" id="L1673">        return owner.checkGold(1);</span>
     }
 
     /**
@@ -1641,8 +1679,8 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A list of burnable buildings.
      */
     public List&lt;Building&gt; getBurnableBuildings() {
-<span class="fc" id="L1644">        return getBuildings().stream()</span>
-<span class="fc" id="L1645">            .filter(Building::canBeDamaged).collect(Collectors.toList());</span>
+<span class="fc" id="L1682">        return getBuildings().stream()</span>
+<span class="fc" id="L1683">            .filter(Building::canBeDamaged).collect(Collectors.toList());</span>
     }
 
     /**
@@ -1652,9 +1690,9 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A list of lootable goods in this colony.
      */
     public List&lt;Goods&gt; getLootableGoodsList() {
-<span class="fc" id="L1655">        return getGoodsContainer().getGoods().stream()</span>
-<span class="fc" id="L1656">            .filter(g -&gt; g.getType().isStorable())</span>
-<span class="fc" id="L1657">            .collect(Collectors.toList());</span>
+<span class="fc" id="L1693">        return getGoodsContainer().getGoods().stream()</span>
+<span class="fc" id="L1694">            .filter(g -&gt; g.getType().isStorable())</span>
+<span class="fc" id="L1695">            .collect(Collectors.toList());</span>
     }
 
     /**
@@ -1670,22 +1708,22 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return a &lt;code&gt;boolean&lt;/code&gt; value
      */
     public boolean isUnderSiege() {
-<span class="fc" id="L1673">        int friendlyUnits = 0;</span>
-<span class="fc" id="L1674">        int enemyUnits = 0;</span>
-<span class="fc bfc" id="L1675" title="All 2 branches covered.">        for (ColonyTile colonyTile : colonyTiles) {</span>
-<span class="fc bfc" id="L1676" title="All 2 branches covered.">            for (Unit unit : colonyTile.getWorkTile().getUnitList()) {</span>
-<span class="fc bfc" id="L1677" title="All 2 branches covered.">                if (unit.getOwner() == getOwner()) {</span>
-<span class="fc bfc" id="L1678" title="All 2 branches covered.">                    if (unit.isDefensiveUnit()) {</span>
-<span class="fc" id="L1679">                        friendlyUnits++;</span>
+<span class="fc" id="L1711">        int friendlyUnits = 0;</span>
+<span class="fc" id="L1712">        int enemyUnits = 0;</span>
+<span class="fc bfc" id="L1713" title="All 2 branches covered.">        for (ColonyTile colonyTile : colonyTiles) {</span>
+<span class="fc bfc" id="L1714" title="All 2 branches covered.">            for (Unit unit : colonyTile.getWorkTile().getUnitList()) {</span>
+<span class="fc bfc" id="L1715" title="All 2 branches covered.">                if (unit.getOwner() == getOwner()) {</span>
+<span class="fc bfc" id="L1716" title="All 2 branches covered.">                    if (unit.isDefensiveUnit()) {</span>
+<span class="fc" id="L1717">                        friendlyUnits++;</span>
                     }
-<span class="fc bfc" id="L1681" title="All 2 branches covered.">                } else if (getOwner().atWarWith(unit.getOwner())) {</span>
-<span class="pc bpc" id="L1682" title="1 of 2 branches missed.">                    if (unit.isOffensiveUnit()) {</span>
-<span class="fc" id="L1683">                        enemyUnits++;</span>
+<span class="fc bfc" id="L1719" title="All 2 branches covered.">                } else if (getOwner().atWarWith(unit.getOwner())) {</span>
+<span class="pc bpc" id="L1720" title="1 of 2 branches missed.">                    if (unit.isOffensiveUnit()) {</span>
+<span class="fc" id="L1721">                        enemyUnits++;</span>
                     }
                 }
             }
         }
-<span class="fc bfc" id="L1688" title="All 2 branches covered.">        return enemyUnits &gt; friendlyUnits;</span>
+<span class="fc bfc" id="L1726" title="All 2 branches covered.">        return enemyUnits &gt; friendlyUnits;</span>
     }
 
     /**
@@ -1695,27 +1733,27 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A value for the player.
      */
     public int evaluateFor(Player player) {
-<span class="nc bnc" id="L1698" title="All 2 branches missed.">        if (player.isAI()</span>
-<span class="nc bnc" id="L1699" title="All 2 branches missed.">            &amp;&amp; player.getNumberOfSettlements() &lt; 5) {// FIXME: magic#</span>
-<span class="nc" id="L1700">            return Integer.MIN_VALUE;</span>
+<span class="nc bnc" id="L1736" title="All 2 branches missed.">        if (player.isAI()</span>
+<span class="nc bnc" id="L1737" title="All 2 branches missed.">            &amp;&amp; player.getNumberOfSettlements() &lt; 5) {// FIXME: magic#</span>
+<span class="nc" id="L1738">            return Integer.MIN_VALUE;</span>
         }
         int result;
-<span class="nc bnc" id="L1703" title="All 2 branches missed.">        if (player.owns(this)) {</span>
-<span class="nc" id="L1704">            result = getAvailableWorkLocations().stream()</span>
-<span class="nc" id="L1705">                    .mapToInt(wl -&gt; wl.evaluateFor(player)).sum()</span>
-<span class="nc" id="L1706">                + getTile().getUnitList().stream()</span>
-<span class="nc" id="L1707">                    .mapToInt(u -&gt; u.evaluateFor(player)).sum()</span>
-<span class="nc" id="L1708">                + getCompactGoods().stream()</span>
-<span class="nc" id="L1709">                    .mapToInt(g -&gt; g.evaluateFor(player)).sum();</span>
-<span class="nc" id="L1710">        } else { // Much guesswork</span>
-<span class="nc" id="L1711">            result = getDisplayUnitCount() * 1000</span>
-<span class="nc" id="L1712">                + 500 // Some useful goods?</span>
-<span class="nc" id="L1713">                + 200 * (int)getTile().getSurroundingTiles(0, 1).stream()</span>
-<span class="nc bnc" id="L1714" title="All 2 branches missed.">                    .filter(t -&gt; t.getOwningSettlement() == this).count();</span>
-<span class="nc" id="L1715">            Building stockade = getStockade();</span>
-<span class="nc bnc" id="L1716" title="All 2 branches missed.">            if (stockade != null) result *= stockade.getLevel();</span>
+<span class="nc bnc" id="L1741" title="All 2 branches missed.">        if (player.owns(this)) {</span>
+<span class="nc" id="L1742">            result = getAvailableWorkLocations().stream()</span>
+<span class="nc" id="L1743">                    .mapToInt(wl -&gt; wl.evaluateFor(player)).sum()</span>
+<span class="nc" id="L1744">                + getTile().getUnitList().stream()</span>
+<span class="nc" id="L1745">                    .mapToInt(u -&gt; u.evaluateFor(player)).sum()</span>
+<span class="nc" id="L1746">                + getCompactGoods().stream()</span>
+<span class="nc" id="L1747">                    .mapToInt(g -&gt; g.evaluateFor(player)).sum();</span>
+<span class="nc" id="L1748">        } else { // Much guesswork</span>
+<span class="nc" id="L1749">            result = getDisplayUnitCount() * 1000</span>
+<span class="nc" id="L1750">                + 500 // Some useful goods?</span>
+<span class="nc" id="L1751">                + 200 * (int)getTile().getSurroundingTiles(0, 1).stream()</span>
+<span class="nc bnc" id="L1752" title="All 2 branches missed.">                    .filter(t -&gt; t.getOwningSettlement() == this).count();</span>
+<span class="nc" id="L1753">            Building stockade = getStockade();</span>
+<span class="nc bnc" id="L1754" title="All 2 branches missed.">            if (stockade != null) result *= stockade.getLevel();</span>
         }
-<span class="nc" id="L1718">        return result;</span>
+<span class="nc" id="L1756">        return result;</span>
     }
 
 
@@ -1730,7 +1768,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return &lt;code&gt;true&lt;/code&gt; if this unit type could be added.
      */
     public boolean canTrain(Unit unit) {
-<span class="fc" id="L1733">        return canTrain(unit.getType());</span>
+<span class="fc" id="L1771">        return canTrain(unit.getType());</span>
     }
 
     /**
@@ -1744,9 +1782,9 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return &lt;code&gt;true&lt;/code&gt; if this unit type could be added.
      */
     public boolean canTrain(UnitType unitType) {
-<span class="pc bpc" id="L1747" title="1 of 2 branches missed.">        return hasAbility(Ability.TEACH)</span>
-<span class="fc" id="L1748">            &amp;&amp; any(buildingMap.values(),</span>
-<span class="pc bpc" id="L1749" title="2 of 6 branches missed.">                b -&gt; b.canTeach() &amp;&amp; b.canAddType(unitType));</span>
+<span class="pc bpc" id="L1785" title="1 of 2 branches missed.">        return hasAbility(Ability.TEACH)</span>
+<span class="fc" id="L1786">            &amp;&amp; any(buildingMap.values(),</span>
+<span class="pc bpc" id="L1787" title="2 of 6 branches missed.">                b -&gt; b.canTeach() &amp;&amp; b.canAddType(unitType));</span>
     }
 
     /**
@@ -1756,13 +1794,13 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A list of teacher &lt;code&gt;Unit&lt;/code&gt;s.
      */
     public List&lt;Unit&gt; getTeachers() {
-<span class="nc" id="L1759">        List&lt;Unit&gt; teachers = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L1760" title="All 2 branches missed.">        for (Building building : buildingMap.values()) {</span>
-<span class="nc bnc" id="L1761" title="All 2 branches missed.">            if (building.canTeach()) {</span>
-<span class="nc" id="L1762">                teachers.addAll(building.getUnitList());</span>
+<span class="nc" id="L1797">        List&lt;Unit&gt; teachers = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L1798" title="All 2 branches missed.">        for (Building building : buildingMap.values()) {</span>
+<span class="nc bnc" id="L1799" title="All 2 branches missed.">            if (building.canTeach()) {</span>
+<span class="nc" id="L1800">                teachers.addAll(building.getUnitList());</span>
             }
         }
-<span class="nc" id="L1765">        return teachers;</span>
+<span class="nc" id="L1803">        return teachers;</span>
     }
 
     /**
@@ -1774,17 +1812,17 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A potential teacher, or null of none found.
      */
     public Unit findTeacher(Unit student) {
-<span class="fc bfc" id="L1777" title="All 2 branches covered.">        if (getSpecification().getBoolean(GameOptions.ALLOW_STUDENT_SELECTION))</span>
-<span class="fc" id="L1778">            return null; // No automatic assignment</span>
-<span class="fc bfc" id="L1779" title="All 2 branches covered.">        for (Building building : getBuildings()) {</span>
-<span class="fc bfc" id="L1780" title="All 2 branches covered.">            if (building.canTeach()) {</span>
-<span class="fc bfc" id="L1781" title="All 2 branches covered.">                for (Unit unit : building.getUnitList()) {</span>
-<span class="fc bfc" id="L1782" title="All 2 branches covered.">                    if (unit.getStudent() == null</span>
-<span class="pc bpc" id="L1783" title="1 of 2 branches missed.">                        &amp;&amp; student.canBeStudent(unit)) return unit;</span>
+<span class="fc bfc" id="L1815" title="All 2 branches covered.">        if (getSpecification().getBoolean(GameOptions.ALLOW_STUDENT_SELECTION))</span>
+<span class="fc" id="L1816">            return null; // No automatic assignment</span>
+<span class="fc bfc" id="L1817" title="All 2 branches covered.">        for (Building building : getBuildings()) {</span>
+<span class="fc bfc" id="L1818" title="All 2 branches covered.">            if (building.canTeach()) {</span>
+<span class="fc bfc" id="L1819" title="All 2 branches covered.">                for (Unit unit : building.getUnitList()) {</span>
+<span class="fc bfc" id="L1820" title="All 2 branches covered.">                    if (unit.getStudent() == null</span>
+<span class="pc bpc" id="L1821" title="1 of 2 branches missed.">                        &amp;&amp; student.canBeStudent(unit)) return unit;</span>
                 }
             }
         }
-<span class="fc" id="L1787">        return null;</span>
+<span class="fc" id="L1825">        return null;</span>
     }
 
     /**
@@ -1796,28 +1834,28 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A potential student, or null of none found.
      */
     public Unit findStudent(final Unit teacher) {
-<span class="fc bfc" id="L1799" title="All 2 branches covered.">        if (getSpecification().getBoolean(GameOptions.ALLOW_STUDENT_SELECTION))</span>
-<span class="fc" id="L1800">            return null; // No automatic assignment</span>
-<span class="fc" id="L1801">        Unit student = null;</span>
-<span class="fc" id="L1802">        GoodsType expertProduction = teacher.getType().getExpertProduction();</span>
-<span class="fc" id="L1803">        int skillLevel = INFINITY;</span>
-<span class="fc bfc" id="L1804" title="All 2 branches covered.">        for (Unit potentialStudent : getUnitList()) {</span>
+<span class="fc bfc" id="L1837" title="All 2 branches covered.">        if (getSpecification().getBoolean(GameOptions.ALLOW_STUDENT_SELECTION))</span>
+<span class="fc" id="L1838">            return null; // No automatic assignment</span>
+<span class="fc" id="L1839">        Unit student = null;</span>
+<span class="fc" id="L1840">        GoodsType expertProduction = teacher.getType().getExpertProduction();</span>
+<span class="fc" id="L1841">        int skillLevel = INFINITY;</span>
+<span class="fc bfc" id="L1842" title="All 2 branches covered.">        for (Unit potentialStudent : getUnitList()) {</span>
             /**
              * Always pick the student with the least skill first.
              * Break ties by favouring the one working in the teacher's trade,
              * otherwise first applicant wins.
              */
-<span class="fc bfc" id="L1810" title="All 2 branches covered.">            if (potentialStudent.getTeacher() == null</span>
-<span class="fc bfc" id="L1811" title="All 2 branches covered.">                &amp;&amp; potentialStudent.canBeStudent(teacher)</span>
-<span class="fc bfc" id="L1812" title="All 2 branches covered.">                &amp;&amp; (student == null</span>
-<span class="fc bfc" id="L1813" title="All 2 branches covered.">                    || potentialStudent.getSkillLevel() &lt; skillLevel</span>
-<span class="fc bfc" id="L1814" title="All 2 branches covered.">                    || (potentialStudent.getSkillLevel() == skillLevel</span>
-<span class="fc bfc" id="L1815" title="All 2 branches covered.">                        &amp;&amp; potentialStudent.getWorkType() == expertProduction))) {</span>
-<span class="fc" id="L1816">                student = potentialStudent;</span>
-<span class="fc" id="L1817">                skillLevel = student.getSkillLevel();</span>
+<span class="fc bfc" id="L1848" title="All 2 branches covered.">            if (potentialStudent.getTeacher() == null</span>
+<span class="fc bfc" id="L1849" title="All 2 branches covered.">                &amp;&amp; potentialStudent.canBeStudent(teacher)</span>
+<span class="fc bfc" id="L1850" title="All 2 branches covered.">                &amp;&amp; (student == null</span>
+<span class="fc bfc" id="L1851" title="All 2 branches covered.">                    || potentialStudent.getSkillLevel() &lt; skillLevel</span>
+<span class="fc bfc" id="L1852" title="All 2 branches covered.">                    || (potentialStudent.getSkillLevel() == skillLevel</span>
+<span class="fc bfc" id="L1853" title="All 2 branches covered.">                        &amp;&amp; potentialStudent.getWorkType() == expertProduction))) {</span>
+<span class="fc" id="L1854">                student = potentialStudent;</span>
+<span class="fc" id="L1855">                skillLevel = student.getSkillLevel();</span>
             }
         }
-<span class="fc" id="L1820">        return student;</span>
+<span class="fc" id="L1858">        return student;</span>
     }
 
 
@@ -1833,7 +1871,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return True if goods type is produced.
      */
     public boolean isProducing(GoodsType goodsType) {
-<span class="nc" id="L1836">        return productionCache.isProducing(goodsType);</span>
+<span class="nc" id="L1874">        return productionCache.isProducing(goodsType);</span>
     }
 
     /**
@@ -1846,7 +1884,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return True if goods type is consumed.
      */
     public boolean isConsuming(GoodsType goodsType) {
-<span class="nc" id="L1849">        return productionCache.isConsuming(goodsType);</span>
+<span class="nc" id="L1887">        return productionCache.isConsuming(goodsType);</span>
     }
 
     /**
@@ -1857,14 +1895,14 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return a list of consumers
      */
     public List&lt;Consumer&gt; getConsumers() {
-<span class="fc" id="L1860">        List&lt;Consumer&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L1861">        result.addAll(getUnitList());</span>
-<span class="fc" id="L1862">        result.addAll(buildingMap.values());</span>
-<span class="fc" id="L1863">        result.add(buildQueue);</span>
-<span class="fc" id="L1864">        result.add(populationQueue);</span>
+<span class="fc" id="L1898">        List&lt;Consumer&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1899">        result.addAll(getUnitList());</span>
+<span class="fc" id="L1900">        result.addAll(buildingMap.values());</span>
+<span class="fc" id="L1901">        result.add(buildQueue);</span>
+<span class="fc" id="L1902">        result.add(populationQueue);</span>
 
-<span class="fc" id="L1866">        Collections.sort(result, Consumer.COMPARATOR);</span>
-<span class="fc" id="L1867">        return result;</span>
+<span class="fc" id="L1904">        Collections.sort(result, Consumer.COMPARATOR);</span>
+<span class="fc" id="L1905">        return result;</span>
     }
 
     /**
@@ -1876,12 +1914,12 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public int getConsumptionOf(GoodsType goodsType) {
-<span class="fc" id="L1879">        final Specification spec = getSpecification();</span>
-<span class="fc" id="L1880">        int result = super.getConsumptionOf(goodsType);</span>
-<span class="fc bfc" id="L1881" title="All 2 branches covered.">        if (spec.getGoodsType(&quot;model.goods.bells&quot;).equals(goodsType)) {</span>
-<span class="fc" id="L1882">            result -= spec.getInteger(&quot;model.option.unitsThatUseNoBells&quot;);</span>
+<span class="fc" id="L1917">        final Specification spec = getSpecification();</span>
+<span class="fc" id="L1918">        int result = super.getConsumptionOf(goodsType);</span>
+<span class="fc bfc" id="L1919" title="All 2 branches covered.">        if (spec.getGoodsType(&quot;model.goods.bells&quot;).equals(goodsType)) {</span>
+<span class="fc" id="L1920">            result -= spec.getInteger(&quot;model.option.unitsThatUseNoBells&quot;);</span>
         }
-<span class="fc" id="L1884">        return Math.max(0, result);</span>
+<span class="fc" id="L1922">        return Math.max(0, result);</span>
     }
 
     /**
@@ -1890,8 +1928,8 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return an &lt;code&gt;int&lt;/code&gt; value
      */
     public int getFoodProduction() {
-<span class="fc" id="L1893">        return getSpecification().getFoodGoodsTypeList().stream()</span>
-<span class="fc" id="L1894">            .mapToInt(ft -&gt; getTotalProductionOf(ft)).sum();</span>
+<span class="fc" id="L1931">        return getSpecification().getFoodGoodsTypeList().stream()</span>
+<span class="fc" id="L1932">            .mapToInt(ft -&gt; getTotalProductionOf(ft)).sum();</span>
     }
 
     /**
@@ -1902,10 +1940,10 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     if it will not.
      */
     public int getStarvationTurns() {
-<span class="nc" id="L1905">        final GoodsType foodType = getSpecification().getPrimaryFoodType();</span>
-<span class="nc" id="L1906">        final int food = getGoodsCount(foodType);</span>
-<span class="nc" id="L1907">        final int newFood = getAdjustedNetProductionOf(foodType);</span>
-<span class="nc bnc" id="L1908" title="All 2 branches missed.">        return (newFood &gt;= 0) ? -1 : food / -newFood;</span>
+<span class="nc" id="L1943">        final GoodsType foodType = getSpecification().getPrimaryFoodType();</span>
+<span class="nc" id="L1944">        final int food = getGoodsCount(foodType);</span>
+<span class="nc" id="L1945">        final int newFood = getAdjustedNetProductionOf(foodType);</span>
+<span class="nc bnc" id="L1946" title="All 2 branches missed.">        return (newFood &gt;= 0) ? -1 : food / -newFood;</span>
     }
 
     /**
@@ -1915,12 +1953,12 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A number of turns, or negative if no colonist will be born.
      */
     public int getNewColonistTurns() {
-<span class="nc" id="L1918">        final GoodsType foodType = getSpecification().getPrimaryFoodType();</span>
-<span class="nc" id="L1919">        final int food = getGoodsCount(foodType);</span>
-<span class="nc" id="L1920">        final int newFood = getAdjustedNetProductionOf(foodType);</span>
-<span class="nc bnc" id="L1921" title="All 2 branches missed.">        return (food + newFood &gt;= Settlement.FOOD_PER_COLONIST) ? 1</span>
-<span class="nc bnc" id="L1922" title="All 2 branches missed.">            : (newFood &lt;= 0) ? -1</span>
-<span class="nc" id="L1923">            : (Settlement.FOOD_PER_COLONIST - food) / newFood + 1;</span>
+<span class="nc" id="L1956">        final GoodsType foodType = getSpecification().getPrimaryFoodType();</span>
+<span class="nc" id="L1957">        final int food = getGoodsCount(foodType);</span>
+<span class="nc" id="L1958">        final int newFood = getAdjustedNetProductionOf(foodType);</span>
+<span class="nc bnc" id="L1959" title="All 2 branches missed.">        return (food + newFood &gt;= Settlement.FOOD_PER_COLONIST) ? 1</span>
+<span class="nc bnc" id="L1960" title="All 2 branches missed.">            : (newFood &lt;= 0) ? -1</span>
+<span class="nc" id="L1961">            : (Settlement.FOOD_PER_COLONIST - food) / newFood + 1;</span>
     }
         
         
@@ -1932,14 +1970,14 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A list of suitable &lt;code&gt;Modifier&lt;/code&gt;s.
      */
     public List&lt;Modifier&gt; getProductionModifiers(GoodsType goodsType) {
-<span class="fc bfc" id="L1935" title="All 2 branches covered.">        if (productionBonus == 0) return Collections.&lt;Modifier&gt;emptyList();</span>
-<span class="fc" id="L1936">        Modifier mod = new Modifier(goodsType.getId(), productionBonus,</span>
-<span class="fc" id="L1937">                                    Modifier.ModifierType.ADDITIVE,</span>
-<span class="fc" id="L1938">                                    Specification.SOL_MODIFIER_SOURCE);</span>
-<span class="fc" id="L1939">        mod.setModifierIndex(Modifier.COLONY_PRODUCTION_INDEX);</span>
-<span class="fc" id="L1940">        List&lt;Modifier&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L1941">        result.add(mod);</span>
-<span class="fc" id="L1942">        return result;</span>
+<span class="fc bfc" id="L1973" title="All 2 branches covered.">        if (productionBonus == 0) return Collections.&lt;Modifier&gt;emptyList();</span>
+<span class="fc" id="L1974">        Modifier mod = new Modifier(goodsType.getId(), productionBonus,</span>
+<span class="fc" id="L1975">                                    Modifier.ModifierType.ADDITIVE,</span>
+<span class="fc" id="L1976">                                    Specification.SOL_MODIFIER_SOURCE);</span>
+<span class="fc" id="L1977">        mod.setModifierIndex(Modifier.COLONY_PRODUCTION_INDEX);</span>
+<span class="fc" id="L1978">        List&lt;Modifier&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1979">        result.add(mod);</span>
+<span class="fc" id="L1980">        return result;</span>
     }
 
     /**
@@ -1951,7 +1989,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return an &lt;code&gt;int&lt;/code&gt; value
      */
     public int getNetProductionOf(GoodsType goodsType) {
-<span class="fc" id="L1954">        return productionCache.getNetProductionOf(goodsType);</span>
+<span class="fc" id="L1992">        return productionCache.getNetProductionOf(goodsType);</span>
     }
 
     /**
@@ -1962,10 +2000,10 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     &lt;code&gt;WorkLocation&lt;/code&gt;.
      */
     public boolean isProductive(WorkLocation workLocation) {
-<span class="nc" id="L1965">        ProductionInfo info = productionCache.getProductionInfo(workLocation);</span>
-<span class="nc bnc" id="L1966" title="All 6 branches missed.">        return info != null &amp;&amp; info.getProduction() != null</span>
-<span class="nc bnc" id="L1967" title="All 2 branches missed.">            &amp;&amp; !info.getProduction().isEmpty()</span>
-<span class="nc" id="L1968">            &amp;&amp; info.getProduction().get(0).getAmount() &gt; 0;</span>
+<span class="nc" id="L2003">        ProductionInfo info = productionCache.getProductionInfo(workLocation);</span>
+<span class="nc bnc" id="L2004" title="All 6 branches missed.">        return info != null &amp;&amp; info.getProduction() != null</span>
+<span class="nc bnc" id="L2005" title="All 2 branches missed.">            &amp;&amp; !info.getProduction().isEmpty()</span>
+<span class="nc" id="L2006">            &amp;&amp; info.getProduction().get(0).getAmount() &gt; 0;</span>
     }
 
     /**
@@ -1976,16 +2014,16 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return an &lt;code&gt;int&lt;/code&gt; value
      */
     public int getAdjustedNetProductionOf(GoodsType goodsType) {
-<span class="fc" id="L1979">        int result = productionCache.getNetProductionOf(goodsType);</span>
-<span class="fc bfc" id="L1980" title="All 2 branches covered.">        for (BuildQueue&lt;?&gt; queue : new BuildQueue&lt;?&gt;[] { buildQueue,</span>
-<span class="fc" id="L1981">                                                         populationQueue }) {</span>
-<span class="fc" id="L1982">            ProductionInfo info = productionCache.getProductionInfo(queue);</span>
-<span class="pc bpc" id="L1983" title="1 of 2 branches missed.">            if (info != null) {</span>
-<span class="fc" id="L1984">                result += AbstractGoods.getCount(goodsType,</span>
-<span class="fc" id="L1985">                    info.getConsumption());</span>
+<span class="fc" id="L2017">        int result = productionCache.getNetProductionOf(goodsType);</span>
+<span class="fc bfc" id="L2018" title="All 2 branches covered.">        for (BuildQueue&lt;?&gt; queue : new BuildQueue&lt;?&gt;[] { buildQueue,</span>
+<span class="fc" id="L2019">                                                         populationQueue }) {</span>
+<span class="fc" id="L2020">            ProductionInfo info = productionCache.getProductionInfo(queue);</span>
+<span class="pc bpc" id="L2021" title="1 of 2 branches missed.">            if (info != null) {</span>
+<span class="fc" id="L2022">                result += AbstractGoods.getCount(goodsType,</span>
+<span class="fc" id="L2023">                    info.getConsumption());</span>
             }
         }
-<span class="fc" id="L1988">        return result;</span>
+<span class="fc" id="L2026">        return result;</span>
     }
 
     /**
@@ -1995,7 +2033,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A copy of the current production map.
      */
     protected TypeCountMap&lt;GoodsType&gt; getProductionMap() {
-<span class="fc" id="L1998">        return productionCache.getProductionMap();</span>
+<span class="fc" id="L2036">        return productionCache.getProductionMap();</span>
     }
 
     /**
@@ -2005,15 +2043,15 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return a &lt;code&gt;ProductionInfo&lt;/code&gt; value
      */
     public ProductionInfo getProductionInfo(Object object) {
-<span class="fc" id="L2008">        return productionCache.getProductionInfo(object);</span>
+<span class="fc" id="L2046">        return productionCache.getProductionInfo(object);</span>
     }
 
     /**
      * Invalidates the production cache.
      */
     public void invalidateCache() {
-<span class="fc" id="L2015">        productionCache.invalidate();</span>
-<span class="fc" id="L2016">    }</span>
+<span class="fc" id="L2053">        productionCache.invalidate();</span>
+<span class="fc" id="L2054">    }</span>
 
     /**
      * Can this colony produce certain goods?
@@ -2022,18 +2060,18 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return True if the goods can be produced.
      */
     public boolean canProduce(GoodsType goodsType) {
-<span class="nc bnc" id="L2025" title="All 2 branches missed.">        return (getNetProductionOf(goodsType) &gt; 0)</span>
-<span class="nc" id="L2026">            ? true // Obviously:-)</span>
+<span class="nc bnc" id="L2063" title="All 2 branches missed.">        return (getNetProductionOf(goodsType) &gt; 0)</span>
+<span class="nc" id="L2064">            ? true // Obviously:-)</span>
 
             // Breeding requires the breedable number to be present
-<span class="nc bnc" id="L2029" title="All 2 branches missed.">            : (goodsType.isBreedable())</span>
-<span class="nc bnc" id="L2030" title="All 2 branches missed.">            ? getGoodsCount(goodsType) &gt;= goodsType.getBreedingNumber()</span>
+<span class="nc bnc" id="L2067" title="All 2 branches missed.">            : (goodsType.isBreedable())</span>
+<span class="nc bnc" id="L2068" title="All 2 branches missed.">            ? getGoodsCount(goodsType) &gt;= goodsType.getBreedingNumber()</span>
 
             // Is there a work location that can produce the goods, with
             // positive generic production potential and all inputs satisfied?
-<span class="nc" id="L2034">            : any(getWorkLocationsForProducing(goodsType),</span>
-<span class="nc bnc" id="L2035" title="All 2 branches missed.">                wl -&gt; wl.getGenericPotential(goodsType) &gt; 0</span>
-<span class="nc bnc" id="L2036" title="All 2 branches missed.">                    &amp;&amp; all(wl.getInputs(),ag -&gt; canProduce(ag.getType())));</span>
+<span class="nc" id="L2072">            : any(getWorkLocationsForProducing(goodsType),</span>
+<span class="nc bnc" id="L2073" title="All 2 branches missed.">                wl -&gt; wl.getGenericPotential(goodsType) &gt; 0</span>
+<span class="nc bnc" id="L2074" title="All 2 branches missed.">                    &amp;&amp; all(wl.getInputs(),ag -&gt; canProduce(ag.getType())));</span>
     }
 
   
@@ -2046,16 +2084,16 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
          * Comparator to order suggestions by descending improvement
          * amount.
          */
-<span class="nc" id="L2049">        public static final Comparator&lt;TileImprovementSuggestion&gt; descendingAmountComparator</span>
-<span class="nc" id="L2050">            = new Comparator&lt;TileImprovementSuggestion&gt;() {</span>
+<span class="nc" id="L2087">        public static final Comparator&lt;TileImprovementSuggestion&gt; descendingAmountComparator</span>
+<span class="nc" id="L2088">            = new Comparator&lt;TileImprovementSuggestion&gt;() {</span>
                     @Override
                     public int compare(TileImprovementSuggestion tis1,
                                        TileImprovementSuggestion tis2) {
-<span class="nc" id="L2054">                        int cmp = tis2.amount - tis1.amount;</span>
-<span class="nc bnc" id="L2055" title="All 2 branches missed.">                        if (cmp == 0) cmp = tis2.tile.compareTo(tis1.tile);</span>
-<span class="nc" id="L2056">                        return cmp;</span>
+<span class="nc" id="L2092">                        int cmp = tis2.amount - tis1.amount;</span>
+<span class="nc bnc" id="L2093" title="All 2 branches missed.">                        if (cmp == 0) cmp = tis2.tile.compareTo(tis1.tile);</span>
+<span class="nc" id="L2094">                        return cmp;</span>
                     }
-<span class="nc" id="L2058">                };</span>
+<span class="nc" id="L2096">                };</span>
         
         /** The tile to explore or improve. */
         public Tile tile;
@@ -2064,15 +2102,15 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         /** The expected improvement.  INFINITY for LCRs. */
         public int amount;
         
-<span class="nc" id="L2067">        public TileImprovementSuggestion(Tile tile, TileImprovementType t,</span>
+<span class="nc" id="L2105">        public TileImprovementSuggestion(Tile tile, TileImprovementType t,</span>
                                          int amount) {
-<span class="nc" id="L2069">            this.tile = tile;</span>
-<span class="nc" id="L2070">            this.tileImprovementType = t;</span>
-<span class="nc" id="L2071">            this.amount = amount;</span>
-<span class="nc" id="L2072">        }</span>
+<span class="nc" id="L2107">            this.tile = tile;</span>
+<span class="nc" id="L2108">            this.tileImprovementType = t;</span>
+<span class="nc" id="L2109">            this.amount = amount;</span>
+<span class="nc" id="L2110">        }</span>
 
         public boolean isExploration() {
-<span class="nc bnc" id="L2075" title="All 2 branches missed.">            return this.tileImprovementType == null;</span>
+<span class="nc bnc" id="L2113" title="All 2 branches missed.">            return this.tileImprovementType == null;</span>
         }
     };
     
@@ -2083,34 +2121,34 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A list of &lt;code&gt;TileImprovementSuggestion&lt;/code&gt;s.
      */
     public List&lt;TileImprovementSuggestion&gt; getTileImprovementSuggestions() {
-<span class="nc" id="L2086">        final Specification spec = getSpecification();</span>
-<span class="nc" id="L2087">        List&lt;TileImprovementSuggestion&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L2124">        final Specification spec = getSpecification();</span>
+<span class="nc" id="L2125">        List&lt;TileImprovementSuggestion&gt; result = new ArrayList&lt;&gt;();</span>
 
         // Encourage exploration of neighbouring rumours.
-<span class="nc bnc" id="L2090" title="All 2 branches missed.">        for (Tile tile : getTile().getSurroundingTiles(1)) {</span>
-<span class="nc bnc" id="L2091" title="All 2 branches missed.">            if (tile.hasLostCityRumour()) {</span>
-<span class="nc" id="L2092">                result.add(new TileImprovementSuggestion(tile, null, INFINITY));</span>
+<span class="nc bnc" id="L2128" title="All 2 branches missed.">        for (Tile tile : getTile().getSurroundingTiles(1)) {</span>
+<span class="nc bnc" id="L2129" title="All 2 branches missed.">            if (tile.hasLostCityRumour()) {</span>
+<span class="nc" id="L2130">                result.add(new TileImprovementSuggestion(tile, null, INFINITY));</span>
             }
         }
 
         // Consider improvements for all colony tiles
-<span class="nc bnc" id="L2097" title="All 2 branches missed.">        for (ColonyTile ct : getColonyTiles()) {</span>
-<span class="nc" id="L2098">            final Tile tile = ct.getWorkTile();</span>
-<span class="nc bnc" id="L2099" title="All 2 branches missed.">            if (tile == null</span>
-<span class="nc bnc" id="L2100" title="All 2 branches missed.">                || tile.getOwningSettlement() != this) continue;</span>
+<span class="nc bnc" id="L2135" title="All 2 branches missed.">        for (ColonyTile ct : getColonyTiles()) {</span>
+<span class="nc" id="L2136">            final Tile tile = ct.getWorkTile();</span>
+<span class="nc bnc" id="L2137" title="All 2 branches missed.">            if (tile == null</span>
+<span class="nc bnc" id="L2138" title="All 2 branches missed.">                || tile.getOwningSettlement() != this) continue;</span>
             
-<span class="nc bnc" id="L2102" title="All 2 branches missed.">            for (TileImprovementType t : spec.getTileImprovementTypeList()) {</span>
-<span class="nc bnc" id="L2103" title="All 2 branches missed.">                if (t.isNatural()) continue; </span>
-<span class="nc" id="L2104">                int improvement = ct.improvedBy(t);</span>
-<span class="nc bnc" id="L2105" title="All 2 branches missed.">                if (improvement &gt; 0) {</span>
-<span class="nc" id="L2106">                    result.add(new TileImprovementSuggestion(tile, t,</span>
-<span class="nc" id="L2107">                                                             improvement));</span>
+<span class="nc bnc" id="L2140" title="All 2 branches missed.">            for (TileImprovementType t : spec.getTileImprovementTypeList()) {</span>
+<span class="nc bnc" id="L2141" title="All 2 branches missed.">                if (t.isNatural()) continue; </span>
+<span class="nc" id="L2142">                int improvement = ct.improvedBy(t);</span>
+<span class="nc bnc" id="L2143" title="All 2 branches missed.">                if (improvement &gt; 0) {</span>
+<span class="nc" id="L2144">                    result.add(new TileImprovementSuggestion(tile, t,</span>
+<span class="nc" id="L2145">                                                             improvement));</span>
                 }
             }
         }
-<span class="nc" id="L2111">        Collections.sort(result,</span>
-<span class="nc" id="L2112">            TileImprovementSuggestion.descendingAmountComparator);</span>
-<span class="nc" id="L2113">        return result;</span>
+<span class="nc" id="L2149">        Collections.sort(result,</span>
+<span class="nc" id="L2150">            TileImprovementSuggestion.descendingAmountComparator);</span>
+<span class="nc" id="L2151">        return result;</span>
     }
 
     /**
@@ -2121,62 +2159,62 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A better expert, or null if none available.
      */
     public Unit getBetterExpert(Unit expert) {
-<span class="nc" id="L2124">        GoodsType production = expert.getWorkType();</span>
-<span class="nc" id="L2125">        UnitType expertType = expert.getType();</span>
-<span class="nc" id="L2126">        GoodsType expertise = expertType.getExpertProduction();</span>
-<span class="nc" id="L2127">        Unit bestExpert = null;</span>
-<span class="nc" id="L2128">        int bestImprovement = 0;</span>
+<span class="nc" id="L2162">        GoodsType production = expert.getWorkType();</span>
+<span class="nc" id="L2163">        UnitType expertType = expert.getType();</span>
+<span class="nc" id="L2164">        GoodsType expertise = expertType.getExpertProduction();</span>
+<span class="nc" id="L2165">        Unit bestExpert = null;</span>
+<span class="nc" id="L2166">        int bestImprovement = 0;</span>
 
-<span class="nc bnc" id="L2130" title="All 4 branches missed.">        if (production == null || expertise == null</span>
-<span class="nc bnc" id="L2131" title="All 2 branches missed.">            || production == expertise) return null;</span>
+<span class="nc bnc" id="L2168" title="All 4 branches missed.">        if (production == null || expertise == null</span>
+<span class="nc bnc" id="L2169" title="All 2 branches missed.">            || production == expertise) return null;</span>
 
         // We have an expert not doing the job of their expertise.
         // Check if there is a non-expert doing the job instead.
-<span class="nc bnc" id="L2135" title="All 2 branches missed.">        for (Unit nonExpert : getUnitList()) {</span>
-<span class="nc bnc" id="L2136" title="All 2 branches missed.">            if (nonExpert.getWorkType() != expertise</span>
-<span class="nc bnc" id="L2137" title="All 2 branches missed.">                || nonExpert.getType() == expertType) continue;</span>
+<span class="nc bnc" id="L2173" title="All 2 branches missed.">        for (Unit nonExpert : getUnitList()) {</span>
+<span class="nc bnc" id="L2174" title="All 2 branches missed.">            if (nonExpert.getWorkType() != expertise</span>
+<span class="nc bnc" id="L2175" title="All 2 branches missed.">                || nonExpert.getType() == expertType) continue;</span>
 
             // We have found a unit of a different type doing the
             // job of this expert's expertise now check if the
             // production would be better if the units swapped
             // positions.
-<span class="nc" id="L2143">            int expertProductionNow = 0;</span>
-<span class="nc" id="L2144">            int nonExpertProductionNow = 0;</span>
-<span class="nc" id="L2145">            int expertProductionPotential = 0;</span>
-<span class="nc" id="L2146">            int nonExpertProductionPotential = 0;</span>
+<span class="nc" id="L2181">            int expertProductionNow = 0;</span>
+<span class="nc" id="L2182">            int nonExpertProductionNow = 0;</span>
+<span class="nc" id="L2183">            int expertProductionPotential = 0;</span>
+<span class="nc" id="L2184">            int nonExpertProductionPotential = 0;</span>
 
             // Get the current and potential productions for the
             // work location of the expert.
-<span class="nc" id="L2150">            WorkLocation ewl = expert.getWorkLocation();</span>
-<span class="nc bnc" id="L2151" title="All 2 branches missed.">            if (ewl != null) {</span>
-<span class="nc" id="L2152">                expertProductionNow = ewl.getPotentialProduction(expertise,</span>
-<span class="nc" id="L2153">                    expert.getType());</span>
-<span class="nc" id="L2154">                nonExpertProductionPotential</span>
-<span class="nc" id="L2155">                    = ewl.getPotentialProduction(expertise,</span>
-<span class="nc" id="L2156">                        nonExpert.getType());</span>
+<span class="nc" id="L2188">            WorkLocation ewl = expert.getWorkLocation();</span>
+<span class="nc bnc" id="L2189" title="All 2 branches missed.">            if (ewl != null) {</span>
+<span class="nc" id="L2190">                expertProductionNow = ewl.getPotentialProduction(expertise,</span>
+<span class="nc" id="L2191">                    expert.getType());</span>
+<span class="nc" id="L2192">                nonExpertProductionPotential</span>
+<span class="nc" id="L2193">                    = ewl.getPotentialProduction(expertise,</span>
+<span class="nc" id="L2194">                        nonExpert.getType());</span>
             }
 
             // Get the current and potential productions for the
             // work location of the non-expert.
-<span class="nc" id="L2161">            WorkLocation nwl = nonExpert.getWorkTile();</span>
-<span class="nc bnc" id="L2162" title="All 2 branches missed.">            if (nwl != null) {</span>
-<span class="nc" id="L2163">                nonExpertProductionNow = nwl.getPotentialProduction(expertise,</span>
-<span class="nc" id="L2164">                    nonExpert.getType());</span>
-<span class="nc" id="L2165">                expertProductionPotential</span>
-<span class="nc" id="L2166">                    = nwl.getPotentialProduction(expertise, expertType);</span>
+<span class="nc" id="L2199">            WorkLocation nwl = nonExpert.getWorkTile();</span>
+<span class="nc bnc" id="L2200" title="All 2 branches missed.">            if (nwl != null) {</span>
+<span class="nc" id="L2201">                nonExpertProductionNow = nwl.getPotentialProduction(expertise,</span>
+<span class="nc" id="L2202">                    nonExpert.getType());</span>
+<span class="nc" id="L2203">                expertProductionPotential</span>
+<span class="nc" id="L2204">                    = nwl.getPotentialProduction(expertise, expertType);</span>
             }
 
             // Find the unit that achieves the best improvement.
-<span class="nc" id="L2170">            int improvement = expertProductionPotential</span>
-<span class="nc" id="L2171">                + nonExpertProductionPotential</span>
-<span class="nc" id="L2172">                - expertProductionNow</span>
-<span class="nc" id="L2173">                - nonExpertProductionNow;</span>
-<span class="nc bnc" id="L2174" title="All 2 branches missed.">            if (improvement &gt; bestImprovement) {</span>
-<span class="nc" id="L2175">                bestImprovement = improvement;</span>
-<span class="nc" id="L2176">                bestExpert = nonExpert;</span>
+<span class="nc" id="L2208">            int improvement = expertProductionPotential</span>
+<span class="nc" id="L2209">                + nonExpertProductionPotential</span>
+<span class="nc" id="L2210">                - expertProductionNow</span>
+<span class="nc" id="L2211">                - nonExpertProductionNow;</span>
+<span class="nc bnc" id="L2212" title="All 2 branches missed.">            if (improvement &gt; bestImprovement) {</span>
+<span class="nc" id="L2213">                bestImprovement = improvement;</span>
+<span class="nc" id="L2214">                bestExpert = nonExpert;</span>
             }
         }
-<span class="nc" id="L2179">        return bestExpert;</span>
+<span class="nc" id="L2217">        return bestExpert;</span>
     }
 
     /**
@@ -2187,74 +2225,74 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A collection of warning messages.
      */
     public Collection&lt;StringTemplate&gt; getProductionWarnings(GoodsType goodsType) {
-<span class="nc" id="L2190">        List&lt;StringTemplate&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L2191">        final int amount = getGoodsCount(goodsType);</span>
-<span class="nc" id="L2192">        final int production = getNetProductionOf(goodsType);</span>
+<span class="nc" id="L2228">        List&lt;StringTemplate&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L2229">        final int amount = getGoodsCount(goodsType);</span>
+<span class="nc" id="L2230">        final int production = getNetProductionOf(goodsType);</span>
         int waste;
         
-<span class="nc bnc" id="L2195" title="All 2 branches missed.">        if (goodsType.isStorable()) {</span>
-<span class="nc bnc" id="L2196" title="All 2 branches missed.">            if (goodsType.limitIgnored()) {</span>
-<span class="nc bnc" id="L2197" title="All 2 branches missed.">                if (goodsType.isFoodType()) {</span>
-<span class="nc" id="L2198">                    int starve = getStarvationTurns();</span>
-<span class="nc bnc" id="L2199" title="All 2 branches missed.">                    if (starve == 0) {</span>
-<span class="nc" id="L2200">                        result.add(StringTemplate</span>
-<span class="nc" id="L2201">                            .template(&quot;model.colony.starving&quot;)</span>
-<span class="nc" id="L2202">                            .addName(&quot;%colony%&quot;, getName()));</span>
-<span class="nc bnc" id="L2203" title="All 2 branches missed.">                    } else if (starve &lt;= Colony.FAMINE_TURNS) {</span>
-<span class="nc" id="L2204">                        result.add(StringTemplate</span>
-<span class="nc" id="L2205">                            .template(&quot;model.colony.famineFeared&quot;)</span>
-<span class="nc" id="L2206">                            .addName(&quot;%colony%&quot;, getName())</span>
-<span class="nc" id="L2207">                            .addAmount(&quot;%number%&quot;, starve));</span>
+<span class="nc bnc" id="L2233" title="All 2 branches missed.">        if (goodsType.isStorable()) {</span>
+<span class="nc bnc" id="L2234" title="All 2 branches missed.">            if (goodsType.limitIgnored()) {</span>
+<span class="nc bnc" id="L2235" title="All 2 branches missed.">                if (goodsType.isFoodType()) {</span>
+<span class="nc" id="L2236">                    int starve = getStarvationTurns();</span>
+<span class="nc bnc" id="L2237" title="All 2 branches missed.">                    if (starve == 0) {</span>
+<span class="nc" id="L2238">                        result.add(StringTemplate</span>
+<span class="nc" id="L2239">                            .template(&quot;model.colony.starving&quot;)</span>
+<span class="nc" id="L2240">                            .addName(&quot;%colony%&quot;, getName()));</span>
+<span class="nc bnc" id="L2241" title="All 2 branches missed.">                    } else if (starve &lt;= Colony.FAMINE_TURNS) {</span>
+<span class="nc" id="L2242">                        result.add(StringTemplate</span>
+<span class="nc" id="L2243">                            .template(&quot;model.colony.famineFeared&quot;)</span>
+<span class="nc" id="L2244">                            .addName(&quot;%colony%&quot;, getName())</span>
+<span class="nc" id="L2245">                            .addAmount(&quot;%number%&quot;, starve));</span>
                     }
                 }
-<span class="nc bnc" id="L2210" title="All 2 branches missed.">            } else if (!getExportData(goodsType).getExported()</span>
-<span class="nc bnc" id="L2211" title="All 2 branches missed.">                &amp;&amp; (waste = amount + production - getWarehouseCapacity()) &gt; 0) {</span>
-<span class="nc" id="L2212">                result.add(StringTemplate</span>
-<span class="nc" id="L2213">                    .template(&quot;model.building.warehouseSoonFull&quot;)</span>
-<span class="nc" id="L2214">                    .addNamed(&quot;%goods%&quot;, goodsType)</span>
-<span class="nc" id="L2215">                    .addName(&quot;%colony%&quot;, getName())</span>
-<span class="nc" id="L2216">                    .addAmount(&quot;%amount%&quot;, waste));</span>
+<span class="nc bnc" id="L2248" title="All 2 branches missed.">            } else if (!getExportData(goodsType).getExported()</span>
+<span class="nc bnc" id="L2249" title="All 2 branches missed.">                &amp;&amp; (waste = amount + production - getWarehouseCapacity()) &gt; 0) {</span>
+<span class="nc" id="L2250">                result.add(StringTemplate</span>
+<span class="nc" id="L2251">                    .template(&quot;model.building.warehouseSoonFull&quot;)</span>
+<span class="nc" id="L2252">                    .addNamed(&quot;%goods%&quot;, goodsType)</span>
+<span class="nc" id="L2253">                    .addName(&quot;%colony%&quot;, getName())</span>
+<span class="nc" id="L2254">                    .addAmount(&quot;%amount%&quot;, waste));</span>
             }
         }
 
-<span class="nc" id="L2220">        BuildableType currentlyBuilding = getCurrentlyBuilding();</span>
-<span class="nc bnc" id="L2221" title="All 2 branches missed.">        if (currentlyBuilding != null) {</span>
-<span class="nc bnc" id="L2222" title="All 2 branches missed.">            for (AbstractGoods goods : currentlyBuilding.getRequiredGoods()) {</span>
-<span class="nc bnc" id="L2223" title="All 2 branches missed.">                if (goods.getType().equals(goodsType)</span>
-<span class="nc bnc" id="L2224" title="All 2 branches missed.">                    &amp;&amp; amount &lt; goods.getAmount()) {</span>
-<span class="nc" id="L2225">                    int needsAmount = goods.getAmount() - amount;</span>
-<span class="nc" id="L2226">                    result.add(StringTemplate</span>
-<span class="nc" id="L2227">                        .template(&quot;model.colony.buildableNeedsGoods&quot;)</span>
-<span class="nc" id="L2228">                        .addName(&quot;%colony%&quot;, getName())</span>
-<span class="nc" id="L2229">                        .addNamed(&quot;%buildable%&quot;, currentlyBuilding)</span>
-<span class="nc" id="L2230">                        .addAmount(&quot;%amount%&quot;, needsAmount)</span>
-<span class="nc" id="L2231">                        .addNamed(&quot;%goodsType%&quot;, goodsType));</span>
+<span class="nc" id="L2258">        BuildableType currentlyBuilding = getCurrentlyBuilding();</span>
+<span class="nc bnc" id="L2259" title="All 2 branches missed.">        if (currentlyBuilding != null) {</span>
+<span class="nc bnc" id="L2260" title="All 2 branches missed.">            for (AbstractGoods goods : currentlyBuilding.getRequiredGoods()) {</span>
+<span class="nc bnc" id="L2261" title="All 2 branches missed.">                if (goods.getType().equals(goodsType)</span>
+<span class="nc bnc" id="L2262" title="All 2 branches missed.">                    &amp;&amp; amount &lt; goods.getAmount()) {</span>
+<span class="nc" id="L2263">                    int needsAmount = goods.getAmount() - amount;</span>
+<span class="nc" id="L2264">                    result.add(StringTemplate</span>
+<span class="nc" id="L2265">                        .template(&quot;model.colony.buildableNeedsGoods&quot;)</span>
+<span class="nc" id="L2266">                        .addName(&quot;%colony%&quot;, getName())</span>
+<span class="nc" id="L2267">                        .addNamed(&quot;%buildable%&quot;, currentlyBuilding)</span>
+<span class="nc" id="L2268">                        .addAmount(&quot;%amount%&quot;, needsAmount)</span>
+<span class="nc" id="L2269">                        .addNamed(&quot;%goodsType%&quot;, goodsType));</span>
                 }
             }
         }
 
-<span class="nc bnc" id="L2236" title="All 2 branches missed.">        for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {</span>
-<span class="nc" id="L2237">            ProductionInfo info = getProductionInfo(wl);</span>
-<span class="nc bnc" id="L2238" title="All 2 branches missed.">            if (info == null) continue;</span>
-<span class="nc" id="L2239">            StringTemplate t = getInsufficientProductionMessage(info,</span>
-<span class="nc" id="L2240">                AbstractGoods.findByType(goodsType,</span>
-<span class="nc" id="L2241">                    info.getProductionDeficit()));</span>
-<span class="nc bnc" id="L2242" title="All 2 branches missed.">            if (t != null) result.add(t);</span>
+<span class="nc bnc" id="L2274" title="All 2 branches missed.">        for (WorkLocation wl : getWorkLocationsForProducing(goodsType)) {</span>
+<span class="nc" id="L2275">            ProductionInfo info = getProductionInfo(wl);</span>
+<span class="nc bnc" id="L2276" title="All 2 branches missed.">            if (info == null) continue;</span>
+<span class="nc" id="L2277">            StringTemplate t = getInsufficientProductionMessage(info,</span>
+<span class="nc" id="L2278">                AbstractGoods.findByType(goodsType,</span>
+<span class="nc" id="L2279">                    info.getProductionDeficit()));</span>
+<span class="nc bnc" id="L2280" title="All 2 branches missed.">            if (t != null) result.add(t);</span>
         }
-<span class="nc bnc" id="L2244" title="All 2 branches missed.">        for (WorkLocation wl : getWorkLocationsForConsuming(goodsType)) {</span>
-<span class="nc" id="L2245">            ProductionInfo info = getProductionInfo(wl);</span>
-<span class="nc bnc" id="L2246" title="All 2 branches missed.">            if (info == null) continue;</span>
-<span class="nc" id="L2247">            List&lt;AbstractGoods&gt; deficit = info.getProductionDeficit();</span>
-<span class="nc bnc" id="L2248" title="All 2 branches missed.">            if (deficit.isEmpty()) continue;</span>
-<span class="nc bnc" id="L2249" title="All 2 branches missed.">            for (AbstractGoods ag : wl.getOutputs()) {</span>
-<span class="nc bnc" id="L2250" title="All 2 branches missed.">                if (ag.getType().isStorable()) continue;</span>
-<span class="nc" id="L2251">                StringTemplate t = getInsufficientProductionMessage(info,</span>
-<span class="nc" id="L2252">                    AbstractGoods.findByType(ag.getType(), deficit));</span>
-<span class="nc bnc" id="L2253" title="All 2 branches missed.">                if (t != null) result.add(t);</span>
+<span class="nc bnc" id="L2282" title="All 2 branches missed.">        for (WorkLocation wl : getWorkLocationsForConsuming(goodsType)) {</span>
+<span class="nc" id="L2283">            ProductionInfo info = getProductionInfo(wl);</span>
+<span class="nc bnc" id="L2284" title="All 2 branches missed.">            if (info == null) continue;</span>
+<span class="nc" id="L2285">            List&lt;AbstractGoods&gt; deficit = info.getProductionDeficit();</span>
+<span class="nc bnc" id="L2286" title="All 2 branches missed.">            if (deficit.isEmpty()) continue;</span>
+<span class="nc bnc" id="L2287" title="All 2 branches missed.">            for (AbstractGoods ag : wl.getOutputs()) {</span>
+<span class="nc bnc" id="L2288" title="All 2 branches missed.">                if (ag.getType().isStorable()) continue;</span>
+<span class="nc" id="L2289">                StringTemplate t = getInsufficientProductionMessage(info,</span>
+<span class="nc" id="L2290">                    AbstractGoods.findByType(ag.getType(), deficit));</span>
+<span class="nc bnc" id="L2291" title="All 2 branches missed.">                if (t != null) result.add(t);</span>
             }
         }
 
-<span class="nc" id="L2257">        return result;</span>
+<span class="nc" id="L2295">        return result;</span>
     }
 
     /**
@@ -2266,18 +2304,18 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     private StringTemplate getInsufficientProductionMessage(ProductionInfo info,
         AbstractGoods deficit) {
-<span class="nc bnc" id="L2269" title="All 4 branches missed.">        if (info == null || deficit == null) return null;</span>
+<span class="nc bnc" id="L2307" title="All 4 branches missed.">        if (info == null || deficit == null) return null;</span>
 
-<span class="nc" id="L2271">        List&lt;AbstractGoods&gt; input = info.getConsumptionDeficit();</span>
-<span class="nc bnc" id="L2272" title="All 2 branches missed.">        if (input.isEmpty()) return null;</span>
-<span class="nc" id="L2273">        StringTemplate label = StringTemplate.label(&quot;, &quot;);</span>
-<span class="nc bnc" id="L2274" title="All 2 branches missed.">        for (AbstractGoods ag : input) label.addStringTemplate(ag.getLabel());</span>
+<span class="nc" id="L2309">        List&lt;AbstractGoods&gt; input = info.getConsumptionDeficit();</span>
+<span class="nc bnc" id="L2310" title="All 2 branches missed.">        if (input.isEmpty()) return null;</span>
+<span class="nc" id="L2311">        StringTemplate label = StringTemplate.label(&quot;, &quot;);</span>
+<span class="nc bnc" id="L2312" title="All 2 branches missed.">        for (AbstractGoods ag : input) label.addStringTemplate(ag.getLabel());</span>
         
-<span class="nc" id="L2276">        return StringTemplate.template(&quot;model.colony.insufficientProduction&quot;)</span>
-<span class="nc" id="L2277">            .addName(&quot;%colony%&quot;, getName())</span>
-<span class="nc" id="L2278">            .addNamed(&quot;%outputType%&quot;, deficit.getType())</span>
-<span class="nc" id="L2279">            .addAmount(&quot;%outputAmount%&quot;, deficit.getAmount())</span>
-<span class="nc" id="L2280">            .addStringTemplate(&quot;%consumptionDeficit%&quot;, label);</span>
+<span class="nc" id="L2314">        return StringTemplate.template(&quot;model.colony.insufficientProduction&quot;)</span>
+<span class="nc" id="L2315">            .addName(&quot;%colony%&quot;, getName())</span>
+<span class="nc" id="L2316">            .addNamed(&quot;%outputType%&quot;, deficit.getType())</span>
+<span class="nc" id="L2317">            .addAmount(&quot;%outputAmount%&quot;, deficit.getAmount())</span>
+<span class="nc" id="L2318">            .addStringTemplate(&quot;%consumptionDeficit%&quot;, label);</span>
     }
 
     /**
@@ -2291,11 +2329,11 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @param goodsType The &lt;code&gt;GoodsType&lt;/code&gt; to check.
      */
     public boolean goodsUseful(GoodsType goodsType) {
-<span class="nc bnc" id="L2294" title="All 2 branches missed.">        if (getOwner().getPlayerType() == Player.PlayerType.INDEPENDENT) {</span>
-<span class="nc bnc" id="L2295" title="All 4 branches missed.">            if ((goodsType.isLibertyType() &amp;&amp; getSoLPercentage() &gt;= 100)</span>
-<span class="nc bnc" id="L2296" title="All 2 branches missed.">                || goodsType.isImmigrationType()) return false;</span>
+<span class="nc bnc" id="L2332" title="All 2 branches missed.">        if (getOwner().getPlayerType() == Player.PlayerType.INDEPENDENT) {</span>
+<span class="nc bnc" id="L2333" title="All 4 branches missed.">            if ((goodsType.isLibertyType() &amp;&amp; getSoLPercentage() &gt;= 100)</span>
+<span class="nc bnc" id="L2334" title="All 2 branches missed.">                || goodsType.isImmigrationType()) return false;</span>
         }
-<span class="nc" id="L2298">        return true;</span>
+<span class="nc" id="L2336">        return true;</span>
     }
 
     /**
@@ -2306,22 +2344,22 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @param amount The amount of modification.
      */
     private void modifySpecialGoods(GoodsType goodsType, int amount) {
-<span class="fc" id="L2309">        final Turn turn = getGame().getTurn();</span>
+<span class="fc" id="L2347">        final Turn turn = getGame().getTurn();</span>
         Set&lt;Modifier&gt; mods;
 
-<span class="fc" id="L2312">        mods = goodsType.getModifiers(Modifier.LIBERTY);</span>
-<span class="fc bfc" id="L2313" title="All 2 branches covered.">        if (!mods.isEmpty()) {</span>
-<span class="fc" id="L2314">            int liberty = (int)applyModifiers(amount, turn, mods);</span>
-<span class="fc" id="L2315">            modifyLiberty(liberty);</span>
+<span class="fc" id="L2350">        mods = goodsType.getModifiers(Modifier.LIBERTY);</span>
+<span class="fc bfc" id="L2351" title="All 2 branches covered.">        if (!mods.isEmpty()) {</span>
+<span class="fc" id="L2352">            int liberty = (int)applyModifiers(amount, turn, mods);</span>
+<span class="fc" id="L2353">            modifyLiberty(liberty);</span>
         }
 
-<span class="fc" id="L2318">        mods = goodsType.getModifiers(Modifier.IMMIGRATION);</span>
-<span class="fc bfc" id="L2319" title="All 2 branches covered.">        if (!mods.isEmpty()) {</span>
-<span class="fc" id="L2320">            int migration = (int)applyModifiers(amount, turn, mods);</span>
-<span class="fc" id="L2321">            modifyImmigration(migration);</span>
-<span class="fc" id="L2322">            getOwner().modifyImmigration(migration);</span>
+<span class="fc" id="L2356">        mods = goodsType.getModifiers(Modifier.IMMIGRATION);</span>
+<span class="fc bfc" id="L2357" title="All 2 branches covered.">        if (!mods.isEmpty()) {</span>
+<span class="fc" id="L2358">            int migration = (int)applyModifiers(amount, turn, mods);</span>
+<span class="fc" id="L2359">            modifyImmigration(migration);</span>
+<span class="fc" id="L2360">            getOwner().modifyImmigration(migration);</span>
         }
-<span class="fc" id="L2324">    }</span>
+<span class="fc" id="L2362">    }</span>
     
     /**
      * Creates a temporary copy of this colony for planning purposes.
@@ -2337,24 +2375,24 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return A scratch version of this colony.
      */
     public Colony copyColony() {
-<span class="fc" id="L2340">        final Game game = getGame();</span>
-<span class="fc" id="L2341">        Tile tile = getTile();</span>
-<span class="fc" id="L2342">        Tile tileCopy = tile.copy(game, tile.getClass());</span>
-<span class="fc" id="L2343">        Colony colony = tileCopy.getColony();</span>
-<span class="fc bfc" id="L2344" title="All 2 branches covered.">        for (ColonyTile ct : colony.getColonyTiles()) {</span>
+<span class="fc" id="L2378">        final Game game = getGame();</span>
+<span class="fc" id="L2379">        Tile tile = getTile();</span>
+<span class="fc" id="L2380">        Tile tileCopy = tile.copy(game, tile.getClass());</span>
+<span class="fc" id="L2381">        Colony colony = tileCopy.getColony();</span>
+<span class="fc bfc" id="L2382" title="All 2 branches covered.">        for (ColonyTile ct : colony.getColonyTiles()) {</span>
             Tile wt;
-<span class="fc bfc" id="L2346" title="All 2 branches covered.">            if (ct.isColonyCenterTile()) {</span>
-<span class="fc" id="L2347">                wt = tileCopy;</span>
-<span class="fc" id="L2348">            } else {</span>
-<span class="fc" id="L2349">                wt = ct.getWorkTile();</span>
-<span class="fc" id="L2350">                wt = wt.copy(game, wt.getClass());</span>
-<span class="pc bpc" id="L2351" title="1 of 2 branches missed.">                if (wt.getOwningSettlement() == this) {</span>
-<span class="fc" id="L2352">                    wt.setOwningSettlement(colony);</span>
+<span class="fc bfc" id="L2384" title="All 2 branches covered.">            if (ct.isColonyCenterTile()) {</span>
+<span class="fc" id="L2385">                wt = tileCopy;</span>
+<span class="fc" id="L2386">            } else {</span>
+<span class="fc" id="L2387">                wt = ct.getWorkTile();</span>
+<span class="fc" id="L2388">                wt = wt.copy(game, wt.getClass());</span>
+<span class="pc bpc" id="L2389" title="1 of 2 branches missed.">                if (wt.getOwningSettlement() == this) {</span>
+<span class="fc" id="L2390">                    wt.setOwningSettlement(colony);</span>
                 }
             }
-<span class="fc" id="L2355">            ct.setWorkTile(wt);</span>
+<span class="fc" id="L2393">            ct.setWorkTile(wt);</span>
         }
-<span class="fc" id="L2357">        return colony;</span>
+<span class="fc" id="L2395">        return colony;</span>
     }
 
     /**
@@ -2366,25 +2404,25 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @SuppressWarnings(&quot;unchecked&quot;)
     public &lt;T extends FreeColObject&gt; T getCorresponding(T fco) {
-<span class="fc" id="L2369">        final String id = fco.getId();</span>
-<span class="fc bfc" id="L2370" title="All 2 branches covered.">        if (fco instanceof WorkLocation) {</span>
-<span class="pc bpc" id="L2371" title="1 of 2 branches missed.">            for (WorkLocation t : getAllWorkLocations()) {</span>
-<span class="fc bfc" id="L2372" title="All 2 branches covered.">                if (t.getId().equals(id)) return (T)t;</span>
+<span class="fc" id="L2407">        final String id = fco.getId();</span>
+<span class="fc bfc" id="L2408" title="All 2 branches covered.">        if (fco instanceof WorkLocation) {</span>
+<span class="pc bpc" id="L2409" title="1 of 2 branches missed.">            for (WorkLocation t : getAllWorkLocations()) {</span>
+<span class="fc bfc" id="L2410" title="All 2 branches covered.">                if (t.getId().equals(id)) return (T)t;</span>
             }
-<span class="pc bpc" id="L2374" title="1 of 2 branches missed.">        } else if (fco instanceof Tile) {</span>
-<span class="nc bnc" id="L2375" title="All 2 branches missed.">            if (getTile().getId().equals(id)) return (T)getTile();</span>
-<span class="nc bnc" id="L2376" title="All 2 branches missed.">            for (ColonyTile ct : getColonyTiles()) {</span>
-<span class="nc bnc" id="L2377" title="All 2 branches missed.">                if (ct.getWorkTile().getId().equals(id)) return (T)ct.getWorkTile();</span>
+<span class="pc bpc" id="L2412" title="1 of 2 branches missed.">        } else if (fco instanceof Tile) {</span>
+<span class="nc bnc" id="L2413" title="All 2 branches missed.">            if (getTile().getId().equals(id)) return (T)getTile();</span>
+<span class="nc bnc" id="L2414" title="All 2 branches missed.">            for (ColonyTile ct : getColonyTiles()) {</span>
+<span class="nc bnc" id="L2415" title="All 2 branches missed.">                if (ct.getWorkTile().getId().equals(id)) return (T)ct.getWorkTile();</span>
             }
-<span class="pc bpc" id="L2379" title="1 of 2 branches missed.">        } else if (fco instanceof Unit) {</span>
-<span class="pc bpc" id="L2380" title="1 of 2 branches missed.">            for (Unit t : getUnitList()) {</span>
-<span class="fc bfc" id="L2381" title="All 2 branches covered.">                if (t.getId().equals(id)) return (T)t;</span>
+<span class="pc bpc" id="L2417" title="1 of 2 branches missed.">        } else if (fco instanceof Unit) {</span>
+<span class="pc bpc" id="L2418" title="1 of 2 branches missed.">            for (Unit t : getUnitList()) {</span>
+<span class="fc bfc" id="L2419" title="All 2 branches covered.">                if (t.getId().equals(id)) return (T)t;</span>
             }
-<span class="nc bnc" id="L2383" title="All 2 branches missed.">            for (Unit t : getTile().getUnitList()) {</span>
-<span class="nc bnc" id="L2384" title="All 2 branches missed.">                if (t.getId().equals(id)) return (T)t;</span>
+<span class="nc bnc" id="L2421" title="All 2 branches missed.">            for (Unit t : getTile().getUnitList()) {</span>
+<span class="nc bnc" id="L2422" title="All 2 branches missed.">                if (t.getId().equals(id)) return (T)t;</span>
             }
         }
-<span class="nc" id="L2387">        return null;</span>
+<span class="nc" id="L2425">        return null;</span>
     }
 
 
@@ -2396,11 +2434,11 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     @Override
     public Set&lt;Ability&gt; getAbilities(String id, FreeColGameObjectType type,
                                      Turn turn) {
-<span class="pc bpc" id="L2399" title="1 of 2 branches missed.">        if (turn == null) turn = getGame().getTurn();</span>
-<span class="fc" id="L2400">        Set&lt;Ability&gt; result = super.getAbilities(id, type, turn);</span>
+<span class="pc bpc" id="L2437" title="1 of 2 branches missed.">        if (turn == null) turn = getGame().getTurn();</span>
+<span class="fc" id="L2438">        Set&lt;Ability&gt; result = super.getAbilities(id, type, turn);</span>
         // Owner abilities also apply to colonies
-<span class="pc bpc" id="L2402" title="1 of 2 branches missed.">        if (owner != null) result.addAll(owner.getAbilities(id, type, turn));</span>
-<span class="fc" id="L2403">        return result;</span>
+<span class="pc bpc" id="L2440" title="1 of 2 branches missed.">        if (owner != null) result.addAll(owner.getAbilities(id, type, turn));</span>
+<span class="fc" id="L2441">        return result;</span>
     }
 
 
@@ -2411,12 +2449,12 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public List&lt;FreeColGameObject&gt; getDisposeList() {
-<span class="fc" id="L2414">        List&lt;FreeColGameObject&gt; objects = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L2415" title="All 2 branches covered.">        for (WorkLocation workLocation : getAllWorkLocations()) {</span>
-<span class="fc" id="L2416">            objects.addAll(workLocation.getDisposeList());</span>
+<span class="fc" id="L2452">        List&lt;FreeColGameObject&gt; objects = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L2453" title="All 2 branches covered.">        for (WorkLocation workLocation : getAllWorkLocations()) {</span>
+<span class="fc" id="L2454">            objects.addAll(workLocation.getDisposeList());</span>
         }
-<span class="fc" id="L2418">        objects.addAll(super.getDisposeList());</span>
-<span class="fc" id="L2419">        return objects;</span>
+<span class="fc" id="L2456">        objects.addAll(super.getDisposeList());</span>
+<span class="fc" id="L2457">        return objects;</span>
     }
 
 
@@ -2437,7 +2475,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     @Override
     public StringTemplate getLocationLabelFor(Player player) {
         // Everyone can always work out a colony name.
-<span class="fc" id="L2440">        return StringTemplate.name(getName());</span>
+<span class="fc" id="L2478">        return StringTemplate.name(getName());</span>
     }
 
     /**
@@ -2445,10 +2483,10 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public boolean add(Locatable locatable) {
-<span class="nc bnc" id="L2448" title="All 2 branches missed.">        if (locatable instanceof Unit) {</span>
-<span class="nc" id="L2449">            return joinColony((Unit)locatable);</span>
+<span class="nc bnc" id="L2486" title="All 2 branches missed.">        if (locatable instanceof Unit) {</span>
+<span class="nc" id="L2487">            return joinColony((Unit)locatable);</span>
         }
-<span class="nc" id="L2451">        return super.add(locatable);</span>
+<span class="nc" id="L2489">        return super.add(locatable);</span>
     }
 
     /**
@@ -2456,17 +2494,17 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public boolean remove(Locatable locatable) {
-<span class="nc bnc" id="L2459" title="All 2 branches missed.">        if (locatable instanceof Unit) {</span>
-<span class="nc" id="L2460">            Location loc = locatable.getLocation();</span>
-<span class="nc bnc" id="L2461" title="All 2 branches missed.">            if (loc instanceof WorkLocation) {</span>
-<span class="nc" id="L2462">                WorkLocation wl = (WorkLocation)loc;</span>
-<span class="nc bnc" id="L2463" title="All 2 branches missed.">                if (wl.getColony() == this) {</span>
-<span class="nc" id="L2464">                    return wl.remove(locatable);</span>
+<span class="nc bnc" id="L2497" title="All 2 branches missed.">        if (locatable instanceof Unit) {</span>
+<span class="nc" id="L2498">            Location loc = locatable.getLocation();</span>
+<span class="nc bnc" id="L2499" title="All 2 branches missed.">            if (loc instanceof WorkLocation) {</span>
+<span class="nc" id="L2500">                WorkLocation wl = (WorkLocation)loc;</span>
+<span class="nc bnc" id="L2501" title="All 2 branches missed.">                if (wl.getColony() == this) {</span>
+<span class="nc" id="L2502">                    return wl.remove(locatable);</span>
                 }
             }                
-<span class="nc" id="L2467">            return false;</span>
+<span class="nc" id="L2505">            return false;</span>
         }
-<span class="nc" id="L2469">        return super.remove(locatable);</span>
+<span class="nc" id="L2507">        return super.remove(locatable);</span>
     }
 
     /**
@@ -2474,11 +2512,11 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public boolean contains(Locatable locatable) {
-<span class="nc bnc" id="L2477" title="All 2 branches missed.">        if (locatable instanceof Unit) {</span>
-<span class="nc" id="L2478">            return any(getAvailableWorkLocations(),</span>
-<span class="nc" id="L2479">                wl -&gt; wl.contains(locatable));</span>
+<span class="nc bnc" id="L2515" title="All 2 branches missed.">        if (locatable instanceof Unit) {</span>
+<span class="nc" id="L2516">            return any(getAvailableWorkLocations(),</span>
+<span class="nc" id="L2517">                wl -&gt; wl.contains(locatable));</span>
         }
-<span class="nc" id="L2481">        return super.contains(locatable);</span>
+<span class="nc" id="L2519">        return super.contains(locatable);</span>
     }
 
     /**
@@ -2486,8 +2524,8 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public int getUnitCount() {
-<span class="fc" id="L2489">        return getCurrentWorkLocations().stream()</span>
-<span class="fc" id="L2490">            .mapToInt(wl -&gt; wl.getUnitCount()).sum();</span>
+<span class="fc" id="L2527">        return getCurrentWorkLocations().stream()</span>
+<span class="fc" id="L2528">            .mapToInt(wl -&gt; wl.getUnitCount()).sum();</span>
     }
 
     /**
@@ -2495,11 +2533,11 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public List&lt;Unit&gt; getUnitList() {
-<span class="fc" id="L2498">        ArrayList&lt;Unit&gt; units = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L2499" title="All 2 branches covered.">        for (WorkLocation wl : getCurrentWorkLocations()) {</span>
-<span class="fc" id="L2500">            units.addAll(wl.getUnitList());</span>
+<span class="fc" id="L2536">        ArrayList&lt;Unit&gt; units = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L2537" title="All 2 branches covered.">        for (WorkLocation wl : getCurrentWorkLocations()) {</span>
+<span class="fc" id="L2538">            units.addAll(wl.getUnitList());</span>
         }
-<span class="fc" id="L2502">        return units;</span>
+<span class="fc" id="L2540">        return units;</span>
     }
 
     /**
@@ -2507,7 +2545,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public Location up() {
-<span class="fc" id="L2510">        return this;</span>
+<span class="fc" id="L2548">        return this;</span>
     }
 
     /**
@@ -2515,7 +2553,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public String toShortString() {
-<span class="fc" id="L2518">        return getName();</span>
+<span class="fc" id="L2556">        return getName();</span>
     }
 
 
@@ -2535,8 +2573,8 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public int getGoodsCapacity() {
-<span class="fc" id="L2538">        return (int)applyModifiers(0f, getGame().getTurn(),</span>
-<span class="fc" id="L2539">                                   Modifier.WAREHOUSE_STORAGE);</span>
+<span class="fc" id="L2576">        return (int)applyModifiers(0f, getGame().getTurn(),</span>
+<span class="fc" id="L2577">                                   Modifier.WAREHOUSE_STORAGE);</span>
     }
 
     /**
@@ -2544,10 +2582,10 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public boolean addGoods(GoodsType type, int amount) {
-<span class="fc" id="L2547">        super.addGoods(type, amount);</span>
-<span class="fc" id="L2548">        productionCache.invalidate(type);</span>
-<span class="fc" id="L2549">        modifySpecialGoods(type, amount);</span>
-<span class="fc" id="L2550">        return true;</span>
+<span class="fc" id="L2585">        super.addGoods(type, amount);</span>
+<span class="fc" id="L2586">        productionCache.invalidate(type);</span>
+<span class="fc" id="L2587">        modifySpecialGoods(type, amount);</span>
+<span class="fc" id="L2588">        return true;</span>
     }
 
     /**
@@ -2555,10 +2593,10 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public Goods removeGoods(GoodsType type, int amount) {
-<span class="fc" id="L2558">        Goods removed = super.removeGoods(type, amount);</span>
-<span class="fc" id="L2559">        productionCache.invalidate(type);</span>
-<span class="fc bfc" id="L2560" title="All 2 branches covered.">        if (removed != null) modifySpecialGoods(type, -removed.getAmount());</span>
-<span class="fc" id="L2561">        return removed;</span>
+<span class="fc" id="L2596">        Goods removed = super.removeGoods(type, amount);</span>
+<span class="fc" id="L2597">        productionCache.invalidate(type);</span>
+<span class="fc bfc" id="L2598" title="All 2 branches covered.">        if (removed != null) modifySpecialGoods(type, -removed.getAmount());</span>
+<span class="fc" id="L2599">        return removed;</span>
     }
 
 
@@ -2570,17 +2608,17 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     @Override
     public String getImageKey() {
         String key;
-<span class="nc bnc" id="L2573" title="All 2 branches missed.">        if (isUndead()) {</span>
-<span class="nc" id="L2574">            key = &quot;.undead&quot;;</span>
-<span class="nc" id="L2575">        } else {</span>
-<span class="nc" id="L2576">            int count = getDisplayUnitCount();</span>
-<span class="nc bnc" id="L2577" title="All 2 branches missed.">            key = (count &lt;= 3) ? &quot;.small&quot;</span>
-<span class="nc bnc" id="L2578" title="All 2 branches missed.">                : (count &lt;= 7) ? &quot;.medium&quot;</span>
-<span class="nc" id="L2579">                : &quot;.large&quot;;</span>
-<span class="nc" id="L2580">            String stockade = getStockadeKey();</span>
-<span class="nc bnc" id="L2581" title="All 2 branches missed.">            if (stockade != null) key += &quot;.&quot; + stockade;</span>
+<span class="nc bnc" id="L2611" title="All 2 branches missed.">        if (isUndead()) {</span>
+<span class="nc" id="L2612">            key = &quot;.undead&quot;;</span>
+<span class="nc" id="L2613">        } else {</span>
+<span class="nc" id="L2614">            int count = getDisplayUnitCount();</span>
+<span class="nc bnc" id="L2615" title="All 2 branches missed.">            key = (count &lt;= 3) ? &quot;.small&quot;</span>
+<span class="nc bnc" id="L2616" title="All 2 branches missed.">                : (count &lt;= 7) ? &quot;.medium&quot;</span>
+<span class="nc" id="L2617">                : &quot;.large&quot;;</span>
+<span class="nc" id="L2618">            String stockade = getStockadeKey();</span>
+<span class="nc bnc" id="L2619" title="All 2 branches missed.">            if (stockade != null) key += &quot;.&quot; + stockade;</span>
         }
-<span class="nc" id="L2583">        return &quot;image.tileitem.&quot; + getType().getId() + key;</span>
+<span class="nc" id="L2621">        return &quot;image.tileitem.&quot; + getType().getId() + key;</span>
     }
 
     /**
@@ -2588,9 +2626,9 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public Unit getDefendingUnit(Unit attacker) {
-<span class="pc bpc" id="L2591" title="1 of 2 branches missed.">        if (displayUnitCount &gt; 0) {</span>
+<span class="pc bpc" id="L2629" title="1 of 2 branches missed.">        if (displayUnitCount &gt; 0) {</span>
             // There are units, but we don't see them
-<span class="nc" id="L2593">            return null;</span>
+<span class="nc" id="L2631">            return null;</span>
         }
 
         // Note that this function will only return a unit working
@@ -2602,24 +2640,24 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
         // Returns an arbitrary unarmed land unit unless Paul Revere
         // is present as founding father, in which case the unit can
         // be armed as well.
-<span class="fc" id="L2605">        List&lt;Unit&gt; unitList = getUnitList();</span>
+<span class="fc" id="L2643">        List&lt;Unit&gt; unitList = getUnitList();</span>
 
-<span class="fc" id="L2607">        Unit defender = null;</span>
-<span class="fc" id="L2608">        double defencePower = -1.0;</span>
-<span class="fc bfc" id="L2609" title="All 2 branches covered.">        for (Unit nextUnit : unitList) {</span>
-<span class="fc" id="L2610">            double unitPower = getGame().getCombatModel()</span>
-<span class="fc" id="L2611">                .getDefencePower(attacker, nextUnit);</span>
-<span class="fc" id="L2612">            if (Unit.betterDefender(defender, defencePower,</span>
-<span class="pc bpc" id="L2613" title="1 of 2 branches missed.">                    nextUnit, unitPower)) {</span>
-<span class="fc" id="L2614">                defender = nextUnit;</span>
-<span class="fc" id="L2615">                defencePower = unitPower;</span>
+<span class="fc" id="L2645">        Unit defender = null;</span>
+<span class="fc" id="L2646">        double defencePower = -1.0;</span>
+<span class="fc bfc" id="L2647" title="All 2 branches covered.">        for (Unit nextUnit : unitList) {</span>
+<span class="fc" id="L2648">            double unitPower = getGame().getCombatModel()</span>
+<span class="fc" id="L2649">                .getDefencePower(attacker, nextUnit);</span>
+<span class="fc" id="L2650">            if (Unit.betterDefender(defender, defencePower,</span>
+<span class="pc bpc" id="L2651" title="1 of 2 branches missed.">                    nextUnit, unitPower)) {</span>
+<span class="fc" id="L2652">                defender = nextUnit;</span>
+<span class="fc" id="L2653">                defencePower = unitPower;</span>
             }
         }
-<span class="pc bpc" id="L2618" title="1 of 2 branches missed.">        if (defender == null) {</span>
-<span class="nc" id="L2619">            throw new IllegalStateException(&quot;Colony &quot; + getName()</span>
-<span class="nc" id="L2620">                + &quot; contains no units!&quot;);</span>
+<span class="pc bpc" id="L2656" title="1 of 2 branches missed.">        if (defender == null) {</span>
+<span class="nc" id="L2657">            throw new IllegalStateException(&quot;Colony &quot; + getName()</span>
+<span class="nc" id="L2658">                + &quot; contains no units!&quot;);</span>
         }
-<span class="fc" id="L2622">        return defender;</span>
+<span class="fc" id="L2660">        return defender;</span>
     }
 
     /**
@@ -2627,7 +2665,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public double getDefenceRatio() {
-<span class="nc" id="L2630">        return getTotalDefencePower() / (1 + getUnitCount());</span>
+<span class="nc" id="L2668">        return getTotalDefencePower() / (1 + getUnitCount());</span>
     }
 
     /**
@@ -2635,7 +2673,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public boolean isBadlyDefended() {
-<span class="fc bfc" id="L2638" title="All 2 branches covered.">        return getTotalDefencePower() &lt; 0.95 * getUnitCount() - 2.5;</span>
+<span class="fc bfc" id="L2676" title="All 2 branches covered.">        return getTotalDefencePower() &lt; 0.95 * getUnitCount() - 2.5;</span>
     }
 
     /**
@@ -2643,12 +2681,12 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public RandomRange getPlunderRange(Unit attacker) {
-<span class="fc bfc" id="L2646" title="All 2 branches covered.">        if (canBePlundered()) {</span>
-<span class="fc" id="L2647">            int upper = (owner.getGold() * (getUnitCount() + 1))</span>
-<span class="fc" id="L2648">                / (owner.getColoniesPopulation() + 1);</span>
-<span class="pc bpc" id="L2649" title="1 of 2 branches missed.">            if (upper &gt; 0) return new RandomRange(100, 1, upper+1, 1);</span>
+<span class="fc bfc" id="L2684" title="All 2 branches covered.">        if (canBePlundered()) {</span>
+<span class="fc" id="L2685">            int upper = (owner.getGold() * (getUnitCount() + 1))</span>
+<span class="fc" id="L2686">                / (owner.getColoniesPopulation() + 1);</span>
+<span class="pc bpc" id="L2687" title="1 of 2 branches missed.">            if (upper &gt; 0) return new RandomRange(100, 1, upper+1, 1);</span>
         }
-<span class="fc" id="L2651">        return null;</span>
+<span class="fc" id="L2689">        return null;</span>
     }
 
     /**
@@ -2656,7 +2694,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public int getSoL() {
-<span class="fc" id="L2659">        return sonsOfLiberty;</span>
+<span class="fc" id="L2697">        return sonsOfLiberty;</span>
     }
 
     /**
@@ -2664,8 +2702,8 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public int getUpkeep() {
-<span class="fc" id="L2667">        return buildingMap.values().stream()</span>
-<span class="fc" id="L2668">            .mapToInt(b -&gt; b.getType().getUpkeep()).sum();</span>
+<span class="fc" id="L2705">        return buildingMap.values().stream()</span>
+<span class="fc" id="L2706">            .mapToInt(b -&gt; b.getType().getUpkeep()).sum();</span>
     }
 
     /**
@@ -2673,8 +2711,8 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public int getTotalProductionOf(GoodsType goodsType) {
-<span class="fc" id="L2676">        return getCurrentWorkLocations().stream()</span>
-<span class="fc" id="L2677">            .mapToInt(wl -&gt; wl.getTotalProductionOf(goodsType)).sum();</span>
+<span class="fc" id="L2714">        return getCurrentWorkLocations().stream()</span>
+<span class="fc" id="L2715">            .mapToInt(wl -&gt; wl.getTotalProductionOf(goodsType)).sum();</span>
     }
 
     /**
@@ -2684,32 +2722,32 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     public boolean canProvideGoods(List&lt;AbstractGoods&gt; requiredGoods) {
         // Unlike priceGoods, this takes goods &quot;reserved&quot; for other
         // purposes into account.
-<span class="fc" id="L2687">        BuildableType buildable = getCurrentlyBuilding();</span>
-<span class="fc bfc" id="L2688" title="All 2 branches covered.">        for (AbstractGoods goods : requiredGoods) {</span>
-<span class="fc" id="L2689">            int available = getGoodsCount(goods.getType());</span>
+<span class="fc" id="L2725">        BuildableType buildable = getCurrentlyBuilding();</span>
+<span class="fc bfc" id="L2726" title="All 2 branches covered.">        for (AbstractGoods goods : requiredGoods) {</span>
+<span class="fc" id="L2727">            int available = getGoodsCount(goods.getType());</span>
 
-<span class="fc" id="L2691">            int breedingNumber = goods.getType().getBreedingNumber();</span>
-<span class="fc bfc" id="L2692" title="All 2 branches covered.">            if (breedingNumber != GoodsType.INFINITY) {</span>
-<span class="fc" id="L2693">                available -= breedingNumber;</span>
+<span class="fc" id="L2729">            int breedingNumber = goods.getType().getBreedingNumber();</span>
+<span class="fc bfc" id="L2730" title="All 2 branches covered.">            if (breedingNumber != GoodsType.INFINITY) {</span>
+<span class="fc" id="L2731">                available -= breedingNumber;</span>
             }
 
-<span class="pc bpc" id="L2696" title="1 of 2 branches missed.">            if (buildable != null) {</span>
-<span class="fc" id="L2697">                available -= AbstractGoods.getCount(goods.getType(),</span>
-<span class="fc" id="L2698">                    buildable.getRequiredGoods());</span>
+<span class="pc bpc" id="L2734" title="1 of 2 branches missed.">            if (buildable != null) {</span>
+<span class="fc" id="L2735">                available -= AbstractGoods.getCount(goods.getType(),</span>
+<span class="fc" id="L2736">                    buildable.getRequiredGoods());</span>
             }
 
-<span class="fc bfc" id="L2701" title="All 2 branches covered.">            if (available &lt; goods.getAmount()) return false;</span>
+<span class="fc bfc" id="L2739" title="All 2 branches covered.">            if (available &lt; goods.getAmount()) return false;</span>
         }
-<span class="fc" id="L2703">        return true;</span>
+<span class="fc" id="L2741">        return true;</span>
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean hasContacted(Player player) {
-<span class="pc bpc" id="L2710" title="1 of 2 branches missed.">        return player != null</span>
-<span class="fc bfc" id="L2711" title="All 2 branches covered.">            &amp;&amp; (player.isEuropean()</span>
-<span class="pc bpc" id="L2712" title="1 of 2 branches missed.">                || getOwner().getStance(player) != Stance.UNCONTACTED);</span>
+<span class="pc bpc" id="L2748" title="1 of 2 branches missed.">        return player != null</span>
+<span class="fc bfc" id="L2749" title="All 2 branches covered.">            &amp;&amp; (player.isEuropean()</span>
+<span class="pc bpc" id="L2750" title="1 of 2 branches missed.">                || getOwner().getStance(player) != Stance.UNCONTACTED);</span>
     }
 
     /**
@@ -2717,9 +2755,9 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public StringTemplate getAlarmLevelLabel(Player player) {
-<span class="nc" id="L2720">        Stance stance = getOwner().getStance(player);</span>
-<span class="nc" id="L2721">        return StringTemplate.template(&quot;model.colony.&quot; + stance.getKey())</span>
-<span class="nc" id="L2722">            .addStringTemplate(&quot;%nation%&quot;, getOwner().getNationLabel());</span>
+<span class="nc" id="L2758">        Stance stance = getOwner().getStance(player);</span>
+<span class="nc" id="L2759">        return StringTemplate.template(&quot;model.colony.&quot; + stance.getKey())</span>
+<span class="nc" id="L2760">            .addStringTemplate(&quot;%nation%&quot;, getOwner().getNationLabel());</span>
     }
 
 
@@ -2731,10 +2769,10 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public int getExportAmount(GoodsType goodsType, int turns) {
-<span class="fc" id="L2734">        final int present = Math.max(0, getGoodsCount(goodsType)</span>
-<span class="fc" id="L2735">            + turns * getNetProductionOf(goodsType));</span>
-<span class="fc" id="L2736">        final ExportData ed = getExportData(goodsType);</span>
-<span class="fc" id="L2737">        return Math.max(0, present - ed.getExportLevel());</span>
+<span class="fc" id="L2772">        final int present = Math.max(0, getGoodsCount(goodsType)</span>
+<span class="fc" id="L2773">            + turns * getNetProductionOf(goodsType));</span>
+<span class="fc" id="L2774">        final ExportData ed = getExportData(goodsType);</span>
+<span class="fc" id="L2775">        return Math.max(0, present - ed.getExportLevel());</span>
     }
 
     /**
@@ -2742,12 +2780,12 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public int getImportAmount(GoodsType goodsType, int turns) {
-<span class="pc bpc" id="L2745" title="1 of 2 branches missed.">        if (goodsType.limitIgnored()) return GoodsContainer.HUGE_CARGO_SIZE;</span>
+<span class="pc bpc" id="L2783" title="1 of 2 branches missed.">        if (goodsType.limitIgnored()) return GoodsContainer.HUGE_CARGO_SIZE;</span>
 
-<span class="fc" id="L2747">        final int present = Math.max(0, getGoodsCount(goodsType)</span>
-<span class="fc" id="L2748">            + turns * getNetProductionOf(goodsType));</span>
-<span class="fc" id="L2749">        int capacity = getWarehouseCapacity();</span>
-<span class="fc" id="L2750">        return Math.max(0, capacity - present);</span>
+<span class="fc" id="L2785">        final int present = Math.max(0, getGoodsCount(goodsType)</span>
+<span class="fc" id="L2786">            + turns * getNetProductionOf(goodsType));</span>
+<span class="fc" id="L2787">        int capacity = getWarehouseCapacity();</span>
+<span class="fc" id="L2788">        return Math.max(0, capacity - present);</span>
     }
 
 
@@ -2759,8 +2797,8 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * Add port ability to non-landlocked colonies.
      */
     protected void addPortAbility() {
-<span class="fc" id="L2762">        addAbility(new Ability(Ability.HAS_PORT));</span>
-<span class="fc" id="L2763">    }</span>
+<span class="fc" id="L2800">        addAbility(new Ability(Ability.HAS_PORT));</span>
+<span class="fc" id="L2801">    }</span>
     
     /**
      * Check the integrity of the build queues.  Catches build fails
@@ -2771,36 +2809,36 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      *     problems were fixed, positive if no problems found at all.
      */
     public int checkBuildQueueIntegrity(boolean fix) {
-<span class="fc" id="L2774">        int result = 1;</span>
-<span class="fc" id="L2775">        List&lt;BuildableType&gt; buildables = buildQueue.getValues();</span>
-<span class="fc" id="L2776">        List&lt;BuildableType&gt; assumeBuilt = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L2777" title="All 2 branches covered.">        for (int i = 0; i &lt; buildables.size(); i++) {</span>
-<span class="fc" id="L2778">            BuildableType bt = buildables.get(i);</span>
-<span class="fc" id="L2779">            NoBuildReason reason = getNoBuildReason(bt, assumeBuilt);</span>
-<span class="pc bpc" id="L2780" title="1 of 2 branches missed.">            if (reason == NoBuildReason.NONE) {</span>
-<span class="fc" id="L2781">                assumeBuilt.add(bt);</span>
-<span class="pc bnc" id="L2782" title="All 2 branches missed.">            } else if (fix) {</span>
-<span class="nc" id="L2783">                buildQueue.remove(i);</span>
-<span class="nc" id="L2784">                result = Math.min(result, 0);</span>
-<span class="nc" id="L2785">            } else {</span>
-<span class="nc" id="L2786">                result = -1;</span>
+<span class="fc" id="L2812">        int result = 1;</span>
+<span class="fc" id="L2813">        List&lt;BuildableType&gt; buildables = buildQueue.getValues();</span>
+<span class="fc" id="L2814">        List&lt;BuildableType&gt; assumeBuilt = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L2815" title="All 2 branches covered.">        for (int i = 0; i &lt; buildables.size(); i++) {</span>
+<span class="fc" id="L2816">            BuildableType bt = buildables.get(i);</span>
+<span class="fc" id="L2817">            NoBuildReason reason = getNoBuildReason(bt, assumeBuilt);</span>
+<span class="pc bpc" id="L2818" title="1 of 2 branches missed.">            if (reason == NoBuildReason.NONE) {</span>
+<span class="fc" id="L2819">                assumeBuilt.add(bt);</span>
+<span class="pc bnc" id="L2820" title="All 2 branches missed.">            } else if (fix) {</span>
+<span class="nc" id="L2821">                buildQueue.remove(i);</span>
+<span class="nc" id="L2822">                result = Math.min(result, 0);</span>
+<span class="nc" id="L2823">            } else {</span>
+<span class="nc" id="L2824">                result = -1;</span>
             }
         }
-<span class="fc" id="L2789">        List&lt;UnitType&gt; unitTypes = populationQueue.getValues();</span>
-<span class="fc" id="L2790">        assumeBuilt.clear();</span>
-<span class="fc bfc" id="L2791" title="All 2 branches covered.">        for (int i = 0; i &lt; unitTypes.size(); i++) {</span>
-<span class="fc" id="L2792">            UnitType ut = unitTypes.get(i);</span>
-<span class="fc" id="L2793">            NoBuildReason reason = getNoBuildReason(ut, assumeBuilt);</span>
-<span class="pc bpc" id="L2794" title="1 of 2 branches missed.">            if (reason == NoBuildReason.NONE) {</span>
-<span class="fc" id="L2795">                assumeBuilt.add(ut);</span>
-<span class="pc bnc" id="L2796" title="All 2 branches missed.">            } else if (fix) {                </span>
-<span class="nc" id="L2797">                populationQueue.remove(i);</span>
-<span class="nc" id="L2798">                result = Math.min(result, 0);</span>
-<span class="nc" id="L2799">            } else {</span>
-<span class="nc" id="L2800">                result = -1;</span>
+<span class="fc" id="L2827">        List&lt;UnitType&gt; unitTypes = populationQueue.getValues();</span>
+<span class="fc" id="L2828">        assumeBuilt.clear();</span>
+<span class="fc bfc" id="L2829" title="All 2 branches covered.">        for (int i = 0; i &lt; unitTypes.size(); i++) {</span>
+<span class="fc" id="L2830">            UnitType ut = unitTypes.get(i);</span>
+<span class="fc" id="L2831">            NoBuildReason reason = getNoBuildReason(ut, assumeBuilt);</span>
+<span class="pc bpc" id="L2832" title="1 of 2 branches missed.">            if (reason == NoBuildReason.NONE) {</span>
+<span class="fc" id="L2833">                assumeBuilt.add(ut);</span>
+<span class="pc bnc" id="L2834" title="All 2 branches missed.">            } else if (fix) {                </span>
+<span class="nc" id="L2835">                populationQueue.remove(i);</span>
+<span class="nc" id="L2836">                result = Math.min(result, 0);</span>
+<span class="nc" id="L2837">            } else {</span>
+<span class="nc" id="L2838">                result = -1;</span>
             }
         }
-<span class="fc" id="L2803">        return result;</span>
+<span class="fc" id="L2841">        return result;</span>
     }
 
 
@@ -2811,20 +2849,20 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     public int checkIntegrity(boolean fix) {
-<span class="nc" id="L2814">        int result = super.checkIntegrity(fix);</span>
+<span class="nc" id="L2852">        int result = super.checkIntegrity(fix);</span>
 
         // @compat 0.10.x
-<span class="nc bnc" id="L2817" title="All 4 branches missed.">        if (!isLandLocked() &amp;&amp; !hasAbility(Ability.HAS_PORT)) {</span>
-<span class="nc bnc" id="L2818" title="All 2 branches missed.">            if (fix) {</span>
-<span class="nc" id="L2819">                addPortAbility();</span>
-<span class="nc" id="L2820">                result = Math.min(result, 0);</span>
-<span class="nc" id="L2821">            } else {</span>
-<span class="nc" id="L2822">                result = -1;</span>
+<span class="nc bnc" id="L2855" title="All 4 branches missed.">        if (!isLandLocked() &amp;&amp; !hasAbility(Ability.HAS_PORT)) {</span>
+<span class="nc bnc" id="L2856" title="All 2 branches missed.">            if (fix) {</span>
+<span class="nc" id="L2857">                addPortAbility();</span>
+<span class="nc" id="L2858">                result = Math.min(result, 0);</span>
+<span class="nc" id="L2859">            } else {</span>
+<span class="nc" id="L2860">                result = -1;</span>
             }
         }
         // end @compat 0.10.x
 
-<span class="nc" id="L2827">        return Math.min(result, checkBuildQueueIntegrity(fix));</span>
+<span class="nc" id="L2865">        return Math.min(result, checkBuildQueueIntegrity(fix));</span>
     }
 
 
@@ -2841,7 +2879,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     private static final String POPULATION_QUEUE_TAG = &quot;populationQueueItem&quot;;
     private static final String SONS_OF_LIBERTY_TAG = &quot;sonsOfLiberty&quot;;
     private static final String TORIES_TAG = &quot;tories&quot;;
-<span class="fc" id="L2844">    private static final String UNIT_COUNT_TAG = &quot;unitCount&quot;;</span>
+<span class="fc" id="L2882">    private static final String UNIT_COUNT_TAG = &quot;unitCount&quot;;</span>
 
 
     /**
@@ -2849,114 +2887,114 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     @Override
     protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
-<span class="fc" id="L2852">        super.writeAttributes(xw);</span>
+<span class="fc" id="L2890">        super.writeAttributes(xw);</span>
 
         // Delegated from Settlement
-<span class="fc" id="L2855">        xw.writeAttribute(NAME_TAG, getName());</span>
+<span class="fc" id="L2893">        xw.writeAttribute(NAME_TAG, getName());</span>
 
-<span class="fc" id="L2857">        xw.writeAttribute(ESTABLISHED_TAG, established.getNumber());</span>
+<span class="fc" id="L2895">        xw.writeAttribute(ESTABLISHED_TAG, established.getNumber());</span>
 
         // SoL has to be visible for the popular support bonus to be
         // visible to an attacking rebel player.
-<span class="fc" id="L2861">        xw.writeAttribute(SONS_OF_LIBERTY_TAG, sonsOfLiberty);</span>
+<span class="fc" id="L2899">        xw.writeAttribute(SONS_OF_LIBERTY_TAG, sonsOfLiberty);</span>
 
-<span class="fc bfc" id="L2863" title="All 2 branches covered.">        if (xw.validFor(getOwner())) {</span>
+<span class="fc bfc" id="L2901" title="All 2 branches covered.">        if (xw.validFor(getOwner())) {</span>
 
-<span class="fc" id="L2865">            xw.writeAttribute(OLD_SONS_OF_LIBERTY_TAG, oldSonsOfLiberty);</span>
+<span class="fc" id="L2903">            xw.writeAttribute(OLD_SONS_OF_LIBERTY_TAG, oldSonsOfLiberty);</span>
 
-<span class="fc" id="L2867">            xw.writeAttribute(TORIES_TAG, tories);</span>
+<span class="fc" id="L2905">            xw.writeAttribute(TORIES_TAG, tories);</span>
 
-<span class="fc" id="L2869">            xw.writeAttribute(OLD_TORIES_TAG, oldTories);</span>
+<span class="fc" id="L2907">            xw.writeAttribute(OLD_TORIES_TAG, oldTories);</span>
 
-<span class="fc" id="L2871">            xw.writeAttribute(LIBERTY_TAG, liberty);</span>
+<span class="fc" id="L2909">            xw.writeAttribute(LIBERTY_TAG, liberty);</span>
 
-<span class="fc" id="L2873">            xw.writeAttribute(IMMIGRATION_TAG, immigration);</span>
+<span class="fc" id="L2911">            xw.writeAttribute(IMMIGRATION_TAG, immigration);</span>
 
-<span class="fc" id="L2875">            xw.writeAttribute(PRODUCTION_BONUS_TAG, productionBonus);</span>
+<span class="fc" id="L2913">            xw.writeAttribute(PRODUCTION_BONUS_TAG, productionBonus);</span>
 
-<span class="fc" id="L2877">        } else {</span>
+<span class="fc" id="L2915">        } else {</span>
 
-<span class="fc" id="L2879">            int uc = getDisplayUnitCount();</span>
-<span class="pc bpc" id="L2880" title="1 of 2 branches missed.">            if (uc &lt;= 0) {</span>
-<span class="nc" id="L2881">                logger.warning(&quot;Unit count fail: &quot; + uc + &quot; id=&quot; + getId()</span>
-<span class="nc" id="L2882">                    + &quot; unitCount=&quot; + getUnitCount()</span>
-<span class="nc" id="L2883">                    + &quot; scope=&quot; + xw.getWriteScope()</span>
-<span class="nc" id="L2884">                    + &quot; player=&quot; + xw.getWriteScope().getClient() + &quot;\n&quot;</span>
-<span class="nc" id="L2885">                    + net.sf.freecol.common.debug.FreeColDebugger.stackTraceToString());</span>
+<span class="fc" id="L2917">            int uc = getDisplayUnitCount();</span>
+<span class="pc bpc" id="L2918" title="1 of 2 branches missed.">            if (uc &lt;= 0) {</span>
+<span class="nc" id="L2919">                logger.warning(&quot;Unit count fail: &quot; + uc + &quot; id=&quot; + getId()</span>
+<span class="nc" id="L2920">                    + &quot; unitCount=&quot; + getUnitCount()</span>
+<span class="nc" id="L2921">                    + &quot; scope=&quot; + xw.getWriteScope()</span>
+<span class="nc" id="L2922">                    + &quot; player=&quot; + xw.getWriteScope().getClient() + &quot;\n&quot;</span>
+<span class="nc" id="L2923">                    + net.sf.freecol.common.debug.FreeColDebugger.stackTraceToString());</span>
             }
-<span class="fc" id="L2887">            xw.writeAttribute(UNIT_COUNT_TAG, uc);</span>
+<span class="fc" id="L2925">            xw.writeAttribute(UNIT_COUNT_TAG, uc);</span>
         }
-<span class="fc" id="L2889">    }</span>
+<span class="fc" id="L2927">    }</span>
 
     /**
      * {@inheritDoc}
      */
     @Override
     protected void writeChildren(FreeColXMLWriter xw) throws XMLStreamException {
-<span class="fc" id="L2896">        super.writeChildren(xw);</span>
+<span class="fc" id="L2934">        super.writeChildren(xw);</span>
 
-<span class="fc bfc" id="L2898" title="All 2 branches covered.">        if (xw.validFor(getOwner())) {</span>
+<span class="fc bfc" id="L2936" title="All 2 branches covered.">        if (xw.validFor(getOwner())) {</span>
 
-<span class="fc bfc" id="L2900" title="All 2 branches covered.">            for (Entry&lt;String, ExportData&gt; e : mapEntriesByKey(exportData)) {</span>
-<span class="fc" id="L2901">                e.getValue().toXML(xw);</span>
+<span class="fc bfc" id="L2938" title="All 2 branches covered.">            for (Entry&lt;String, ExportData&gt; e : mapEntriesByKey(exportData)) {</span>
+<span class="fc" id="L2939">                e.getValue().toXML(xw);</span>
             }
 
-<span class="fc bfc" id="L2904" title="All 2 branches covered.">            for (WorkLocation workLocation : getSortedCopy(getAllWorkLocations())) {</span>
-<span class="fc" id="L2905">                workLocation.toXML(xw);</span>
+<span class="fc bfc" id="L2942" title="All 2 branches covered.">            for (WorkLocation workLocation : getSortedCopy(getAllWorkLocations())) {</span>
+<span class="fc" id="L2943">                workLocation.toXML(xw);</span>
             }
 
-<span class="fc bfc" id="L2908" title="All 2 branches covered.">            for (BuildableType item : buildQueue.getValues()) { // In order!</span>
-<span class="fc" id="L2909">                xw.writeStartElement(BUILD_QUEUE_TAG);</span>
+<span class="fc bfc" id="L2946" title="All 2 branches covered.">            for (BuildableType item : buildQueue.getValues()) { // In order!</span>
+<span class="fc" id="L2947">                xw.writeStartElement(BUILD_QUEUE_TAG);</span>
 
-<span class="fc" id="L2911">                xw.writeAttribute(ID_ATTRIBUTE_TAG, item);</span>
+<span class="fc" id="L2949">                xw.writeAttribute(ID_ATTRIBUTE_TAG, item);</span>
 
-<span class="fc" id="L2913">                xw.writeEndElement();</span>
+<span class="fc" id="L2951">                xw.writeEndElement();</span>
             }
 
-<span class="fc bfc" id="L2916" title="All 2 branches covered.">            for (BuildableType item : populationQueue.getValues()) { // In order</span>
-<span class="fc" id="L2917">                xw.writeStartElement(POPULATION_QUEUE_TAG);</span>
+<span class="fc bfc" id="L2954" title="All 2 branches covered.">            for (BuildableType item : populationQueue.getValues()) { // In order</span>
+<span class="fc" id="L2955">                xw.writeStartElement(POPULATION_QUEUE_TAG);</span>
 
-<span class="fc" id="L2919">                xw.writeAttribute(ID_ATTRIBUTE_TAG, item);</span>
+<span class="fc" id="L2957">                xw.writeAttribute(ID_ATTRIBUTE_TAG, item);</span>
 
-<span class="fc" id="L2921">                xw.writeEndElement();</span>
+<span class="fc" id="L2959">                xw.writeEndElement();</span>
             }
 
-<span class="fc" id="L2924">        } else {</span>
+<span class="fc" id="L2962">        } else {</span>
             // Special case.  Serialize stockade-class buildings to
             // otherwise unprivileged clients as the stockade level is
             // visible to anyone who can see the colony.  This should
             // have no other information leaks because stockade
             // buildings have no production or units inside.
-<span class="fc" id="L2930">            Building stockade = getStockade();</span>
-<span class="pc bpc" id="L2931" title="1 of 2 branches missed.">            if (stockade != null) stockade.toXML(xw);</span>
+<span class="fc" id="L2968">            Building stockade = getStockade();</span>
+<span class="pc bpc" id="L2969" title="1 of 2 branches missed.">            if (stockade != null) stockade.toXML(xw);</span>
         }
-<span class="fc" id="L2933">    }</span>
+<span class="fc" id="L2971">    }</span>
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
-<span class="fc" id="L2940">        super.readAttributes(xr);</span>
+<span class="fc" id="L2978">        super.readAttributes(xr);</span>
 
-<span class="fc" id="L2942">        established = new Turn(xr.getAttribute(ESTABLISHED_TAG, 0));</span>
+<span class="fc" id="L2980">        established = new Turn(xr.getAttribute(ESTABLISHED_TAG, 0));</span>
 
-<span class="fc" id="L2944">        sonsOfLiberty = xr.getAttribute(SONS_OF_LIBERTY_TAG, 0);</span>
+<span class="fc" id="L2982">        sonsOfLiberty = xr.getAttribute(SONS_OF_LIBERTY_TAG, 0);</span>
 
-<span class="fc" id="L2946">        oldSonsOfLiberty = xr.getAttribute(OLD_SONS_OF_LIBERTY_TAG, 0);</span>
+<span class="fc" id="L2984">        oldSonsOfLiberty = xr.getAttribute(OLD_SONS_OF_LIBERTY_TAG, 0);</span>
 
-<span class="fc" id="L2948">        tories = xr.getAttribute(TORIES_TAG, 0);</span>
+<span class="fc" id="L2986">        tories = xr.getAttribute(TORIES_TAG, 0);</span>
 
-<span class="fc" id="L2950">        oldTories = xr.getAttribute(OLD_TORIES_TAG, 0);</span>
+<span class="fc" id="L2988">        oldTories = xr.getAttribute(OLD_TORIES_TAG, 0);</span>
 
-<span class="fc" id="L2952">        liberty = xr.getAttribute(LIBERTY_TAG, 0);</span>
+<span class="fc" id="L2990">        liberty = xr.getAttribute(LIBERTY_TAG, 0);</span>
 
-<span class="fc" id="L2954">        immigration = xr.getAttribute(IMMIGRATION_TAG, 0);</span>
+<span class="fc" id="L2992">        immigration = xr.getAttribute(IMMIGRATION_TAG, 0);</span>
 
-<span class="fc" id="L2956">        productionBonus = xr.getAttribute(PRODUCTION_BONUS_TAG, 0);</span>
+<span class="fc" id="L2994">        productionBonus = xr.getAttribute(PRODUCTION_BONUS_TAG, 0);</span>
 
-<span class="fc" id="L2958">        displayUnitCount = xr.getAttribute(UNIT_COUNT_TAG, -1);</span>
-<span class="fc" id="L2959">    }</span>
+<span class="fc" id="L2996">        displayUnitCount = xr.getAttribute(UNIT_COUNT_TAG, -1);</span>
+<span class="fc" id="L2997">    }</span>
 
     /**
      * {@inheritDoc}
@@ -2964,66 +3002,66 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
     @Override
     public void readChildren(FreeColXMLReader xr) throws XMLStreamException {
         // Clear containers.
-<span class="fc" id="L2967">        colonyTiles.clear();</span>
-<span class="fc" id="L2968">        buildingMap.clear();</span>
-<span class="fc" id="L2969">        exportData.clear();</span>
-<span class="fc" id="L2970">        buildQueue.clear();</span>
-<span class="fc" id="L2971">        populationQueue.clear();</span>
+<span class="fc" id="L3005">        colonyTiles.clear();</span>
+<span class="fc" id="L3006">        buildingMap.clear();</span>
+<span class="fc" id="L3007">        exportData.clear();</span>
+<span class="fc" id="L3008">        buildQueue.clear();</span>
+<span class="fc" id="L3009">        populationQueue.clear();</span>
 
-<span class="fc" id="L2973">        super.readChildren(xr);</span>
+<span class="fc" id="L3011">        super.readChildren(xr);</span>
 
-<span class="fc" id="L2975">        invalidateCache();</span>
-<span class="fc" id="L2976">    }</span>
+<span class="fc" id="L3013">        invalidateCache();</span>
+<span class="fc" id="L3014">    }</span>
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void readChild(FreeColXMLReader xr) throws XMLStreamException {
-<span class="fc" id="L2983">        final Specification spec = getSpecification();</span>
-<span class="fc" id="L2984">        final Game game = getGame();</span>
-<span class="fc" id="L2985">        final String tag = xr.getLocalName();</span>
+<span class="fc" id="L3021">        final Specification spec = getSpecification();</span>
+<span class="fc" id="L3022">        final Game game = getGame();</span>
+<span class="fc" id="L3023">        final String tag = xr.getLocalName();</span>
 
-<span class="fc bfc" id="L2987" title="All 2 branches covered.">        if (BUILD_QUEUE_TAG.equals(tag)) {</span>
-<span class="fc" id="L2988">            BuildableType bt = xr.getType(spec, ID_ATTRIBUTE_TAG,</span>
-<span class="fc" id="L2989">                BuildableType.class, (BuildableType)null);</span>
-<span class="pc bpc" id="L2990" title="1 of 2 branches missed.">            if (bt != null) buildQueue.add(bt);</span>
-<span class="fc" id="L2991">            xr.closeTag(BUILD_QUEUE_TAG);</span>
+<span class="fc bfc" id="L3025" title="All 2 branches covered.">        if (BUILD_QUEUE_TAG.equals(tag)) {</span>
+<span class="fc" id="L3026">            BuildableType bt = xr.getType(spec, ID_ATTRIBUTE_TAG,</span>
+<span class="fc" id="L3027">                BuildableType.class, (BuildableType)null);</span>
+<span class="pc bpc" id="L3028" title="1 of 2 branches missed.">            if (bt != null) buildQueue.add(bt);</span>
+<span class="fc" id="L3029">            xr.closeTag(BUILD_QUEUE_TAG);</span>
 
-<span class="fc bfc" id="L2993" title="All 2 branches covered.">        } else if (POPULATION_QUEUE_TAG.equals(xr.getLocalName())) {</span>
-<span class="fc" id="L2994">            UnitType ut = xr.getType(spec, ID_ATTRIBUTE_TAG,</span>
-<span class="fc" id="L2995">                                     UnitType.class, (UnitType)null);</span>
-<span class="pc bpc" id="L2996" title="1 of 2 branches missed.">            if (ut != null) populationQueue.add(ut);</span>
-<span class="fc" id="L2997">            xr.closeTag(POPULATION_QUEUE_TAG);</span>
+<span class="fc bfc" id="L3031" title="All 2 branches covered.">        } else if (POPULATION_QUEUE_TAG.equals(xr.getLocalName())) {</span>
+<span class="fc" id="L3032">            UnitType ut = xr.getType(spec, ID_ATTRIBUTE_TAG,</span>
+<span class="fc" id="L3033">                                     UnitType.class, (UnitType)null);</span>
+<span class="pc bpc" id="L3034" title="1 of 2 branches missed.">            if (ut != null) populationQueue.add(ut);</span>
+<span class="fc" id="L3035">            xr.closeTag(POPULATION_QUEUE_TAG);</span>
 
-<span class="fc bfc" id="L2999" title="All 2 branches covered.">        } else if (Building.getXMLElementTagName().equals(tag)) {</span>
-<span class="fc" id="L3000">            addBuilding(xr.readFreeColGameObject(game, Building.class));</span>
+<span class="fc bfc" id="L3037" title="All 2 branches covered.">        } else if (Building.getXMLElementTagName().equals(tag)) {</span>
+<span class="fc" id="L3038">            addBuilding(xr.readFreeColGameObject(game, Building.class));</span>
 
-<span class="fc bfc" id="L3002" title="All 2 branches covered.">        } else if (ColonyTile.getXMLElementTagName().equals(tag)) {</span>
-<span class="fc" id="L3003">            colonyTiles.add(xr.readFreeColGameObject(game, ColonyTile.class));</span>
+<span class="fc bfc" id="L3040" title="All 2 branches covered.">        } else if (ColonyTile.getXMLElementTagName().equals(tag)) {</span>
+<span class="fc" id="L3041">            colonyTiles.add(xr.readFreeColGameObject(game, ColonyTile.class));</span>
 
-<span class="fc bfc" id="L3005" title="All 2 branches covered.">        } else if (ExportData.getXMLElementTagName().equals(tag)) {</span>
-<span class="fc" id="L3006">            ExportData data = new ExportData(xr);</span>
-<span class="fc" id="L3007">            exportData.put(data.getId(), data);</span>
+<span class="fc bfc" id="L3043" title="All 2 branches covered.">        } else if (ExportData.getXMLElementTagName().equals(tag)) {</span>
+<span class="fc" id="L3044">            ExportData data = new ExportData(xr);</span>
+<span class="fc" id="L3045">            exportData.put(data.getId(), data);</span>
         
-<span class="fc" id="L3009">        } else {</span>
-<span class="fc" id="L3010">            super.readChild(xr);</span>
+<span class="fc" id="L3047">        } else {</span>
+<span class="fc" id="L3048">            super.readChild(xr);</span>
         }
-<span class="fc" id="L3012">    }</span>
+<span class="fc" id="L3050">    }</span>
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-<span class="fc" id="L3019">        return getName();</span>
+<span class="fc" id="L3057">        return getName();</span>
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-<span class="fc" id="L3026">    public String getXMLTagName() { return getXMLElementTagName(); }</span>
+<span class="fc" id="L3064">    public String getXMLTagName() { return getXMLElementTagName(); }</span>
 
     /**
      * Gets the tag name of the root element representing this object.
@@ -3031,7 +3069,7 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      * @return &quot;colony&quot;.
      */
     public static String getXMLElementTagName() {
-<span class="fc" id="L3034">        return &quot;colony&quot;;</span>
+<span class="fc" id="L3072">        return &quot;colony&quot;;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Utils.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.util</a> &gt; <span class="el_source">Utils.java</span></div><h1>Utils.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Utils.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.util</a> &gt; <span class="el_source">Utils.java</span></div><h1>Utils.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 <span class="fc" id="L44">    private static final Logger logger = Logger.getLogger(Utils.class.getName());</span>
 
     /** Hex constant digits for get/restoreRandomState. */
-    private static final String HEX_DIGITS = &quot;0123456789ABCDEF&quot;;
+<span class="fc" id="L47">    private static final String HEX_DIGITS = &quot;0123456789ABCDEF&quot;;</span>
 
 
     /**
@@ -82,9 +82,9 @@ import java.util.logging.Logger;
 <span class="fc" id="L82">            ObjectOutputStream oos = new ObjectOutputStream(bos);</span>
 <span class="fc" id="L83">            oos.writeObject(random);</span>
 <span class="fc" id="L84">            oos.flush();</span>
-<span class="nc" id="L85">        } catch (IOException e) {</span>
+<span class="pc" id="L85">        } catch (IOException e) {</span>
 <span class="nc" id="L86">            throw new IllegalStateException(&quot;IO exception in memory!?&quot;, e);</span>
-<span class="fc" id="L87">        }</span>
+        }
 <span class="fc" id="L88">        byte[] bytes = bos.toByteArray();</span>
 <span class="fc" id="L89">        StringBuilder sb = new StringBuilder(bytes.length * 2);</span>
 <span class="fc bfc" id="L90" title="All 2 branches covered.">        for (byte b : bytes) {</span>
@@ -133,7 +133,7 @@ import java.util.logging.Logger;
 <span class="nc" id="L133">            logger.log(Level.WARNING, &quot;No FileOutputStream for &quot;</span>
 <span class="nc" id="L134">                + file.getName(), e);</span>
 <span class="nc" id="L135">            return null;</span>
-<span class="nc" id="L136">        }</span>
+        }
         OutputStreamWriter osw;
         try {
 <span class="nc" id="L139">            osw = new OutputStreamWriter(fos, &quot;UTF-8&quot;);</span>
@@ -144,10 +144,10 @@ import java.util.logging.Logger;
 <span class="nc" id="L144">                fos.close();</span>
 <span class="nc" id="L145">            } catch (IOException ioe) {</span>
 <span class="nc" id="L146">                logger.log(Level.WARNING, &quot;Failed to close&quot;, ioe);</span>
-<span class="nc" id="L147">            }</span>
+            }
 <span class="nc" id="L148">            return null;</span>
-<span class="nc" id="L149">        }</span>
+        }
 <span class="nc" id="L150">        return osw;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

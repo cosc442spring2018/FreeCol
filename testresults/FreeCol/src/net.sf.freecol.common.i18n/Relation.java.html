@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Relation.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.i18n</a> &gt; <span class="el_source">Relation.java</span></div><h1>Relation.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Relation.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.i18n</a> &gt; <span class="el_source">Relation.java</span></div><h1>Relation.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -79,7 +79,7 @@ public class Relation {
 <span class="pc bpc" id="L79" title="2 of 4 branches missed.">        if (integer &amp;&amp; value != (int) value) {</span>
 <span class="nc" id="L80">            return false;</span>
         }
-<span class="fc bfc" id="L82" title="All 6 branches covered.">        return (low &lt;= value &amp;&amp; value &lt;= high) != negated;</span>
+<span class="fc bfc" id="L82" title="All 4 branches covered.">        return (low &lt;= value &amp;&amp; value &lt;= high) != negated;</span>
     }
 
     @Override
@@ -93,7 +93,7 @@ public class Relation {
 <span class="fc" id="L93">            sb.append(&quot;is &quot;);</span>
 <span class="fc bfc" id="L94" title="All 2 branches covered.">            if (negated) sb.append(&quot;not &quot;);</span>
 <span class="fc" id="L95">            sb.append(low);</span>
-        } else {
+<span class="fc" id="L96">        } else {</span>
 <span class="fc bfc" id="L97" title="All 2 branches covered.">            if (negated) sb.append(&quot;not &quot;);</span>
 <span class="fc bfc" id="L98" title="All 2 branches covered.">            if (!integer) sb.append(&quot;with&quot;);</span>
 <span class="fc" id="L99">            sb.append(&quot;in &quot;).append(low).append(&quot;..&quot;).append(high);</span>
@@ -111,7 +111,7 @@ public class Relation {
 <span class="fc" id="L111">        String token = input.remove(0);</span>
 <span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (&quot;n&quot;.equals(token)) {</span>
 <span class="fc" id="L113">            token = input.remove(0);</span>
-        } else {
+<span class="fc" id="L114">        } else {</span>
 <span class="nc" id="L115">            throw new IllegalArgumentException(&quot;Relation must start with 'n'.&quot;);</span>
         }
 <span class="fc bfc" id="L117" title="All 2 branches covered.">        if (&quot;mod&quot;.equals(token)) {</span>
@@ -129,7 +129,7 @@ public class Relation {
 <span class="fc" id="L129">                token = input.remove(0);</span>
             }
 <span class="fc" id="L131">            low = high = Integer.parseInt(token);</span>
-        } else {
+<span class="fc" id="L132">        } else {</span>
 <span class="fc bfc" id="L133" title="All 2 branches covered.">            if (&quot;within&quot;.equals(token)) {</span>
 <span class="fc" id="L134">                integer = false;</span>
             }
@@ -139,4 +139,4 @@ public class Relation {
 <span class="fc" id="L139">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

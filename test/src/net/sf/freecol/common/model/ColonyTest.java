@@ -19,6 +19,10 @@
 
 package net.sf.freecol.common.model;
 
+import net.sf.freecol.common.model.Colony.NoBuildReason;
+
+import java.util.Collections;
+
 import net.sf.freecol.common.model.Direction;
 import net.sf.freecol.common.model.Player;
 import net.sf.freecol.common.model.Player.NoClaimReason;
@@ -482,7 +486,45 @@ public class ColonyTest extends FreeColTestCase {
         colony.getBuilding(carpenterHouseType).upgrade();
         assertEquals(churchUpkeep + lumberMillUpkeep, colony.getUpkeep());
     }
-
+    
+    
+    public void testGetNoBuildReason1() {
+    	//Test no build reason when null buildableType
+    	Game game = getGame();
+    	game.setMap(getTestMap(true));
+    	Colony colony = getStandardColony(5);
+    	assertEquals(NoBuildReason.NOT_BUILDING, colony.getNoBuildReason(null, null));
+    }
+    
+    public void testGetNoBuildReason2() {
+    	//Test the list when BuildingType buildableType
+    	Game game = getGame();
+    	game.setMap(getTestMap(true));
+    	Colony colony = getStandardColony(5);
+    	BuildableType buildingType = new BuildingType("building1", new Specification());
+    	assertEquals(NoBuildReason.NOT_BUILDABLE, colony.getNoBuildReason(buildingType, null));
+    }
+    
+    //Test governmentChange() when 30 SoL and 1 unit
+    public void testGovernmentChange1() {
+    	Game game = getGame();
+    	game.setMap(getTestMap(true));
+    	Colony colony = getStandardColony(5);
+    	colony.sonsOfLiberty = 30;
+    	assertEquals(0, colony.governmentChange(1));
+    	
+    }
+    //Test governmentChange() when 50 SoL and 100 units
+    public void testGovernmentChange2() {
+    	Game game = getGame();
+    	game.setMap(getTestMap(true));
+    	Colony colony = getStandardColony(5);
+    	colony.sonsOfLiberty = 50;
+    	assertEquals(-1, colony.governmentChange(100));
+    }
+  
+    
+   
     public void testCopyColony() {
         Game game = getGame();
         game.setMap(getTestMap(true));

@@ -943,28 +943,26 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
      */
     public NoBuildReason getNoBuildReason(BuildableType buildableType,
                                           List<BuildableType> assumeBuilt) {
-        if (buildableType == null) {
-            return NoBuildReason.NOT_BUILDING;
-        } else if (!buildableType.needsGoodsToBuild()) {
-            return NoBuildReason.NOT_BUILDABLE;
-        } else if (buildableType.getRequiredPopulation() > getUnitCount()) {
-            return NoBuildReason.POPULATION_TOO_SMALL;
-        } else if (buildableType.hasAbility(Ability.COASTAL_ONLY)
-            && !getTile().isCoastland()) {
-            return NoBuildReason.COASTAL;
-        } else {
-            if (!all(buildableType.getRequiredAbilities().entrySet(),
-                    e -> e.getValue() == hasAbility(e.getKey()))) {
-                return NoBuildReason.MISSING_ABILITY;
-            }
-            if (!all(buildableType.getLimits(), l -> l.evaluate(this))) {
-                return NoBuildReason.LIMIT_EXCEEDED;
-            }
-        }
+        NoBuildReason result = checkNoBuildReasonPrimary(buildableType);
         if (assumeBuilt == null) {
             assumeBuilt = Collections.<BuildableType>emptyList();
         }
-        if (buildableType instanceof BuildingType) {
+        if(result == null) {
+        	result = checkNoBuildReasonSecondary(buildableType, assumeBuilt);
+        }
+        if(result != null) {
+        	return result;
+        }
+        return NoBuildReason.NONE;
+    }
+
+	/**
+	 * @param buildableType
+	 * @param assumeBuilt
+	 * Second part of getNoBuildReason extracted
+	 */
+	private NoBuildReason checkNoBuildReasonSecondary(BuildableType buildableType, List<BuildableType> assumeBuilt) {
+		if (buildableType instanceof BuildingType) {
             BuildingType newBuildingType = (BuildingType) buildableType;
             Building colonyBuilding = this.getBuilding(newBuildingType);
             if (colonyBuilding == null) {
@@ -993,8 +991,34 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
                 return NoBuildReason.MISSING_BUILD_ABILITY;
             }
         }
-        return NoBuildReason.NONE;
-    }
+		return null;
+	}
+
+	/**
+	 * @param buildableType
+	 * First part of getNoBuildReason extracted
+	 */
+	private NoBuildReason checkNoBuildReasonPrimary(BuildableType buildableType) {
+		if (buildableType == null) {
+            return NoBuildReason.NOT_BUILDING;
+        } else if (!buildableType.needsGoodsToBuild()) {
+            return NoBuildReason.NOT_BUILDABLE;
+        } else if (buildableType.getRequiredPopulation() > getUnitCount()) {
+            return NoBuildReason.POPULATION_TOO_SMALL;
+        } else if (buildableType.hasAbility(Ability.COASTAL_ONLY)
+            && !getTile().isCoastland()) {
+            return NoBuildReason.COASTAL;
+        } else {
+            if (!all(buildableType.getRequiredAbilities().entrySet(),
+                    e -> e.getValue() == hasAbility(e.getKey()))) {
+                return NoBuildReason.MISSING_ABILITY;
+            }
+            if (!all(buildableType.getLimits(), l -> l.evaluate(this))) {
+                return NoBuildReason.LIMIT_EXCEEDED;
+            }
+        }
+		return null;
+	}
 
     /**
      * Returns the price for the remaining hammers and tools for the
@@ -1386,25 +1410,39 @@ public class Colony extends Settlement implements Nameable, TradeLocation {
             if (sonsOfLiberty >= goodGovernment) {
                 result = -1;
             } else { // Now that no bonus is applied, penalties may.
-                if (loyalistCount > veryBadGovernment) {
-                    if (tories <= veryBadGovernment) {
-                        result = -1;
-                    }
-                } else if (loyalistCount > badGovernment) {
-                    if (tories <= badGovernment) {
-                        result = -1;
-                    } else if (tories > veryBadGovernment) {
-                        result = 1;
-                    }
-                } else {
-                    if (tories > badGovernment) {
-                        result = 1;
-                    }
-                }
+                result = checkLoyalistCount(veryBadGovernment, badGovernment, loyalistCount, result);
             }
         }
         return result;
     }
+
+	/**
+	 * Extracted from governmentChange()
+	 * @param veryBadGovernment
+	 * @param badGovernment
+	 * @param loyalistCount
+	 * @param result
+	 * @return
+	 */
+	private int checkLoyalistCount(final int veryBadGovernment, final int badGovernment, int loyalistCount,
+			int result) {
+		if (loyalistCount > veryBadGovernment) {
+		    if (tories <= veryBadGovernment) {
+		        result = -1;
+		    }
+		} else if (loyalistCount > badGovernment) {
+		    if (tories <= badGovernment) {
+		        result = -1;
+		    } else if (tories > veryBadGovernment) {
+		        result = 1;
+		    }
+		} else {
+		    if (tories > badGovernment) {
+		        result = 1;
+		    }
+		}
+		return result;
+	}
 
     public ModelMessage checkForGovMgtChangeMessage() {
         final Specification spec = getSpecification();

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ProductionInfo.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">ProductionInfo.java</span></div><h1>ProductionInfo.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ProductionInfo.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">ProductionInfo.java</span></div><h1>ProductionInfo.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -94,13 +94,13 @@ import java.util.List;
 <span class="nc" id="L94">        List&lt;AbstractGoods&gt; result = new ArrayList&lt;&gt;();</span>
 <span class="nc bnc" id="L95" title="All 2 branches missed.">        for (AbstractGoods ag : this.production) {</span>
 <span class="nc" id="L96">            AbstractGoods agMax = AbstractGoods.findByType(ag.getType(),</span>
-                this.maximumProduction);
+<span class="nc" id="L97">                this.maximumProduction);</span>
 <span class="nc bnc" id="L98" title="All 2 branches missed.">            if (agMax == null) continue;</span>
 <span class="nc" id="L99">            int amount = agMax.getAmount() - ag.getAmount();</span>
 <span class="nc bnc" id="L100" title="All 2 branches missed.">            if (amount != 0) {</span>
 <span class="nc" id="L101">                result.add(new AbstractGoods(ag.getType(), amount));</span>
             }
-<span class="nc" id="L103">        }</span>
+        }
 <span class="nc" id="L104">        return result;</span>
     }
 
@@ -117,13 +117,13 @@ import java.util.List;
 <span class="nc" id="L117">        List&lt;AbstractGoods&gt; result = new ArrayList&lt;&gt;();</span>
 <span class="nc bnc" id="L118" title="All 2 branches missed.">        for (AbstractGoods ag : this.consumption) {</span>
 <span class="nc" id="L119">            AbstractGoods agMax = AbstractGoods.findByType(ag.getType(),</span>
-                this.maximumConsumption);
+<span class="nc" id="L120">                this.maximumConsumption);</span>
 <span class="nc bnc" id="L121" title="All 2 branches missed.">            if (agMax == null) continue;</span>
 <span class="nc" id="L122">            int amount = agMax.getAmount() - ag.getAmount();</span>
 <span class="nc bnc" id="L123" title="All 2 branches missed.">            if (amount != 0) {</span>
 <span class="nc" id="L124">                result.add(new AbstractGoods(ag.getType(), amount));</span>
             }
-<span class="nc" id="L126">        }</span>
+        }
 <span class="nc" id="L127">        return result;</span>
     }
 
@@ -169,7 +169,7 @@ import java.util.List;
 <span class="nc" id="L169">                    .append(&quot;]&quot;);</span>
             }
 <span class="nc" id="L171">            result.append(&quot;, &quot;);</span>
-<span class="nc" id="L172">        }</span>
+        }
 <span class="nc" id="L173">        int length = result.length();</span>
 <span class="nc" id="L174">        result.replace(length - 2, length, &quot;\n&quot;);</span>
 <span class="nc" id="L175">    }</span>
@@ -187,4 +187,4 @@ import java.util.List;
 <span class="nc" id="L187">        return result.toString();</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

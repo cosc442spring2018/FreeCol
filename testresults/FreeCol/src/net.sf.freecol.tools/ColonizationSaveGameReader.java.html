@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ColonizationSaveGameReader.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.tools</a> &gt; <span class="el_source">ColonizationSaveGameReader.java</span></div><h1>ColonizationSaveGameReader.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ColonizationSaveGameReader.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.tools</a> &gt; <span class="el_source">ColonizationSaveGameReader.java</span></div><h1>ColonizationSaveGameReader.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -28,8 +28,8 @@ public class ColonizationSaveGameReader {
     private final static int PLAYER_DATA = 0x9e;
     private final static int COLONY_DATA = 0x186;
 <span class="nc" id="L30">    private final static String[] NATIONS = {</span>
-        &quot;English&quot;, &quot;French&quot;, &quot;Spanish&quot;, &quot;Dutch&quot;
-    };
+<span class="nc" id="L31">        &quot;English&quot;, &quot;French&quot;, &quot;Spanish&quot;, &quot;Dutch&quot;</span>
+<span class="nc" id="L32">    };</span>
 
     private class GameData {
 
@@ -71,8 +71,8 @@ public class ColonizationSaveGameReader {
 <span class="nc" id="L71">        }</span>
 
         public void print() {
-<span class="nc bnc" id="L74" title="All 2 branches missed.">            System.out.println(&quot;Player name is &quot; + playerName</span>
-                               + (humanPlayer ? &quot; [human]&quot; : &quot; [AI]&quot;));
+<span class="nc" id="L74">            System.out.println(&quot;Player name is &quot; + playerName</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">                               + (humanPlayer ? &quot; [human]&quot; : &quot; [AI]&quot;));</span>
 <span class="nc" id="L76">            System.out.println(&quot;New land name is &quot; + newLandName);</span>
 <span class="nc" id="L77">        }</span>
 
@@ -106,8 +106,8 @@ public class ColonizationSaveGameReader {
                     }
                 }
 <span class="nc" id="L108">                colonists[index] = new Colonist(data[offset + COLONIST_OCCUPATION + index],</span>
-                                                data[offset + COLONIST_SPECIALITY + index],
-                                                tile);
+<span class="nc" id="L109">                                                data[offset + COLONIST_SPECIALITY + index],</span>
+<span class="nc" id="L110">                                                tile);</span>
             }
 
 
@@ -115,7 +115,7 @@ public class ColonizationSaveGameReader {
 
         public void print() {
 <span class="nc" id="L117">            System.out.println(name + &quot; [&quot; + x + &quot;, &quot; + y + &quot;], &quot;</span>
-                               + numberOfColonists + &quot; colonists&quot;);
+<span class="nc" id="L118">                               + numberOfColonists + &quot; colonists&quot;);</span>
 <span class="nc bnc" id="L119" title="All 2 branches missed.">            for (Colonist colonist : colonists) {</span>
 <span class="nc" id="L120">                colonist.print();</span>
             }
@@ -206,13 +206,13 @@ public class ColonizationSaveGameReader {
 <span class="nc bnc" id="L206" title="All 2 branches missed.">        for (int index = 0; index &lt; 4; index++) {</span>
 <span class="nc" id="L207">            System.out.println(&quot;Nation is &quot; + NATIONS[index]);</span>
 <span class="nc" id="L208">            PlayerData playerData = new PlayerData(data, PLAYER_DATA +</span>
-                                                   index * PlayerData.LENGTH);
+<span class="nc" id="L209">                                                   index * PlayerData.LENGTH);</span>
 <span class="nc" id="L210">            playerData.print();</span>
         }
 <span class="nc" id="L212">        int count = gameData.getNumberOfColonies();</span>
 <span class="nc bnc" id="L213" title="All 2 branches missed.">        for (int index = 0; index &lt; count; index++) {</span>
 <span class="nc" id="L214">            ColonyData colonyData = new ColonyData(data, COLONY_DATA +</span>
-                                                   index * ColonyData.LENGTH);
+<span class="nc" id="L215">                                                   index * ColonyData.LENGTH);</span>
 <span class="nc" id="L216">            colonyData.print();</span>
         }
 
@@ -230,4 +230,4 @@ public class ColonizationSaveGameReader {
         }
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

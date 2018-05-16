@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ImageResource.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.resources</a> &gt; <span class="el_source">ImageResource.java</span></div><h1>ImageResource.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ImageResource.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.resources</a> &gt; <span class="el_source">ImageResource.java</span></div><h1>ImageResource.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -42,12 +42,12 @@ import javax.imageio.ImageIO;
 public class ImageResource extends Resource
                            implements Resource.Preloadable, Resource.Cleanable {
 
-<span class="nc" id="L45">    private static final Logger logger = Logger.getLogger(ImageResource.class.getName());</span>
+<span class="fc" id="L45">    private static final Logger logger = Logger.getLogger(ImageResource.class.getName());</span>
 
-<span class="nc" id="L47">    private HashMap&lt;Dimension, BufferedImage&gt; scaledImages = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L48">    private HashMap&lt;Dimension, BufferedImage&gt; grayscaleImages = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L49">    private volatile BufferedImage image = null;</span>
-<span class="nc" id="L50">    private final Object loadingLock = new Object();</span>
+<span class="fc" id="L47">    private HashMap&lt;Dimension, BufferedImage&gt; scaledImages = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L48">    private HashMap&lt;Dimension, BufferedImage&gt; grayscaleImages = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L49">    private volatile BufferedImage image = null;</span>
+<span class="fc" id="L50">    private final Object loadingLock = new Object();</span>
 
 
     /**
@@ -57,8 +57,8 @@ public class ImageResource extends Resource
      *      resource.
      */
     public ImageResource(URI resourceLocator) {
-<span class="nc" id="L60">        super(resourceLocator);</span>
-<span class="nc" id="L61">    }</span>
+<span class="fc" id="L60">        super(resourceLocator);</span>
+<span class="fc" id="L61">    }</span>
 
 
     /**
@@ -66,22 +66,22 @@ public class ImageResource extends Resource
      */
     @Override
     public void preload() {
-<span class="nc" id="L69">        synchronized (loadingLock) {</span>
-<span class="nc bnc" id="L70" title="All 2 branches missed.">            if (image == null) {</span>
+<span class="pc" id="L69">        synchronized (loadingLock) {</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">            if (image == null) {</span>
                 try {
-<span class="nc" id="L72">                    URL url = getResourceLocator().toURL();</span>
-<span class="nc" id="L73">                    image = ImageIO.read(url);</span>
-<span class="nc bnc" id="L74" title="All 2 branches missed.">                    if(image == null) {</span>
+<span class="fc" id="L72">                    URL url = getResourceLocator().toURL();</span>
+<span class="fc" id="L73">                    image = ImageIO.read(url);</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">                    if(image == null) {</span>
 <span class="nc" id="L75">                        logger.log(Level.WARNING, &quot;Failed to load image from: &quot;</span>
 <span class="nc" id="L76">                            + getResourceLocator());</span>
                     }
 <span class="nc" id="L78">                } catch (IOException e) {</span>
 <span class="nc" id="L79">                    logger.log(Level.WARNING, &quot;Failed to load image from: &quot;</span>
 <span class="nc" id="L80">                        + getResourceLocator(), e);</span>
-<span class="nc" id="L81">                }</span>
+                }
             }
-<span class="nc" id="L83">        }</span>
-<span class="nc" id="L84">    }</span>
+        }
+<span class="fc" id="L84">    }</span>
 
     /**
      * Clean up old cached copies.
@@ -154,23 +154,23 @@ public class ImageResource extends Resource
 <span class="nc" id="L154">            w = (w+1)/2;</span>
 <span class="nc" id="L155">            h = (h+1)/2;</span>
 <span class="nc" id="L156">            BufferedImage halved = new BufferedImage(w, h,</span>
-                BufferedImage.TYPE_INT_ARGB);
+<span class="nc" id="L157">                BufferedImage.TYPE_INT_ARGB);</span>
 <span class="nc" id="L158">            Graphics2D g = halved.createGraphics();</span>
             // For halving bilinear should most correctly average 2x2 pixels.
 <span class="nc" id="L160">            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,</span>
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+<span class="nc" id="L161">                RenderingHints.VALUE_INTERPOLATION_BILINEAR);</span>
 <span class="nc" id="L162">            g.drawImage(im, 0, 0, w, h, null);</span>
 <span class="nc" id="L163">            g.dispose();</span>
 <span class="nc" id="L164">            im = halved;</span>
-<span class="nc" id="L165">        }</span>
+        }
 
 <span class="nc bnc" id="L167" title="All 4 branches missed.">        if(wNew != w || hNew != h) {</span>
 <span class="nc" id="L168">            BufferedImage scaled = new BufferedImage(wNew, hNew,</span>
-                BufferedImage.TYPE_INT_ARGB);
+<span class="nc" id="L169">                BufferedImage.TYPE_INT_ARGB);</span>
 <span class="nc" id="L170">            Graphics2D g = scaled.createGraphics();</span>
             // Bicubic should give best quality for odd scaling factors.
 <span class="nc" id="L172">            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,</span>
-                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+<span class="nc" id="L173">                RenderingHints.VALUE_INTERPOLATION_BICUBIC);</span>
 <span class="nc" id="L174">            g.drawImage(im, 0, 0, wNew, hNew, null);</span>
 <span class="nc" id="L175">            g.dispose();</span>
 <span class="nc" id="L176">            im = scaled;</span>
@@ -195,7 +195,7 @@ public class ImageResource extends Resource
         // TODO: Find out why making a copy is necessary here to prevent
         //       images from getting too dark.
 <span class="nc" id="L197">        BufferedImage srcImage = new BufferedImage(width, height,</span>
-            BufferedImage.TYPE_INT_ARGB);
+<span class="nc" id="L198">            BufferedImage.TYPE_INT_ARGB);</span>
 <span class="nc" id="L199">        Graphics2D g = srcImage.createGraphics();</span>
 <span class="nc" id="L200">        g.drawImage(im, 0, 0, null);</span>
 <span class="nc" id="L201">        g.dispose();</span>
@@ -225,4 +225,4 @@ public class ImageResource extends Resource
 <span class="nc" id="L225">        return grayscaleImages.size() + scaledImages.size();</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

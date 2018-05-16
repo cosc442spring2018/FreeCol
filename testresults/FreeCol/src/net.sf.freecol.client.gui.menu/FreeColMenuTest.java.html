@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FreeColMenuTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.client.gui.menu</a> &gt; <span class="el_source">FreeColMenuTest.java</span></div><h1>FreeColMenuTest.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FreeColMenuTest.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.client.gui.menu</a> &gt; <span class="el_source">FreeColMenuTest.java</span></div><h1>FreeColMenuTest.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -96,10 +96,10 @@ import net.sf.freecol.client.gui.FreeColFrame;
                    + newline
 <span class="nc" id="L97">                   + &quot;    Event source: &quot; + source.getText()</span>
 <span class="nc" id="L98">                   + &quot; (an instance of &quot; + getClassName(source) + &quot;)&quot;</span>
-                   + newline
-                   + &quot;    New state: &quot;
+<span class="nc" id="L99">                   + newline</span>
+<span class="nc" id="L100">                   + &quot;    New state: &quot;</span>
 <span class="nc bnc" id="L101" title="All 2 branches missed.">                   + ((e.getStateChange() == ItemEvent.SELECTED) ?</span>
-                     &quot;selected&quot;:&quot;unselected&quot;);
+<span class="nc" id="L102">                     &quot;selected&quot;:&quot;unselected&quot;);</span>
 <span class="nc" id="L103">        output.append(s + newline);</span>
 <span class="nc" id="L104">        output.setCaretPosition(output.getDocument().getLength());</span>
 <span class="nc" id="L105">    }</span>
@@ -138,7 +138,7 @@ import net.sf.freecol.client.gui.FreeColFrame;
 <span class="nc" id="L138">        client.startClient(null, null, true, true, null, null);</span>
 <span class="nc" id="L139">        FreeColFrame frame = new FreeColFrame(client,</span>
 <span class="nc" id="L140">            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice(),</span>
-            null, null, true, null);
+<span class="nc" id="L141">            null, null, true, null);</span>
 <span class="nc" id="L142">        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);</span>
 
         //Create and set up the content pane.
@@ -157,4 +157,4 @@ import net.sf.freecol.client.gui.FreeColFrame;
 <span class="nc" id="L157">        javax.swing.SwingUtilities.invokeLater(() -&gt; { createAndShowGUI(); });</span>
 <span class="nc" id="L158">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

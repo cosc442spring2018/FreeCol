@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SimpleMapGenerator.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.server.generator</a> &gt; <span class="el_source">SimpleMapGenerator.java</span></div><h1>SimpleMapGenerator.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">/**</span>
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>SimpleMapGenerator.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.server.generator</a> &gt; <span class="el_source">SimpleMapGenerator.java</span></div><h1>SimpleMapGenerator.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">/**</span>
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -355,7 +355,7 @@ public class SimpleMapGenerator implements MapGenerator {
 <span class="fc" id="L355">        HashMap&lt;String, Territory&gt; territoryMap = new HashMap&lt;&gt;();</span>
 
 <span class="fc bfc" id="L357" title="All 2 branches covered.">        for (Player player : game.getLiveNativePlayers(null)) {</span>
-<span class="pc" id="L358">            switch (player.getNationType()</span>
+<span class="fc" id="L358">            switch (player.getNationType()</span>
 <span class="pc bpc" id="L359" title="1 of 4 branches missed.">                    .getNumberOfSettlements()) {</span>
             case HIGH:
 <span class="fc" id="L361">                shares += 4;</span>
@@ -478,7 +478,7 @@ public class SimpleMapGenerator implements MapGenerator {
 <span class="fc" id="L478">        Collections.sort(settlementTiles, Tile.edgeDistanceComparator);</span>
 
         // Now place other settlements
-<span class="pc bpc" id="L481" title="1 of 4 branches missed.">        while (!settlementTiles.isEmpty() &amp;&amp; !territories.isEmpty()) {</span>
+<span class="fc bfc" id="L481" title="All 4 branches covered.">        while (!settlementTiles.isEmpty() &amp;&amp; !territories.isEmpty()) {</span>
 <span class="fc" id="L482">            Tile tile = settlementTiles.remove(0);</span>
 <span class="pc bpc" id="L483" title="1 of 2 branches missed.">            if (tile.getOwner() != null) continue; // No close overlap</span>
 
@@ -550,49 +550,49 @@ public class SimpleMapGenerator implements MapGenerator {
 <span class="fc" id="L550">        List&lt;UnitType&gt; expertsNeeded = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L551" title="All 2 branches covered.">        for (GoodsType goodsType : spec.getNewWorldGoodsTypeList()) {</span>
 <span class="fc" id="L552">            UnitType expert = spec.getExpertForProducing(goodsType);</span>
-<span class="pc bpc" id="L553" title="1 of 2 branches missed.">            if (!skills.containsKey(expert)) expertsNeeded.add(expert);</span>
+<span class="fc bfc" id="L553" title="All 2 branches covered.">            if (!skills.containsKey(expert)) expertsNeeded.add(expert);</span>
         }
         // Extract just the settlement lists.
 <span class="fc" id="L556">        List&lt;List&lt;IndianSettlement&gt;&gt; isList = new ArrayList&lt;&gt;(skills.values());</span>
         // For each missing skill...
-<span class="pc bpc" id="L558" title="1 of 2 branches missed.">        while (!expertsNeeded.isEmpty()) {</span>
-<span class="nc" id="L559">            UnitType neededSkill = expertsNeeded.remove(0);</span>
-<span class="nc" id="L560">            Collections.sort(isList, descendingListLengthComparator);</span>
-<span class="nc" id="L561">            List&lt;IndianSettlement&gt; extras = isList.remove(0);</span>
-<span class="nc" id="L562">            UnitType extraSkill = extras.get(0).getLearnableSkill();</span>
-<span class="nc" id="L563">            List&lt;RandomChoice&lt;IndianSettlement&gt;&gt; choices = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L558" title="All 2 branches covered.">        while (!expertsNeeded.isEmpty()) {</span>
+<span class="fc" id="L559">            UnitType neededSkill = expertsNeeded.remove(0);</span>
+<span class="fc" id="L560">            Collections.sort(isList, descendingListLengthComparator);</span>
+<span class="fc" id="L561">            List&lt;IndianSettlement&gt; extras = isList.remove(0);</span>
+<span class="fc" id="L562">            UnitType extraSkill = extras.get(0).getLearnableSkill();</span>
+<span class="fc" id="L563">            List&lt;RandomChoice&lt;IndianSettlement&gt;&gt; choices = new ArrayList&lt;&gt;();</span>
             // ...look at the settlements with the most common skill
             // with a bit of favoritism to capitals as the needed skill
             // is so rare,...
-<span class="nc bnc" id="L567" title="All 2 branches missed.">            for (IndianSettlement is : extras) {</span>
-<span class="nc" id="L568">                IndianNationType nation</span>
-<span class="nc" id="L569">                    = (IndianNationType) is.getOwner().getNationType();</span>
-<span class="nc bnc" id="L570" title="All 2 branches missed.">                int cm = (is.isCapital()) ? 2 : 1;</span>
-<span class="nc" id="L571">                RandomChoice&lt;IndianSettlement&gt; rc = null;</span>
-<span class="nc bnc" id="L572" title="All 2 branches missed.">                for (RandomChoice&lt;UnitType&gt; c : nation.generateSkillsForTile(is.getTile())) {</span>
-<span class="nc bnc" id="L573" title="All 2 branches missed.">                    if (c.getObject() == neededSkill) {</span>
-<span class="nc" id="L574">                        rc = new RandomChoice&lt;&gt;(is, c.getProbability() * cm);</span>
-<span class="nc" id="L575">                        break;</span>
+<span class="fc bfc" id="L567" title="All 2 branches covered.">            for (IndianSettlement is : extras) {</span>
+<span class="fc" id="L568">                IndianNationType nation</span>
+<span class="fc" id="L569">                    = (IndianNationType) is.getOwner().getNationType();</span>
+<span class="fc bfc" id="L570" title="All 2 branches covered.">                int cm = (is.isCapital()) ? 2 : 1;</span>
+<span class="fc" id="L571">                RandomChoice&lt;IndianSettlement&gt; rc = null;</span>
+<span class="fc bfc" id="L572" title="All 2 branches covered.">                for (RandomChoice&lt;UnitType&gt; c : nation.generateSkillsForTile(is.getTile())) {</span>
+<span class="fc bfc" id="L573" title="All 2 branches covered.">                    if (c.getObject() == neededSkill) {</span>
+<span class="fc" id="L574">                        rc = new RandomChoice&lt;&gt;(is, c.getProbability() * cm);</span>
+<span class="fc" id="L575">                        break;</span>
                     }
                 }
-<span class="nc bnc" id="L578" title="All 2 branches missed.">                choices.add((rc != null) ? rc</span>
-<span class="nc" id="L579">                            : new RandomChoice&lt;&gt;(is, 1));</span>
+<span class="fc bfc" id="L578" title="All 2 branches covered.">                choices.add((rc != null) ? rc</span>
+<span class="fc" id="L579">                            : new RandomChoice&lt;&gt;(is, 1));</span>
             }
-<span class="nc bnc" id="L581" title="All 2 branches missed.">            if (!choices.isEmpty()) {</span>
+<span class="pc bpc" id="L581" title="1 of 2 branches missed.">            if (!choices.isEmpty()) {</span>
                 // ...and pick one that could do the missing job.
-<span class="nc" id="L583">                IndianSettlement chose = RandomChoice</span>
-<span class="nc" id="L584">                    .getWeightedRandom(logger, &quot;expert&quot;, choices, random);</span>
-<span class="nc" id="L585">                lb.add(&quot;At &quot;, chose.getName(),</span>
-<span class="nc" id="L586">                    &quot; replaced &quot;, extraSkill,</span>
-<span class="nc" id="L587">                    &quot; (one of &quot;, extras.size(), &quot;)&quot;,</span>
-<span class="nc" id="L588">                    &quot; by missing &quot;, neededSkill, &quot;\n&quot;);</span>
-<span class="nc" id="L589">                chose.setLearnableSkill(neededSkill);</span>
-<span class="nc" id="L590">                extras.remove(chose);</span>
-<span class="nc" id="L591">                isList.add(0, extras); // Try to stay well sorted</span>
-<span class="nc" id="L592">                List&lt;IndianSettlement&gt; neededList = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L593">                neededList.add(chose);</span>
-<span class="nc" id="L594">                isList.add(neededList);</span>
-<span class="nc" id="L595">            } else { // `can not happen'</span>
+<span class="fc" id="L583">                IndianSettlement chose = RandomChoice</span>
+<span class="fc" id="L584">                    .getWeightedRandom(logger, &quot;expert&quot;, choices, random);</span>
+<span class="fc" id="L585">                lb.add(&quot;At &quot;, chose.getName(),</span>
+<span class="fc" id="L586">                    &quot; replaced &quot;, extraSkill,</span>
+<span class="fc" id="L587">                    &quot; (one of &quot;, extras.size(), &quot;)&quot;,</span>
+<span class="fc" id="L588">                    &quot; by missing &quot;, neededSkill, &quot;\n&quot;);</span>
+<span class="fc" id="L589">                chose.setLearnableSkill(neededSkill);</span>
+<span class="fc" id="L590">                extras.remove(chose);</span>
+<span class="fc" id="L591">                isList.add(0, extras); // Try to stay well sorted</span>
+<span class="fc" id="L592">                List&lt;IndianSettlement&gt; neededList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L593">                neededList.add(chose);</span>
+<span class="fc" id="L594">                isList.add(neededList);</span>
+<span class="fc" id="L595">            } else { // `can not happen'</span>
 <span class="nc" id="L596">                lb.add(&quot;Game is missing skill: &quot;, neededSkill, &quot;\n&quot;);</span>
             }
         }
@@ -1116,4 +1116,4 @@ public class SimpleMapGenerator implements MapGenerator {
 <span class="fc" id="L1116">        return map;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums"><span class="pc" id="L1">/**</span>
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -68,12 +68,12 @@ public class Player extends FreeColGameObject implements Nameable {
     //
 
     /** Types of players. */
-<span class="pc" id="L71">    public static enum PlayerType {</span>
+<span class="fc" id="L71">    public static enum PlayerType {</span>
 <span class="fc" id="L72">        NATIVE, COLONIAL, REBEL, INDEPENDENT, ROYAL, UNDEAD, RETIRED</span>
     }
 
     /** Colony value categories. */
-<span class="pc" id="L76">    public static enum ColonyValueCategory {</span>
+<span class="fc" id="L76">    public static enum ColonyValueCategory {</span>
 <span class="fc" id="L77">        A_OVERRIDE, // override slot containing showstopper NoValueType values</span>
 <span class="fc" id="L78">        A_PROD,     // general production level</span>
 <span class="fc" id="L79">        A_TILE,     // strangeness with the tile</span>
@@ -94,7 +94,7 @@ public class Player extends FreeColGameObject implements Nameable {
     }
 
     /** Special return values for showstopper getColonyValue fail. */
-<span class="nc" id="L97">    public static enum NoValueType {</span>
+    public static enum NoValueType {
 <span class="nc" id="L98">        BOGUS(-1), TERRAIN(-2), RUMOUR(-3), SETTLED(-4), FOOD(-5), INLAND(-6), POLAR(-7);</span>
      
 <span class="nc" id="L100">        private static final int MAX = values().length;</span>
@@ -175,9 +175,9 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="pc bpc" id="L175" title="1 of 2 branches missed.">                &amp;&amp; !unit.isDamaged()</span>
 <span class="pc bpc" id="L176" title="1 of 2 branches missed.">                &amp;&amp; !unit.isAtSea()</span>
 <span class="pc bpc" id="L177" title="1 of 2 branches missed.">                &amp;&amp; !unit.isOnCarrier()</span>
-<span class="pc bpc" id="L178" title="1 of 4 branches missed.">                &amp;&amp; !unit.isInColony()</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">                &amp;&amp; !unit.isInColony()</span>
 <span class="fc bfc" id="L179" title="All 4 branches covered.">                &amp;&amp; ((!tradeRoute &amp;&amp; unit.getDestination() != null)</span>
-<span class="fc bfc" id="L180" title="All 2 branches covered.">                    || (tradeRoute &amp;&amp; unit.getTradeRoute() != null));</span>
+<span class="fc bfc" id="L180" title="All 4 branches covered.">                    || (tradeRoute &amp;&amp; unit.getTradeRoute() != null));</span>
         }
     }
 
@@ -426,7 +426,7 @@ public class Player extends FreeColGameObject implements Nameable {
 
     /** The founding fathers in this Player's congress. */
 <span class="pc" id="L428">    protected final Set&lt;FoundingFather&gt; foundingFathers</span>
-        = new HashSet&lt;&gt;();
+<span class="pc" id="L429">        = new HashSet&lt;&gt;();</span>
     /** Current founding father being recruited. */
     protected FoundingFather currentFather;
     /** The offered founding fathers. */
@@ -484,15 +484,15 @@ public class Player extends FreeColGameObject implements Nameable {
 
     /** An iterator for the player units that are still active this turn. */
 <span class="pc" id="L486">    private final UnitIterator nextActiveUnitIterator</span>
-        = new UnitIterator(this, new ActivePredicate());
+<span class="pc" id="L487">        = new UnitIterator(this, new ActivePredicate());</span>
 
     /** An iterator for the player units that have a destination to go to. */
 <span class="pc" id="L490">    private final UnitIterator nextGoingToUnitIterator</span>
-        = new UnitIterator(this, new GoingToPredicate(this, false));
+<span class="pc" id="L491">        = new UnitIterator(this, new GoingToPredicate(this, false));</span>
 
     /** An iterator for the player units that have a trade route to follow. */
 <span class="pc" id="L494">    private final UnitIterator nextTradeRouteUnitIterator</span>
-        = new UnitIterator(this, new GoingToPredicate(this, true));
+<span class="pc" id="L495">        = new UnitIterator(this, new GoingToPredicate(this, true));</span>
 
     /**
      * The HighSeas is a Location that enables Units to travel between
@@ -502,7 +502,7 @@ public class Player extends FreeColGameObject implements Nameable {
 
     /** A cached map of the current nation summary for all live nations. */
 <span class="pc" id="L504">    private final java.util.Map&lt;Player, NationSummary&gt; nationCache</span>
-        = new HashMap&lt;&gt;();
+<span class="pc" id="L505">        = new HashMap&lt;&gt;();</span>
 
 
     //
@@ -671,8 +671,8 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return A template for this nation name.
      */
     public StringTemplate getNationLabel() {
-<span class="pc bpc" id="L674" title="1 of 4 branches missed.">        return (playerType == PlayerType.REBEL</span>
-                || playerType == PlayerType.INDEPENDENT)
+<span class="fc bfc" id="L674" title="All 2 branches covered.">        return (playerType == PlayerType.REBEL</span>
+<span class="pc bpc" id="L675" title="1 of 2 branches missed.">                || playerType == PlayerType.INDEPENDENT)</span>
 <span class="fc" id="L676">            ? StringTemplate.name(independentNationName)</span>
 <span class="fc" id="L677">            : StringTemplate.key(Messages.nameKey(nationId));</span>
     }
@@ -683,8 +683,8 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return A template for this country.
      */
     public StringTemplate getCountryLabel() {
-<span class="nc bnc" id="L686" title="All 4 branches missed.">        return (playerType == PlayerType.REBEL</span>
-                || playerType == PlayerType.INDEPENDENT)
+<span class="nc bnc" id="L686" title="All 2 branches missed.">        return (playerType == PlayerType.REBEL</span>
+<span class="nc bnc" id="L687" title="All 2 branches missed.">                || playerType == PlayerType.INDEPENDENT)</span>
 <span class="nc" id="L688">            ? StringTemplate.name(independentNationName)</span>
 <span class="nc" id="L689">            : StringTemplate.template(&quot;countryName&quot;)</span>
 <span class="nc" id="L690">                .addStringTemplate(&quot;%nation%&quot;, getNationLabel());</span>
@@ -746,7 +746,7 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public StringTemplate getMarketName() {
 <span class="pc bpc" id="L748" title="1 of 2 branches missed.">        return (getEurope() == null)</span>
-<span class="pc" id="L749">            ? StringTemplate.key(&quot;model.player.independentMarket&quot;)</span>
+<span class="nc" id="L749">            ? StringTemplate.key(&quot;model.player.independentMarket&quot;)</span>
 <span class="fc" id="L750">            : StringTemplate.key(getEuropeNameKey());</span>
     }
 
@@ -834,9 +834,9 @@ public class Player extends FreeColGameObject implements Nameable {
      * @param type The new player type.
      */
     public void changePlayerType(PlayerType type) {
-<span class="pc bpc" id="L837" title="2 of 4 branches missed.">        if (playerType != PlayerType.REBEL</span>
-            &amp;&amp; playerType != PlayerType.INDEPENDENT) {
-<span class="pc bfc" id="L839" title="All 2 branches covered.">            switch (type) {</span>
+<span class="pc bpc" id="L837" title="1 of 2 branches missed.">        if (playerType != PlayerType.REBEL</span>
+<span class="pc bpc" id="L838" title="1 of 2 branches missed.">            &amp;&amp; playerType != PlayerType.INDEPENDENT) {</span>
+<span class="fc bfc" id="L839" title="All 2 branches covered.">            switch (type) {</span>
             case REBEL: case INDEPENDENT:
 <span class="fc" id="L841">                addAbility(new Ability(Ability.INDEPENDENCE_DECLARED, true));</span>
 <span class="fc" id="L842">                addAbility(new Ability(Ability.INDEPENDENT_NATION, true));</span>
@@ -865,10 +865,10 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return True if this player is European.
      */
     public boolean isEuropean() {
-<span class="pc bpc" id="L868" title="1 of 8 branches missed.">        return playerType == PlayerType.COLONIAL</span>
-            || playerType == PlayerType.REBEL
-            || playerType == PlayerType.INDEPENDENT
-            || playerType == PlayerType.ROYAL;
+<span class="fc bfc" id="L868" title="All 2 branches covered.">        return playerType == PlayerType.COLONIAL</span>
+<span class="fc bfc" id="L869" title="All 2 branches covered.">            || playerType == PlayerType.REBEL</span>
+<span class="pc bpc" id="L870" title="1 of 2 branches missed.">            || playerType == PlayerType.INDEPENDENT</span>
+<span class="fc bfc" id="L871" title="All 2 branches covered.">            || playerType == PlayerType.ROYAL;</span>
     }
 
     /**
@@ -1123,7 +1123,7 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public boolean isWorkForREF() {
 <span class="nc bnc" id="L1125" title="All 2 branches missed.">        return (any(getUnits(), Unit::hasTile))</span>
-            ? true // Work to do still if there exists a unit in the new world
+<span class="nc" id="L1126">            ? true // Work to do still if there exists a unit in the new world</span>
 <span class="nc bnc" id="L1127" title="All 2 branches missed.">            : !getRebels().isEmpty();</span>
     }
 
@@ -1239,7 +1239,7 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc bfc" id="L1239" title="All 2 branches covered.">        if (this.gold != Player.GOLD_NOT_ACCOUNTED) {</span>
 <span class="pc bpc" id="L1240" title="1 of 2 branches missed.">            if ((gold + amount) &gt;= 0) {</span>
 <span class="fc" id="L1241">                gold += amount;</span>
-            } else {
+<span class="fc" id="L1242">            } else {</span>
                 // This can happen if the server and the client get
                 // out of sync.  Perhaps it can also happen if the
                 // client tries to adjust gold for another player,
@@ -1247,7 +1247,7 @@ public class Player extends FreeColGameObject implements Nameable {
                 // do the best thing possible, we don't want to crash
                 // the game here.
 <span class="nc" id="L1249">                logger.warning(&quot;Cannot add &quot; + amount + &quot; gold for &quot;</span>
-                    + this + &quot;: would be negative!&quot;);
+<span class="nc" id="L1250">                    + this + &quot;: would be negative!&quot;);</span>
 <span class="nc" id="L1251">                gold = 0;</span>
             }
         }
@@ -1307,10 +1307,10 @@ public class Player extends FreeColGameObject implements Nameable {
 
 <span class="fc" id="L1308">        int cost = getSpecification()</span>
 <span class="pc bpc" id="L1309" title="1 of 2 branches missed.">            .getBoolean(GameOptions.SAVE_PRODUCTION_OVERFLOW)</span>
-            ? immigrationRequired : immigration;
+<span class="pc" id="L1310">            ? immigrationRequired : immigration;</span>
 <span class="pc bpc" id="L1311" title="1 of 2 branches missed.">        if (cost &gt; immigration) {</span>
 <span class="nc" id="L1312">            immigration = 0;</span>
-        } else {
+<span class="nc" id="L1313">        } else {</span>
 <span class="fc" id="L1314">            immigration -= cost;</span>
         }
 <span class="fc" id="L1316">    }</span>
@@ -1361,9 +1361,9 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc" id="L1361">        int unreduced = Math.round(current</span>
 <span class="fc" id="L1362">            / applyModifiers(1f, turn, Modifier.RELIGIOUS_UNREST_BONUS));</span>
 <span class="fc" id="L1363">        immigrationRequired = (int)applyModifiers(unreduced + base, turn,</span>
-            Modifier.RELIGIOUS_UNREST_BONUS);;
+<span class="fc" id="L1364">            Modifier.RELIGIOUS_UNREST_BONUS);;</span>
 <span class="fc" id="L1365">        logger.finest(&quot;Immigration for &quot; + getId() + &quot; updated &quot; + current</span>
-            + &quot; -&gt; &quot; + immigrationRequired);
+<span class="fc" id="L1366">            + &quot; -&gt; &quot; + immigrationRequired);</span>
 <span class="fc" id="L1367">    }</span>
 
     /**
@@ -1373,7 +1373,7 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public boolean checkEmigrate() {
 <span class="fc bfc" id="L1375" title="All 4 branches covered.">        return (isColonial()) ? getImmigrationRequired() &lt;= immigration</span>
-            : false;
+<span class="fc" id="L1376">            : false;</span>
     }
 
     /**
@@ -1403,8 +1403,8 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public ModelMessage getEmigrationMessage(Unit unit) {
 <span class="fc" id="L1405">        return new ModelMessage(ModelMessage.MessageType.UNIT_ADDED,</span>
-                                &quot;model.player.emigrate&quot;,
-                                this, unit)
+<span class="fc" id="L1406">                                &quot;model.player.emigrate&quot;,</span>
+<span class="fc" id="L1407">                                this, unit)</span>
 <span class="fc" id="L1408">            .addNamed(&quot;%europe%&quot;, getEurope())</span>
 <span class="fc" id="L1409">            .addStringTemplate(&quot;%unit%&quot;, unit.getLabel());</span>
     }
@@ -1460,9 +1460,9 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc" id="L1460">                        modifier.setValue(tax);</span>
 <span class="fc" id="L1461">                        ret = true;</span>
                     }
-<span class="fc" id="L1463">                }</span>
+                }
             }
-<span class="fc" id="L1465">        }</span>
+        }
 <span class="fc" id="L1466">        return ret;</span>
     }
 
@@ -1480,7 +1480,7 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc" id="L1480">                .mapToInt(gt -&gt; c.getTotalProductionOf(gt)).sum())</span>
 <span class="fc" id="L1481">            .sum();</span>
 <span class="fc" id="L1482">        return (int)applyModifiers((float)nextTurn, getGame().getTurn(),</span>
-                                   Modifier.LIBERTY);
+<span class="fc" id="L1483">                                   Modifier.LIBERTY);</span>
     }
 
     /**
@@ -1625,7 +1625,7 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="nc" id="L1625">                result.put(e.getReplacement(&quot;%father%&quot;).getId(),</span>
 <span class="nc" id="L1626">                           e.getTurn());</span>
             }
-<span class="nc" id="L1628">        }</span>
+        }
 <span class="nc" id="L1629">        return result;</span>
     }
 
@@ -1778,13 +1778,13 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return True if type of goods can be traded.
      */
     public boolean canTrade(GoodsType type, Market.Access access) {
-<span class="fc bfc" id="L1781" title="All 4 branches covered.">        return getMarket().getArrears(type) == 0</span>
-            || (access == Market.Access.CUSTOM_HOUSE
+<span class="fc bfc" id="L1781" title="All 2 branches covered.">        return getMarket().getArrears(type) == 0</span>
+<span class="fc bfc" id="L1782" title="All 2 branches covered.">            || (access == Market.Access.CUSTOM_HOUSE</span>
 <span class="pc bpc" id="L1783" title="1 of 2 branches missed.">                &amp;&amp; (getSpecification().getBoolean(GameOptions.CUSTOM_IGNORE_BOYCOTT)</span>
 <span class="fc bfc" id="L1784" title="All 2 branches covered.">                    || (hasAbility(Ability.CUSTOM_HOUSE_TRADES_WITH_FOREIGN_COUNTRIES)</span>
-<span class="fc bfc" id="L1785" title="All 2 branches covered.">                        &amp;&amp; any(getGame().getLiveEuropeanPlayers(this),</span>
+<span class="fc" id="L1785">                        &amp;&amp; any(getGame().getLiveEuropeanPlayers(this),</span>
 <span class="fc bfc" id="L1786" title="All 2 branches covered.">                            p -&gt; getStance(p) == Stance.PEACE</span>
-<span class="pc bpc" id="L1787" title="1 of 2 branches missed.">                                || getStance(p) == Stance.ALLIANCE))));</span>
+<span class="pc bpc" id="L1787" title="1 of 4 branches missed.">                                || getStance(p) == Stance.ALLIANCE))));</span>
     }
 
     /**
@@ -1835,15 +1835,15 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc bfc" id="L1835" title="All 2 branches covered.">            for (Goods g : colony.getCompactGoods()) {</span>
 <span class="pc bpc" id="L1836" title="2 of 4 branches missed.">                if (getArrears(g.getType()) &lt;= 0 &amp;&amp; hasTraded(g.getType())) {</span>
 <span class="fc" id="L1837">                    int amount = Math.min(g.getAmount(),</span>
-                                          GoodsContainer.CARGO_SIZE);
+<span class="fc" id="L1838">                                          GoodsContainer.CARGO_SIZE);</span>
 <span class="fc" id="L1839">                    int value = market.getSalePrice(g.getType(), amount);</span>
 <span class="pc bpc" id="L1840" title="1 of 2 branches missed.">                    if (value &gt; highValue) {</span>
 <span class="fc" id="L1841">                        highValue = value;</span>
 <span class="fc" id="L1842">                        goods = g;</span>
                     }
                 }
-<span class="fc" id="L1845">            }</span>
-<span class="fc" id="L1846">        }</span>
+            }
+        }
 <span class="fc" id="L1847">        return goods;</span>
     }
 
@@ -1927,7 +1927,7 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public int getRecruitPrice() {
         // return Math.max(0, (getCrossesRequired() - crosses) * 10);
-<span class="fc" id="L1930">        return getEurope().getRecruitPrice();</span>
+<span class="nc" id="L1930">        return getEurope().getRecruitPrice();</span>
     }
 
     /**
@@ -1976,9 +1976,9 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return True if the player has the unit.
      */
     public boolean hasUnit(Unit unit) {
-<span class="fc" id="L1979">        synchronized (units) {</span>
+<span class="pc" id="L1979">        synchronized (units) {</span>
 <span class="fc" id="L1980">            return units.contains(unit);</span>
-<span class="nc" id="L1981">        }</span>
+        }
     }
 
     /**
@@ -1987,9 +1987,9 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return A list of the player &lt;code&gt;Unit&lt;/code&gt;s.
      */
     public List&lt;Unit&gt; getUnits() {
-<span class="fc" id="L1990">        synchronized (units) {</span>
+<span class="pc" id="L1990">        synchronized (units) {</span>
 <span class="fc" id="L1991">            return new ArrayList&lt;&gt;(units);</span>
-<span class="nc" id="L1992">        }</span>
+        }
     }
 
     /**
@@ -2009,9 +2009,9 @@ public class Player extends FreeColGameObject implements Nameable {
      * @see Unit
      */
     public Iterator&lt;Unit&gt; getUnitIterator() {
-<span class="fc" id="L2012">        synchronized (units) {</span>
+<span class="pc" id="L2012">        synchronized (units) {</span>
 <span class="fc" id="L2013">            return units.iterator();</span>
-<span class="nc" id="L2014">        }</span>
+        }
     }
 
     /**
@@ -2031,9 +2031,9 @@ public class Player extends FreeColGameObject implements Nameable {
         }
 <span class="pc bpc" id="L2032" title="1 of 2 branches missed.">        if (hasUnit(newUnit)) return false;</span>
 
-<span class="fc" id="L2034">        synchronized (units) {</span>
+<span class="pc" id="L2034">        synchronized (units) {</span>
 <span class="fc" id="L2035">            return units.add(newUnit);</span>
-<span class="nc" id="L2036">        }</span>
+        }
     }
 
     /**
@@ -2049,9 +2049,9 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc" id="L2049">        nextGoingToUnitIterator.remove(oldUnit);</span>
 <span class="fc" id="L2050">        nextTradeRouteUnitIterator.remove(oldUnit);</span>
 
-<span class="fc" id="L2052">        synchronized (units) {</span>
+<span class="pc" id="L2052">        synchronized (units) {</span>
 <span class="fc" id="L2053">            return units.remove(oldUnit);</span>
-<span class="nc" id="L2054">        }</span>
+        }
     }
 
     /**
@@ -2225,9 +2225,9 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return True if the container changed.
      */
     public boolean addOwnable(Ownable o) {
-<span class="pc bpc" id="L2228" title="1 of 4 branches missed.">        return (o instanceof Settlement) ? addSettlement((Settlement)o)</span>
-<span class="pc" id="L2229">            : (o instanceof Unit) ? addUnit((Unit)o)</span>
-            : false;
+<span class="fc bfc" id="L2228" title="All 2 branches covered.">        return (o instanceof Settlement) ? addSettlement((Settlement)o)</span>
+<span class="pc bpc" id="L2229" title="1 of 2 branches missed.">            : (o instanceof Unit) ? addUnit((Unit)o)</span>
+<span class="nc" id="L2230">            : false;</span>
     }
 
     /**
@@ -2238,9 +2238,9 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return True if the container changed.
      */
     public boolean removeOwnable(Ownable o) {
-<span class="pc bpc" id="L2241" title="3 of 4 branches missed.">        return (o instanceof Settlement) ? removeSettlement((Settlement)o)</span>
-<span class="nc" id="L2242">            : (o instanceof Unit) ? removeUnit((Unit)o)</span>
-            : false;
+<span class="pc bpc" id="L2241" title="1 of 2 branches missed.">        return (o instanceof Settlement) ? removeSettlement((Settlement)o)</span>
+<span class="nc bnc" id="L2242" title="All 2 branches missed.">            : (o instanceof Unit) ? removeUnit((Unit)o)</span>
+<span class="nc" id="L2243">            : false;</span>
     }
 
 
@@ -2276,7 +2276,7 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc" id="L2276">        int n = 0;</span>
 <span class="fc bfc" id="L2277" title="All 2 branches covered.">        for (Colony colony : getColonies()) {</span>
 <span class="pc bpc" id="L2278" title="1 of 2 branches missed.">            if (colony.isConnectedPort()) n++;</span>
-<span class="fc" id="L2279">        }</span>
+        }
 <span class="fc" id="L2280">        return n;</span>
     }
 
@@ -2374,10 +2374,10 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc bfc" id="L2374" title="All 2 branches covered.">        for (Settlement s : getSettlements()) {</span>
 <span class="fc bfc" id="L2375" title="All 2 branches covered.">            if (s instanceof Colony) {</span>
 <span class="fc" id="L2376">                colonies.add((Colony)s);</span>
-            } else {
+<span class="fc" id="L2377">            } else {</span>
 <span class="fc" id="L2378">                throw new RuntimeException(&quot;getColonies found: &quot; + s);</span>
             }
-<span class="fc" id="L2380">        }</span>
+        }
 <span class="fc" id="L2381">        return colonies;</span>
     }
 
@@ -2404,10 +2404,10 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc bfc" id="L2404" title="All 2 branches covered.">        for (Settlement s : getSettlements()) {</span>
 <span class="pc bpc" id="L2405" title="1 of 2 branches missed.">            if (s instanceof IndianSettlement) {</span>
 <span class="fc" id="L2406">                indianSettlements.add((IndianSettlement)s);</span>
-            } else {
+<span class="fc" id="L2407">            } else {</span>
 <span class="nc" id="L2408">                throw new RuntimeException(&quot;getIndianSettlements found: &quot; + s);</span>
             }
-<span class="fc" id="L2410">        }</span>
+        }
 <span class="fc" id="L2411">        return indianSettlements;</span>
     }
 
@@ -2436,7 +2436,7 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc" id="L2436">                bestValue = value;</span>
 <span class="fc" id="L2437">                best = settlement;</span>
             }
-<span class="fc" id="L2439">        }</span>
+        }
 <span class="fc" id="L2440">        return best;</span>
     }
 
@@ -2452,9 +2452,9 @@ public class Player extends FreeColGameObject implements Nameable {
      *     &lt;code&gt;Player&lt;/code&gt;.
      */
     public List&lt;ModelMessage&gt; getModelMessages() {
-<span class="fc" id="L2455">        synchronized (modelMessages) {</span>
+<span class="pc" id="L2455">        synchronized (modelMessages) {</span>
 <span class="fc" id="L2456">            return new ArrayList&lt;&gt;(modelMessages);</span>
-<span class="nc" id="L2457">        }</span>
+        }
     }
 
     /**
@@ -2468,7 +2468,7 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="nc" id="L2468">            return modelMessages.stream()</span>
 <span class="nc bnc" id="L2469" title="All 2 branches missed.">                .filter(m -&gt; !m.hasBeenDisplayed())</span>
 <span class="nc" id="L2470">                .collect(Collectors.toList());</span>
-<span class="nc" id="L2471">        }</span>
+        }
     }
 
     /**
@@ -2479,7 +2479,7 @@ public class Player extends FreeColGameObject implements Nameable {
     public void addModelMessage(ModelMessage modelMessage) {
 <span class="nc" id="L2480">        synchronized (modelMessages) {</span>
 <span class="nc" id="L2481">            modelMessages.add(modelMessage);</span>
-<span class="nc" id="L2482">        }</span>
+        }
 <span class="nc" id="L2483">    }</span>
 
     /**
@@ -2496,8 +2496,8 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="nc" id="L2496">                ModelMessage message = messageIterator.next();</span>
 <span class="nc" id="L2497">                String id = message.getMessageType().getOptionName();</span>
 <span class="nc bnc" id="L2498" title="All 2 branches missed.">                if (!options.getBoolean(id)) messageIterator.remove();</span>
-<span class="nc" id="L2499">            }</span>
-<span class="nc" id="L2500">        }</span>
+            }
+        }
 <span class="nc" id="L2501">    }</span>
 
     /**
@@ -2509,17 +2509,17 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="nc bnc" id="L2509" title="All 2 branches missed.">            while (messageIterator.hasNext()) {</span>
 <span class="nc" id="L2510">                ModelMessage message = messageIterator.next();</span>
 <span class="nc bnc" id="L2511" title="All 2 branches missed.">                if (message.hasBeenDisplayed()) messageIterator.remove();</span>
-<span class="nc" id="L2512">            }</span>
-<span class="nc" id="L2513">        }</span>
+            }
+        }
 <span class="nc" id="L2514">    }</span>
 
     /**
      * Removes all the model messages for this player.
      */
     public void clearModelMessages() {
-<span class="fc" id="L2520">        synchronized (modelMessages) {</span>
+<span class="pc" id="L2520">        synchronized (modelMessages) {</span>
 <span class="fc" id="L2521">            modelMessages.clear();</span>
-<span class="pc" id="L2522">        }</span>
+        }
 <span class="fc" id="L2523">    }</span>
 
     /**
@@ -2540,12 +2540,12 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="nc bnc" id="L2540" title="All 2 branches missed.">                if (Utils.equals(message.getSourceId(), source.getId())) {</span>
 <span class="nc bnc" id="L2541" title="All 2 branches missed.">                    if (newSource == null) {</span>
 <span class="nc" id="L2542">                        messageIterator.remove();</span>
-                    } else {
+<span class="nc" id="L2543">                    } else {</span>
 <span class="nc" id="L2544">                        message.divert(newSource);</span>
                     }
                 }
-<span class="nc" id="L2547">            }</span>
-<span class="nc" id="L2548">        }</span>
+            }
+        }
 <span class="nc" id="L2549">    }</span>
 
     /**
@@ -2555,9 +2555,9 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="nc" id="L2555">        Tile tile = getEntryLocation().getTile();</span>
 <span class="nc bnc" id="L2556" title="All 2 branches missed.">        String sailTag = (tile == null) ? &quot;unknown&quot;</span>
 <span class="nc bnc" id="L2557" title="All 2 branches missed.">            : (tile.getX() &lt; tile.getMap().getWidth() / 2) ? &quot;east&quot;</span>
-            : &quot;west&quot;;
+<span class="nc" id="L2558">            : &quot;west&quot;;</span>
 <span class="nc" id="L2559">        addModelMessage(new ModelMessage(ModelMessage.MessageType.TUTORIAL,</span>
-                                         &quot;model.player.startGame&quot;, this)
+<span class="nc" id="L2560">                                         &quot;model.player.startGame&quot;, this)</span>
 <span class="nc" id="L2561">            .add(&quot;%direction%&quot;, sailTag));</span>
 <span class="nc" id="L2562">    }</span>
 
@@ -2654,11 +2654,11 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc bfc" id="L2654" title="All 2 branches covered.">        if (tile == null) return false;</span>
 
         do {
-<span class="fc" id="L2657">            synchronized (canSeeLock) {</span>
+<span class="pc" id="L2657">            synchronized (canSeeLock) {</span>
 <span class="fc bfc" id="L2658" title="All 2 branches covered.">                if (canSeeValid) {</span>
 <span class="fc" id="L2659">                    return canSeeTiles[tile.getX()][tile.getY()];</span>
                 }
-<span class="pc" id="L2661">            }</span>
+            }
 <span class="pc bpc" id="L2662" title="1 of 2 branches missed.">        } while (resetCanSeeTiles());</span>
 <span class="nc" id="L2663">        return false;</span>
     }
@@ -2705,9 +2705,9 @@ public class Player extends FreeColGameObject implements Nameable {
      * By convention, we try to avoid cs* routines being -vis.
      */
     public void invalidateCanSeeTiles() {
-<span class="fc" id="L2708">        synchronized (canSeeLock) {</span>
+<span class="pc" id="L2708">        synchronized (canSeeLock) {</span>
 <span class="fc" id="L2709">            canSeeValid = false;</span>
-<span class="pc" id="L2710">        }</span>
+        }
 <span class="fc" id="L2711">    }</span>
 
     /**
@@ -2724,10 +2724,10 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="pc bpc" id="L2724" title="1 of 2 branches missed.">        if (map == null) return false;</span>
 
 <span class="fc" id="L2726">        boolean[][] cST = makeCanSeeTiles(map);</span>
-<span class="fc" id="L2727">        synchronized (canSeeLock) {</span>
+<span class="pc" id="L2727">        synchronized (canSeeLock) {</span>
 <span class="fc" id="L2728">            canSeeTiles = cST;</span>
 <span class="fc" id="L2729">            canSeeValid = true;</span>
-<span class="pc" id="L2730">        }</span>
+        }
 <span class="fc" id="L2731">        return true;</span>
     }
 
@@ -2765,7 +2765,7 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="nc bnc" id="L2765" title="All 2 branches missed.">                if (t != null) {</span>
 <span class="nc" id="L2766">                    cST[t.getX()][t.getY()] = hasExplored(t);</span>
                 }
-<span class="nc" id="L2768">            }</span>
+            }
 <span class="nc" id="L2769">            return cST;</span>
         }
 
@@ -2785,16 +2785,16 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc" id="L2785">                    unit.getLineOfSight())) {</span>
 <span class="fc" id="L2786">                cST[t.getX()][t.getY()] = true;</span>
 <span class="fc" id="L2787">                t.seeTile(this);</span>
-<span class="fc" id="L2788">            }</span>
-<span class="fc" id="L2789">        }</span>
+            }
+        }
         // All the settlements.
 <span class="fc bfc" id="L2791" title="All 2 branches covered.">        for (Settlement settlement : getSettlements()) {</span>
 <span class="fc bfc" id="L2792" title="All 2 branches covered.">            for (Tile t : settlement.getTile().getSurroundingTiles(0,</span>
 <span class="fc" id="L2793">                    settlement.getLineOfSight())) {</span>
 <span class="fc" id="L2794">                cST[t.getX()][t.getY()] = true;</span>
 <span class="fc" id="L2795">                t.seeTile(this);</span>
-<span class="fc" id="L2796">            }</span>
-<span class="fc" id="L2797">        }</span>
+            }
+        }
         // All missions if using enhanced missionaries.
 <span class="fc bfc" id="L2799" title="All 2 branches covered.">        if (isEuropean()</span>
 <span class="pc bpc" id="L2800" title="1 of 2 branches missed.">                &amp;&amp; spec.getBoolean(GameOptions.ENHANCED_MISSIONARIES)) {</span>
@@ -2807,9 +2807,9 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc" id="L2807">                            is.getLineOfSight())) {</span>
 <span class="fc" id="L2808">                        cST[t.getX()][t.getY()] = true;</span>
 <span class="fc" id="L2809">                        t.seeTile(this);</span>
-<span class="fc" id="L2810">                    }</span>
-<span class="fc" id="L2811">                }</span>
-<span class="fc" id="L2812">            }</span>
+                    }
+                }
+            }
         }
         // All other European settlements if can see all colonies.
 <span class="pc bpc" id="L2815" title="1 of 4 branches missed.">        if (isEuropean() &amp;&amp; hasAbility(Ability.SEE_ALL_COLONIES)) {</span>
@@ -2819,9 +2819,9 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="nc" id="L2819">                            colony.getLineOfSight())) {</span>
 <span class="nc" id="L2820">                        cST[t.getX()][t.getY()] = true;</span>
 <span class="nc" id="L2821">                        t.seeTile(this);</span>
-<span class="nc" id="L2822">                    }</span>
-<span class="nc" id="L2823">                }</span>
-<span class="nc" id="L2824">            }</span>
+                    }
+                }
+            }
         }
 <span class="fc" id="L2826">        return cST;</span>
     }
@@ -2905,7 +2905,7 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public Stance getStance(Player player) {
 <span class="pc bpc" id="L2907" title="1 of 4 branches missed.">        return (player == null || stance.get(player.getId()) == null)</span>
-            ? Stance.UNCONTACTED
+<span class="fc" id="L2908">            ? Stance.UNCONTACTED</span>
 <span class="fc" id="L2909">            : stance.get(player.getId());</span>
     }
 
@@ -2933,8 +2933,8 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc bfc" id="L2933" title="All 2 branches covered.">        if (newStance == oldStance) return true;</span>
 
 <span class="fc" id="L2935">        boolean valid = true;;</span>
-<span class="pc bpc" id="L2936" title="2 of 6 branches missed.">        if ((newStance == Stance.CEASE_FIRE &amp;&amp; oldStance != Stance.WAR)</span>
-            || newStance == Stance.UNCONTACTED) {
+<span class="pc bpc" id="L2936" title="1 of 4 branches missed.">        if ((newStance == Stance.CEASE_FIRE &amp;&amp; oldStance != Stance.WAR)</span>
+<span class="pc bpc" id="L2937" title="1 of 2 branches missed.">            || newStance == Stance.UNCONTACTED) {</span>
 <span class="nc" id="L2938">            valid = false;</span>
         }
 <span class="fc" id="L2940">        stance.put(player.getId(), newStance);</span>
@@ -3033,9 +3033,9 @@ public class Player extends FreeColGameObject implements Nameable {
                 // Only consider specific food types, not the aggregation.
 <span class="fc bfc" id="L3034" title="All 2 branches covered.">                .filter(gt -&gt; gt != spec.getPrimaryFoodType())</span>
 <span class="fc" id="L3035">                .mapToInt(gt -&gt; tile.getPotentialProduction(gt, null)).sum()</span>
-            + 100;
+<span class="fc" id="L3036">            + 100;</span>
 <span class="fc" id="L3037">        return (int)applyModifiers(price, getGame().getTurn(),</span>
-                                   Modifier.LAND_PAYMENT_MODIFIER);
+<span class="fc" id="L3038">                                   Modifier.LAND_PAYMENT_MODIFIER);</span>
     }
 
     /**
@@ -3103,7 +3103,7 @@ public class Player extends FreeColGameObject implements Nameable {
      * to found a settlement or just to be used by one, including the
      * double negative NONE == &quot;no reason&quot; case.
      */
-<span class="pc" id="L3106">    public static enum NoClaimReason implements Named {</span>
+<span class="fc" id="L3106">    public static enum NoClaimReason implements Named {</span>
 <span class="fc" id="L3107">        NONE,            // Actually, tile can be claimed</span>
 <span class="fc" id="L3108">        TERRAIN,         // Not on settleable terrain</span>
 <span class="fc" id="L3109">        RUMOUR,          // Europeans can not claim tiles with LCR</span>
@@ -3156,16 +3156,16 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return The reason why/not the tile can be owned by this player.
      */
     private NoClaimReason canOwnTileReason(Tile tile) {
-<span class="fc bfc" id="L3159" title="All 2 branches covered.">        return (any(tile.getUnitList(),</span>
-<span class="fc bfc" id="L3160" title="All 4 branches covered.">                u -&gt; u.getOwner() != this &amp;&amp; u.isOffensiveUnit()))</span>
-            ? NoClaimReason.OCCUPIED // The tile is held against us
+<span class="fc" id="L3159">        return (any(tile.getUnitList(),</span>
+<span class="fc bfc" id="L3160" title="All 6 branches covered.">                u -&gt; u.getOwner() != this &amp;&amp; u.isOffensiveUnit()))</span>
+<span class="fc" id="L3161">            ? NoClaimReason.OCCUPIED // The tile is held against us</span>
 <span class="fc bfc" id="L3162" title="All 2 branches covered.">            : (isEuropean())</span>
 <span class="fc bfc" id="L3163" title="All 2 branches covered.">            ? ((tile.hasLostCityRumour())</span>
-                ? NoClaimReason.RUMOUR
-                : NoClaimReason.NONE)
+<span class="fc" id="L3164">                ? NoClaimReason.RUMOUR</span>
+<span class="fc" id="L3165">                : NoClaimReason.NONE)</span>
 <span class="fc bfc" id="L3166" title="All 2 branches covered.">            : ((tile.isLand())</span>
-                ? NoClaimReason.NONE
-                : NoClaimReason.WATER);
+<span class="fc" id="L3167">                ? NoClaimReason.NONE</span>
+<span class="fc" id="L3168">                : NoClaimReason.WATER);</span>
     }
 
     /**
@@ -3198,11 +3198,11 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc bfc" id="L3198" title="All 2 branches covered.">            : (tile.hasSettlement()) ? NoClaimReason.SETTLEMENT</span>
 <span class="fc bfc" id="L3199" title="All 2 branches covered.">            : (tile.getOwner() == null) ? NoClaimReason.NONE</span>
 <span class="fc bfc" id="L3200" title="All 4 branches covered.">            : (tile.getOwner() == this) ? ((tile.isInUse())</span>
-                                           ? NoClaimReason.WORKED
-                                           : NoClaimReason.NONE)
-<span class="fc bfc" id="L3203" title="All 4 branches covered.">            : ((price = getLandPrice(tile)) &lt; 0) ? NoClaimReason.EUROPEANS</span>
-            : (price &gt; 0) ? NoClaimReason.NATIVES
-            : NoClaimReason.NONE;
+<span class="fc" id="L3201">                                           ? NoClaimReason.WORKED</span>
+<span class="fc" id="L3202">                                           : NoClaimReason.NONE)</span>
+<span class="fc bfc" id="L3203" title="All 2 branches covered.">            : ((price = getLandPrice(tile)) &lt; 0) ? NoClaimReason.EUROPEANS</span>
+<span class="fc bfc" id="L3204" title="All 2 branches covered.">            : (price &gt; 0) ? NoClaimReason.NATIVES</span>
+<span class="fc" id="L3205">            : NoClaimReason.NONE;</span>
     }
 
     /**
@@ -3228,10 +3228,10 @@ public class Player extends FreeColGameObject implements Nameable {
         NoClaimReason reason;
 <span class="fc bfc" id="L3229" title="All 2 branches covered.">        return (!tile.getType().canSettle()) ? NoClaimReason.TERRAIN</span>
 <span class="fc bfc" id="L3230" title="All 2 branches covered.">            : ((reason = canClaimForSettlementReason(tile))</span>
-               != NoClaimReason.NATIVES) ? reason
+<span class="fc" id="L3231">               != NoClaimReason.NATIVES) ? reason</span>
 <span class="pc bpc" id="L3232" title="1 of 2 branches missed.">            : (!tile.getAdjacentColonies().isEmpty()) ? NoClaimReason.SETTLEMENT</span>
 <span class="pc bpc" id="L3233" title="1 of 2 branches missed.">            : (canClaimFreeCenterTile(tile)) ? NoClaimReason.NONE</span>
-            : NoClaimReason.NATIVES;
+<span class="fc" id="L3234">            : NoClaimReason.NATIVES;</span>
     }
 
     /**
@@ -3249,12 +3249,12 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="pc bpc" id="L3249" title="1 of 2 branches missed.">            &amp;&amp; tile.getOwner().isIndian()</span>
 <span class="pc bpc" id="L3250" title="1 of 2 branches missed.">            &amp;&amp; (GameOptions.BUILD_ON_NATIVE_LAND_ALWAYS.equals(build)</span>
 <span class="pc bpc" id="L3251" title="1 of 2 branches missed.">                || (GameOptions.BUILD_ON_NATIVE_LAND_FIRST.equals(build)</span>
-<span class="pc bnc" id="L3252" title="All 2 branches missed.">                    &amp;&amp; hasZeroSettlements())</span>
+<span class="nc bnc" id="L3252" title="All 2 branches missed.">                    &amp;&amp; hasZeroSettlements())</span>
 <span class="pc bpc" id="L3253" title="1 of 2 branches missed.">                || (GameOptions.BUILD_ON_NATIVE_LAND_FIRST_AND_UNCONTACTED.equals(build)</span>
 <span class="pc bpc" id="L3254" title="1 of 2 branches missed.">                    &amp;&amp; hasZeroSettlements()</span>
 <span class="nc bnc" id="L3255" title="All 2 branches missed.">                    &amp;&amp; (tile.getOwner() == null</span>
-<span class="pc bnc" id="L3256" title="All 2 branches missed.">                        || tile.getOwner().getStance(this)</span>
-                        == Stance.UNCONTACTED)));
+<span class="nc bnc" id="L3256" title="All 2 branches missed.">                        || tile.getOwner().getStance(this)</span>
+<span class="nc" id="L3257">                        == Stance.UNCONTACTED)));</span>
     }
 
     /**
@@ -3300,8 +3300,8 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return True if the tile ownership can be claimed.
      */
     public boolean canAcquireForImprovement(Tile tile) {
-<span class="pc bpc" id="L3303" title="1 of 2 branches missed.">        return canClaimForImprovement(tile)</span>
-<span class="pc bnc" id="L3304" title="All 2 branches missed.">            || getLandPrice(tile) &gt; 0;</span>
+<span class="pc bpc" id="L3303" title="3 of 4 branches missed.">        return canClaimForImprovement(tile)</span>
+<span class="nc" id="L3304">            || getLandPrice(tile) &gt; 0;</span>
     }
 
     /**
@@ -3330,8 +3330,8 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="fc bfc" id="L3330" title="All 2 branches covered.">                            &amp;&amp; canClaimForSettlement(next)) {</span>
 <span class="fc" id="L3331">                            layer.add(next);</span>
                         }
-<span class="fc" id="L3333">                    }</span>
-<span class="fc" id="L3334">                }</span>
+                    }
+                }
             }
 <span class="fc" id="L3336">            tiles.addAll(layer);</span>
         }
@@ -3474,7 +3474,7 @@ public class Player extends FreeColGameObject implements Nameable {
         }
         // Penalize certain problems more in the initial colonies.
 <span class="fc" id="L3476">        double development = Math.min(LOW_SETTLEMENT_NUMBER, settlements.size())</span>
-                / (double)LOW_SETTLEMENT_NUMBER;
+<span class="fc" id="L3477">                / (double)LOW_SETTLEMENT_NUMBER;</span>
 <span class="fc" id="L3478">        int portCount = getNumberOfPorts();</span>
 
 <span class="pc bpc" id="L3480" title="3 of 4 branches missed.">        if (tile.isPolar() &amp;&amp; settlements.size() &lt; LOW_SETTLEMENT_NUMBER) {</span>
@@ -3483,239 +3483,229 @@ public class Player extends FreeColGameObject implements Nameable {
 <span class="nc" id="L3483">            return values;</span>
         }
 
-        //Refactored switch statement to a new method
-<span class="fc" id="L3487">        List&lt;Double&gt; x = SetupClaimValues(tile, development, values, portCount);</span>
-<span class="pc bpc" id="L3488" title="1 of 2 branches missed.">        if (x != null) return x;</span>
+<span class="pc bpc" id="L3486" title="6 of 7 branches missed.">        switch (canClaimToFoundSettlementReason(tile)) {</span>
+        case NONE:
+<span class="fc" id="L3488">            break;</span>
+        case TERRAIN: case WATER:
+<span class="nc" id="L3490">            values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
+<span class="nc" id="L3491">                       NoValueType.TERRAIN.getDouble());</span>
+<span class="nc" id="L3492">            return values;</span>
+        case RUMOUR:
+<span class="nc bnc" id="L3494" title="All 2 branches missed.">            if (settlements.isEmpty()) {</span>
+<span class="nc" id="L3495">                values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
+<span class="nc" id="L3496">                           NoValueType.RUMOUR.getDouble());</span>
+<span class="nc" id="L3497">                return values;</span>
+            }
+<span class="nc" id="L3499">            values.set(ColonyValueCategory.A_TILE.ordinal(),</span>
+<span class="nc" id="L3500">                       development);</span>
+<span class="nc" id="L3501">            break;</span>
+        case OCCUPIED: // transient we hope
+<span class="nc" id="L3503">            values.set(ColonyValueCategory.A_TILE.ordinal(),</span>
+<span class="nc" id="L3504">                       MOD_ENEMY_UNIT[0]);</span>
+<span class="nc" id="L3505">            break;</span>
+        case SETTLEMENT: case WORKED: case EUROPEANS:
+<span class="nc" id="L3507">            values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
+<span class="nc" id="L3508">                       NoValueType.SETTLED.getDouble());</span>
+<span class="nc" id="L3509">            return values;</span>
+        case NATIVES: // If we have no ports, we are desperate enough to steal
+<span class="nc bnc" id="L3511" title="All 2 branches missed.">            if (tile.getOwningSettlement() != null</span>
+<span class="nc bnc" id="L3512" title="All 2 branches missed.">                &amp;&amp; tile.getOwningSettlement().getTile() != null</span>
+<span class="nc bnc" id="L3513" title="All 2 branches missed.">                &amp;&amp; tile.getOwningSettlement().getTile().isAdjacent(tile)) {</span>
+<span class="nc" id="L3514">                values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
+<span class="nc" id="L3515">                           NoValueType.SETTLED.getDouble());</span>
+<span class="nc" id="L3516">                return values;</span>
+            }
+<span class="nc" id="L3518">            int price = getLandPrice(tile);</span>
+<span class="nc bnc" id="L3519" title="All 6 branches missed.">            if (price &gt; 0 &amp;&amp; !checkGold(price) &amp;&amp; portCount &gt; 0) {</span>
+<span class="nc" id="L3520">                values.set(ColonyValueCategory.A_TILE.ordinal(),</span>
+<span class="nc" id="L3521">                           MOD_STEAL);</span>
+            }
+<span class="nc" id="L3523">            break;</span>
+        default:
+<span class="nc" id="L3525">            values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
+<span class="nc" id="L3526">                       NoValueType.BOGUS.getDouble());</span>
+<span class="nc" id="L3527">            return values;</span>
+        }
 
         // Set up maps for all foods and building materials
-<span class="fc" id="L3491">        final Specification spec = getSpecification();</span>
-<span class="fc" id="L3492">        TypeCountMap&lt;GoodsType&gt; production = new TypeCountMap&lt;&gt;();</span>
+<span class="fc" id="L3531">        final Specification spec = getSpecification();</span>
+<span class="fc" id="L3532">        TypeCountMap&lt;GoodsType&gt; production = new TypeCountMap&lt;&gt;();</span>
 
         // Initialize tile value with food production.
-<span class="fc" id="L3495">        int initialFood = 0;</span>
-<span class="fc" id="L3496">        final GoodsType foodType = spec.getPrimaryFoodType();</span>
-<span class="fc bfc" id="L3497" title="All 2 branches covered.">        for (ProductionType productionType : tile.getType()</span>
-<span class="fc" id="L3498">                 .getAvailableProductionTypes(true)) {</span>
-<span class="fc bfc" id="L3499" title="All 2 branches covered.">            for (AbstractGoods output : productionType.getOutputs()) {</span>
-<span class="fc bfc" id="L3500" title="All 2 branches covered.">                if (!output.getType().isFoodType()) continue;</span>
-<span class="fc" id="L3501">                int amount = tile.getPotentialProduction(output.getType(), null);</span>
-<span class="pc bpc" id="L3502" title="1 of 2 branches missed.">                if (amount &gt; initialFood) initialFood = amount;</span>
-<span class="fc" id="L3503">            }</span>
-<span class="fc" id="L3504">        }</span>
-<span class="pc bpc" id="L3505" title="1 of 2 branches missed.">        if (initialFood &lt;= FOOD_VERY_LOW) {</span>
-<span class="nc" id="L3506">            values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
-<span class="nc" id="L3507">                       NoValueType.FOOD.getDouble());</span>
-<span class="nc" id="L3508">            return values;</span>
+<span class="fc" id="L3535">        int initialFood = 0;</span>
+<span class="fc" id="L3536">        final GoodsType foodType = spec.getPrimaryFoodType();</span>
+<span class="fc bfc" id="L3537" title="All 2 branches covered.">        for (ProductionType productionType : tile.getType()</span>
+<span class="fc" id="L3538">                 .getAvailableProductionTypes(true)) {</span>
+<span class="fc bfc" id="L3539" title="All 2 branches covered.">            for (AbstractGoods output : productionType.getOutputs()) {</span>
+<span class="fc bfc" id="L3540" title="All 2 branches covered.">                if (!output.getType().isFoodType()) continue;</span>
+<span class="fc" id="L3541">                int amount = tile.getPotentialProduction(output.getType(), null);</span>
+<span class="pc bpc" id="L3542" title="1 of 2 branches missed.">                if (amount &gt; initialFood) initialFood = amount;</span>
+            }
         }
-<span class="fc" id="L3510">        production.incrementCount(foodType, initialFood);</span>
-<span class="fc" id="L3511">        values.set(ColonyValueCategory.A_PROD.ordinal(),</span>
-<span class="fc" id="L3512">                   (double)initialFood * foodType.getProductionWeight());</span>
+<span class="pc bpc" id="L3545" title="1 of 2 branches missed.">        if (initialFood &lt;= FOOD_VERY_LOW) {</span>
+<span class="nc" id="L3546">            values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
+<span class="nc" id="L3547">                       NoValueType.FOOD.getDouble());</span>
+<span class="nc" id="L3548">            return values;</span>
+        }
+<span class="fc" id="L3550">        production.incrementCount(foodType, initialFood);</span>
+<span class="fc" id="L3551">        values.set(ColonyValueCategory.A_PROD.ordinal(),</span>
+<span class="fc" id="L3552">                   (double)initialFood * foodType.getProductionWeight());</span>
 
         // Penalty if there is no direct connection to the high seas, or
         // if it is too long.
-<span class="fc" id="L3516">        int tilesToHighSeas = tile.getHighSeasCount();</span>
-<span class="pc bpc" id="L3517" title="1 of 2 branches missed.">        if (tilesToHighSeas &lt; 0) {</span>
-<span class="nc bnc" id="L3518" title="All 2 branches missed.">            if (portCount &lt; LOW_SETTLEMENT_NUMBER) {</span>
-<span class="nc" id="L3519">                values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
-<span class="nc" id="L3520">                           NoValueType.INLAND.getDouble());</span>
-<span class="nc" id="L3521">                return values;</span>
+<span class="fc" id="L3556">        int tilesToHighSeas = tile.getHighSeasCount();</span>
+<span class="pc bpc" id="L3557" title="1 of 2 branches missed.">        if (tilesToHighSeas &lt; 0) {</span>
+<span class="nc bnc" id="L3558" title="All 2 branches missed.">            if (portCount &lt; LOW_SETTLEMENT_NUMBER) {</span>
+<span class="nc" id="L3559">                values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
+<span class="nc" id="L3560">                           NoValueType.INLAND.getDouble());</span>
+<span class="nc" id="L3561">                return values;</span>
             }
-<span class="nc" id="L3523">            values.set(ColonyValueCategory.A_EUROPE.ordinal(),</span>
-<span class="nc" id="L3524">                       MOD_INLAND);</span>
-<span class="pc bpc" id="L3525" title="1 of 2 branches missed.">        } else if (tilesToHighSeas &gt;= LONG_PATH_TILES) {</span>
+<span class="nc" id="L3563">            values.set(ColonyValueCategory.A_EUROPE.ordinal(),</span>
+<span class="nc" id="L3564">                       MOD_INLAND);</span>
+<span class="pc bpc" id="L3565" title="1 of 2 branches missed.">        } else if (tilesToHighSeas &gt;= LONG_PATH_TILES) {</span>
             // Normally penalize in direct proportion to length of
             // path, but scale up to penalizing by the square of the
             // path length for the first colony.
-<span class="fc" id="L3529">            double trip = (double)LONG_PATH_TILES / tilesToHighSeas;</span>
-<span class="fc" id="L3530">            values.set(ColonyValueCategory.A_EUROPE.ordinal(),</span>
-<span class="fc" id="L3531">                       Math.pow(trip, 2.0 - development));</span>
-<span class="fc" id="L3532">        } else {</span>
-<span class="nc" id="L3533">            values.set(ColonyValueCategory.A_EUROPE.ordinal(),</span>
-<span class="nc" id="L3534">                       1.0 + 0.25 * ((double)LONG_PATH_TILES</span>
-                           / (LONG_PATH_TILES - tilesToHighSeas)));
+<span class="fc" id="L3569">            double trip = (double)LONG_PATH_TILES / tilesToHighSeas;</span>
+<span class="fc" id="L3570">            values.set(ColonyValueCategory.A_EUROPE.ordinal(),</span>
+<span class="fc" id="L3571">                       Math.pow(trip, 2.0 - development));</span>
+<span class="fc" id="L3572">        } else {</span>
+<span class="nc" id="L3573">            values.set(ColonyValueCategory.A_EUROPE.ordinal(),</span>
+<span class="nc" id="L3574">                       1.0 + 0.25 * ((double)LONG_PATH_TILES</span>
+<span class="nc" id="L3575">                           / (LONG_PATH_TILES - tilesToHighSeas)));</span>
         }
 
         // Penalty for building on a resource tile, because production
         // can not be improved much.
-<span class="fc" id="L3540">        values.set(ColonyValueCategory.A_RESOURCE.ordinal(),</span>
-<span class="pc bpc" id="L3541" title="1 of 2 branches missed.">                   (tile.hasResource()) ? MOD_HAS_RESOURCE : 1.0);</span>
+<span class="fc" id="L3580">        values.set(ColonyValueCategory.A_RESOURCE.ordinal(),</span>
+<span class="pc bpc" id="L3581" title="1 of 2 branches missed.">                   (tile.hasResource()) ? MOD_HAS_RESOURCE : 1.0);</span>
 
-<span class="fc" id="L3543">        Set&lt;GoodsType&gt; highProduction = new HashSet&lt;&gt;();</span>
-<span class="fc" id="L3544">        Set&lt;GoodsType&gt; goodProduction = new HashSet&lt;&gt;();</span>
-<span class="fc bfc" id="L3545" title="All 2 branches covered.">        for (Tile t : tile.getSurroundingTiles(1)) {</span>
-<span class="pc bpc" id="L3546" title="1 of 2 branches missed.">            if (t.getType() == null) continue; // Unexplored!?!</span>
-<span class="pc bpc" id="L3547" title="1 of 2 branches missed.">            if (t.getSettlement() != null) { // Should not happen, tested above</span>
-<span class="nc" id="L3548">                values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
-<span class="nc" id="L3549">                           NoValueType.SETTLED.getDouble());</span>
-<span class="nc" id="L3550">                return values;</span>
+<span class="fc" id="L3583">        Set&lt;GoodsType&gt; highProduction = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L3584">        Set&lt;GoodsType&gt; goodProduction = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L3585" title="All 2 branches covered.">        for (Tile t : tile.getSurroundingTiles(1)) {</span>
+<span class="pc bpc" id="L3586" title="1 of 2 branches missed.">            if (t.getType() == null) continue; // Unexplored!?!</span>
+<span class="pc bpc" id="L3587" title="1 of 2 branches missed.">            if (t.getSettlement() != null) { // Should not happen, tested above</span>
+<span class="nc" id="L3588">                values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
+<span class="nc" id="L3589">                           NoValueType.SETTLED.getDouble());</span>
+<span class="nc" id="L3590">                return values;</span>
             }
 
-<span class="fc" id="L3553">            double pf = 1.0;</span>
-<span class="pc bpc" id="L3554" title="3 of 4 branches missed.">            if (t.getOwner() != null &amp;&amp; !this.owns(t)) {</span>
-<span class="nc bnc" id="L3555" title="All 2 branches missed.">                if (t.getOwner().isEuropean()) {</span>
-<span class="nc bnc" id="L3556" title="All 2 branches missed.">                    if (portCount &lt; LOW_SETTLEMENT_NUMBER) {</span>
-<span class="nc" id="L3557">                        values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
-<span class="nc" id="L3558">                                   NoValueType.SETTLED.getDouble());</span>
-<span class="nc" id="L3559">                        return values;</span>
+<span class="fc" id="L3593">            double pf = 1.0;</span>
+<span class="pc bpc" id="L3594" title="3 of 4 branches missed.">            if (t.getOwner() != null &amp;&amp; !this.owns(t)) {</span>
+<span class="nc bnc" id="L3595" title="All 2 branches missed.">                if (t.getOwner().isEuropean()) {</span>
+<span class="nc bnc" id="L3596" title="All 2 branches missed.">                    if (portCount &lt; LOW_SETTLEMENT_NUMBER) {</span>
+<span class="nc" id="L3597">                        values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
+<span class="nc" id="L3598">                                   NoValueType.SETTLED.getDouble());</span>
+<span class="nc" id="L3599">                        return values;</span>
                     }
-<span class="nc" id="L3561">                    values.set(ColonyValueCategory.A_ADJACENT.ordinal(),</span>
-<span class="nc" id="L3562">                               values.get(ColonyValueCategory.A_ADJACENT.ordinal())</span>
-                               * MOD_OWNED_EUROPEAN * development);
-<span class="nc" id="L3564">                    continue; // Always ignore production from this tile</span>
+<span class="nc" id="L3601">                    values.set(ColonyValueCategory.A_ADJACENT.ordinal(),</span>
+<span class="nc" id="L3602">                               values.get(ColonyValueCategory.A_ADJACENT.ordinal())</span>
+<span class="nc" id="L3603">                               * MOD_OWNED_EUROPEAN * development);</span>
+<span class="nc" id="L3604">                    continue; // Always ignore production from this tile</span>
                 } else {
-<span class="nc" id="L3566">                    pf = MOD_OWNED_NATIVE;</span>
-<span class="nc bnc" id="L3567" title="All 2 branches missed.">                    if (portCount &gt; 0) pf *= development;</span>
+<span class="nc" id="L3606">                    pf = MOD_OWNED_NATIVE;</span>
+<span class="nc bnc" id="L3607" title="All 2 branches missed.">                    if (portCount &gt; 0) pf *= development;</span>
                 }
             }
 
             // Count production
-<span class="fc bfc" id="L3572" title="All 2 branches covered.">            for (AbstractGoods ag : t.getSortedPotential()) {</span>
-<span class="fc" id="L3573">                GoodsType type = ag.getType();</span>
-<span class="fc bfc" id="L3574" title="All 2 branches covered.">                if (type.isFoodType()) type = foodType;</span>
-<span class="fc" id="L3575">                int amount = ag.getAmount();</span>
-<span class="pc bpc" id="L3576" title="1 of 2 branches missed.">                if (!t.isLand()) amount *= development;</span>
-<span class="fc" id="L3577">                values.set(ColonyValueCategory.A_PROD.ordinal(),</span>
-<span class="fc" id="L3578">                           values.get(ColonyValueCategory.A_PROD.ordinal())</span>
-<span class="fc" id="L3579">                           + amount * type.getProductionWeight() * pf);</span>
-<span class="fc" id="L3580">                production.incrementCount(type, amount);</span>
+<span class="fc bfc" id="L3612" title="All 2 branches covered.">            for (AbstractGoods ag : t.getSortedPotential()) {</span>
+<span class="fc" id="L3613">                GoodsType type = ag.getType();</span>
+<span class="fc bfc" id="L3614" title="All 2 branches covered.">                if (type.isFoodType()) type = foodType;</span>
+<span class="fc" id="L3615">                int amount = ag.getAmount();</span>
+<span class="pc bpc" id="L3616" title="1 of 2 branches missed.">                if (!t.isLand()) amount *= development;</span>
+<span class="fc" id="L3617">                values.set(ColonyValueCategory.A_PROD.ordinal(),</span>
+<span class="fc" id="L3618">                           values.get(ColonyValueCategory.A_PROD.ordinal())</span>
+<span class="fc" id="L3619">                           + amount * type.getProductionWeight() * pf);</span>
+<span class="fc" id="L3620">                production.incrementCount(type, amount);</span>
                 // A few tiles with distinct high production are
                 // better than many tiles with low production.
-<span class="pc bpc" id="L3583" title="1 of 2 branches missed.">                if (amount &gt; HIGH_PRODUCTION) {</span>
-<span class="nc" id="L3584">                    highProduction.add(type);</span>
-<span class="fc bfc" id="L3585" title="All 2 branches covered.">                } else if (amount &gt; GOOD_PRODUCTION) {</span>
-<span class="fc" id="L3586">                    goodProduction.add(type);</span>
+<span class="pc bpc" id="L3623" title="1 of 2 branches missed.">                if (amount &gt; HIGH_PRODUCTION) {</span>
+<span class="nc" id="L3624">                    highProduction.add(type);</span>
+<span class="pc bfc" id="L3625" title="All 2 branches covered.">                } else if (amount &gt; GOOD_PRODUCTION) {</span>
+<span class="fc" id="L3626">                    goodProduction.add(type);</span>
                 }
-<span class="fc" id="L3588">            }</span>
+            }
 
-<span class="pc bpc" id="L3590" title="1 of 2 branches missed.">            for (Unit u : t.getUnitList()) {</span>
-<span class="nc bnc" id="L3591" title="All 4 branches missed.">                if (!owns(u) &amp;&amp; u.isOffensiveUnit()</span>
-<span class="nc bnc" id="L3592" title="All 2 branches missed.">                    &amp;&amp; atWarWith(u.getOwner())) {</span>
-<span class="nc" id="L3593">                    values.set(ColonyValueCategory.A_ADJACENT.ordinal(),</span>
-<span class="nc" id="L3594">                        values.get(ColonyValueCategory.A_ADJACENT.ordinal())</span>
-                        * MOD_ENEMY_UNIT[1]);
+<span class="pc bpc" id="L3630" title="1 of 2 branches missed.">            for (Unit u : t.getUnitList()) {</span>
+<span class="nc bnc" id="L3631" title="All 4 branches missed.">                if (!owns(u) &amp;&amp; u.isOffensiveUnit()</span>
+<span class="nc bnc" id="L3632" title="All 2 branches missed.">                    &amp;&amp; atWarWith(u.getOwner())) {</span>
+<span class="nc" id="L3633">                    values.set(ColonyValueCategory.A_ADJACENT.ordinal(),</span>
+<span class="nc" id="L3634">                        values.get(ColonyValueCategory.A_ADJACENT.ordinal())</span>
+<span class="nc" id="L3635">                        * MOD_ENEMY_UNIT[1]);</span>
                 }
-<span class="nc" id="L3597">            }</span>
-<span class="fc" id="L3598">        }</span>
+            }
+        }
 
-<span class="pc bpc" id="L3600" title="1 of 2 branches missed.">        for (GoodsType g : highProduction) {</span>
-<span class="nc" id="L3601">            values.set(ColonyValueCategory.A_LEVEL.ordinal(),</span>
-<span class="nc" id="L3602">                       values.get(ColonyValueCategory.A_LEVEL.ordinal())</span>
-                       * MOD_HIGH_PRODUCTION);
-<span class="nc" id="L3604">            goodProduction.remove(g);</span>
-<span class="nc" id="L3605">        }</span>
-<span class="pc bpc" id="L3606" title="1 of 2 branches missed.">        if (!goodProduction.isEmpty()) {</span>
-<span class="fc" id="L3607">            values.set(ColonyValueCategory.A_LEVEL.ordinal(),</span>
-<span class="fc" id="L3608">                       values.get(ColonyValueCategory.A_LEVEL.ordinal())</span>
-<span class="fc" id="L3609">                       * MOD_GOOD_PRODUCTION * goodProduction.size());</span>
+<span class="pc bpc" id="L3640" title="1 of 2 branches missed.">        for (GoodsType g : highProduction) {</span>
+<span class="nc" id="L3641">            values.set(ColonyValueCategory.A_LEVEL.ordinal(),</span>
+<span class="nc" id="L3642">                       values.get(ColonyValueCategory.A_LEVEL.ordinal())</span>
+<span class="nc" id="L3643">                       * MOD_HIGH_PRODUCTION);</span>
+<span class="nc" id="L3644">            goodProduction.remove(g);</span>
+        }
+<span class="pc bpc" id="L3646" title="1 of 2 branches missed.">        if (!goodProduction.isEmpty()) {</span>
+<span class="fc" id="L3647">            values.set(ColonyValueCategory.A_LEVEL.ordinal(),</span>
+<span class="fc" id="L3648">                       values.get(ColonyValueCategory.A_LEVEL.ordinal())</span>
+<span class="fc" id="L3649">                       * MOD_GOOD_PRODUCTION * goodProduction.size());</span>
         }
 
         // Apply modifiers for other settlements and units at distance.
-<span class="fc" id="L3613">        boolean supportingColony = false;</span>
-<span class="fc bfc" id="L3614" title="All 2 branches covered.">        for (int radius = 2; radius &lt; DISTANCE_MAX; radius++) {</span>
-<span class="fc bfc" id="L3615" title="All 2 branches covered.">            for (Tile t : getGame().getMap().getCircleTiles(tile, false,</span>
-                                                            radius)) {
-<span class="fc" id="L3617">                Settlement settlement = t.getSettlement();</span>
-<span class="fc bfc" id="L3618" title="All 2 branches covered.">                if (settlement != null) {</span>
-<span class="pc bpc" id="L3619" title="1 of 2 branches missed.">                    if (owns(settlement)) {</span>
-<span class="pc bpc" id="L3620" title="1 of 2 branches missed.">                        if (!supportingColony) {</span>
-<span class="fc" id="L3621">                            supportingColony = true;</span>
-<span class="fc" id="L3622">                            values.set(ColonyValueCategory.A_NEARBY.ordinal(),</span>
-<span class="fc" id="L3623">                                values.get(ColonyValueCategory.A_NEARBY.ordinal())</span>
-                                * MOD_OWN_COLONY[radius]);
+<span class="fc" id="L3653">        boolean supportingColony = false;</span>
+<span class="fc bfc" id="L3654" title="All 2 branches covered.">        for (int radius = 2; radius &lt; DISTANCE_MAX; radius++) {</span>
+<span class="fc bfc" id="L3655" title="All 2 branches covered.">            for (Tile t : getGame().getMap().getCircleTiles(tile, false,</span>
+<span class="fc" id="L3656">                                                            radius)) {</span>
+<span class="fc" id="L3657">                Settlement settlement = t.getSettlement();</span>
+<span class="fc bfc" id="L3658" title="All 2 branches covered.">                if (settlement != null) {</span>
+<span class="pc bpc" id="L3659" title="1 of 2 branches missed.">                    if (owns(settlement)) {</span>
+<span class="pc bpc" id="L3660" title="1 of 2 branches missed.">                        if (!supportingColony) {</span>
+<span class="fc" id="L3661">                            supportingColony = true;</span>
+<span class="fc" id="L3662">                            values.set(ColonyValueCategory.A_NEARBY.ordinal(),</span>
+<span class="fc" id="L3663">                                values.get(ColonyValueCategory.A_NEARBY.ordinal())</span>
+<span class="fc" id="L3664">                                * MOD_OWN_COLONY[radius]);</span>
                         }
-<span class="nc bnc" id="L3626" title="All 2 branches missed.">                    } else if (atWarWith(settlement.getOwner())) {</span>
-<span class="nc" id="L3627">                        values.set(ColonyValueCategory.A_NEARBY.ordinal(),</span>
-<span class="nc" id="L3628">                            values.get(ColonyValueCategory.A_NEARBY.ordinal())</span>
-                            * MOD_ENEMY_COLONY[radius]);
-                    } else {
-<span class="nc" id="L3631">                        values.set(ColonyValueCategory.A_NEARBY.ordinal(),</span>
-<span class="nc" id="L3632">                            values.get(ColonyValueCategory.A_NEARBY.ordinal())</span>
-                            * MOD_NEUTRAL_COLONY[radius]);
+<span class="pc bnc" id="L3666" title="All 2 branches missed.">                    } else if (atWarWith(settlement.getOwner())) {</span>
+<span class="nc" id="L3667">                        values.set(ColonyValueCategory.A_NEARBY.ordinal(),</span>
+<span class="nc" id="L3668">                            values.get(ColonyValueCategory.A_NEARBY.ordinal())</span>
+<span class="nc" id="L3669">                            * MOD_ENEMY_COLONY[radius]);</span>
+<span class="nc" id="L3670">                    } else {</span>
+<span class="nc" id="L3671">                        values.set(ColonyValueCategory.A_NEARBY.ordinal(),</span>
+<span class="nc" id="L3672">                            values.get(ColonyValueCategory.A_NEARBY.ordinal())</span>
+<span class="nc" id="L3673">                            * MOD_NEUTRAL_COLONY[radius]);</span>
                     }
                 }
 
-<span class="pc bpc" id="L3637" title="1 of 2 branches missed.">                for (Unit u : t.getUnitList()) {</span>
-<span class="nc bnc" id="L3638" title="All 4 branches missed.">                    if (!owns(u) &amp;&amp; u.isOffensiveUnit()</span>
-<span class="nc bnc" id="L3639" title="All 2 branches missed.">                        &amp;&amp; atWarWith(u.getOwner())) {</span>
-<span class="nc" id="L3640">                        values.set(ColonyValueCategory.A_NEARBY.ordinal(),</span>
-<span class="nc" id="L3641">                            values.get(ColonyValueCategory.A_NEARBY.ordinal())</span>
-                            * MOD_ENEMY_UNIT[radius]);
+<span class="pc bpc" id="L3677" title="1 of 2 branches missed.">                for (Unit u : t.getUnitList()) {</span>
+<span class="nc bnc" id="L3678" title="All 4 branches missed.">                    if (!owns(u) &amp;&amp; u.isOffensiveUnit()</span>
+<span class="nc bnc" id="L3679" title="All 2 branches missed.">                        &amp;&amp; atWarWith(u.getOwner())) {</span>
+<span class="nc" id="L3680">                        values.set(ColonyValueCategory.A_NEARBY.ordinal(),</span>
+<span class="nc" id="L3681">                            values.get(ColonyValueCategory.A_NEARBY.ordinal())</span>
+<span class="nc" id="L3682">                            * MOD_ENEMY_UNIT[radius]);</span>
                     }
-<span class="nc" id="L3644">                }</span>
-<span class="fc" id="L3645">            }</span>
+                }
+            }
         }
 
         // Check availability of key goods
-<span class="pc bpc" id="L3649" title="1 of 2 branches missed.">        if (production.getCount(foodType) &lt; FOOD_LOW) {</span>
-<span class="nc" id="L3650">            values.set(ColonyValueCategory.A_FOOD.ordinal(),</span>
-<span class="nc" id="L3651">                       values.get(ColonyValueCategory.A_FOOD.ordinal())</span>
-                       * MOD_FOOD_LOW);
+<span class="pc bpc" id="L3689" title="1 of 2 branches missed.">        if (production.getCount(foodType) &lt; FOOD_LOW) {</span>
+<span class="nc" id="L3690">            values.set(ColonyValueCategory.A_FOOD.ordinal(),</span>
+<span class="nc" id="L3691">                       values.get(ColonyValueCategory.A_FOOD.ordinal())</span>
+<span class="nc" id="L3692">                       * MOD_FOOD_LOW);</span>
         }
-<span class="fc" id="L3654">        int a = ColonyValueCategory.A_GOODS.ordinal() - 1;</span>
-<span class="fc bfc" id="L3655" title="All 2 branches covered.">        for (GoodsType type : production.keySet()) {</span>
-<span class="fc" id="L3656">            Integer amount = production.getCount(type);</span>
-<span class="fc" id="L3657">            double threshold = type.getLowProductionThreshold();</span>
-<span class="pc bpc" id="L3658" title="1 of 2 branches missed.">            if (threshold &gt; 0.0) {</span>
-<span class="nc bnc" id="L3659" title="All 2 branches missed.">                if (++a == values.size()) values.add(1.0);</span>
-<span class="nc bnc" id="L3660" title="All 2 branches missed.">                if (amount &lt; threshold) {</span>
-<span class="nc" id="L3661">                    double fraction = (double)amount / threshold;</span>
-<span class="nc" id="L3662">                    double zeroValue = type.getZeroProductionFactor();</span>
-<span class="nc" id="L3663">                    values.set(a, (1.0 - fraction) * zeroValue + fraction);</span>
+<span class="fc" id="L3694">        int a = ColonyValueCategory.A_GOODS.ordinal() - 1;</span>
+<span class="fc bfc" id="L3695" title="All 2 branches covered.">        for (GoodsType type : production.keySet()) {</span>
+<span class="fc" id="L3696">            Integer amount = production.getCount(type);</span>
+<span class="fc" id="L3697">            double threshold = type.getLowProductionThreshold();</span>
+<span class="pc bpc" id="L3698" title="1 of 2 branches missed.">            if (threshold &gt; 0.0) {</span>
+<span class="nc bnc" id="L3699" title="All 2 branches missed.">                if (++a == values.size()) values.add(1.0);</span>
+<span class="nc bnc" id="L3700" title="All 2 branches missed.">                if (amount &lt; threshold) {</span>
+<span class="nc" id="L3701">                    double fraction = (double)amount / threshold;</span>
+<span class="nc" id="L3702">                    double zeroValue = type.getZeroProductionFactor();</span>
+<span class="nc" id="L3703">                    values.set(a, (1.0 - fraction) * zeroValue + fraction);</span>
                 }
             }
-<span class="fc" id="L3666">        }</span>
-
-<span class="fc" id="L3668">        return values;</span>
-    }
-
-    private List&lt;Double&gt; SetupClaimValues(Tile tile, double development, List&lt;Double&gt; values, int portCount) {
-<span class="fc" id="L3672">        final double MOD_STEAL = 0.5;</span>
-<span class="fc" id="L3673">        final double[] MOD_ENEMY_UNIT     = {0.4, 0.5, 0.6, 0.75, 0.90};</span>
-
-<span class="pc bpc" id="L3675" title="6 of 7 branches missed.">        switch (canClaimToFoundSettlementReason(tile)) {</span>
-        case NONE:
-<span class="fc" id="L3677">            break;</span>
-        case TERRAIN: case WATER:
-<span class="nc" id="L3679">            values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
-<span class="nc" id="L3680">                       NoValueType.TERRAIN.getDouble());</span>
-<span class="nc" id="L3681">            return values;</span>
-        case RUMOUR:
-<span class="nc bnc" id="L3683" title="All 2 branches missed.">            if (settlements.isEmpty()) {</span>
-<span class="nc" id="L3684">                values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
-<span class="nc" id="L3685">                           NoValueType.RUMOUR.getDouble());</span>
-<span class="nc" id="L3686">                return values;</span>
-            }
-<span class="nc" id="L3688">            values.set(ColonyValueCategory.A_TILE.ordinal(),</span>
-<span class="nc" id="L3689">                       development);</span>
-<span class="nc" id="L3690">            break;</span>
-        case OCCUPIED: // transient we hope
-<span class="nc" id="L3692">            values.set(ColonyValueCategory.A_TILE.ordinal(),</span>
-<span class="nc" id="L3693">                       MOD_ENEMY_UNIT[0]);</span>
-<span class="nc" id="L3694">            break;</span>
-        case SETTLEMENT: case WORKED: case EUROPEANS:
-<span class="nc" id="L3696">            values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
-<span class="nc" id="L3697">                       NoValueType.SETTLED.getDouble());</span>
-<span class="nc" id="L3698">            return values;</span>
-        case NATIVES: // If we have no ports, we are desperate enough to steal
-<span class="nc bnc" id="L3700" title="All 2 branches missed.">            if (tile.getOwningSettlement() != null</span>
-<span class="nc bnc" id="L3701" title="All 2 branches missed.">                &amp;&amp; tile.getOwningSettlement().getTile() != null</span>
-<span class="nc bnc" id="L3702" title="All 2 branches missed.">                &amp;&amp; tile.getOwningSettlement().getTile().isAdjacent(tile)) {</span>
-<span class="nc" id="L3703">                values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
-<span class="nc" id="L3704">                           NoValueType.SETTLED.getDouble());</span>
-<span class="nc" id="L3705">                return values;</span>
-            }
-<span class="nc" id="L3707">            int price = getLandPrice(tile);</span>
-<span class="nc bnc" id="L3708" title="All 6 branches missed.">            if (price &gt; 0 &amp;&amp; !checkGold(price) &amp;&amp; portCount &gt; 0) {</span>
-<span class="nc" id="L3709">                values.set(ColonyValueCategory.A_TILE.ordinal(),</span>
-<span class="nc" id="L3710">                           MOD_STEAL);</span>
-            }
-            break;
-        default:
-<span class="nc" id="L3714">            values.set(ColonyValueCategory.A_OVERRIDE.ordinal(),</span>
-<span class="nc" id="L3715">                       NoValueType.BOGUS.getDouble());</span>
-<span class="nc" id="L3716">            return values;</span>
         }
-<span class="fc" id="L3718">        return null;</span>
+
+<span class="fc" id="L3708">        return values;</span>
     }
 
     /**
@@ -3728,11 +3718,11 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return A score for the tile.
      */
     public int getColonyValue(Tile tile) {
-<span class="nc" id="L3731">        List&lt;Double&gt; values = getAllColonyValues(tile);</span>
-<span class="nc bnc" id="L3732" title="All 2 branches missed.">        if (values.get(0) &lt; 0.0) return (int)Math.round(values.get(0));</span>
-<span class="nc" id="L3733">        double v = 1.0;</span>
-<span class="nc bnc" id="L3734" title="All 2 branches missed.">        for (Double d : values) v *= d;</span>
-<span class="nc" id="L3735">        return (int)Math.round(v);</span>
+<span class="nc" id="L3721">        List&lt;Double&gt; values = getAllColonyValues(tile);</span>
+<span class="nc bnc" id="L3722" title="All 2 branches missed.">        if (values.get(0) &lt; 0.0) return (int)Math.round(values.get(0));</span>
+<span class="nc" id="L3723">        double v = 1.0;</span>
+<span class="nc bnc" id="L3724" title="All 2 branches missed.">        for (Double d : values) v *= d;</span>
+<span class="nc" id="L3725">        return (int)Math.round(v);</span>
     }
 
 
@@ -3746,10 +3736,10 @@ public class Player extends FreeColGameObject implements Nameable {
      * @param what A description of the cheating.
      */
     public void logCheat(String what) {
-<span class="fc" id="L3749">        logger.finest(&quot;CHEAT: &quot; + getGame().getTurn().getNumber()</span>
-<span class="fc" id="L3750">            + &quot; &quot; + lastPart(getNationId(), &quot;.&quot;)</span>
-            + &quot; &quot; + what);
-<span class="fc" id="L3752">    }</span>
+<span class="fc" id="L3739">        logger.finest(&quot;CHEAT: &quot; + getGame().getTurn().getNumber()</span>
+<span class="fc" id="L3740">            + &quot; &quot; + lastPart(getNationId(), &quot;.&quot;)</span>
+<span class="fc" id="L3741">            + &quot; &quot; + what);</span>
+<span class="fc" id="L3742">    }</span>
 
     /**
      * Gets the maximum food consumption of any unit types
@@ -3758,19 +3748,19 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return A maximum food consumption value.
      */
     public int getMaximumFoodConsumption() {
-<span class="pc bpc" id="L3761" title="1 of 2 branches missed.">        if (maximumFoodConsumption &lt; 0) {</span>
-<span class="fc" id="L3762">            Specification spec = getSpecification();</span>
-<span class="fc bfc" id="L3763" title="All 2 branches covered.">            for (UnitType unitType : spec.getUnitTypeList()) {</span>
-<span class="fc bfc" id="L3764" title="All 2 branches covered.">                if (unitType.isAvailableTo(this)) {</span>
-<span class="fc" id="L3765">                    int foodConsumption = spec.getFoodGoodsTypeList().stream()</span>
-<span class="fc" id="L3766">                        .mapToInt(ft -&gt; unitType.getConsumptionOf(ft)).sum();</span>
-<span class="fc bfc" id="L3767" title="All 2 branches covered.">                    if (foodConsumption &gt; maximumFoodConsumption) {</span>
-<span class="fc" id="L3768">                        maximumFoodConsumption = foodConsumption;</span>
+<span class="pc bpc" id="L3751" title="1 of 2 branches missed.">        if (maximumFoodConsumption &lt; 0) {</span>
+<span class="fc" id="L3752">            Specification spec = getSpecification();</span>
+<span class="fc bfc" id="L3753" title="All 2 branches covered.">            for (UnitType unitType : spec.getUnitTypeList()) {</span>
+<span class="fc bfc" id="L3754" title="All 2 branches covered.">                if (unitType.isAvailableTo(this)) {</span>
+<span class="fc" id="L3755">                    int foodConsumption = spec.getFoodGoodsTypeList().stream()</span>
+<span class="fc" id="L3756">                        .mapToInt(ft -&gt; unitType.getConsumptionOf(ft)).sum();</span>
+<span class="fc bfc" id="L3757" title="All 2 branches covered.">                    if (foodConsumption &gt; maximumFoodConsumption) {</span>
+<span class="fc" id="L3758">                        maximumFoodConsumption = foodConsumption;</span>
                     }
                 }
-<span class="fc" id="L3771">            }</span>
+            }
         }
-<span class="fc" id="L3773">        return maximumFoodConsumption;</span>
+<span class="fc" id="L3763">        return maximumFoodConsumption;</span>
     }
 
     /**
@@ -3780,7 +3770,7 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return True if the &lt;code&gt;Ownable&lt;/code&gt; is ours.
      */
     public boolean owns(Ownable ownable) {
-<span class="pc bpc" id="L3783" title="1 of 2 branches missed.">        return (ownable == null) ? false : this.equals(ownable.getOwner());</span>
+<span class="pc bpc" id="L3773" title="1 of 2 branches missed.">        return (ownable == null) ? false : this.equals(ownable.getOwner());</span>
     }
 
     /**
@@ -3797,19 +3787,19 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     public &lt;T extends FreeColGameObject&gt; T getOurFreeColGameObject(String id,
         Class&lt;T&gt; returnClass) throws IllegalStateException {
-<span class="fc" id="L3800">        T t = getGame().getFreeColGameObject(id, returnClass);</span>
-<span class="pc bpc" id="L3801" title="1 of 2 branches missed.">        if (t == null) {</span>
-<span class="nc" id="L3802">            throw new IllegalStateException(&quot;Not a &quot; + returnClass.getName()</span>
-                + &quot;: &quot; + id);
-<span class="pc bpc" id="L3804" title="1 of 2 branches missed.">        } else if (t instanceof Ownable) {</span>
-<span class="pc bpc" id="L3805" title="1 of 2 branches missed.">            if (!owns((Ownable)t)) {</span>
-<span class="nc" id="L3806">                throw new IllegalStateException(returnClass.getName()</span>
-<span class="nc" id="L3807">                    + &quot; not owned by &quot; + getId() + &quot;: &quot; + id);</span>
+<span class="fc" id="L3790">        T t = getGame().getFreeColGameObject(id, returnClass);</span>
+<span class="pc bpc" id="L3791" title="1 of 2 branches missed.">        if (t == null) {</span>
+<span class="nc" id="L3792">            throw new IllegalStateException(&quot;Not a &quot; + returnClass.getName()</span>
+<span class="nc" id="L3793">                + &quot;: &quot; + id);</span>
+<span class="pc bpc" id="L3794" title="1 of 2 branches missed.">        } else if (t instanceof Ownable) {</span>
+<span class="pc bpc" id="L3795" title="1 of 2 branches missed.">            if (!owns((Ownable)t)) {</span>
+<span class="nc" id="L3796">                throw new IllegalStateException(returnClass.getName()</span>
+<span class="nc" id="L3797">                    + &quot; not owned by &quot; + getId() + &quot;: &quot; + id);</span>
             }
         } else {
-<span class="nc" id="L3810">            throw new IllegalStateException(&quot;Not ownable: &quot; + id);</span>
+<span class="nc" id="L3800">            throw new IllegalStateException(&quot;Not ownable: &quot; + id);</span>
         }
-<span class="fc" id="L3812">        return t;</span>
+<span class="fc" id="L3802">        return t;</span>
     }
 
 
@@ -3820,24 +3810,24 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     @Override
     public int checkIntegrity(boolean fix) {
-<span class="fc" id="L3823">        int result = super.checkIntegrity(fix);</span>
-<span class="fc bfc" id="L3824" title="All 2 branches covered.">        for (Unit unit : getUnits()) {</span>
-<span class="pc bpc" id="L3825" title="1 of 2 branches missed.">            if (unit.getOwner() == null) {</span>
-<span class="nc bnc" id="L3826" title="All 2 branches missed.">                if (fix) {</span>
-<span class="nc" id="L3827">                    unit.setOwner(this);</span>
-<span class="nc" id="L3828">                    logger.warning(&quot;Fixed missing owner for: &quot; + unit.getId());</span>
-<span class="nc" id="L3829">                    result = 0;</span>
-                } else {
-<span class="nc" id="L3831">                    logger.warning(&quot;Missing owner for: &quot; + unit.getId());</span>
-<span class="nc" id="L3832">                    result = -1;</span>
+<span class="fc" id="L3813">        int result = super.checkIntegrity(fix);</span>
+<span class="fc bfc" id="L3814" title="All 2 branches covered.">        for (Unit unit : getUnits()) {</span>
+<span class="pc bpc" id="L3815" title="1 of 2 branches missed.">            if (unit.getOwner() == null) {</span>
+<span class="nc bnc" id="L3816" title="All 2 branches missed.">                if (fix) {</span>
+<span class="nc" id="L3817">                    unit.setOwner(this);</span>
+<span class="nc" id="L3818">                    logger.warning(&quot;Fixed missing owner for: &quot; + unit.getId());</span>
+<span class="nc" id="L3819">                    result = 0;</span>
+<span class="nc" id="L3820">                } else {</span>
+<span class="nc" id="L3821">                    logger.warning(&quot;Missing owner for: &quot; + unit.getId());</span>
+<span class="nc" id="L3822">                    result = -1;</span>
                 }
             }
-<span class="fc" id="L3835">            result = Math.min(result, unit.checkIntegrity(fix));</span>
-<span class="fc" id="L3836">        }</span>
-<span class="fc bfc" id="L3837" title="All 2 branches covered.">        if (monarch != null) {</span>
-<span class="fc" id="L3838">            result = Math.min(result, monarch.checkIntegrity(fix));</span>
+<span class="fc" id="L3825">            result = Math.min(result, unit.checkIntegrity(fix));</span>
         }
-<span class="fc" id="L3840">        return result;</span>
+<span class="fc bfc" id="L3827" title="All 2 branches covered.">        if (monarch != null) {</span>
+<span class="fc" id="L3828">            result = Math.min(result, monarch.checkIntegrity(fix));</span>
+        }
+<span class="fc" id="L3830">        return result;</span>
     }
 
 
@@ -3850,7 +3840,7 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     @Override
     public final FeatureContainer getFeatureContainer() {
-<span class="fc" id="L3853">        return featureContainer;</span>
+<span class="fc" id="L3843">        return featureContainer;</span>
     }
 
 
@@ -3886,7 +3876,7 @@ public class Player extends FreeColGameObject implements Nameable {
     private static final String TENSION_TAG = &quot;tension&quot;;
     private static final String USERNAME_TAG = &quot;username&quot;;
     // @compat 0.10.7
-    private static final String OLD_NATION_ID_TAG = &quot;nationID&quot;;
+<span class="fc" id="L3879">    private static final String OLD_NATION_ID_TAG = &quot;nationID&quot;;</span>
     // end @compat
 
 
@@ -3895,249 +3885,249 @@ public class Player extends FreeColGameObject implements Nameable {
      */
     @Override
     protected void writeAttributes(FreeColXMLWriter xw) throws XMLStreamException {
-<span class="fc" id="L3898">        super.writeAttributes(xw);</span>
+<span class="fc" id="L3888">        super.writeAttributes(xw);</span>
 
-<span class="fc" id="L3900">        xw.writeAttribute(USERNAME_TAG, name);</span>
+<span class="fc" id="L3890">        xw.writeAttribute(USERNAME_TAG, name);</span>
 
-<span class="fc" id="L3902">        xw.writeAttribute(NATION_ID_TAG, nationId);</span>
+<span class="fc" id="L3892">        xw.writeAttribute(NATION_ID_TAG, nationId);</span>
 
-<span class="fc bfc" id="L3904" title="All 2 branches covered.">        if (nationType != null) {</span>
-<span class="fc" id="L3905">            xw.writeAttribute(NATION_TYPE_TAG, nationType);</span>
+<span class="fc bfc" id="L3894" title="All 2 branches covered.">        if (nationType != null) {</span>
+<span class="fc" id="L3895">            xw.writeAttribute(NATION_TYPE_TAG, nationType);</span>
         }
 
-<span class="fc" id="L3908">        xw.writeAttribute(ADMIN_TAG, admin);</span>
+<span class="fc" id="L3898">        xw.writeAttribute(ADMIN_TAG, admin);</span>
 
-<span class="fc" id="L3910">        xw.writeAttribute(READY_TAG, ready);</span>
+<span class="fc" id="L3900">        xw.writeAttribute(READY_TAG, ready);</span>
 
-<span class="fc" id="L3912">        xw.writeAttribute(DEAD_TAG, dead);</span>
+<span class="fc" id="L3902">        xw.writeAttribute(DEAD_TAG, dead);</span>
 
-<span class="fc" id="L3914">        xw.writeAttribute(PLAYER_TYPE_TAG, playerType);</span>
+<span class="fc" id="L3904">        xw.writeAttribute(PLAYER_TYPE_TAG, playerType);</span>
 
-<span class="fc" id="L3916">        xw.writeAttribute(AI_TAG, ai);</span>
+<span class="fc" id="L3906">        xw.writeAttribute(AI_TAG, ai);</span>
 
-<span class="fc bfc" id="L3918" title="All 2 branches covered.">        if (xw.validFor(this)) {</span>
+<span class="fc bfc" id="L3908" title="All 2 branches covered.">        if (xw.validFor(this)) {</span>
 
-<span class="fc" id="L3920">            xw.writeAttribute(BANKRUPT_TAG, bankrupt);</span>
+<span class="fc" id="L3910">            xw.writeAttribute(BANKRUPT_TAG, bankrupt);</span>
 
-<span class="fc" id="L3922">            xw.writeAttribute(TAX_TAG, tax);</span>
+<span class="fc" id="L3912">            xw.writeAttribute(TAX_TAG, tax);</span>
 
-<span class="fc" id="L3924">            xw.writeAttribute(GOLD_TAG, gold);</span>
+<span class="fc" id="L3914">            xw.writeAttribute(GOLD_TAG, gold);</span>
 
-<span class="fc" id="L3926">            xw.writeAttribute(IMMIGRATION_TAG, immigration);</span>
+<span class="fc" id="L3916">            xw.writeAttribute(IMMIGRATION_TAG, immigration);</span>
 
-<span class="fc" id="L3928">            xw.writeAttribute(LIBERTY_TAG, liberty);</span>
+<span class="fc" id="L3918">            xw.writeAttribute(LIBERTY_TAG, liberty);</span>
 
-<span class="fc" id="L3930">            xw.writeAttribute(INTERVENTION_BELLS_TAG, interventionBells);</span>
+<span class="fc" id="L3920">            xw.writeAttribute(INTERVENTION_BELLS_TAG, interventionBells);</span>
 
-<span class="pc bpc" id="L3932" title="1 of 2 branches missed.">            if (currentFather != null) {</span>
-<span class="nc" id="L3933">                xw.writeAttribute(CURRENT_FATHER_TAG, currentFather);</span>
+<span class="pc bpc" id="L3922" title="1 of 2 branches missed.">            if (currentFather != null) {</span>
+<span class="nc" id="L3923">                xw.writeAttribute(CURRENT_FATHER_TAG, currentFather);</span>
             }
 
-<span class="fc" id="L3936">            xw.writeAttribute(IMMIGRATION_REQUIRED_TAG, immigrationRequired);</span>
+<span class="fc" id="L3926">            xw.writeAttribute(IMMIGRATION_REQUIRED_TAG, immigrationRequired);</span>
 
-<span class="fc" id="L3938">            xw.writeAttribute(ATTACKED_BY_PRIVATEERS_TAG, attackedByPrivateers);</span>
+<span class="fc" id="L3928">            xw.writeAttribute(ATTACKED_BY_PRIVATEERS_TAG, attackedByPrivateers);</span>
 
-<span class="fc" id="L3940">            xw.writeAttribute(OLD_SOL_TAG, oldSoL);</span>
+<span class="fc" id="L3930">            xw.writeAttribute(OLD_SOL_TAG, oldSoL);</span>
 
-<span class="fc" id="L3942">            xw.writeAttribute(SCORE_TAG, score);</span>
+<span class="fc" id="L3932">            xw.writeAttribute(SCORE_TAG, score);</span>
         }
 
-<span class="pc bpc" id="L3945" title="1 of 2 branches missed.">        if (newLandName != null) {</span>
-<span class="nc" id="L3946">            xw.writeAttribute(NEW_LAND_NAME_TAG, newLandName);</span>
+<span class="pc bpc" id="L3935" title="1 of 2 branches missed.">        if (newLandName != null) {</span>
+<span class="nc" id="L3936">            xw.writeAttribute(NEW_LAND_NAME_TAG, newLandName);</span>
         }
 
-<span class="pc bpc" id="L3949" title="1 of 2 branches missed.">        if (independentNationName != null) {</span>
-<span class="nc" id="L3950">            xw.writeAttribute(INDEPENDENT_NATION_NAME_TAG, independentNationName);</span>
+<span class="pc bpc" id="L3939" title="1 of 2 branches missed.">        if (independentNationName != null) {</span>
+<span class="nc" id="L3940">            xw.writeAttribute(INDEPENDENT_NATION_NAME_TAG, independentNationName);</span>
         }
 
-<span class="fc bfc" id="L3953" title="All 2 branches covered.">        if (entryLocation != null) {</span>
-<span class="fc" id="L3954">            xw.writeLocationAttribute(ENTRY_LOCATION_TAG, entryLocation);</span>
+<span class="fc bfc" id="L3943" title="All 2 branches covered.">        if (entryLocation != null) {</span>
+<span class="fc" id="L3944">            xw.writeLocationAttribute(ENTRY_LOCATION_TAG, entryLocation);</span>
         }
-<span class="fc" id="L3956">    }</span>
+<span class="fc" id="L3946">    }</span>
 
     /**
      * {@inheritDoc}
      */
     @Override
     protected void writeChildren(FreeColXMLWriter xw) throws XMLStreamException {
-<span class="fc" id="L3963">        super.writeChildren(xw);</span>
+<span class="fc" id="L3953">        super.writeChildren(xw);</span>
 
-<span class="pc bpc" id="L3965" title="1 of 2 branches missed.">        if (market != null) market.toXML(xw);</span>
+<span class="pc bpc" id="L3955" title="1 of 2 branches missed.">        if (market != null) market.toXML(xw);</span>
 
-<span class="fc bfc" id="L3967" title="All 2 branches covered.">        if (xw.validFor(this)) {</span>
+<span class="fc bfc" id="L3957" title="All 2 branches covered.">        if (xw.validFor(this)) {</span>
 
-<span class="fc bfc" id="L3969" title="All 2 branches covered.">            for (Ability ability : getSortedAbilities()) {</span>
-<span class="pc bpc" id="L3970" title="1 of 2 branches missed.">                if (ability.isIndependent()) ability.toXML(xw);</span>
-<span class="fc" id="L3971">            }</span>
+<span class="fc bfc" id="L3959" title="All 2 branches covered.">            for (Ability ability : getSortedAbilities()) {</span>
+<span class="pc bpc" id="L3960" title="1 of 2 branches missed.">                if (ability.isIndependent()) ability.toXML(xw);</span>
+            }
 
-<span class="fc" id="L3973">            Turn turn = getGame().getTurn();</span>
-<span class="fc bfc" id="L3974" title="All 2 branches covered.">            for (Modifier modifier : getSortedModifiers()) {</span>
-<span class="pc bpc" id="L3975" title="3 of 4 branches missed.">                if (modifier.isTemporary() &amp;&amp; !modifier.isOutOfDate(turn)) {</span>
-<span class="nc" id="L3976">                    modifier.toXML(xw);</span>
+<span class="fc" id="L3963">            Turn turn = getGame().getTurn();</span>
+<span class="fc bfc" id="L3964" title="All 2 branches covered.">            for (Modifier modifier : getSortedModifiers()) {</span>
+<span class="pc bpc" id="L3965" title="3 of 4 branches missed.">                if (modifier.isTemporary() &amp;&amp; !modifier.isOutOfDate(turn)) {</span>
+<span class="nc" id="L3966">                    modifier.toXML(xw);</span>
                 }
-<span class="fc" id="L3978">            }</span>
+            }
 
-<span class="fc bfc" id="L3980" title="All 2 branches covered.">            for (Player p : getSortedCopy(tension.keySet())) {</span>
-<span class="fc" id="L3981">                xw.writeStartElement(TENSION_TAG);</span>
+<span class="fc bfc" id="L3970" title="All 2 branches covered.">            for (Player p : getSortedCopy(tension.keySet())) {</span>
+<span class="fc" id="L3971">                xw.writeStartElement(TENSION_TAG);</span>
 
-<span class="fc" id="L3983">                xw.writeAttribute(PLAYER_TAG, p);</span>
+<span class="fc" id="L3973">                xw.writeAttribute(PLAYER_TAG, p);</span>
 
-<span class="fc" id="L3985">                xw.writeAttribute(VALUE_TAG, tension.get(p).getValue());</span>
+<span class="fc" id="L3975">                xw.writeAttribute(VALUE_TAG, tension.get(p).getValue());</span>
 
-<span class="fc" id="L3987">                xw.writeEndElement();</span>
-<span class="fc" id="L3988">            }</span>
+<span class="fc" id="L3977">                xw.writeEndElement();</span>
+            }
             
-<span class="pc bpc" id="L3990" title="1 of 2 branches missed.">            if (bannedMissions != null) {</span>
-<span class="nc bnc" id="L3991" title="All 2 branches missed.">                for (Player p : getSortedCopy(bannedMissions)) {</span>
-<span class="nc" id="L3992">                    xw.writeStartElement(BAN_MISSIONS_TAG);</span>
+<span class="pc bpc" id="L3980" title="1 of 2 branches missed.">            if (bannedMissions != null) {</span>
+<span class="nc bnc" id="L3981" title="All 2 branches missed.">                for (Player p : getSortedCopy(bannedMissions)) {</span>
+<span class="nc" id="L3982">                    xw.writeStartElement(BAN_MISSIONS_TAG);</span>
 
-<span class="nc" id="L3994">                    xw.writeAttribute(PLAYER_TAG, p.getId());</span>
+<span class="nc" id="L3984">                    xw.writeAttribute(PLAYER_TAG, p.getId());</span>
 
-<span class="nc" id="L3996">                    xw.writeEndElement();</span>
-<span class="nc" id="L3997">                }</span>
+<span class="nc" id="L3986">                    xw.writeEndElement();</span>
+                }
             }
 
-<span class="fc bfc" id="L4000" title="All 2 branches covered.">            for (Entry&lt;String, Stance&gt; e : mapEntriesByKey(stance)) {</span>
-<span class="fc" id="L4001">                Stance s = e.getValue();</span>
-<span class="pc bpc" id="L4002" title="1 of 2 branches missed.">                if (s == Stance.UNCONTACTED) continue;</span>
+<span class="fc bfc" id="L3990" title="All 2 branches covered.">            for (Entry&lt;String, Stance&gt; e : mapEntriesByKey(stance)) {</span>
+<span class="fc" id="L3991">                Stance s = e.getValue();</span>
+<span class="pc bpc" id="L3992" title="1 of 2 branches missed.">                if (s == Stance.UNCONTACTED) continue;</span>
 
-<span class="fc" id="L4004">                xw.writeStartElement(STANCE_TAG);</span>
+<span class="fc" id="L3994">                xw.writeStartElement(STANCE_TAG);</span>
 
-<span class="fc" id="L4006">                xw.writeAttribute(PLAYER_TAG, e.getKey());</span>
+<span class="fc" id="L3996">                xw.writeAttribute(PLAYER_TAG, e.getKey());</span>
 
-<span class="fc" id="L4008">                xw.writeAttribute(VALUE_TAG, s);</span>
+<span class="fc" id="L3998">                xw.writeAttribute(VALUE_TAG, s);</span>
 
-<span class="fc" id="L4010">                xw.writeEndElement();</span>
-<span class="fc" id="L4011">            }</span>
+<span class="fc" id="L4000">                xw.writeEndElement();</span>
+            }
 
-<span class="fc bfc" id="L4013" title="All 2 branches covered.">            for (HistoryEvent event : history) { // Already in order</span>
-<span class="fc" id="L4014">                event.toXML(xw);</span>
-<span class="fc" id="L4015">            }</span>
+<span class="fc bfc" id="L4003" title="All 2 branches covered.">            for (HistoryEvent event : history) { // Already in order</span>
+<span class="fc" id="L4004">                event.toXML(xw);</span>
+            }
 
-<span class="pc bpc" id="L4017" title="1 of 2 branches missed.">            for (TradeRoute route : getSortedCopy(tradeRoutes)) {</span>
-<span class="nc" id="L4018">                route.toXML(xw);</span>
-<span class="nc" id="L4019">            }</span>
+<span class="pc bpc" id="L4007" title="1 of 2 branches missed.">            for (TradeRoute route : getSortedCopy(tradeRoutes)) {</span>
+<span class="nc" id="L4008">                route.toXML(xw);</span>
+            }
 
-<span class="fc bfc" id="L4021" title="All 2 branches covered.">            if (highSeas != null) highSeas.toXML(xw);</span>
+<span class="fc bfc" id="L4011" title="All 2 branches covered.">            if (highSeas != null) highSeas.toXML(xw);</span>
             
-<span class="fc" id="L4023">            xw.writeToListElement(FOUNDING_FATHERS_TAG, foundingFathers);</span>
+<span class="fc" id="L4013">            xw.writeToListElement(FOUNDING_FATHERS_TAG, foundingFathers);</span>
 
-<span class="fc" id="L4025">            xw.writeToListElement(OFFERED_FATHERS_TAG, offeredFathers);</span>
+<span class="fc" id="L4015">            xw.writeToListElement(OFFERED_FATHERS_TAG, offeredFathers);</span>
 
-<span class="fc bfc" id="L4027" title="All 2 branches covered.">            if (europe != null) europe.toXML(xw);</span>
+<span class="fc bfc" id="L4017" title="All 2 branches covered.">            if (europe != null) europe.toXML(xw);</span>
 
-<span class="fc bfc" id="L4029" title="All 2 branches covered.">            if (monarch != null) monarch.toXML(xw);</span>
+<span class="fc bfc" id="L4019" title="All 2 branches covered.">            if (monarch != null) monarch.toXML(xw);</span>
 
-<span class="pc bpc" id="L4031" title="1 of 2 branches missed.">            for (ModelMessage m : getModelMessages()) m.toXML(xw);</span>
+<span class="pc bpc" id="L4021" title="1 of 2 branches missed.">            for (ModelMessage m : getModelMessages()) m.toXML(xw);</span>
 
-<span class="pc bpc" id="L4033" title="1 of 2 branches missed.">            if (lastSales != null) {</span>
-<span class="nc bnc" id="L4034" title="All 2 branches missed.">                for (LastSale ls : getSortedCopy(lastSales.values())) {</span>
-<span class="nc" id="L4035">                    ls.toXML(xw);</span>
-<span class="nc" id="L4036">                }</span>
+<span class="pc bpc" id="L4023" title="1 of 2 branches missed.">            if (lastSales != null) {</span>
+<span class="nc bnc" id="L4024" title="All 2 branches missed.">                for (LastSale ls : getSortedCopy(lastSales.values())) {</span>
+<span class="nc" id="L4025">                    ls.toXML(xw);</span>
+                }
             }
 
-<span class="fc" id="L4039">        } else {</span>
-<span class="fc" id="L4040">            Player player = xw.getClientPlayer();</span>
-<span class="fc" id="L4041">            Tension t = getTension(player);</span>
-<span class="pc bpc" id="L4042" title="1 of 2 branches missed.">            if (t != null) {</span>
-<span class="fc" id="L4043">                xw.writeStartElement(TENSION_TAG);</span>
+<span class="nc" id="L4029">        } else {</span>
+<span class="fc" id="L4030">            Player player = xw.getClientPlayer();</span>
+<span class="fc" id="L4031">            Tension t = getTension(player);</span>
+<span class="pc bpc" id="L4032" title="1 of 2 branches missed.">            if (t != null) {</span>
+<span class="fc" id="L4033">                xw.writeStartElement(TENSION_TAG);</span>
 
-<span class="fc" id="L4045">                xw.writeAttribute(PLAYER_TAG, player);</span>
+<span class="fc" id="L4035">                xw.writeAttribute(PLAYER_TAG, player);</span>
 
-<span class="fc" id="L4047">                xw.writeAttribute(VALUE_TAG, t.getValue());</span>
+<span class="fc" id="L4037">                xw.writeAttribute(VALUE_TAG, t.getValue());</span>
 
-<span class="fc" id="L4049">                xw.writeEndElement();</span>
+<span class="fc" id="L4039">                xw.writeEndElement();</span>
             }
 
-<span class="pc bpc" id="L4052" title="1 of 2 branches missed.">            if (missionsBanned(player)) {</span>
-<span class="nc" id="L4053">                xw.writeStartElement(BAN_MISSIONS_TAG);</span>
+<span class="pc bpc" id="L4042" title="1 of 2 branches missed.">            if (missionsBanned(player)) {</span>
+<span class="nc" id="L4043">                xw.writeStartElement(BAN_MISSIONS_TAG);</span>
 
-<span class="nc" id="L4055">                xw.writeAttribute(PLAYER_TAG, player.getId());</span>
+<span class="nc" id="L4045">                xw.writeAttribute(PLAYER_TAG, player.getId());</span>
 
-<span class="nc" id="L4057">                xw.writeEndElement();</span>
+<span class="nc" id="L4047">                xw.writeEndElement();</span>
             }
 
-<span class="fc" id="L4060">            Stance s = getStance(player);</span>
-<span class="pc bpc" id="L4061" title="1 of 4 branches missed.">            if (s != null &amp;&amp; s != Stance.UNCONTACTED) {</span>
-<span class="fc" id="L4062">                xw.writeStartElement(STANCE_TAG);</span>
+<span class="fc" id="L4050">            Stance s = getStance(player);</span>
+<span class="pc bpc" id="L4051" title="1 of 4 branches missed.">            if (s != null &amp;&amp; s != Stance.UNCONTACTED) {</span>
+<span class="fc" id="L4052">                xw.writeStartElement(STANCE_TAG);</span>
                 
-<span class="fc" id="L4064">                xw.writeAttribute(PLAYER_TAG, player);</span>
+<span class="fc" id="L4054">                xw.writeAttribute(PLAYER_TAG, player);</span>
 
-<span class="fc" id="L4066">                xw.writeAttribute(VALUE_TAG, s);</span>
+<span class="fc" id="L4056">                xw.writeAttribute(VALUE_TAG, s);</span>
 
-<span class="fc" id="L4068">                xw.writeEndElement();</span>
+<span class="fc" id="L4058">                xw.writeEndElement();</span>
             }
         }
-<span class="fc" id="L4071">    }</span>
+<span class="fc" id="L4061">    }</span>
 
     /**
      * {@inheritDoc}
      */
     @Override
     protected void readAttributes(FreeColXMLReader xr) throws XMLStreamException {
-<span class="fc" id="L4078">        super.readAttributes(xr);</span>
+<span class="fc" id="L4068">        super.readAttributes(xr);</span>
 
-<span class="fc" id="L4080">        final Specification spec = getSpecification();</span>
-<span class="fc" id="L4081">        final Game game = getGame();</span>
+<span class="fc" id="L4070">        final Specification spec = getSpecification();</span>
+<span class="fc" id="L4071">        final Game game = getGame();</span>
 
-<span class="fc" id="L4083">        name = xr.getAttribute(USERNAME_TAG, (String)null);</span>
+<span class="fc" id="L4073">        name = xr.getAttribute(USERNAME_TAG, (String)null);</span>
 
-<span class="fc" id="L4085">        nationId = xr.getAttribute(NATION_ID_TAG,</span>
+<span class="fc" id="L4075">        nationId = xr.getAttribute(NATION_ID_TAG,</span>
             // @compat 0.10.7
-<span class="fc" id="L4087">            xr.getAttribute(OLD_NATION_ID_TAG,</span>
+<span class="fc" id="L4077">            xr.getAttribute(OLD_NATION_ID_TAG,</span>
             // end @compat 0.10.7
-                (String)null));
+<span class="fc" id="L4079">                (String)null));</span>
 
-<span class="fc bfc" id="L4091" title="All 2 branches covered.">        if (isUnknownEnemy()) {</span>
-<span class="fc" id="L4092">            nationType = null;</span>
-        } else {
-<span class="fc" id="L4094">            nationType = xr.getType(spec, NATION_TYPE_TAG,</span>
-                                    NationType.class, (NationType)null);
+<span class="fc bfc" id="L4081" title="All 2 branches covered.">        if (isUnknownEnemy()) {</span>
+<span class="fc" id="L4082">            nationType = null;</span>
+<span class="fc" id="L4083">        } else {</span>
+<span class="fc" id="L4084">            nationType = xr.getType(spec, NATION_TYPE_TAG,</span>
+<span class="fc" id="L4085">                                    NationType.class, (NationType)null);</span>
         }
 
-<span class="fc" id="L4098">        admin = xr.getAttribute(ADMIN_TAG, false);</span>
+<span class="fc" id="L4088">        admin = xr.getAttribute(ADMIN_TAG, false);</span>
 
-<span class="fc" id="L4100">        gold = xr.getAttribute(GOLD_TAG, 0);</span>
+<span class="fc" id="L4090">        gold = xr.getAttribute(GOLD_TAG, 0);</span>
 
-<span class="fc" id="L4102">        immigration = xr.getAttribute(IMMIGRATION_TAG, 0);</span>
+<span class="fc" id="L4092">        immigration = xr.getAttribute(IMMIGRATION_TAG, 0);</span>
 
-<span class="fc" id="L4104">        liberty = xr.getAttribute(LIBERTY_TAG, 0);</span>
+<span class="fc" id="L4094">        liberty = xr.getAttribute(LIBERTY_TAG, 0);</span>
 
-<span class="fc" id="L4106">        interventionBells = xr.getAttribute(INTERVENTION_BELLS_TAG, 0);</span>
+<span class="fc" id="L4096">        interventionBells = xr.getAttribute(INTERVENTION_BELLS_TAG, 0);</span>
 
-<span class="fc" id="L4108">        oldSoL = xr.getAttribute(OLD_SOL_TAG, 0);</span>
+<span class="fc" id="L4098">        oldSoL = xr.getAttribute(OLD_SOL_TAG, 0);</span>
 
-<span class="fc" id="L4110">        score = xr.getAttribute(SCORE_TAG, 0);</span>
+<span class="fc" id="L4100">        score = xr.getAttribute(SCORE_TAG, 0);</span>
 
-<span class="fc" id="L4112">        ready = xr.getAttribute(READY_TAG, false);</span>
+<span class="fc" id="L4102">        ready = xr.getAttribute(READY_TAG, false);</span>
 
-<span class="fc" id="L4114">        ai = xr.getAttribute(AI_TAG, false);</span>
+<span class="fc" id="L4104">        ai = xr.getAttribute(AI_TAG, false);</span>
 
-<span class="fc" id="L4116">        dead = xr.getAttribute(DEAD_TAG, false);</span>
+<span class="fc" id="L4106">        dead = xr.getAttribute(DEAD_TAG, false);</span>
 
-<span class="fc" id="L4118">        bankrupt = xr.getAttribute(BANKRUPT_TAG, false);</span>
+<span class="fc" id="L4108">        bankrupt = xr.getAttribute(BANKRUPT_TAG, false);</span>
 
-<span class="fc" id="L4120">        tax = xr.getAttribute(TAX_TAG, 0);</span>
+<span class="fc" id="L4110">        tax = xr.getAttribute(TAX_TAG, 0);</span>
 
-<span class="fc" id="L4122">        changePlayerType(xr.getAttribute(PLAYER_TYPE_TAG,</span>
-                                         PlayerType.class, (PlayerType)null));
+<span class="fc" id="L4112">        changePlayerType(xr.getAttribute(PLAYER_TYPE_TAG,</span>
+<span class="fc" id="L4113">                                         PlayerType.class, (PlayerType)null));</span>
 
-<span class="fc" id="L4125">        currentFather = xr.getType(spec, CURRENT_FATHER_TAG,</span>
-                                   FoundingFather.class, (FoundingFather)null);
+<span class="fc" id="L4115">        currentFather = xr.getType(spec, CURRENT_FATHER_TAG,</span>
+<span class="fc" id="L4116">                                   FoundingFather.class, (FoundingFather)null);</span>
 
-<span class="fc" id="L4128">        immigrationRequired = xr.getAttribute(IMMIGRATION_REQUIRED_TAG, 12);</span>
+<span class="fc" id="L4118">        immigrationRequired = xr.getAttribute(IMMIGRATION_REQUIRED_TAG, 12);</span>
 
-<span class="fc" id="L4130">        newLandName = xr.getAttribute(NEW_LAND_NAME_TAG, (String)null);</span>
+<span class="fc" id="L4120">        newLandName = xr.getAttribute(NEW_LAND_NAME_TAG, (String)null);</span>
 
-<span class="fc" id="L4132">        independentNationName = xr.getAttribute(INDEPENDENT_NATION_NAME_TAG,</span>
-                                                (String)null);
+<span class="fc" id="L4122">        independentNationName = xr.getAttribute(INDEPENDENT_NATION_NAME_TAG,</span>
+<span class="fc" id="L4123">                                                (String)null);</span>
 
-<span class="fc" id="L4135">        attackedByPrivateers = xr.getAttribute(ATTACKED_BY_PRIVATEERS_TAG,</span>
-                                               false);
+<span class="fc" id="L4125">        attackedByPrivateers = xr.getAttribute(ATTACKED_BY_PRIVATEERS_TAG,</span>
+<span class="fc" id="L4126">                                               false);</span>
 
-<span class="fc" id="L4138">        entryLocation = xr.getLocationAttribute(game, ENTRY_LOCATION_TAG,</span>
-                                                true);
-<span class="fc" id="L4140">    }</span>
+<span class="fc" id="L4128">        entryLocation = xr.getLocationAttribute(game, ENTRY_LOCATION_TAG,</span>
+<span class="fc" id="L4129">                                                true);</span>
+<span class="fc" id="L4130">    }</span>
 
     /**
      * {@inheritDoc}
@@ -4145,130 +4135,130 @@ public class Player extends FreeColGameObject implements Nameable {
     @Override
     protected void readChildren(FreeColXMLReader xr) throws XMLStreamException {
         // Clear containers.
-<span class="fc" id="L4148">        tension.clear();</span>
-<span class="pc bpc" id="L4149" title="1 of 2 branches missed.">        if (bannedMissions != null) bannedMissions.clear();</span>
-<span class="fc" id="L4150">        stance.clear();</span>
-<span class="fc" id="L4151">        foundingFathers.clear();</span>
-<span class="fc" id="L4152">        offeredFathers.clear();</span>
-<span class="fc" id="L4153">        europe = null;</span>
-<span class="fc" id="L4154">        monarch = null;</span>
-<span class="fc" id="L4155">        history.clear();</span>
-<span class="fc" id="L4156">        tradeRoutes.clear();</span>
-<span class="fc" id="L4157">        clearModelMessages();</span>
-<span class="fc" id="L4158">        lastSales = null;</span>
-<span class="fc" id="L4159">        highSeas = null;</span>
-<span class="fc" id="L4160">        featureContainer.clear();</span>
-<span class="fc bfc" id="L4161" title="All 2 branches covered.">        if (nationType != null) addFeatures(nationType);</span>
+<span class="fc" id="L4138">        tension.clear();</span>
+<span class="pc bpc" id="L4139" title="1 of 2 branches missed.">        if (bannedMissions != null) bannedMissions.clear();</span>
+<span class="fc" id="L4140">        stance.clear();</span>
+<span class="fc" id="L4141">        foundingFathers.clear();</span>
+<span class="fc" id="L4142">        offeredFathers.clear();</span>
+<span class="fc" id="L4143">        europe = null;</span>
+<span class="fc" id="L4144">        monarch = null;</span>
+<span class="fc" id="L4145">        history.clear();</span>
+<span class="fc" id="L4146">        tradeRoutes.clear();</span>
+<span class="fc" id="L4147">        clearModelMessages();</span>
+<span class="fc" id="L4148">        lastSales = null;</span>
+<span class="fc" id="L4149">        highSeas = null;</span>
+<span class="fc" id="L4150">        featureContainer.clear();</span>
+<span class="fc bfc" id="L4151" title="All 2 branches covered.">        if (nationType != null) addFeatures(nationType);</span>
 
-<span class="fc" id="L4163">        super.readChildren(xr);</span>
+<span class="fc" id="L4153">        super.readChildren(xr);</span>
 
         // @compat 0.10.7
         // Fixup production modifiers deriving from founding fathers
-<span class="fc" id="L4167">        final Specification spec = getSpecification();</span>
-<span class="fc bfc" id="L4168" title="All 2 branches covered.">        for (Modifier m : getModifiers()) {</span>
-<span class="pc bpc" id="L4169" title="1 of 2 branches missed.">            if (m.getSource() == null) continue;</span>
-<span class="fc" id="L4170">            String type = spec.fatherGoodsFixMap.get(m.getSource().getId());</span>
-<span class="pc bpc" id="L4171" title="3 of 4 branches missed.">            if (type != null &amp;&amp; m.getId().equals(type)) {</span>
-<span class="nc" id="L4172">                m.requireNegatedPersonScope();</span>
+<span class="fc" id="L4157">        final Specification spec = getSpecification();</span>
+<span class="fc bfc" id="L4158" title="All 2 branches covered.">        for (Modifier m : getModifiers()) {</span>
+<span class="pc bpc" id="L4159" title="1 of 2 branches missed.">            if (m.getSource() == null) continue;</span>
+<span class="fc" id="L4160">            String type = spec.fatherGoodsFixMap.get(m.getSource().getId());</span>
+<span class="pc bpc" id="L4161" title="3 of 4 branches missed.">            if (type != null &amp;&amp; m.getId().equals(type)) {</span>
+<span class="nc" id="L4162">                m.requireNegatedPersonScope();</span>
             }
-<span class="fc" id="L4174">        }</span>
+        }
         // end @compat 0.10.7
 
-<span class="fc" id="L4177">        recalculateBellsBonus(); // Bells bonuses depend on tax</span>
-<span class="fc" id="L4178">    }</span>
+<span class="fc" id="L4167">        recalculateBellsBonus(); // Bells bonuses depend on tax</span>
+<span class="fc" id="L4168">    }</span>
 
     /**
      * {@inheritDoc}
      */
     @Override
     protected void readChild(FreeColXMLReader xr) throws XMLStreamException {
-<span class="fc" id="L4185">        final Specification spec = getSpecification();</span>
-<span class="fc" id="L4186">        final Game game = getGame();</span>
-<span class="fc" id="L4187">        final String tag = xr.getLocalName();</span>
+<span class="fc" id="L4175">        final Specification spec = getSpecification();</span>
+<span class="fc" id="L4176">        final Game game = getGame();</span>
+<span class="fc" id="L4177">        final String tag = xr.getLocalName();</span>
 
-<span class="pc bpc" id="L4189" title="1 of 2 branches missed.">        if (BAN_MISSIONS_TAG.equals(tag)) {</span>
-<span class="nc" id="L4190">            Player player = xr.makeFreeColGameObject(game, PLAYER_TAG,</span>
-                                                     Player.class, true);
-<span class="nc bnc" id="L4192" title="All 4 branches missed.">            if (player != null &amp;&amp; player.isEuropean()) addMissionBan(player);</span>
-<span class="nc" id="L4193">            xr.closeTag(BAN_MISSIONS_TAG);</span>
+<span class="pc bpc" id="L4179" title="1 of 2 branches missed.">        if (BAN_MISSIONS_TAG.equals(tag)) {</span>
+<span class="nc" id="L4180">            Player player = xr.makeFreeColGameObject(game, PLAYER_TAG,</span>
+<span class="nc" id="L4181">                                                     Player.class, true);</span>
+<span class="nc bnc" id="L4182" title="All 4 branches missed.">            if (player != null &amp;&amp; player.isEuropean()) addMissionBan(player);</span>
+<span class="nc" id="L4183">            xr.closeTag(BAN_MISSIONS_TAG);</span>
 
-<span class="pc bfc" id="L4195" title="All 2 branches covered.">        } else if (FOUNDING_FATHERS_TAG.equals(tag)) {</span>
-<span class="fc" id="L4196">            List&lt;FoundingFather&gt; ffs = xr.readList(spec, FOUNDING_FATHERS_TAG,</span>
-                                                   FoundingFather.class);
-<span class="pc bpc" id="L4198" title="1 of 2 branches missed.">            if (ffs != null) {</span>
-<span class="pc bpc" id="L4199" title="1 of 2 branches missed.">                for (FoundingFather ff : ffs) {</span>
-<span class="nc" id="L4200">                    addFather(ff); // addFather adds the features</span>
-<span class="nc" id="L4201">                }</span>
+<span class="pc bfc" id="L4185" title="All 2 branches covered.">        } else if (FOUNDING_FATHERS_TAG.equals(tag)) {</span>
+<span class="fc" id="L4186">            List&lt;FoundingFather&gt; ffs = xr.readList(spec, FOUNDING_FATHERS_TAG,</span>
+<span class="fc" id="L4187">                                                   FoundingFather.class);</span>
+<span class="pc bpc" id="L4188" title="1 of 2 branches missed.">            if (ffs != null) {</span>
+<span class="pc bpc" id="L4189" title="1 of 2 branches missed.">                for (FoundingFather ff : ffs) {</span>
+<span class="nc" id="L4190">                    addFather(ff); // addFather adds the features</span>
+                }
             }
         
-<span class="fc bfc" id="L4204" title="All 2 branches covered.">        } else if (OFFERED_FATHERS_TAG.equals(tag)) {</span>
-<span class="fc" id="L4205">            List&lt;FoundingFather&gt; ofs = xr.readList(spec, OFFERED_FATHERS_TAG,</span>
-                                                   FoundingFather.class);
-<span class="fc" id="L4207">            offeredFathers.addAll(ofs);</span>
+<span class="fc bfc" id="L4194" title="All 2 branches covered.">        } else if (OFFERED_FATHERS_TAG.equals(tag)) {</span>
+<span class="fc" id="L4195">            List&lt;FoundingFather&gt; ofs = xr.readList(spec, OFFERED_FATHERS_TAG,</span>
+<span class="fc" id="L4196">                                                   FoundingFather.class);</span>
+<span class="fc" id="L4197">            offeredFathers.addAll(ofs);</span>
 
-<span class="fc bfc" id="L4209" title="All 2 branches covered.">        } else if (STANCE_TAG.equals(tag)) {</span>
-<span class="fc" id="L4210">            Player player = xr.makeFreeColGameObject(game, PLAYER_TAG,</span>
-                                                     Player.class, true);
-<span class="fc" id="L4212">            stance.put(player.getId(),</span>
-<span class="fc" id="L4213">                xr.getAttribute(VALUE_TAG, Stance.class, Stance.UNCONTACTED));</span>
-<span class="fc" id="L4214">            xr.closeTag(STANCE_TAG);</span>
+<span class="fc bfc" id="L4199" title="All 2 branches covered.">        } else if (STANCE_TAG.equals(tag)) {</span>
+<span class="fc" id="L4200">            Player player = xr.makeFreeColGameObject(game, PLAYER_TAG,</span>
+<span class="fc" id="L4201">                                                     Player.class, true);</span>
+<span class="fc" id="L4202">            stance.put(player.getId(),</span>
+<span class="fc" id="L4203">                xr.getAttribute(VALUE_TAG, Stance.class, Stance.UNCONTACTED));</span>
+<span class="fc" id="L4204">            xr.closeTag(STANCE_TAG);</span>
 
-<span class="fc bfc" id="L4216" title="All 2 branches covered.">        } else if (TENSION_TAG.equals(tag)) {</span>
-<span class="fc" id="L4217">            tension.put(xr.makeFreeColGameObject(game, PLAYER_TAG,</span>
-                                                 Player.class, true),
-<span class="fc" id="L4219">                        new Tension(xr.getAttribute(VALUE_TAG, 0)));</span>
-<span class="fc" id="L4220">            xr.closeTag(TENSION_TAG);</span>
+<span class="fc bfc" id="L4206" title="All 2 branches covered.">        } else if (TENSION_TAG.equals(tag)) {</span>
+<span class="fc" id="L4207">            tension.put(xr.makeFreeColGameObject(game, PLAYER_TAG,</span>
+<span class="fc" id="L4208">                                                 Player.class, true),</span>
+<span class="fc" id="L4209">                        new Tension(xr.getAttribute(VALUE_TAG, 0)));</span>
+<span class="fc" id="L4210">            xr.closeTag(TENSION_TAG);</span>
         
-<span class="pc bpc" id="L4222" title="1 of 2 branches missed.">        } else if (Ability.getXMLElementTagName().equals(tag)) {</span>
-<span class="nc" id="L4223">            Ability ability = new Ability(xr, spec);</span>
-<span class="nc bnc" id="L4224" title="All 2 branches missed.">            if (ability.isIndependent()) addAbility(ability);</span>
+<span class="pc bpc" id="L4212" title="1 of 2 branches missed.">        } else if (Ability.getXMLElementTagName().equals(tag)) {</span>
+<span class="nc" id="L4213">            Ability ability = new Ability(xr, spec);</span>
+<span class="nc bnc" id="L4214" title="All 2 branches missed.">            if (ability.isIndependent()) addAbility(ability);</span>
 
-<span class="pc bfc" id="L4226" title="All 2 branches covered.">        } else if (Europe.getXMLElementTagName().equals(tag)) {</span>
-<span class="fc" id="L4227">            europe = xr.readFreeColGameObject(game, Europe.class);</span>
+<span class="pc bfc" id="L4216" title="All 2 branches covered.">        } else if (Europe.getXMLElementTagName().equals(tag)) {</span>
+<span class="fc" id="L4217">            europe = xr.readFreeColGameObject(game, Europe.class);</span>
 
-<span class="fc bfc" id="L4229" title="All 2 branches covered.">        } else if (HighSeas.getXMLElementTagName().equals(tag)) {</span>
-<span class="fc" id="L4230">            highSeas = xr.readFreeColGameObject(game, HighSeas.class);</span>
+<span class="fc bfc" id="L4219" title="All 2 branches covered.">        } else if (HighSeas.getXMLElementTagName().equals(tag)) {</span>
+<span class="fc" id="L4220">            highSeas = xr.readFreeColGameObject(game, HighSeas.class);</span>
 
-<span class="pc bpc" id="L4232" title="1 of 2 branches missed.">        } else if (HistoryEvent.getXMLElementTagName().equals(tag)) {</span>
-<span class="nc" id="L4233">            getHistory().add(new HistoryEvent(xr));</span>
+<span class="pc bpc" id="L4222" title="1 of 2 branches missed.">        } else if (HistoryEvent.getXMLElementTagName().equals(tag)) {</span>
+<span class="nc" id="L4223">            getHistory().add(new HistoryEvent(xr));</span>
 
-<span class="pc bpc" id="L4235" title="1 of 2 branches missed.">        } else if (LastSale.getXMLElementTagName().equals(tag)) {</span>
-<span class="nc" id="L4236">            addLastSale(new LastSale(xr));</span>
+<span class="pc bpc" id="L4225" title="1 of 2 branches missed.">        } else if (LastSale.getXMLElementTagName().equals(tag)) {</span>
+<span class="nc" id="L4226">            addLastSale(new LastSale(xr));</span>
 
-<span class="fc bfc" id="L4238" title="All 2 branches covered.">        } else if (Market.getXMLElementTagName().equals(tag)) {</span>
-<span class="fc" id="L4239">            market = xr.readFreeColGameObject(game, Market.class);</span>
+<span class="pc bfc" id="L4228" title="All 2 branches covered.">        } else if (Market.getXMLElementTagName().equals(tag)) {</span>
+<span class="fc" id="L4229">            market = xr.readFreeColGameObject(game, Market.class);</span>
 
-<span class="pc bpc" id="L4241" title="1 of 2 branches missed.">        } else if (ModelMessage.getXMLElementTagName().equals(tag)) {</span>
-<span class="nc" id="L4242">            addModelMessage(new ModelMessage(xr));</span>
+<span class="pc bpc" id="L4231" title="1 of 2 branches missed.">        } else if (ModelMessage.getXMLElementTagName().equals(tag)) {</span>
+<span class="nc" id="L4232">            addModelMessage(new ModelMessage(xr));</span>
 
-<span class="pc bpc" id="L4244" title="1 of 2 branches missed.">        } else if (Modifier.getXMLElementTagName().equals(tag)) {</span>
-<span class="nc" id="L4245">            Modifier modifier = new Modifier(xr, spec);</span>
-<span class="nc bnc" id="L4246" title="All 2 branches missed.">            if (modifier.isIndependent()) addModifier(modifier);</span>
+<span class="pc bpc" id="L4234" title="1 of 2 branches missed.">        } else if (Modifier.getXMLElementTagName().equals(tag)) {</span>
+<span class="nc" id="L4235">            Modifier modifier = new Modifier(xr, spec);</span>
+<span class="nc bnc" id="L4236" title="All 2 branches missed.">            if (modifier.isIndependent()) addModifier(modifier);</span>
 
-<span class="pc bpc" id="L4248" title="1 of 2 branches missed.">        } else if (Monarch.getXMLElementTagName().equals(tag)) {</span>
-<span class="fc" id="L4249">            monarch = xr.readFreeColGameObject(game, Monarch.class);</span>
+<span class="pc bpc" id="L4238" title="1 of 2 branches missed.">        } else if (Monarch.getXMLElementTagName().equals(tag)) {</span>
+<span class="fc" id="L4239">            monarch = xr.readFreeColGameObject(game, Monarch.class);</span>
 
-<span class="nc bnc" id="L4251" title="All 2 branches missed.">        } else if (TradeRoute.getXMLElementTagName().equals(tag)) {</span>
-<span class="nc" id="L4252">            tradeRoutes.add(xr.readFreeColGameObject(game, TradeRoute.class));</span>
+<span class="pc bnc" id="L4241" title="All 2 branches missed.">        } else if (TradeRoute.getXMLElementTagName().equals(tag)) {</span>
+<span class="nc" id="L4242">            tradeRoutes.add(xr.readFreeColGameObject(game, TradeRoute.class));</span>
 
-        } else {
-<span class="nc" id="L4255">            super.readChild(xr);</span>
+<span class="nc" id="L4244">        } else {</span>
+<span class="nc" id="L4245">            super.readChild(xr);</span>
         }
-<span class="fc" id="L4257">    }</span>
+<span class="fc" id="L4247">    }</span>
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-<span class="nc" id="L4264">        return nationId;</span>
+<span class="nc" id="L4254">        return nationId;</span>
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-<span class="fc" id="L4271">    public String getXMLTagName() { return getXMLElementTagName(); }</span>
+<span class="fc" id="L4261">    public String getXMLTagName() { return getXMLElementTagName(); }</span>
 
     /**
      * Gets the tag name of the root element representing this object.
@@ -4276,7 +4266,7 @@ public class Player extends FreeColGameObject implements Nameable {
      * @return &quot;player&quot;
      */
     public static String getXMLElementTagName() {
-<span class="fc" id="L4279">        return &quot;player&quot;;</span>
+<span class="fc" id="L4269">        return &quot;player&quot;;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DisplayTileTextAction.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.client.gui.action</a> &gt; <span class="el_source">DisplayTileTextAction.java</span></div><h1>DisplayTileTextAction.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>DisplayTileTextAction.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.client.gui.action</a> &gt; <span class="el_source">DisplayTileTextAction.java</span></div><h1>DisplayTileTextAction.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">/**</span>
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -48,11 +48,11 @@ public class DisplayTileTextAction extends SelectableAction {
     };
 
 <span class="nc" id="L50">    private static final int[] accelerators = {</span>
-        KeyEvent.VK_E,
-        KeyEvent.VK_N,
-        KeyEvent.VK_O,
-        KeyEvent.VK_R
-    };
+<span class="nc" id="L51">        KeyEvent.VK_E,</span>
+<span class="nc" id="L52">        KeyEvent.VK_N,</span>
+<span class="nc" id="L53">        KeyEvent.VK_O,</span>
+<span class="nc" id="L54">        KeyEvent.VK_R</span>
+<span class="nc" id="L55">    };</span>
 
 <span class="nc" id="L57">    private DisplayText display = null;</span>
 
@@ -66,10 +66,10 @@ public class DisplayTileTextAction extends SelectableAction {
     public DisplayTileTextAction(FreeColClient freeColClient,
                                  DisplayText type) {
 <span class="nc" id="L68">        super(freeColClient, id + type.getKey(),</span>
-              ClientOptions.DISPLAY_TILE_TEXT);
+<span class="nc" id="L69">              ClientOptions.DISPLAY_TILE_TEXT);</span>
 <span class="nc" id="L70">        display = type;</span>
 <span class="nc" id="L71">        setAccelerator(KeyStroke.getKeyStroke(accelerators[type.ordinal()],</span>
-                KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK));
+<span class="nc" id="L72">                KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK));</span>
 <span class="nc" id="L73">    }</span>
 
 
@@ -81,10 +81,10 @@ public class DisplayTileTextAction extends SelectableAction {
     @Override
     public boolean shouldBeSelected() {
 <span class="nc bnc" id="L83" title="All 2 branches missed.">        return super.shouldBeEnabled()</span>
-<span class="nc bnc" id="L84" title="All 4 branches missed.">            &amp;&amp; freeColClient.getClientOptions() != null</span>
-            &amp;&amp; display != null
-<span class="nc" id="L86">            &amp;&amp; freeColClient.getClientOptions().getDisplayTileText()</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">                == display.ordinal();</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            &amp;&amp; freeColClient.getClientOptions() != null</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            &amp;&amp; display != null</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">            &amp;&amp; freeColClient.getClientOptions().getDisplayTileText()</span>
+<span class="nc" id="L87">                == display.ordinal();</span>
     }
 
 
@@ -102,4 +102,4 @@ public class DisplayTileTextAction extends SelectableAction {
         }
 <span class="nc" id="L103">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

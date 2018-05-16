@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ForestMaker.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.tools</a> &gt; <span class="el_source">ForestMaker.java</span></div><h1>ForestMaker.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ForestMaker.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.tools</a> &gt; <span class="el_source">ForestMaker.java</span></div><h1>ForestMaker.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -54,19 +54,19 @@ import javax.imageio.ImageIO;
     private static final int HALF_HEIGHT = BASE_HEIGHT / 2;
 
 <span class="nc" id="L56">    private static final int[] LIMIT = {</span>
-        HALF_WIDTH, HALF_WIDTH, -HALF_WIDTH, -HALF_WIDTH
+<span class="nc" id="L57">        HALF_WIDTH, HALF_WIDTH, -HALF_WIDTH, -HALF_WIDTH</span>
     };
 
 <span class="nc" id="L60">    private static final double[] SLOPE = {</span>
-        -0.5, 0.5, -0.5, 0.5
+<span class="nc" id="L61">        -0.5, 0.5, -0.5, 0.5</span>
     };
 
 <span class="nc" id="L64">    private static final int[] POWERS_OF_TWO</span>
-        = { 1, 2, 4, 8 };
+<span class="nc" id="L65">        = { 1, 2, 4, 8 };</span>
 
 
     private static final boolean drawBorders = true;
-    private static final boolean drawTrees = true;
+<span class="nc" id="L69">    private static final boolean drawTrees = true;</span>
 
 
     private static class ImageLocation implements Comparable&lt;ImageLocation&gt; {
@@ -146,7 +146,7 @@ import javax.imageio.ImageIO;
 <span class="nc" id="L146">            File destinationDirectory = new File(DESTDIR, baseName);</span>
 <span class="nc bnc" id="L147" title="All 2 branches missed.">            if (!destinationDirectory.exists()) {</span>
 <span class="nc" id="L148">                System.out.println(&quot;Destination directory &quot; + destinationDirectory.getPath()</span>
-                                   + &quot; does not exist.&quot;);
+<span class="nc" id="L149">                                   + &quot; does not exist.&quot;);</span>
 <span class="nc" id="L150">                continue;</span>
             }
 <span class="nc" id="L152">            File[] imageFiles = sourceDirectory.listFiles();</span>
@@ -155,7 +155,7 @@ import javax.imageio.ImageIO;
 <span class="nc" id="L155">                continue;</span>
             } else {
 <span class="nc" id="L157">                System.out.println(imageFiles.length + &quot; images found in source directory &quot;</span>
-                                   + arg + &quot;.&quot;);
+<span class="nc" id="L158">                                   + arg + &quot;.&quot;);</span>
             }
 <span class="nc" id="L160">            List&lt;BufferedImage&gt; images = new ArrayList&lt;&gt;(imageFiles.length);</span>
 <span class="nc" id="L161">            int maximumHeight = 0;</span>
@@ -170,7 +170,7 @@ import javax.imageio.ImageIO;
 <span class="nc" id="L170">                    } catch(IOException e) {</span>
 <span class="nc" id="L171">                        System.out.println(&quot;Unable to load image &quot; + imageFile.getName() + &quot;:\n&quot;);</span>
 <span class="nc" id="L172">                        e.printStackTrace();</span>
-<span class="nc" id="L173">                    }</span>
+                    }
                 }
             }
 <span class="nc" id="L176">            int numberOfImages = images.size();</span>
@@ -191,7 +191,7 @@ import javax.imageio.ImageIO;
              */
 <span class="nc bnc" id="L192" title="All 2 branches missed.">            for (int index = 0; index &lt; 16; index++) {</span>
 <span class="nc" id="L193">                BufferedImage base = new BufferedImage(BASE_WIDTH, BASE_HEIGHT + MARGIN,</span>
-                                                       BufferedImage.TYPE_INT_ARGB);
+<span class="nc" id="L194">                                                       BufferedImage.TYPE_INT_ARGB);</span>
 <span class="nc" id="L195">                Graphics2D g = base.createGraphics();</span>
 <span class="nc" id="L196">                g.translate(HALF_WIDTH, BASE_HEIGHT + MARGIN);</span>
 
@@ -203,7 +203,7 @@ import javax.imageio.ImageIO;
 <span class="nc bnc" id="L203" title="All 2 branches missed.">                        if ((index &amp; POWERS_OF_TWO[i]) == POWERS_OF_TWO[i]) {</span>
 <span class="nc" id="L204">                            branches[i] = true;</span>
 <span class="nc" id="L205">                            counter += &quot;1&quot;;</span>
-                        } else {
+<span class="nc" id="L206">                        } else {</span>
 <span class="nc" id="L207">                            counter += &quot;0&quot;;</span>
                         }
                     }
@@ -276,8 +276,8 @@ import javax.imageio.ImageIO;
                          * the top right corner of the tree most not be
                          * &quot;above&quot; the line defined by that edge.
                          */
-<span class="nc bnc" id="L279" title="All 6 branches missed.">                        if ((branches[1] || branches[3])</span>
-                            &amp;&amp; crown &lt; -BASE_HEIGHT + RIVER_HEIGHT + (x + halfWidth) / 2) {
+<span class="nc bnc" id="L279" title="All 4 branches missed.">                        if ((branches[1] || branches[3])</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">                            &amp;&amp; crown &lt; -BASE_HEIGHT + RIVER_HEIGHT + (x + halfWidth) / 2) {</span>
 <span class="nc" id="L281">                            continue;</span>
                         }
                         /**
@@ -286,20 +286,20 @@ import javax.imageio.ImageIO;
                          * the top left corner of the tree most not be
                          * &quot;above&quot; the line defined by that edge.
                          */
-<span class="nc bnc" id="L289" title="All 6 branches missed.">                        if ((branches[0] || branches[2])</span>
-                            &amp;&amp; crown &lt; -BASE_HEIGHT + RIVER_HEIGHT - (x - halfWidth) / 2) {
+<span class="nc bnc" id="L289" title="All 4 branches missed.">                        if ((branches[0] || branches[2])</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">                            &amp;&amp; crown &lt; -BASE_HEIGHT + RIVER_HEIGHT - (x - halfWidth) / 2) {</span>
 <span class="nc" id="L291">                            continue;</span>
                         }
                         //System.out.println(&quot;x=&quot; + x + &quot;, y=&quot; + (y - height));
 <span class="nc" id="L294">                        trees.add(new ImageLocation(image, x - halfWidth, crown));</span>
 <span class="nc" id="L295">                        count++;</span>
-<span class="nc" id="L296">                    }</span>
+                    }
 
                     // sort by y, x coordinate
 <span class="nc" id="L299">                    Collections.sort(trees);</span>
 <span class="nc bnc" id="L300" title="All 2 branches missed.">                    for (ImageLocation imageLocation : trees) {</span>
 <span class="nc" id="L301">                        g.drawImage(imageLocation.image, imageLocation.x, imageLocation.y, null);</span>
-<span class="nc" id="L302">                    }</span>
+                    }
 
                 }
 <span class="nc" id="L305">                g.dispose();</span>
@@ -323,4 +323,4 @@ import javax.imageio.ImageIO;
 
 }
 
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

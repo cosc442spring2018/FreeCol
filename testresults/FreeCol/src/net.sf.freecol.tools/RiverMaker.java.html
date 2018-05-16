@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>RiverMaker.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.tools</a> &gt; <span class="el_source">RiverMaker.java</span></div><h1>RiverMaker.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>RiverMaker.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.tools</a> &gt; <span class="el_source">RiverMaker.java</span></div><h1>RiverMaker.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -46,18 +46,18 @@ import javax.imageio.ImageIO;
     private static final int DX = 2 * DY;
 
 <span class="nc" id="L48">    private static final Point2D.Float NE</span>
-        = new Point2D.Float(HALF_WIDTH + DX, DY);
+<span class="nc" id="L49">        = new Point2D.Float(HALF_WIDTH + DX, DY);</span>
 <span class="nc" id="L50">    private static final Point2D.Float SE</span>
-        = new Point2D.Float(BASE_WIDTH - DX, HALF_HEIGHT + DY);
+<span class="nc" id="L51">        = new Point2D.Float(BASE_WIDTH - DX, HALF_HEIGHT + DY);</span>
 <span class="nc" id="L52">    private static final Point2D.Float SW</span>
-        = new Point2D.Float(DX, HALF_HEIGHT + DY);
+<span class="nc" id="L53">        = new Point2D.Float(DX, HALF_HEIGHT + DY);</span>
 <span class="nc" id="L54">    private static final Point2D.Float NW</span>
-        = new Point2D.Float(HALF_WIDTH - DX, DY);
+<span class="nc" id="L55">        = new Point2D.Float(HALF_WIDTH - DX, DY);</span>
 <span class="nc" id="L56">    private static final Point2D.Float CENTER</span>
-        = new Point2D.Float(HALF_WIDTH, 2 * DY);
+<span class="nc" id="L57">        = new Point2D.Float(HALF_WIDTH, 2 * DY);</span>
 
 <span class="nc" id="L59">    private static final Point2D.Float[] POINTS</span>
-        = { NE, SE, SW, NW };
+<span class="nc" id="L60">        = { NE, SE, SW, NW };</span>
 
 
     public static void main(String[] args) throws Exception {
@@ -90,7 +90,7 @@ import javax.imageio.ImageIO;
 <span class="nc" id="L90">        int[] branches = { 1, 0, 0, 0 };</span>
 <span class="nc bnc" id="L91" title="All 2 branches missed.">        for (int index = 1; index &lt; 81; index++) {</span>
 <span class="nc" id="L92">            BufferedImage result = new BufferedImage(128, 64,</span>
-                                                     BufferedImage.TYPE_INT_ARGB);
+<span class="nc" id="L93">                                                     BufferedImage.TYPE_INT_ARGB);</span>
 <span class="nc" id="L94">            Graphics2D g = result.createGraphics();</span>
 <span class="nc" id="L95">            g.setPaint(texture);</span>
 <span class="nc" id="L96">            String name = getName(branches);</span>
@@ -118,8 +118,8 @@ import javax.imageio.ImageIO;
 <span class="nc bnc" id="L118" title="All 2 branches missed.">                    if (branches[next] &gt; 0) {</span>
                         // bend, possibly around start
 <span class="nc" id="L120">                        bend.quadTo(CENTER.x, CENTER.y,</span>
-                                    (POINTS[next].x + CENTER.x) / 2,
-                                    (POINTS[next].y + CENTER.y) / 2);
+<span class="nc" id="L121">                                    (POINTS[next].x + CENTER.x) / 2,</span>
+<span class="nc" id="L122">                                    (POINTS[next].y + CENTER.y) / 2);</span>
 <span class="nc" id="L123">                        bend.lineTo(POINTS[next].x, POINTS[next].y);</span>
                     }
 <span class="nc" id="L125">                    g.draw(bend);</span>
@@ -154,7 +154,7 @@ import javax.imageio.ImageIO;
 <span class="nc bnc" id="L154" title="All 2 branches missed.">        for (int index = 0; index &lt; branches.length; index++) {</span>
 <span class="nc bnc" id="L155" title="All 2 branches missed.">            if (branches[index] == 2) {</span>
 <span class="nc" id="L156">                branches[index] = 0;</span>
-            } else {
+<span class="nc" id="L157">            } else {</span>
 <span class="nc" id="L158">                branches[index]++;</span>
 <span class="nc" id="L159">                break;</span>
             }
@@ -180,4 +180,4 @@ import javax.imageio.ImageIO;
 <span class="nc" id="L180">        return name;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

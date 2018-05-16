@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>MessageMerge.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">test/src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.i18n</a> &gt; <span class="el_source">MessageMerge.java</span></div><h1>MessageMerge.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>MessageMerge.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">test/src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.i18n</a> &gt; <span class="el_source">MessageMerge.java</span></div><h1>MessageMerge.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">/**</span>
  *  Copyright (C) 2002-2015  The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -65,7 +65,7 @@ import javax.swing.WindowConstants;
 <span class="nc" id="L65">        mergeTable.setDefaultRenderer( Object.class, new MergeTableCellRenderer() );</span>
 
 <span class="nc" id="L67">        Action  insertInRightAction = new AbstractAction( &quot;insert in right&quot; )</span>
-<span class="nc" id="L68">        {</span>
+        {
             @Override
             public void actionPerformed( ActionEvent event )
             {
@@ -76,7 +76,7 @@ import javax.swing.WindowConstants;
         };
 
 <span class="nc" id="L78">        Action  deleteFromRightAction = new AbstractAction( &quot;delete from right&quot; )</span>
-<span class="nc" id="L79">        {</span>
+        {
             @Override
             public void actionPerformed( ActionEvent event )
             {
@@ -87,7 +87,7 @@ import javax.swing.WindowConstants;
         };
 
 <span class="nc" id="L89">        Action  saveRightAction = new AbstractAction( &quot;save right&quot; )</span>
-<span class="nc" id="L90">        {</span>
+        {
             @Override
             public void actionPerformed( ActionEvent event )
             {
@@ -133,16 +133,16 @@ import javax.swing.WindowConstants;
 <span class="nc" id="L133">            List&lt;String&gt; lineList = new ArrayList&lt;&gt;();</span>
 <span class="nc" id="L134">            FileInputStream in = new FileInputStream( pathToFile );</span>
 <span class="nc" id="L135">            StringBuilder line = new StringBuilder();</span>
-            while ( true )
+<span class="nc" id="L136">            while ( true )</span>
             {
 <span class="nc" id="L138">                int  data = in.read();</span>
 <span class="nc bnc" id="L139" title="All 2 branches missed.">                if ( -1 == data )</span>
                 {
 <span class="nc bnc" id="L141" title="All 2 branches missed.">                    if ( 0 &lt; line.length() ) { lineList.add( line.toString() ); }</span>
-                    break;
+<span class="nc" id="L142">                    break;</span>
                 }
 <span class="nc" id="L144">                char  c = (char) data;</span>
-<span class="nc bnc" id="L145" title="All 2 branches missed.">                if ( '\r' == c )</span>
+                if ( '\r' == c )
                 {
                     // do nothing
                 }
@@ -150,11 +150,11 @@ import javax.swing.WindowConstants;
                 {
 <span class="nc" id="L151">                    lineList.add( line.toString() );</span>
 <span class="nc" id="L152">                    line.setLength( 0 );</span>
-                }
+<span class="nc" id="L153">                }</span>
                 else {
 <span class="nc" id="L155">                    line.append( c );</span>
                 }
-<span class="nc" id="L157">            }</span>
+            }
 <span class="nc" id="L158">            in.close();</span>
 <span class="nc" id="L159">            return lineList;</span>
 <span class="nc" id="L160">        } catch (IOException ex) {</span>
@@ -179,8 +179,8 @@ import javax.swing.WindowConstants;
 <span class="nc" id="L179">            out.close();</span>
 <span class="nc" id="L180">        } catch (IOException ex) {</span>
 <span class="nc" id="L181">            throw new RuntimeException(ex);</span>
-<span class="nc" id="L182">        }</span>
+        }
 <span class="nc" id="L183">    }</span>
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

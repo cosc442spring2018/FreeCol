@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FontLibrary.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.client.gui</a> &gt; <span class="el_source">FontLibrary.java</span></div><h1>FontLibrary.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>FontLibrary.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.client.gui</a> &gt; <span class="el_source">FontLibrary.java</span></div><h1>FontLibrary.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">/**</span>
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -140,13 +140,13 @@ public class FontLibrary {
     public Font createCompatibleScaledFont(String string, FontType fontType,
                                            FontSize fontSize) {
 <span class="nc" id="L142">        return createCompatibleFont(string, fontType, fontSize, Font.PLAIN,</span>
-                                    scaleFactor);
+<span class="nc" id="L143">                                    scaleFactor);</span>
     }
 
     public Font createCompatibleScaledFont(String string, FontType fontType,
                                            FontSize fontSize, int style) {
 <span class="nc" id="L148">        return createCompatibleFont(string, fontType, fontSize, style,</span>
-                                    scaleFactor);
+<span class="nc" id="L149">                                    scaleFactor);</span>
     }
 
     public static Font createFont(FontType fontType, FontSize fontSize) {
@@ -189,7 +189,7 @@ public class FontLibrary {
                                             FontSize fontSize,
                                             float scaleFactor) {
 <span class="nc" id="L191">        return createCompatibleFont(string, fontType, fontSize, Font.PLAIN,</span>
-                                    scaleFactor);
+<span class="nc" id="L192">                                    scaleFactor);</span>
     }
 
     /**
@@ -211,7 +211,7 @@ public class FontLibrary {
 <span class="nc" id="L211">        float scaledSize = calcScaledSize(fontSize, scaleFactor);</span>
 <span class="nc" id="L212">        String fontKey = getFontKey(fontType);</span>
 <span class="nc bnc" id="L213" title="All 2 branches missed.">        Font font = (fontKey == null)</span>
-            ? mainFont
+<span class="nc" id="L214">            ? mainFont</span>
 <span class="nc" id="L215">            : ResourceManager.getFont(fontKey);</span>
 <span class="nc" id="L216">        font = font.deriveFont(style, scaledSize);</span>
 <span class="nc" id="L217">        return font;</span>
@@ -248,7 +248,7 @@ public class FontLibrary {
 <span class="nc bnc" id="L248" title="All 2 branches missed.">        if(font == null) {</span>
 <span class="nc" id="L249">            fontKey = getFontKey(FontType.NORMAL);</span>
 <span class="nc bnc" id="L250" title="All 2 branches missed.">            font = (fontKey == null)</span>
-                ? mainFont
+<span class="nc" id="L251">                ? mainFont</span>
 <span class="nc" id="L252">                : ResourceManager.getFont(fontKey);</span>
         }
 <span class="nc" id="L254">        font = font.deriveFont(style, scaledSize);</span>
@@ -296,4 +296,4 @@ public class FontLibrary {
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

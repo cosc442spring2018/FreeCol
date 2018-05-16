@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Tension.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">Tension.java</span></div><h1>Tension.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Tension.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">Tension.java</span></div><h1>Tension.java</h1><pre class="source lang-java linenums"><span class="pc" id="L1">/**</span>
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -68,7 +68,7 @@ public class Tension implements Named {
     /** 
      * Constants for describing alarm levels.
      */
-<span class="pc" id="L71">    public static enum Level { </span>
+<span class="fc" id="L71">    public static enum Level { </span>
 <span class="fc" id="L72">        HAPPY(100),</span>
 <span class="fc" id="L73">        CONTENT(600), </span>
 <span class="fc" id="L74">        DISPLEASED(700),</span>
@@ -134,7 +134,7 @@ public class Tension implements Named {
 <span class="fc" id="L134">            value = TENSION_MIN;</span>
 <span class="fc bfc" id="L135" title="All 2 branches covered.">        } else if (newValue &gt; TENSION_MAX) {</span>
 <span class="fc" id="L136">            value = TENSION_MAX;</span>
-        } else {
+<span class="fc" id="L137">        } else {</span>
 <span class="fc" id="L138">            value = newValue;</span>
         }
 <span class="fc" id="L140">    }</span>
@@ -146,7 +146,7 @@ public class Tension implements Named {
      */
     public final Level getLevel() {
 <span class="fc bfc" id="L148" title="All 2 branches covered.">        return find(Level.values(), level -&gt; value &lt;= level.getLimit(),</span>
-            Level.HATEFUL);
+<span class="fc" id="L149">            Level.HATEFUL);</span>
     }
 
     /**
@@ -186,4 +186,4 @@ public class Tension implements Named {
 <span class="nc" id="L186">        return getLevel().toString();</span>
     }    
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

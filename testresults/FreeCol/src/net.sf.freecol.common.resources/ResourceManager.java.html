@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ResourceManager.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.resources</a> &gt; <span class="el_source">ResourceManager.java</span></div><h1>ResourceManager.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">/**</span>
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ResourceManager.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.resources</a> &gt; <span class="el_source">ResourceManager.java</span></div><h1>ResourceManager.java</h1><pre class="source lang-java linenums"><span class="fc" id="L1">/**</span>
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -40,7 +40,7 @@ import net.sf.freecol.common.io.sza.SimpleZippedAnimation;
  */
 <span class="nc" id="L41">public class ResourceManager {</span>
 
-<span class="nc" id="L43">    private static final Logger logger = Logger.getLogger(ResourceManager.class.getName());</span>
+<span class="fc" id="L43">    private static final Logger logger = Logger.getLogger(ResourceManager.class.getName());</span>
 
     // TODO: There are no obvious flaws currently, but this could still
     // profit from deeper verification, including checking ResourceMapping and
@@ -68,7 +68,7 @@ import net.sf.freecol.common.io.sza.SimpleZippedAnimation;
      */
     private static ResourceMapping mergedContainer;
 
-<span class="nc" id="L71">    private static volatile Thread preloadThread = null;</span>
+<span class="fc" id="L71">    private static volatile Thread preloadThread = null;</span>
 
 
     /**
@@ -78,10 +78,10 @@ import net.sf.freecol.common.io.sza.SimpleZippedAnimation;
      * @param mapping The mapping between IDs and files.
      */
     public static synchronized void setBaseMapping(final ResourceMapping mapping) {
-<span class="nc" id="L81">        logger.info(&quot;setBaseMapping &quot; + mapping);</span>
-<span class="nc" id="L82">        baseMapping = mapping;</span>
-<span class="nc bnc" id="L83" title="All 2 branches missed.">        update(mapping != null);</span>
-<span class="nc" id="L84">    }</span>
+<span class="fc" id="L81">        logger.info(&quot;setBaseMapping &quot; + mapping);</span>
+<span class="fc" id="L82">        baseMapping = mapping;</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        update(mapping != null);</span>
+<span class="fc" id="L84">    }</span>
 
     /**
      * Sets the mappings specified for a Total Conversion (TC).
@@ -90,10 +90,10 @@ import net.sf.freecol.common.io.sza.SimpleZippedAnimation;
      * @param mapping The mapping between IDs and files.
      */
     public static synchronized void setTcMapping(final ResourceMapping mapping) {
-<span class="nc" id="L93">        logger.info(&quot;setTcMapping &quot; + mapping);</span>
-<span class="nc" id="L94">        tcMapping = mapping;</span>
-<span class="nc bnc" id="L95" title="All 2 branches missed.">        update(mapping != null);</span>
-<span class="nc" id="L96">    }</span>
+<span class="fc" id="L93">        logger.info(&quot;setTcMapping &quot; + mapping);</span>
+<span class="fc" id="L94">        tcMapping = mapping;</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        update(mapping != null);</span>
+<span class="fc" id="L96">    }</span>
 
     /**
      * Sets the mappings specified by mods.
@@ -163,65 +163,65 @@ import net.sf.freecol.common.io.sza.SimpleZippedAnimation;
      * @param newItems If new items have been added.
      */
     private static void update(boolean newItems) {
-<span class="nc" id="L166">        logger.finest(&quot;update(&quot; + newItems + &quot;)&quot;);</span>
-<span class="nc bnc" id="L167" title="All 2 branches missed.">        if(newItems) {</span>
-<span class="nc" id="L168">            preloadThread = null;</span>
+<span class="fc" id="L166">        logger.finest(&quot;update(&quot; + newItems + &quot;)&quot;);</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">        if(newItems) {</span>
+<span class="fc" id="L168">            preloadThread = null;</span>
         }
-<span class="nc" id="L170">        createMergedContainer();</span>
-<span class="nc bnc" id="L171" title="All 2 branches missed.">        if(newItems) {</span>
+<span class="fc" id="L170">        createMergedContainer();</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        if(newItems) {</span>
             // TODO: This should wait for the thread to exit, if one was running.
-<span class="nc" id="L173">            startBackgroundPreloading();</span>
+<span class="fc" id="L173">            startBackgroundPreloading();</span>
         }
-<span class="nc" id="L175">    }</span>
+<span class="fc" id="L175">    }</span>
 
     /**
      * Creates a merged container containing all the resources.
      */
     private static void createMergedContainer() {
-<span class="nc" id="L181">        ResourceMapping mc = new ResourceMapping();</span>
-<span class="nc" id="L182">        mc.addAll(baseMapping);</span>
-<span class="nc" id="L183">        mc.addAll(tcMapping);</span>
-<span class="nc" id="L184">        mc.addAll(scenarioMapping);</span>
-<span class="nc" id="L185">        mc.addAll(modMapping);</span>
-<span class="nc" id="L186">        mergedContainer = mc;</span>
-<span class="nc" id="L187">    }</span>
+<span class="fc" id="L181">        ResourceMapping mc = new ResourceMapping();</span>
+<span class="fc" id="L182">        mc.addAll(baseMapping);</span>
+<span class="fc" id="L183">        mc.addAll(tcMapping);</span>
+<span class="fc" id="L184">        mc.addAll(scenarioMapping);</span>
+<span class="fc" id="L185">        mc.addAll(modMapping);</span>
+<span class="fc" id="L186">        mergedContainer = mc;</span>
+<span class="fc" id="L187">    }</span>
 
     /**
      * Create and start a new background preload thread.
      */
     private static void startBackgroundPreloading() {
-<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (&quot;true&quot;.equals(System.getProperty(&quot;java.awt.headless&quot;, &quot;false&quot;))) {</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">        if (&quot;true&quot;.equals(System.getProperty(&quot;java.awt.headless&quot;, &quot;false&quot;))) {</span>
 <span class="nc" id="L194">            return; // Do not preload in headless mode</span>
         }
 
-<span class="nc" id="L197">        preloadThread = new Thread(FreeCol.CLIENT_THREAD + &quot;-Resource loader&quot;) {</span>
+<span class="fc" id="L197">        preloadThread = new Thread(FreeCol.CLIENT_THREAD + &quot;-Resource loader&quot;) {</span>
                 @Override
                 public void run() {
                     // Make a local list of the resources to load.
-<span class="nc" id="L201">                    logger.info(&quot;Background thread started&quot;);</span>
-<span class="nc" id="L202">                    List&lt;Resource&gt; resources</span>
-<span class="nc" id="L203">                        = new ArrayList&lt;&gt;(getResources().values());</span>
-<span class="nc" id="L204">                    int n = 0;</span>
-<span class="nc bnc" id="L205" title="All 2 branches missed.">                    for (Resource r : resources) {</span>
-<span class="nc bnc" id="L206" title="All 2 branches missed.">                        if (preloadThread != this) {</span>
-<span class="nc" id="L207">                            logger.info(</span>
-<span class="nc" id="L208">                                &quot;Background thread cancelled after it preloaded &quot;</span>
-<span class="nc" id="L209">                                + n + &quot; resources.&quot;);</span>
-<span class="nc" id="L210">                            return;</span>
+<span class="fc" id="L201">                    logger.info(&quot;Background thread started&quot;);</span>
+<span class="fc" id="L202">                    List&lt;Resource&gt; resources</span>
+<span class="fc" id="L203">                        = new ArrayList&lt;&gt;(getResources().values());</span>
+<span class="fc" id="L204">                    int n = 0;</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">                    for (Resource r : resources) {</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">                        if (preloadThread != this) {</span>
+<span class="fc" id="L207">                            logger.info(</span>
+<span class="fc" id="L208">                                &quot;Background thread cancelled after it preloaded &quot;</span>
+<span class="fc" id="L209">                                + n + &quot; resources.&quot;);</span>
+<span class="fc" id="L210">                            return;</span>
                         }
                         // TODO: Filter list before running thread?
-<span class="nc bnc" id="L213" title="All 2 branches missed.">                        if (r instanceof Resource.Preloadable) {</span>
-<span class="nc" id="L214">                            ((Resource.Preloadable)r).preload();</span>
-<span class="nc" id="L215">                            n++;</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">                        if (r instanceof Resource.Preloadable) {</span>
+<span class="fc" id="L214">                            ((Resource.Preloadable)r).preload();</span>
+<span class="fc" id="L215">                            n++;</span>
                         }
                     }
-<span class="nc" id="L218">                    logger.info(&quot;Background thread preloaded &quot; + n</span>
-<span class="nc" id="L219">                        + &quot; resources.&quot;);</span>
-<span class="nc" id="L220">                }</span>
+<span class="fc" id="L218">                    logger.info(&quot;Background thread preloaded &quot; + n</span>
+<span class="fc" id="L219">                        + &quot; resources.&quot;);</span>
+<span class="fc" id="L220">                }</span>
             };
-<span class="nc" id="L222">        preloadThread.setPriority(2);</span>
-<span class="nc" id="L223">        preloadThread.start();</span>
-<span class="nc" id="L224">    }</span>
+<span class="fc" id="L222">        preloadThread.setPriority(2);</span>
+<span class="fc" id="L223">        preloadThread.start();</span>
+<span class="fc" id="L224">    }</span>
 
     /**
      * When it is anticipated that a resource could not exist use
@@ -248,8 +248,8 @@ import net.sf.freecol.common.io.sza.SimpleZippedAnimation;
     }
 
     public static synchronized Map&lt;String, Resource&gt; getResources() {
-<span class="nc" id="L251">        logger.finest(&quot;getResources&quot;);</span>
-<span class="nc" id="L252">        return mergedContainer.getResources();</span>
+<span class="fc" id="L251">        logger.finest(&quot;getResources&quot;);</span>
+<span class="fc" id="L252">        return mergedContainer.getResources();</span>
     }
 
     public static synchronized Map&lt;String, ImageResource&gt; getImageResources() {
@@ -341,11 +341,11 @@ import net.sf.freecol.common.io.sza.SimpleZippedAnimation;
     }
 
     private static synchronized AudioResource getAudioResource(final String key) {
-<span class="nc" id="L344">        final AudioResource r = mergedContainer.getAudioResource(key);</span>
-<span class="nc bnc" id="L345" title="All 2 branches missed.">        if (r == null) {</span>
+<span class="fc" id="L344">        final AudioResource r = mergedContainer.getAudioResource(key);</span>
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">        if (r == null) {</span>
 <span class="nc" id="L346">            logger.warning(&quot;getAudioResource(&quot; + key + &quot;) failed&quot;);</span>
         }
-<span class="nc" id="L348">        return r;</span>
+<span class="fc" id="L348">        return r;</span>
     }
 
     private static synchronized VideoResource getVideoResource(final String key) {
@@ -554,8 +554,8 @@ import net.sf.freecol.common.io.sza.SimpleZippedAnimation;
      * @return A &lt;code&gt;File&lt;/code&gt; containing the audio data.
      */
     public static File getAudio(final String key) {
-<span class="nc" id="L557">        final AudioResource r = getAudioResource(key);</span>
-<span class="nc bnc" id="L558" title="All 2 branches missed.">        return (r == null) ? null : r.getAudio();</span>
+<span class="fc" id="L557">        final AudioResource r = getAudioResource(key);</span>
+<span class="pc bpc" id="L558" title="1 of 2 branches missed.">        return (r == null) ? null : r.getAudio();</span>
     }
 
     /**
@@ -598,4 +598,4 @@ import net.sf.freecol.common.io.sza.SimpleZippedAnimation;
     }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

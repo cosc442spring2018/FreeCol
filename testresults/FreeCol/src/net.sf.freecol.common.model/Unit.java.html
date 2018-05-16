@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Unit.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">Unit.java</span></div><h1>Unit.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>Unit.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.model</a> &gt; <span class="el_source">Unit.java</span></div><h1>Unit.java</h1><pre class="source lang-java linenums"><span class="pc" id="L1">/**</span>
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -85,16 +85,16 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L85">            .thenComparing(Comparator.comparing(Unit::getRole));</span>
     
     /** A state a Unit can have. */
-<span class="pc" id="L88">    public static enum UnitState {</span>
+<span class="fc" id="L88">    public static enum UnitState {</span>
 <span class="fc" id="L89">        ACTIVE,</span>
 <span class="fc" id="L90">        FORTIFIED,</span>
 <span class="fc" id="L91">        SENTRY,</span>
 <span class="fc" id="L92">        IN_COLONY,</span>
 <span class="fc" id="L93">        IMPROVING,</span>
-        // @compat 0.10.0
+<span class="fc" id="L94">        // @compat 0.10.0</span>
 <span class="fc" id="L95">        TO_EUROPE,</span>
 <span class="fc" id="L96">        TO_AMERICA,</span>
-        // end @compat
+<span class="fc" id="L97">        // end @compat</span>
 <span class="fc" id="L98">        FORTIFYING,</span>
 <span class="fc" id="L99">        SKIPPED;</span>
 
@@ -270,12 +270,12 @@ public class Unit extends GoodsLocation
      */
     public StringTemplate getApparentOwnerName() {
 <span class="fc bfc" id="L272" title="All 2 branches covered.">        Player own = (hasAbility(Ability.PIRACY)) ? getGame().getUnknownEnemy()</span>
-            : owner;
+<span class="fc" id="L273">            : owner;</span>
 <span class="fc" id="L274">        return own.getNationLabel();</span>
     }
 
     /** What type of unit label do we want? */
-<span class="pc" id="L278">    public static enum UnitLabelType {</span>
+<span class="fc" id="L278">    public static enum UnitLabelType {</span>
 <span class="fc" id="L279">        PLAIN,      // Just the basics</span>
 <span class="fc" id="L280">        NATIONAL,   // Add the nation</span>
 <span class="fc" id="L281">        FULL        // Add the equipment and extras</span>
@@ -322,7 +322,7 @@ public class Unit extends GoodsLocation
 	                // label is required, so fall through into the FULL case.
 <span class="fc" id="L323">	                return Messages.getUnitLabel(getName(), type.getId(), 1,</span>
 <span class="fc" id="L324">	                                             owner.getNationId(), role.getId(),</span>
-	                                             null);
+<span class="fc" id="L325">	                                             null);</span>
 	            }
 	            // Fall through
 	
@@ -339,12 +339,12 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L339">		StringTemplate extra = null;</span>
 <span class="fc bfc" id="L340" title="All 2 branches covered.">		if (role.isDefaultRole()) {</span>
 <span class="fc" id="L341">		    extra = getLabelDefaultRole(type, extra);</span>
-		} else {
+<span class="fc" id="L342">		} else {</span>
 <span class="fc" id="L343">		    extra = getLabelNotDefaultRole(role);</span>
 		}
 <span class="fc" id="L345">		return Messages.getUnitLabel(getName(), type.getId(), 1,</span>
 <span class="fc" id="L346">		                             owner.getNationId(), role.getId(),</span>
-		                             extra);
+<span class="fc" id="L347">		                             extra);</span>
 	}
 
 	private StringTemplate getLabelNotDefaultRole(final Role role) {
@@ -354,7 +354,7 @@ public class Unit extends GoodsLocation
 		    // Currently only used for missionary which does not
 		    // have equipment that directly corresponds to goods.
 <span class="fc" id="L356">		    extra = AbstractGoods.getLabel(equipmentKey, 1);</span>
-		} else {
+<span class="fc" id="L357">		} else {</span>
 		    // Other roles can be characterized by their goods.
 <span class="fc" id="L359">		    List&lt;AbstractGoods&gt; requiredGoods</span>
 <span class="fc" id="L360">		        = role.getRequiredGoods(getRoleCount());</span>
@@ -363,7 +363,7 @@ public class Unit extends GoodsLocation
 <span class="fc bfc" id="L363" title="All 2 branches covered.">		    for (AbstractGoods ag : requiredGoods) {</span>
 <span class="fc bfc" id="L364" title="All 2 branches covered.">		        if (first) first = false; else extra.addName(&quot; &quot;);</span>
 <span class="fc" id="L365">		        extra.addStringTemplate(ag.getLabel());</span>
-<span class="fc" id="L366">		    }</span>
+		    }
 		}
 <span class="fc" id="L368">		return extra;</span>
 	}
@@ -372,7 +372,7 @@ public class Unit extends GoodsLocation
 <span class="fc bfc" id="L372" title="All 2 branches covered.">		if (canCarryTreasure()) {</span>
 <span class="fc" id="L373">		    extra = StringTemplate.template(&quot;goldAmount&quot;)</span>
 <span class="fc" id="L374">		        .addAmount(&quot;%amount%&quot;, getTreasureAmount());</span>
-		} else {
+<span class="fc" id="L375">		} else {</span>
 <span class="fc" id="L376">		    boolean noEquipment = false;</span>
 		    // unequipped expert has no-equipment label
 <span class="fc" id="L378">		    List&lt;Role&gt; expertRoles = type.getExpertRoles();</span>
@@ -382,7 +382,7 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L382">		            extra = StringTemplate.key(key);</span>
 <span class="fc" id="L383">		            break;</span>
 		        }
-<span class="fc" id="L385">		    }</span>
+		    }
 		}
 <span class="fc" id="L387">		return extra;</span>
 	}
@@ -419,8 +419,8 @@ public class Unit extends GoodsLocation
         // known because units may be hidden within
 <span class="nc bnc" id="L420" title="All 2 branches missed.">        boolean unknown = combatOdds.win == CombatModel.CombatOdds.UNKNOWN_ODDS</span>
 <span class="nc bnc" id="L421" title="All 2 branches missed.">            || tile.hasSettlement();</span>
-<span class="nc bnc" id="L422" title="All 2 branches missed.">        return StringTemplate.template(&quot;model.unit.attackTileOdds&quot;)</span>
-<span class="nc" id="L423">            .addName(&quot;%chance%&quot;, (unknown) ? &quot;??&quot;</span>
+<span class="nc" id="L422">        return StringTemplate.template(&quot;model.unit.attackTileOdds&quot;)</span>
+<span class="nc bnc" id="L423" title="All 2 branches missed.">            .addName(&quot;%chance%&quot;, (unknown) ? &quot;??&quot;</span>
 <span class="nc" id="L424">                : String.valueOf((int)(combatOdds.win * 100)));</span>
     }
     
@@ -434,7 +434,7 @@ public class Unit extends GoodsLocation
         // Create the right tag for the tagged &quot;goingTo&quot; message.
 <span class="nc bnc" id="L435" title="All 2 branches missed.">        String type = (isPerson()) ? &quot;person&quot;</span>
 <span class="nc bnc" id="L436" title="All 2 branches missed.">            : (isNaval()) ? &quot;ship&quot;</span>
-            : &quot;other&quot;;
+<span class="nc" id="L437">            : &quot;other&quot;;</span>
 <span class="nc" id="L438">        return getDestinationLabel(type, getDestination(), getOwner());</span>
     }
 
@@ -623,8 +623,8 @@ public class Unit extends GoodsLocation
         case FORTIFYING:
 <span class="pc bpc" id="L624" title="1 of 2 branches missed.">            return getMovesLeft() &gt; 0;</span>
         case IMPROVING:
-<span class="pc bpc" id="L626" title="2 of 4 branches missed.">            return getMovesLeft() &gt; 0</span>
-                &amp;&amp; location instanceof Tile
+<span class="pc bpc" id="L626" title="1 of 2 branches missed.">            return getMovesLeft() &gt; 0</span>
+<span class="pc bpc" id="L627" title="1 of 2 branches missed.">                &amp;&amp; location instanceof Tile</span>
 <span class="pc bpc" id="L628" title="1 of 2 branches missed.">                &amp;&amp; getOwner().canAcquireForImprovement(location.getTile());</span>
         case IN_COLONY:
 <span class="pc bpc" id="L630" title="1 of 2 branches missed.">            return !isNaval();</span>
@@ -657,7 +657,7 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L657">            return;</span>
 <span class="pc bpc" id="L658" title="1 of 2 branches missed.">        } else if (!checkSetState(s)) {</span>
 <span class="nc" id="L659">            throw new IllegalStateException(&quot;Illegal UnitState transition: &quot;</span>
-                + state + &quot; -&gt; &quot; + s);
+<span class="nc" id="L660">                + state + &quot; -&gt; &quot; + s);</span>
         } else {
 <span class="fc" id="L662">            setStateUnchecked(s);</span>
         }
@@ -683,10 +683,10 @@ public class Unit extends GoodsLocation
                 }
 <span class="nc" id="L684">                setWorkImprovement(null);</span>
             }
-            break;
+<span class="nc" id="L686">            break;</span>
         default:
             // do nothing
-            break;
+<span class="fc" id="L689">            break;</span>
         }
 
         // Now initiate the new UnitState
@@ -707,7 +707,7 @@ public class Unit extends GoodsLocation
         case IMPROVING:
 <span class="fc bfc" id="L708" title="All 2 branches covered.">            if (workImprovement == null) {</span>
 <span class="fc" id="L709">                setWorkLeft(-1);</span>
-            } else {
+<span class="fc" id="L710">            } else {</span>
 <span class="fc" id="L711">                setWorkLeft(workImprovement.getTurnsToComplete()</span>
 <span class="pc bpc" id="L712" title="1 of 2 branches missed.">                    + ((getMovesLeft() &gt; 0) ? 0 : 1));</span>
             }
@@ -899,7 +899,7 @@ public class Unit extends GoodsLocation
      */
     public List&lt;AbstractGoods&gt; getGoodsDifference(Role role, int roleCount) {
 <span class="fc" id="L901">        return Role.getGoodsDifference(getRole(), getRoleCount(),</span>
-                                       role, roleCount);
+<span class="fc" id="L902">                                       role, roleCount);</span>
     }
 
     /**
@@ -941,7 +941,7 @@ public class Unit extends GoodsLocation
      */
     public boolean isAtSea() {
 <span class="fc bfc" id="L943" title="All 2 branches covered.">        return (location instanceof Unit) ? ((Unit)location).isAtSea()</span>
-            : location instanceof HighSeas;
+<span class="fc" id="L944">            : location instanceof HighSeas;</span>
     }
 
     /**
@@ -954,7 +954,7 @@ public class Unit extends GoodsLocation
 <span class="nc bnc" id="L954" title="All 2 branches missed.">            &amp;&amp; (getLocation() instanceof IndianSettlement</span>
                 // @compat 0.10.x
                 // Remove this when PET missionary serialization is retired
-<span class="pc bnc" id="L957" title="All 2 branches missed.">                || getLocation() == null</span>
+<span class="nc bnc" id="L957" title="All 2 branches missed.">                || getLocation() == null</span>
                 // end @compat 0.10.x
                 );
     }
@@ -1229,9 +1229,9 @@ public class Unit extends GoodsLocation
             }
 <span class="fc" id="L1230">            this.student = newStudent;</span>
 <span class="fc" id="L1231">            newStudent.setTeacher(this);</span>
-        } else {
+<span class="fc" id="L1232">        } else {</span>
 <span class="nc" id="L1233">            throw new IllegalStateException(&quot;Unit can not be student: &quot;</span>
-                + newStudent);
+<span class="nc" id="L1234">                + newStudent);</span>
         }
 <span class="fc" id="L1236">    }</span>
 
@@ -1258,7 +1258,7 @@ public class Unit extends GoodsLocation
 <span class="pc bpc" id="L1258" title="1 of 4 branches missed.">            if (oldTeacher != null &amp;&amp; oldTeacher.getStudent() == this) {</span>
 <span class="fc" id="L1259">                oldTeacher.setStudent(null);</span>
             }
-        } else {
+<span class="fc" id="L1261">        } else {</span>
 <span class="fc" id="L1262">            UnitType skillTaught = newTeacher.getType().getSkillTaught();</span>
 <span class="pc bpc" id="L1263" title="1 of 2 branches missed.">            if (newTeacher.getColony() != null</span>
 <span class="pc bpc" id="L1264" title="1 of 2 branches missed.">                &amp;&amp; newTeacher.getColony() == getColony()</span>
@@ -1268,9 +1268,9 @@ public class Unit extends GoodsLocation
                 }
 <span class="fc" id="L1269">                this.teacher = newTeacher;</span>
 <span class="fc" id="L1270">                this.teacher.setStudent(this);</span>
-            } else {
+<span class="fc" id="L1271">            } else {</span>
 <span class="nc" id="L1272">                throw new IllegalStateException(&quot;Unit can not be teacher: &quot;</span>
-                    + newTeacher);
+<span class="nc" id="L1273">                    + newTeacher);</span>
             }
         }
 <span class="fc" id="L1276">    }</span>
@@ -1337,7 +1337,7 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L1337">            return typeStudent.getEducationTurns(teaching);</span>
         } else {
 <span class="nc" id="L1339">            throw new IllegalStateException(&quot;typeTeacher=&quot; + typeTeacher</span>
-                + &quot; typeStudent=&quot; + typeStudent);
+<span class="nc" id="L1340">                + &quot; typeStudent=&quot; + typeStudent);</span>
         }
     }
 
@@ -1408,7 +1408,7 @@ public class Unit extends GoodsLocation
     public void setNationality(String newNationality) {
 <span class="nc bnc" id="L1409" title="All 2 branches missed.">        if (isPerson()) {</span>
 <span class="nc" id="L1410">            nationality = newNationality;</span>
-        } else {
+<span class="nc" id="L1411">        } else {</span>
 <span class="nc" id="L1412">            throw new UnsupportedOperationException(&quot;Can not set the nationality of a Unit which is not a person!&quot;);</span>
         }
 <span class="nc" id="L1414">    }</span>
@@ -1603,11 +1603,11 @@ public class Unit extends GoodsLocation
     public int validateCurrentStop() {
 <span class="nc bnc" id="L1604" title="All 2 branches missed.">        if (tradeRoute == null) {</span>
 <span class="nc" id="L1605">            currentStop = -1;</span>
-        } else {
+<span class="nc" id="L1606">        } else {</span>
 <span class="nc" id="L1607">            List&lt;TradeRouteStop&gt; stops = tradeRoute.getStops();</span>
 <span class="nc bnc" id="L1608" title="All 4 branches missed.">            if (stops == null || stops.isEmpty()) {</span>
 <span class="nc" id="L1609">                currentStop = -1;</span>
-            } else {
+<span class="nc" id="L1610">            } else {</span>
 <span class="nc bnc" id="L1611" title="All 4 branches missed.">                if (currentStop &lt; 0 || currentStop &gt;= stops.size()) {</span>
                     // The current stop can become out of range if the trade
                     // route is modified.
@@ -1639,7 +1639,7 @@ public class Unit extends GoodsLocation
 <span class="nc bnc" id="L1639" title="All 2 branches missed.">        return ((colony = getColony()) != null) ? colony</span>
 <span class="nc bnc" id="L1640" title="All 2 branches missed.">            : ((is = getIndianSettlement()) != null) ? is</span>
 <span class="nc bnc" id="L1641" title="All 2 branches missed.">            : (isInEurope()) ? (TradeLocation)getOwner().getEurope()</span>
-            : null;
+<span class="nc" id="L1642">            : null;</span>
     }
 
     /**
@@ -1718,7 +1718,7 @@ public class Unit extends GoodsLocation
 <span class="fc bfc" id="L1718" title="All 2 branches covered.">        Settlement settlement = (isInColony()) ? getColony()</span>
 <span class="fc bfc" id="L1719" title="All 2 branches covered.">            : (getLocation() instanceof IndianSettlement)</span>
 <span class="fc" id="L1720">            ? (Settlement)getLocation()</span>
-            : null;
+<span class="fc" id="L1721">            : null;</span>
 <span class="fc bfc" id="L1722" title="All 2 branches covered.">        if (settlement == null) return null;</span>
 
 <span class="fc" id="L1724">        final Specification spec = getSpecification();</span>
@@ -1729,8 +1729,8 @@ public class Unit extends GoodsLocation
 <span class="fc bfc" id="L1729" title="All 2 branches covered.">                    &amp;&amp; settlement.containsGoods(getGoodsDifference(role, 1))) {</span>
 <span class="fc" id="L1730">                    return role;</span>
                 }
-<span class="fc" id="L1732">            }</span>
-<span class="fc" id="L1733">        }</span>
+            }
+        }
 <span class="fc" id="L1734">        return null;</span>
     }
 
@@ -1750,8 +1750,8 @@ public class Unit extends GoodsLocation
 <span class="fc bfc" id="L1750" title="All 2 branches covered.">            for (Role.RoleChange rc : r.getRoleChanges()) {</span>
 <span class="fc bfc" id="L1751" title="All 2 branches covered.">                if (rc.getFrom(spec) == oldRole</span>
 <span class="fc bfc" id="L1752" title="All 2 branches covered.">                    &amp;&amp; rc.getCapture(spec) == role) return r;</span>
-<span class="fc" id="L1753">            }</span>
-<span class="fc" id="L1754">        }</span>
+            }
+        }
 <span class="fc" id="L1755">        return null;</span>
     }
 
@@ -1761,7 +1761,7 @@ public class Unit extends GoodsLocation
      * @return True if the unit is doomed.
      */
     public boolean losingEquipmentKillsUnit() {
-<span class="fc bfc" id="L1764" title="All 2 branches covered.">        return hasAbility(Ability.DISPOSE_ON_ALL_EQUIPMENT_LOST)</span>
+<span class="pc bfc" id="L1764" title="All 2 branches covered.">        return hasAbility(Ability.DISPOSE_ON_ALL_EQUIPMENT_LOST)</span>
 <span class="pc bpc" id="L1765" title="1 of 2 branches missed.">            &amp;&amp; getRole().getDowngrade() == null;</span>
     }
 
@@ -1899,7 +1899,7 @@ public class Unit extends GoodsLocation
      *
      * @see Unit#getMoveType(Direction)
      */
-<span class="pc" id="L1902">    public static enum MoveType {</span>
+<span class="fc" id="L1902">    public static enum MoveType {</span>
 <span class="fc" id="L1903">        MOVE(null, true),</span>
 <span class="fc" id="L1904">        MOVE_HIGH_SEAS(null, true),</span>
 <span class="fc" id="L1905">        EXPLORE_LOST_CITY_RUMOUR(null, true),</span>
@@ -2011,7 +2011,7 @@ public class Unit extends GoodsLocation
 <span class="pc bpc" id="L2011" title="1 of 2 branches missed.">        if (isBeached(from)) {</span>
             // Ship on land due to it was in a colony which was abandoned
 <span class="nc" id="L2013">            cost = ml;</span>
-<span class="fc bfc" id="L2014" title="All 2 branches covered.">        } else if (cost &gt; ml) {</span>
+<span class="pc bfc" id="L2014" title="All 2 branches covered.">        } else if (cost &gt; ml) {</span>
             // Using +2 in order to make 1/3 and 2/3 move count as
             // 3/3, only when getMovesLeft &gt; 0
 <span class="pc bpc" id="L2017" title="1 of 4 branches missed.">            if ((ml + 2 &gt;= getInitialMovesLeft() || cost &lt;= ml + 2</span>
@@ -2031,9 +2031,9 @@ public class Unit extends GoodsLocation
     public MoveType getMoveType(Direction direction) {
         Tile target;
 <span class="pc bpc" id="L2033" title="1 of 2 branches missed.">        return (!hasTile())</span>
-            ? MoveType.MOVE_NO_TILE
+<span class="nc" id="L2034">            ? MoveType.MOVE_NO_TILE</span>
 <span class="pc bpc" id="L2035" title="1 of 2 branches missed.">            : ((target = getTile().getNeighbourOrNull(direction)) == null)</span>
-            ? MoveType.MOVE_ILLEGAL
+<span class="nc" id="L2036">            ? MoveType.MOVE_ILLEGAL</span>
 <span class="fc" id="L2037">            : getMoveType(target);</span>
     }
 
@@ -2046,7 +2046,7 @@ public class Unit extends GoodsLocation
      */
     public MoveType getMoveType(Tile target) {
 <span class="pc bpc" id="L2048" title="1 of 2 branches missed.">        return (!hasTile())</span>
-            ? MoveType.MOVE_NO_TILE
+<span class="nc" id="L2049">            ? MoveType.MOVE_NO_TILE</span>
 <span class="fc" id="L2050">            : getMoveType(getTile(), target, getMovesLeft());</span>
     }
 
@@ -2062,17 +2062,17 @@ public class Unit extends GoodsLocation
     public MoveType getMoveType(Tile from, Tile target, int ml) {
 <span class="fc" id="L2063">        MoveType move = getSimpleMoveType(from, target);</span>
 <span class="fc bfc" id="L2064" title="All 2 branches covered.">        if (move.isLegal()) {</span>
-<span class="pc bfc" id="L2065" title="All 2 branches covered.">            switch (move) {</span>
+<span class="fc bfc" id="L2065" title="All 2 branches covered.">            switch (move) {</span>
             case ATTACK_UNIT: case ATTACK_SETTLEMENT:
                 // Needs only a single movement point, regardless of
                 // terrain, but suffers penalty.
 <span class="fc bfc" id="L2069" title="All 2 branches covered.">                if (ml &lt;= 0) {</span>
 <span class="fc" id="L2070">                    move = MoveType.MOVE_NO_MOVES;</span>
                 }
-                break;
+<span class="fc" id="L2072">                break;</span>
             default:
-<span class="pc bpc" id="L2074" title="2 of 4 branches missed.">                if (ml &lt;= 0</span>
-<span class="pc bpc" id="L2075" title="1 of 2 branches missed.">                    || (from != null &amp;&amp; getMoveCost(from, target, ml) &gt; ml)) {</span>
+<span class="pc bpc" id="L2074" title="1 of 2 branches missed.">                if (ml &lt;= 0</span>
+<span class="pc bpc" id="L2075" title="2 of 4 branches missed.">                    || (from != null &amp;&amp; getMoveCost(from, target, ml) &gt; ml)) {</span>
 <span class="nc" id="L2076">                    move = MoveType.MOVE_NO_MOVES;</span>
                 }
                 break;
@@ -2120,9 +2120,9 @@ public class Unit extends GoodsLocation
     public MoveType getSimpleMoveType(Direction direction) {
         Tile target;
 <span class="nc bnc" id="L2122" title="All 2 branches missed.">        return (!hasTile())</span>
-            ? MoveType.MOVE_NO_TILE
+<span class="nc" id="L2123">            ? MoveType.MOVE_NO_TILE</span>
 <span class="nc bnc" id="L2124" title="All 2 branches missed.">            : ((target = getTile().getNeighbourOrNull(direction)) == null)</span>
-            ? MoveType.MOVE_ILLEGAL
+<span class="nc" id="L2125">            ? MoveType.MOVE_ILLEGAL</span>
 <span class="nc" id="L2126">            : getSimpleMoveType(getTile(), target);</span>
     }
 
@@ -2138,7 +2138,7 @@ public class Unit extends GoodsLocation
                                       Tile target) {
 <span class="pc bpc" id="L2139" title="1 of 2 branches missed.">        if (target == null) {</span>
 <span class="nc bnc" id="L2140" title="All 2 branches missed.">            return (getOwner().canMoveToEurope()) ? MoveType.MOVE_HIGH_SEAS</span>
-                : MoveType.MOVE_NO_EUROPE;
+<span class="nc" id="L2141">                : MoveType.MOVE_NO_EUROPE;</span>
 <span class="pc bpc" id="L2142" title="1 of 2 branches missed.">        } else if (isDamaged()) {</span>
 <span class="nc" id="L2143">            return MoveType.MOVE_NO_REPAIR;</span>
         }
@@ -2158,12 +2158,12 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L2158">            Unit defender = target.getFirstUnit();</span>
 <span class="fc bfc" id="L2159" title="All 4 branches covered.">            if (defender != null &amp;&amp; !getOwner().owns(defender)) {</span>
 <span class="fc bfc" id="L2160" title="All 2 branches covered.">                return (isOffensiveUnit())</span>
-                    ? MoveType.ATTACK_UNIT
-                    : MoveType.MOVE_NO_ATTACK_CIVILIAN;
+<span class="fc" id="L2161">                    ? MoveType.ATTACK_UNIT</span>
+<span class="fc" id="L2162">                    : MoveType.MOVE_NO_ATTACK_CIVILIAN;</span>
             } else {
 <span class="fc bfc" id="L2164" title="All 2 branches covered.">                return (target.isDirectlyHighSeasConnected())</span>
-                    ? MoveType.MOVE_HIGH_SEAS
-                    : MoveType.MOVE;
+<span class="fc" id="L2165">                    ? MoveType.MOVE_HIGH_SEAS</span>
+<span class="fc" id="L2166">                    : MoveType.MOVE;</span>
             }
         }
     }
@@ -2192,8 +2192,8 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L2192">                        return MoveType.MOVE_NO_ATTACK_CIVILIAN;</span>
                     } else {
 <span class="pc bpc" id="L2194" title="1 of 2 branches missed.">                        return (allowMoveFrom(from))</span>
-                            ? MoveType.ATTACK_UNIT
-                            : MoveType.MOVE_NO_ATTACK_MARINE;
+<span class="fc" id="L2195">                            ? MoveType.ATTACK_UNIT</span>
+<span class="nc" id="L2196">                            : MoveType.MOVE_NO_ATTACK_MARINE;</span>
                     }
 <span class="pc bpc" id="L2198" title="1 of 4 branches missed.">                } else if (target.hasLostCityRumour() &amp;&amp; owner.isEuropean()) {</span>
                     // Natives do not explore rumours, see:
@@ -2210,17 +2210,17 @@ public class Unit extends GoodsLocation
 <span class="fc bfc" id="L2210" title="All 2 branches covered.">                if (settlement instanceof Colony</span>
 <span class="fc bfc" id="L2211" title="All 2 branches covered.">                    &amp;&amp; hasAbility(Ability.NEGOTIATE)) {</span>
 <span class="pc bpc" id="L2212" title="1 of 2 branches missed.">                    return (allowMoveFrom(from))</span>
-                        ? MoveType.ENTER_FOREIGN_COLONY_WITH_SCOUT
-                        : MoveType.MOVE_NO_ACCESS_WATER;
+<span class="fc" id="L2213">                        ? MoveType.ENTER_FOREIGN_COLONY_WITH_SCOUT</span>
+<span class="nc" id="L2214">                        : MoveType.MOVE_NO_ACCESS_WATER;</span>
 <span class="fc bfc" id="L2215" title="All 2 branches covered.">                } else if (settlement instanceof IndianSettlement</span>
 <span class="fc bfc" id="L2216" title="All 2 branches covered.">                    &amp;&amp; hasAbility(Ability.SPEAK_WITH_CHIEF)) {</span>
 <span class="pc bpc" id="L2217" title="1 of 2 branches missed.">                    return (allowMoveFrom(from))</span>
-                        ? MoveType.ENTER_INDIAN_SETTLEMENT_WITH_SCOUT
-                        : MoveType.MOVE_NO_ACCESS_WATER;
+<span class="fc" id="L2218">                        ? MoveType.ENTER_INDIAN_SETTLEMENT_WITH_SCOUT</span>
+<span class="nc" id="L2219">                        : MoveType.MOVE_NO_ACCESS_WATER;</span>
 <span class="fc bfc" id="L2220" title="All 2 branches covered.">                } else if (isOffensiveUnit()) {</span>
 <span class="pc bpc" id="L2221" title="1 of 2 branches missed.">                    return (allowMoveFrom(from))</span>
-                        ? MoveType.ATTACK_SETTLEMENT
-                        : MoveType.MOVE_NO_ATTACK_MARINE;
+<span class="fc" id="L2222">                        ? MoveType.ATTACK_SETTLEMENT</span>
+<span class="nc" id="L2223">                        : MoveType.MOVE_NO_ATTACK_MARINE;</span>
 <span class="fc bfc" id="L2224" title="All 2 branches covered.">                } else if (hasAbility(Ability.ESTABLISH_MISSION)) {</span>
 <span class="fc" id="L2225">                    return getMissionaryMoveType(from, settlement);</span>
                 } else {
@@ -2228,17 +2228,17 @@ public class Unit extends GoodsLocation
                 }
 <span class="pc bpc" id="L2229" title="1 of 2 branches missed.">            } else if (isOffensiveUnit()) {</span>
 <span class="pc bpc" id="L2230" title="1 of 2 branches missed.">                return (allowMoveFrom(from))</span>
-                    ? MoveType.ATTACK_SETTLEMENT
-                    : MoveType.MOVE_NO_ATTACK_MARINE;
+<span class="fc" id="L2231">                    ? MoveType.ATTACK_SETTLEMENT</span>
+<span class="nc" id="L2232">                    : MoveType.MOVE_NO_ATTACK_MARINE;</span>
             } else {
 <span class="nc" id="L2234">                return MoveType.MOVE_NO_ACCESS_SETTLEMENT;</span>
             }
         } else { // moving to sea, check for embarkation
 <span class="fc bfc" id="L2237" title="All 4 branches covered.">            return (defender == null || !getOwner().owns(defender))</span>
-                ? MoveType.MOVE_NO_ACCESS_EMBARK
+<span class="fc" id="L2238">                ? MoveType.MOVE_NO_ACCESS_EMBARK</span>
 <span class="pc bpc" id="L2239" title="1 of 2 branches missed.">                : (any(target.getUnitList(), u -&gt; u.canAdd(this)))</span>
-                ? MoveType.EMBARK
-                : MoveType.MOVE_NO_ACCESS_FULL;
+<span class="fc" id="L2240">                ? MoveType.EMBARK</span>
+<span class="nc" id="L2241">                : MoveType.MOVE_NO_ACCESS_FULL;</span>
         }
     }
 
@@ -2252,18 +2252,18 @@ public class Unit extends GoodsLocation
     private MoveType getTradeMoveType(Settlement settlement) {
 <span class="pc bpc" id="L2253" title="1 of 2 branches missed.">        if (settlement instanceof Colony) {</span>
 <span class="nc bnc" id="L2254" title="All 2 branches missed.">            return (getOwner().atWarWith(settlement.getOwner()))</span>
-                ? MoveType.MOVE_NO_ACCESS_WAR
+<span class="nc" id="L2255">                ? MoveType.MOVE_NO_ACCESS_WAR</span>
 <span class="nc bnc" id="L2256" title="All 2 branches missed.">                : (!hasAbility(Ability.TRADE_WITH_FOREIGN_COLONIES))</span>
-                ? MoveType.MOVE_NO_ACCESS_TRADE
-                : MoveType.ENTER_SETTLEMENT_WITH_CARRIER_AND_GOODS;
+<span class="nc" id="L2257">                ? MoveType.MOVE_NO_ACCESS_TRADE</span>
+<span class="nc" id="L2258">                : MoveType.ENTER_SETTLEMENT_WITH_CARRIER_AND_GOODS;</span>
 <span class="pc bpc" id="L2259" title="1 of 2 branches missed.">        } else if (settlement instanceof IndianSettlement) {</span>
             // Do not block for war, bringing gifts is allowed
 <span class="fc bfc" id="L2261" title="All 2 branches covered.">            return (!allowContact(settlement))</span>
-                ? MoveType.MOVE_NO_ACCESS_CONTACT
+<span class="fc" id="L2262">                ? MoveType.MOVE_NO_ACCESS_CONTACT</span>
 <span class="fc bfc" id="L2263" title="All 2 branches covered.">                : (hasGoodsCargo() || getSpecification()</span>
 <span class="fc bfc" id="L2264" title="All 2 branches covered.">                    .getBoolean(GameOptions.EMPTY_TRADERS))</span>
-                ? MoveType.ENTER_SETTLEMENT_WITH_CARRIER_AND_GOODS
-                : MoveType.MOVE_NO_ACCESS_GOODS;
+<span class="fc" id="L2265">                ? MoveType.ENTER_SETTLEMENT_WITH_CARRIER_AND_GOODS</span>
+<span class="fc" id="L2266">                : MoveType.MOVE_NO_ACCESS_GOODS;</span>
         } else {
 <span class="nc" id="L2268">            return MoveType.MOVE_ILLEGAL; // should not happen</span>
         }
@@ -2281,12 +2281,12 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L2281">            return MoveType.MOVE_NO_ACCESS_SETTLEMENT;</span>
 <span class="pc bpc" id="L2282" title="1 of 2 branches missed.">        } else if (settlement instanceof IndianSettlement) {</span>
 <span class="fc bfc" id="L2283" title="All 2 branches covered.">            return (!allowContact(settlement))</span>
-                ? MoveType.MOVE_NO_ACCESS_CONTACT
+<span class="fc" id="L2284">                ? MoveType.MOVE_NO_ACCESS_CONTACT</span>
 <span class="pc bpc" id="L2285" title="1 of 2 branches missed.">                : (!allowMoveFrom(from))</span>
-                ? MoveType.MOVE_NO_ACCESS_WATER
+<span class="nc" id="L2286">                ? MoveType.MOVE_NO_ACCESS_WATER</span>
 <span class="pc bpc" id="L2287" title="1 of 2 branches missed.">                : (!getType().canBeUpgraded(null, ChangeType.NATIVES))</span>
-                ? MoveType.MOVE_NO_ACCESS_SKILL
-                : MoveType.ENTER_INDIAN_SETTLEMENT_WITH_FREE_COLONIST;
+<span class="nc" id="L2288">                ? MoveType.MOVE_NO_ACCESS_SKILL</span>
+<span class="fc" id="L2289">                : MoveType.ENTER_INDIAN_SETTLEMENT_WITH_FREE_COLONIST;</span>
         } else {
 <span class="nc" id="L2291">            return MoveType.MOVE_ILLEGAL; // should not happen</span>
         }
@@ -2304,12 +2304,12 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L2304">            return MoveType.MOVE_NO_ACCESS_SETTLEMENT;</span>
 <span class="pc bpc" id="L2305" title="1 of 2 branches missed.">        } else if (settlement instanceof IndianSettlement) {</span>
 <span class="pc bpc" id="L2306" title="1 of 2 branches missed.">            return (!allowContact(settlement))</span>
-                ? MoveType.MOVE_NO_ACCESS_CONTACT
+<span class="nc" id="L2307">                ? MoveType.MOVE_NO_ACCESS_CONTACT</span>
 <span class="pc bpc" id="L2308" title="1 of 2 branches missed.">                : (!allowMoveFrom(from))</span>
-                ? MoveType.MOVE_NO_ACCESS_WATER
+<span class="nc" id="L2309">                ? MoveType.MOVE_NO_ACCESS_WATER</span>
 <span class="pc bpc" id="L2310" title="1 of 2 branches missed.">                : (settlement.getOwner().missionsBanned(getOwner()))</span>
-                ? MoveType.MOVE_NO_ACCESS_MISSION_BAN
-                : MoveType.ENTER_INDIAN_SETTLEMENT_WITH_MISSIONARY;
+<span class="nc" id="L2311">                ? MoveType.MOVE_NO_ACCESS_MISSION_BAN</span>
+<span class="fc" id="L2312">                : MoveType.ENTER_INDIAN_SETTLEMENT_WITH_MISSIONARY;</span>
         } else {
 <span class="nc" id="L2314">            return MoveType.MOVE_ILLEGAL; // should not happen</span>
         }
@@ -2323,7 +2323,7 @@ public class Unit extends GoodsLocation
      * @return True if the move is allowed.
      */
     private boolean allowMoveFrom(Tile from) {
-<span class="fc bfc" id="L2326" title="All 2 branches covered.">        return from.isLand()</span>
+<span class="pc bfc" id="L2326" title="All 2 branches covered.">        return from.isLand()</span>
 <span class="pc bpc" id="L2327" title="1 of 2 branches missed.">            || (!getOwner().isREF()</span>
 <span class="pc bpc" id="L2328" title="1 of 2 branches missed.">                &amp;&amp; getSpecification().getBoolean(GameOptions.AMPHIBIOUS_MOVES));</span>
     }
@@ -2364,7 +2364,7 @@ public class Unit extends GoodsLocation
     public int getInitialMovesLeft() {
 <span class="fc" id="L2365">        Turn turn = getGame().getTurn();</span>
 <span class="fc" id="L2366">        return (int)applyModifiers(unitType.getMovement(), turn,</span>
-                                   Modifier.MOVEMENT_BONUS, unitType);
+<span class="fc" id="L2367">                                   Modifier.MOVEMENT_BONUS, unitType);</span>
     }
 
     /**
@@ -2392,8 +2392,8 @@ public class Unit extends GoodsLocation
     public int getSailTurns() {
 <span class="fc" id="L2393">        float base = getSpecification().getInteger(GameOptions.TURNS_TO_SAIL);</span>
 <span class="fc" id="L2394">        return (int)getOwner().applyModifiers(base, getGame().getTurn(),</span>
-                                              Modifier.SAIL_HIGH_SEAS,
-                                              unitType);
+<span class="fc" id="L2395">                                              Modifier.SAIL_HIGH_SEAS,</span>
+<span class="fc" id="L2396">                                              unitType);</span>
     }
 
     /**
@@ -2417,11 +2417,11 @@ public class Unit extends GoodsLocation
      */
     public boolean hasHighSeasMove() {
 <span class="nc bnc" id="L2419" title="All 2 branches missed.">        return (canMoveToHighSeas())</span>
-            ? true
+<span class="nc" id="L2420">            ? true</span>
 <span class="nc bnc" id="L2421" title="All 4 branches missed.">            : (hasTile() &amp;&amp; getMovesLeft() &gt; 0)</span>
 <span class="nc" id="L2422">            ? any(getTile().getSurroundingTiles(1, 1),</span>
-                Tile::isDirectlyHighSeasConnected)
-            : false;
+<span class="nc" id="L2423">                Tile::isDirectlyHighSeasConnected)</span>
+<span class="nc" id="L2424">            : false;</span>
     }
 
     /**
@@ -2435,7 +2435,7 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L2435">        final Specification spec = getSpecification();</span>
 <span class="pc bpc" id="L2436" title="1 of 6 branches missed.">        return hasTile() &amp;&amp; unitType.canBuildColony() &amp;&amp; getMovesLeft() &gt; 0</span>
 <span class="pc bpc" id="L2437" title="1 of 2 branches missed.">            &amp;&amp; (!getOwner().isRebel()</span>
-<span class="pc bnc" id="L2438" title="All 2 branches missed.">                || spec.getBoolean(GameOptions.FOUND_COLONY_DURING_REBELLION));</span>
+<span class="nc bnc" id="L2438" title="All 2 branches missed.">                || spec.getBoolean(GameOptions.FOUND_COLONY_DURING_REBELLION));</span>
     }
 
     /**
@@ -2478,8 +2478,8 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L2478">            ? stop.getLocation()</span>
 <span class="nc" id="L2479">            : getDestination();</span>
         Tile best;
-<span class="nc bnc" id="L2481" title="All 4 branches missed.">        return (dst == null) ? getFullEntryLocation()</span>
-            : (dst instanceof Europe) ? dst
+<span class="nc bnc" id="L2481" title="All 2 branches missed.">        return (dst == null) ? getFullEntryLocation()</span>
+<span class="nc bnc" id="L2482" title="All 2 branches missed.">            : (dst instanceof Europe) ? dst</span>
 <span class="nc bnc" id="L2483" title="All 2 branches missed.">            : (dst.getTile() != null</span>
 <span class="nc bnc" id="L2484" title="All 2 branches missed.">                &amp;&amp; (best = getBestEntryTile(dst.getTile())) != null) ? best</span>
 <span class="nc" id="L2485">            : getFullEntryLocation();</span>
@@ -2506,9 +2506,9 @@ public class Unit extends GoodsLocation
     public boolean couldMove() {
 <span class="pc bpc" id="L2507" title="1 of 2 branches missed.">        return !isDisposed()</span>
 <span class="pc bpc" id="L2508" title="1 of 2 branches missed.">            &amp;&amp; getState() == UnitState.ACTIVE</span>
-<span class="pc bpc" id="L2509" title="3 of 6 branches missed.">            &amp;&amp; getMovesLeft() &gt; 0</span>
-            &amp;&amp; destination == null // Can not reach next tile
-            &amp;&amp; tradeRoute == null
+<span class="pc bpc" id="L2509" title="1 of 2 branches missed.">            &amp;&amp; getMovesLeft() &gt; 0</span>
+<span class="pc bpc" id="L2510" title="1 of 2 branches missed.">            &amp;&amp; destination == null // Can not reach next tile</span>
+<span class="pc bpc" id="L2511" title="1 of 2 branches missed.">            &amp;&amp; tradeRoute == null</span>
 <span class="pc bpc" id="L2512" title="1 of 2 branches missed.">            &amp;&amp; !isDamaged()</span>
 <span class="pc bpc" id="L2513" title="1 of 2 branches missed.">            &amp;&amp; !isAtSea()</span>
 <span class="pc bpc" id="L2514" title="1 of 2 branches missed.">            &amp;&amp; !isOnCarrier()</span>
@@ -2540,7 +2540,7 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L2540">                ret = carrier.getFullEntryLocation();</span>
 <span class="nc bnc" id="L2541" title="All 2 branches missed.">            } else if (carrier.getDestination() instanceof Settlement) {</span>
 <span class="nc" id="L2542">                ret = carrier.getDestination();</span>
-            } else { // destination must be Europe
+<span class="nc" id="L2543">            } else { // destination must be Europe</span>
 <span class="nc" id="L2544">                ret = null;</span>
             }
 <span class="pc bpc" id="L2546" title="1 of 2 branches missed.">        } else if (isNaval()) {</span>
@@ -2551,7 +2551,7 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L2551">                ret = getFullEntryLocation();</span>
 <span class="nc bnc" id="L2552" title="All 2 branches missed.">            } else if (getDestination() instanceof Settlement) {</span>
 <span class="nc" id="L2553">                ret = getDestination();</span>
-            } else {
+<span class="nc" id="L2554">            } else {</span>
 <span class="nc" id="L2555">                ret = getFullEntryLocation();</span>
             }
         }
@@ -2569,7 +2569,7 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L2569">                    ret = s;</span>
                 }
 <span class="pc bpc" id="L2571" title="1 of 2 branches missed.">            } else if (bestValue == INFINITY) ret = s;</span>
-<span class="fc" id="L2572">        }</span>
+        }
 <span class="fc bfc" id="L2573" title="All 2 branches covered.">        if (ret != null) return ret;</span>
 
         // Owner has no settlements.  If it is the REF, start from a
@@ -2585,8 +2585,8 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L2585">                            ret = s;</span>
                         }
 <span class="nc bnc" id="L2587" title="All 2 branches missed.">                    } else if (bestValue == INFINITY) ret = s;</span>
-<span class="nc" id="L2588">                }</span>
-<span class="nc" id="L2589">            }</span>
+                }
+            }
 <span class="nc bnc" id="L2590" title="All 2 branches missed.">            if (ret != null) return ret;</span>
         }
 
@@ -2595,7 +2595,7 @@ public class Unit extends GoodsLocation
 <span class="pc bpc" id="L2595" title="3 of 4 branches missed.">        if (entry != null &amp;&amp; entry.getTile() != null) {</span>
 <span class="nc bnc" id="L2596" title="All 2 branches missed.">            for (Tile t : entry.getTile().getSurroundingTiles(INFINITY)) {</span>
 <span class="nc bnc" id="L2597" title="All 2 branches missed.">                if (t.isLand()) return t;</span>
-<span class="nc" id="L2598">            }</span>
+            }
         }
 
 <span class="fc" id="L2601">        return null; // Fail</span>
@@ -2646,7 +2646,7 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L2646">                path = search(getLocation(), </span>
 <span class="nc" id="L2647">                    GoalDeciders.getCornerGoalDecider(),</span>
 <span class="nc" id="L2648">                    CostDeciders.avoidSettlementsAndBlockingUnits(),</span>
-                    INFINITY, null);
+<span class="nc" id="L2649">                    INFINITY, null);</span>
 <span class="nc bnc" id="L2650" title="All 4 branches missed.">                if (path == null &amp;&amp; tile.isRiverCorner()) {</span>
                     // Return trivial path if already present.
 <span class="nc" id="L2652">                    return new PathNode(tile, 0, 0, false, null, null);</span>
@@ -2684,7 +2684,7 @@ public class Unit extends GoodsLocation
     public PathNode findPath(Location start, Location end, Unit carrier,
                              CostDecider costDecider) {
 <span class="fc" id="L2686">        return getGame().getMap().findPath(this, start, end,</span>
-                                           carrier, costDecider, null);
+<span class="fc" id="L2687">                                           carrier, costDecider, null);</span>
     }
 
     /**
@@ -2713,7 +2713,7 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L2713">                    best = p;</span>
                 }
             }
-<span class="nc" id="L2716">        }</span>
+        }
 <span class="nc" id="L2717">        return best;</span>
     }
 
@@ -2805,7 +2805,7 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L2805">        final Player player = getOwner();</span>
 <span class="pc bpc" id="L2806" title="1 of 4 branches missed.">        if (player.getNumberOfSettlements() &lt;= 0 || !hasTile()) return null;</span>
 <span class="fc" id="L2807">        return findOurNearestSettlement(getTile(), excludeStart,</span>
-                                        range, coastal);
+<span class="fc" id="L2808">                                        range, coastal);</span>
     }
 
     /**
@@ -2837,13 +2837,13 @@ public class Unit extends GoodsLocation
                 @Override
                 public boolean check(Unit u, PathNode path) {
 <span class="fc" id="L2839">                    Tile t = path.getTile();</span>
-<span class="pc bpc" id="L2840" title="2 of 6 branches missed.">                    if (t == null</span>
-<span class="nc" id="L2841">                        || (t == startTile &amp;&amp; excludeStart)) return false;</span>
+<span class="pc bpc" id="L2840" title="1 of 2 branches missed.">                    if (t == null</span>
+<span class="pc bpc" id="L2841" title="1 of 4 branches missed.">                        || (t == startTile &amp;&amp; excludeStart)) return false;</span>
 <span class="fc" id="L2842">                    Settlement settlement = t.getSettlement();</span>
                     int value;
 <span class="fc bfc" id="L2844" title="All 2 branches covered.">                    if (settlement != null</span>
-<span class="pc bpc" id="L2845" title="1 of 4 branches missed.">                        &amp;&amp; player.owns(settlement)</span>
-<span class="pc bpc" id="L2846" title="1 of 2 branches missed.">                        &amp;&amp; (!coastal || settlement.isConnectedPort())</span>
+<span class="pc bpc" id="L2845" title="1 of 2 branches missed.">                        &amp;&amp; player.owns(settlement)</span>
+<span class="pc bpc" id="L2846" title="1 of 4 branches missed.">                        &amp;&amp; (!coastal || settlement.isConnectedPort())</span>
 <span class="fc bfc" id="L2847" title="All 2 branches covered.">                        &amp;&amp; (value = path.getTotalTurns()) &lt; bestValue) {</span>
 <span class="fc" id="L2848">                        bestValue = value;</span>
 <span class="fc" id="L2849">                        best = path;</span>
@@ -2883,9 +2883,9 @@ public class Unit extends GoodsLocation
         }
 <span class="fc" id="L2884">        PathNode sPath = findOurNearestSettlement(false, INFINITY, true);</span>
 <span class="fc bfc" id="L2885" title="All 2 branches covered.">        int sTurns = (sPath == null) ? -1 : sPath.getTotalTurns();</span>
-<span class="pc bpc" id="L2886" title="1 of 6 branches missed.">        return (ePath == null) ? sPath</span>
-            : (sPath == null) ? ePath
-            : (sTurns &lt;= eTurns) ? sPath : ePath;
+<span class="fc bfc" id="L2886" title="All 2 branches covered.">        return (ePath == null) ? sPath</span>
+<span class="fc bfc" id="L2887" title="All 2 branches covered.">            : (sPath == null) ? ePath</span>
+<span class="pc bpc" id="L2888" title="1 of 2 branches missed.">            : (sTurns &lt;= eTurns) ? sPath : ePath;</span>
     }
 
     /**
@@ -2917,17 +2917,17 @@ public class Unit extends GoodsLocation
 <span class="nc bnc" id="L2917" title="All 2 branches missed.">            } else if (dstTile.isHighSeasConnected()) {</span>
                 // Carrier is blocked or destination is blocked.
 <span class="nc bnc" id="L2919" title="All 2 branches missed.">                type = (getTile().isOnRiver()) ? 1 : 2;</span>
-            } else {
+<span class="nc" id="L2920">            } else {</span>
                 // Destination must be blocked
 <span class="nc" id="L2922">                type = 2;</span>
             }
-        } else {
+<span class="nc" id="L2924">        } else {</span>
 <span class="nc bnc" id="L2925" title="All 4 branches missed.">            if (dstTile == null || getTile().getContiguity() != dstCont) {</span>
                 // Ocean travel will be required
                 // If already at port try to improve its connectivity,
                 // otherwise go to a port.
 <span class="nc bnc" id="L2929" title="All 2 branches missed.">                type = (srcTile.isHighSeasConnected()) ? 1 : 2;</span>
-            } else {
+<span class="nc" id="L2930">            } else {</span>
                 // Pure land travel, just find a nearer settlement.
 <span class="nc" id="L2932">                type = 3;</span>
             }
@@ -2942,7 +2942,7 @@ public class Unit extends GoodsLocation
             // Find the settlement that most reduces the high seas count.
 <span class="nc" id="L2943">            best = search(getLocation(),</span>
 <span class="nc" id="L2944">                          GoalDeciders.getReduceHighSeasCountGoalDecider(this),</span>
-                          null, INFINITY, null);
+<span class="nc" id="L2945">                          null, INFINITY, null);</span>
 <span class="nc" id="L2946">            break;</span>
         case 2:
             // Ocean travel required, destination blocked.
@@ -2957,7 +2957,7 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L2957">                        best = path;</span>
                     }
                 }
-<span class="nc" id="L2960">            }</span>
+            }
 <span class="nc" id="L2961">            break;</span>
         case 3:
             // Land travel.  Find nearby settlement with correct contiguity.
@@ -2972,7 +2972,7 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L2972">                        best = path;</span>
                     }
                 }
-<span class="nc" id="L2975">            }</span>
+            }
         }
 <span class="nc bnc" id="L2977" title="All 2 branches missed.">        return (best != null) ? best</span>
 <span class="nc" id="L2978">            : findOurNearestSettlement(false, INFINITY, false);</span>
@@ -3008,7 +3008,7 @@ public class Unit extends GoodsLocation
                            CostDecider cd, int maxTurns, Unit carrier) {
 <span class="pc bpc" id="L3009" title="1 of 2 branches missed.">        return (start == null) ? null</span>
 <span class="fc" id="L3010">            : getGame().getMap().search(this, start, gd, cd, maxTurns,</span>
-                                        carrier, null);
+<span class="fc" id="L3011">                                        carrier, null);</span>
     }
 
     /**
@@ -3028,7 +3028,7 @@ public class Unit extends GoodsLocation
 
 <span class="fc" id="L3029">        Tile tile = defender.getTile();</span>
 <span class="pc bpc" id="L3030" title="1 of 2 branches missed.">        return (isNaval())</span>
-<span class="pc bnc" id="L3031" title="All 4 branches missed.">            ? !tile.hasSettlement() &amp;&amp; defender.isNaval()</span>
+<span class="nc bnc" id="L3031" title="All 4 branches missed.">            ? !tile.hasSettlement() &amp;&amp; defender.isNaval()</span>
 <span class="pc bpc" id="L3032" title="3 of 4 branches missed.">            : !defender.isNaval() || defender.isBeached();</span>
     }
 
@@ -3069,7 +3069,7 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L3069">                            found = path;</span>
 <span class="nc" id="L3070">                            return true;</span>
                         }
-<span class="nc" id="L3072">                    }</span>
+                    }
 <span class="nc" id="L3073">                    return false;</span>
                 }
             };
@@ -3114,7 +3114,7 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L3114">        final Turn turn = getGame().getTurn();</span>
 <span class="fc" id="L3115">        Set&lt;Modifier&gt; result = new HashSet&lt;&gt;();</span>
 <span class="fc" id="L3116">        result.addAll(this.getModifiers(Modifier.LINE_OF_SIGHT_BONUS,</span>
-                                        unitType, turn));
+<span class="fc" id="L3117">                                        unitType, turn));</span>
 <span class="pc bpc" id="L3118" title="1 of 4 branches missed.">        if (hasTile() &amp;&amp; getTile().isExplored()) {</span>
 <span class="fc" id="L3119">            result.addAll(getTile().getType()</span>
 <span class="fc" id="L3120">                .getModifiers(Modifier.LINE_OF_SIGHT_BONUS, unitType, turn));</span>
@@ -3163,8 +3163,8 @@ public class Unit extends GoodsLocation
      * @return True if this unit can carry the cargo.
      */
     public boolean couldCarry(Unit u) {
-<span class="fc bfc" id="L3166" title="All 2 branches covered.">        return canCarryUnits()</span>
-<span class="pc bpc" id="L3167" title="1 of 2 branches missed.">            &amp;&amp; getCargoCapacity() &gt;= u.getSpaceTaken();</span>
+<span class="pc bpc" id="L3166" title="1 of 4 branches missed.">        return canCarryUnits()</span>
+<span class="fc" id="L3167">            &amp;&amp; getCargoCapacity() &gt;= u.getSpaceTaken();</span>
     }
 
     /**
@@ -3184,8 +3184,8 @@ public class Unit extends GoodsLocation
      * @return True if this unit can carry the cargo.
      */
     public boolean couldCarry(Goods g) {
-<span class="pc bpc" id="L3187" title="1 of 2 branches missed.">        return canCarryGoods()</span>
-<span class="pc bpc" id="L3188" title="1 of 2 branches missed.">            &amp;&amp; getCargoCapacity() &gt;= g.getSpaceTaken();</span>
+<span class="pc bpc" id="L3187" title="2 of 4 branches missed.">        return canCarryGoods()</span>
+<span class="fc" id="L3188">            &amp;&amp; getCargoCapacity() &gt;= g.getSpaceTaken();</span>
     }
 
     /**
@@ -3236,7 +3236,7 @@ public class Unit extends GoodsLocation
     public int getUnitSpaceTaken() {
 <span class="fc bfc" id="L3237" title="All 2 branches covered.">        return (canCarryUnits())</span>
 <span class="fc" id="L3238">            ? getUnitList().stream().mapToInt(u -&gt; u.getSpaceTaken()).sum()</span>
-            : 0;
+<span class="fc" id="L3239">            : 0;</span>
     }
 
     /**
@@ -3303,15 +3303,15 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L3303">                    ret = StringTemplate.label(&quot;:&quot;)</span>
 <span class="fc" id="L3304">                        .add(&quot;model.unit.occupation.underRepair&quot;)</span>
 <span class="fc" id="L3305">                        .addName(String.valueOf(getTurnsForRepair()));</span>
-                } else {
+<span class="fc" id="L3306">                } else {</span>
 <span class="nc" id="L3307">                    ret = StringTemplate.key(&quot;model.unit.occupation.underRepair&quot;);</span>
                 }
-<span class="fc bfc" id="L3309" title="All 2 branches covered.">            } else if (tradeRoute != null) {</span>
+<span class="pc bfc" id="L3309" title="All 2 branches covered.">            } else if (tradeRoute != null) {</span>
 <span class="pc bpc" id="L3310" title="1 of 2 branches missed.">                if (full) {</span>
 <span class="fc" id="L3311">                    ret = StringTemplate.label(&quot;:&quot;)</span>
 <span class="fc" id="L3312">                        .add(&quot;model.unit.occupation.inTradeRoute&quot;)</span>
 <span class="fc" id="L3313">                        .addName(tradeRoute.getName());</span>
-                } else {
+<span class="fc" id="L3314">                } else {</span>
 <span class="nc" id="L3315">                    ret = StringTemplate.key(&quot;model.unit.occupation.inTradeRoute&quot;);</span>
                 }
 <span class="pc bpc" id="L3317" title="3 of 4 branches missed.">            } else if (getState() == UnitState.ACTIVE &amp;&amp; getMovesLeft() == 0) {</span>
@@ -3322,18 +3322,18 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L3322">                    ret = StringTemplate.label(&quot;:&quot;)</span>
 <span class="fc" id="L3323">                        .add(getWorkImprovement().getType() + &quot;.occupationString&quot;)</span>
 <span class="fc" id="L3324">                        .addName(String.valueOf(getWorkTurnsLeft()));</span>
-                } else {
+<span class="fc" id="L3325">                } else {</span>
 <span class="nc" id="L3326">                    ret = StringTemplate.key(getWorkImprovement().getType() + &quot;.occupationString&quot;);</span>
                 }
 <span class="nc bnc" id="L3328" title="All 2 branches missed.">            } else if (getDestination() != null) {</span>
 <span class="nc" id="L3329">                ret = StringTemplate.key(&quot;model.unit.occupation.goingSomewhere&quot;);</span>
-            } else {
+<span class="nc" id="L3330">            } else {</span>
 <span class="nc" id="L3331">                ret = StringTemplate.key(&quot;model.unit.&quot; + getState().getKey());</span>
             }
-        } else {
+<span class="nc" id="L3333">        } else {</span>
 <span class="pc bpc" id="L3334" title="1 of 2 branches missed.">            if (isNaval()) {</span>
 <span class="nc" id="L3335">                ret = StringTemplate.name(String.valueOf(getVisibleGoodsCount()));</span>
-            } else {
+<span class="nc" id="L3336">            } else {</span>
 <span class="fc" id="L3337">                ret = StringTemplate.key(&quot;model.unit.occupation.activeNoMovesLeft&quot;);</span>
             }
         }
@@ -3350,7 +3350,7 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L3350">        final Specification spec = getSpecification();</span>
 <span class="fc" id="L3351">        int opt = spec.getInteger(GameOptions.NATIVE_CONVERT_PROBABILITY);</span>
 <span class="fc" id="L3352">        return 0.01f * applyModifiers(opt, getGame().getTurn(),</span>
-                                      Modifier.NATIVE_CONVERT_BONUS);
+<span class="fc" id="L3353">                                      Modifier.NATIVE_CONVERT_BONUS);</span>
     }
 
     /**
@@ -3416,8 +3416,8 @@ public class Unit extends GoodsLocation
 <span class="pc bpc" id="L3416" title="1 of 2 branches missed.">                    || getTransportFee() == 0);</span>
         }
         // Otherwise, cash in if in Europe.
-<span class="pc bpc" id="L3419" title="2 of 4 branches missed.">        return loc instanceof Europe</span>
-<span class="fc bfc" id="L3420" title="All 2 branches covered.">            || (loc instanceof Unit &amp;&amp; ((Unit)loc).isInEurope());</span>
+<span class="pc bpc" id="L3419" title="1 of 2 branches missed.">        return loc instanceof Europe</span>
+<span class="pc bpc" id="L3420" title="1 of 4 branches missed.">            || (loc instanceof Unit &amp;&amp; ((Unit)loc).isInEurope());</span>
     }
 
     /**
@@ -3432,7 +3432,7 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L3432">                .getInteger(GameOptions.TREASURE_TRANSPORT_FEE)</span>
 <span class="fc" id="L3433">                * getTreasureAmount()) / 100.0f;</span>
 <span class="fc" id="L3434">            return (int)getOwner().applyModifiers(fee, getGame().getTurn(),</span>
-                Modifier.TREASURE_TRANSPORT_FEE, unitType);
+<span class="fc" id="L3435">                Modifier.TREASURE_TRANSPORT_FEE, unitType);</span>
         }
 <span class="fc" id="L3437">        return 0;</span>
     }
@@ -3470,7 +3470,7 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L3470">            Modifier modifier = new Modifier(m);</span>
 <span class="nc bnc" id="L3471" title="All 2 branches missed.">            if (!sense) modifier.setValue(-m.getValue());</span>
 <span class="nc" id="L3472">            result.add(modifier);</span>
-<span class="nc" id="L3473">        }</span>
+        }
 <span class="nc" id="L3474">        return result;</span>
     }
 
@@ -3538,7 +3538,7 @@ public class Unit extends GoodsLocation
 <span class="nc bnc" id="L3538" title="All 2 branches missed.">            : (hasAbility(Ability.EXPERT_SCOUT)) ? 700</span>
 <span class="nc bnc" id="L3539" title="All 2 branches missed.">            : (!hasDefaultRole()) ? 0</span>
 <span class="nc bnc" id="L3540" title="All 2 branches missed.">            : (getSkillLevel() &lt;= 0) ? -200 * getSkillLevel()</span>
-            : 0;
+<span class="nc" id="L3541">            : 0;</span>
     }
 
     /**
@@ -3571,7 +3571,7 @@ public class Unit extends GoodsLocation
 
         // UnitType modifiers always apply
 <span class="fc bfc" id="L3573" title="All 2 branches covered.">        for (Modifier m : unitType.getModifiers(id, fcgot, turn)) {</span>
-<span class="pc bfc" id="L3574" title="All 2 branches covered.">            switch (m.getType()) {</span>
+<span class="fc bfc" id="L3574" title="All 2 branches covered.">            switch (m.getType()) {</span>
             case ADDITIVE:
 <span class="fc" id="L3576">                m.setModifierIndex(Modifier.UNIT_ADDITIVE_COMBAT_INDEX);</span>
 <span class="fc" id="L3577">                break;</span>
@@ -3580,19 +3580,19 @@ public class Unit extends GoodsLocation
                 break;
             }
 <span class="fc" id="L3582">            result.add(m);</span>
-<span class="fc" id="L3583">        }</span>
+        }
 
         // The player's modifiers may not all apply
 <span class="fc bfc" id="L3586" title="All 2 branches covered.">        for (Modifier m : owner.getModifiers(id, fcgot, turn)) {</span>
 <span class="fc" id="L3587">            m.setModifierIndex(Modifier.GENERAL_COMBAT_INDEX);</span>
 <span class="fc" id="L3588">            result.add(m);</span>
-<span class="fc" id="L3589">        }</span>
+        }
         
         // Role modifiers apply
 <span class="fc bfc" id="L3592" title="All 2 branches covered.">        for (Modifier m : role.getModifiers(id, fcgot, turn)) {</span>
 <span class="fc" id="L3593">            m.setModifierIndex(Modifier.ROLE_COMBAT_INDEX);</span>
 <span class="fc" id="L3594">            result.add(m);</span>
-<span class="fc" id="L3595">        }</span>
+        }
 
 <span class="fc" id="L3597">        return result;</span>
     }
@@ -3639,13 +3639,13 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L3639">        Game game = getOwner().getGame();</span>
 
 <span class="nc" id="L3641">        Settlement settlement = game.getFreeColGameObject(settlementId,</span>
-                                                          Settlement.class);
+<span class="nc" id="L3642">                                                          Settlement.class);</span>
 <span class="nc bnc" id="L3643" title="All 2 branches missed.">        if (settlement == null) {</span>
 <span class="nc" id="L3644">            throw new IllegalStateException(&quot;Not a settlement: &quot;</span>
-                + settlementId);
+<span class="nc" id="L3645">                + settlementId);</span>
 <span class="nc bnc" id="L3646" title="All 2 branches missed.">        } else if (settlement.getTile() == null) {</span>
 <span class="nc" id="L3647">            throw new IllegalStateException(&quot;Settlement is not on the map: &quot;</span>
-                + settlementId);
+<span class="nc" id="L3648">                + settlementId);</span>
         }
 
 <span class="nc bnc" id="L3651" title="All 2 branches missed.">        if (!hasTile()) {</span>
@@ -3653,10 +3653,10 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L3653">                + getId());</span>
 <span class="nc bnc" id="L3654" title="All 2 branches missed.">        } else if (getTile().getDistanceTo(settlement.getTile()) &gt; 1) {</span>
 <span class="nc" id="L3655">            throw new IllegalStateException(&quot;Unit &quot; + getId()</span>
-                + &quot; is not adjacent to settlement: &quot; + settlementId);
+<span class="nc" id="L3656">                + &quot; is not adjacent to settlement: &quot; + settlementId);</span>
 <span class="nc bnc" id="L3657" title="All 2 branches missed.">        } else if (getOwner() == settlement.getOwner()) {</span>
 <span class="nc" id="L3658">            throw new IllegalStateException(&quot;Unit: &quot; + getId()</span>
-                + &quot; and settlement: &quot; + settlementId
+<span class="nc" id="L3659">                + &quot; and settlement: &quot; + settlementId</span>
 <span class="nc" id="L3660">                + &quot; are both owned by player: &quot; + getOwner().getId());</span>
         }
 
@@ -3896,9 +3896,9 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L3896">                spendAllMoves();</span>
 <span class="fc" id="L3897">                return true;</span>
             }
-<span class="nc" id="L3899">        } else {</span>
+        } else {
 <span class="nc" id="L3900">            throw new IllegalStateException(&quot;Can not be added to unit: &quot;</span>
-                + locatable);
+<span class="nc" id="L3901">                + locatable);</span>
         }
 <span class="nc" id="L3903">        return false;</span>
     }
@@ -3922,7 +3922,7 @@ public class Unit extends GoodsLocation
             }
         } else {
 <span class="nc" id="L3924">            logger.warning(&quot;Tried to remove from unit: &quot;</span>
-                + locatable);
+<span class="nc" id="L3925">                + locatable);</span>
         }
 <span class="nc" id="L3927">        return false;</span>
     }
@@ -3944,7 +3944,7 @@ public class Unit extends GoodsLocation
 <span class="nc bnc" id="L3944" title="All 2 branches missed.">        return (isInEurope()) ? getLocation().up()</span>
 <span class="nc bnc" id="L3945" title="All 2 branches missed.">            : (isInColony()) ? getColony()</span>
 <span class="nc bnc" id="L3946" title="All 2 branches missed.">            : (hasTile()) ? getTile().up()</span>
-            : this;
+<span class="nc" id="L3947">            : this;</span>
     }
 
     /**
@@ -3996,17 +3996,17 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L3996">            return NoAddReason.ALREADY_PRESENT;</span>
 <span class="fc bfc" id="L3997" title="All 2 branches covered.">        } else if (locatable instanceof Unit) {</span>
 <span class="pc bpc" id="L3998" title="1 of 2 branches missed.">            return (!canCarryUnits())</span>
-                ? NoAddReason.WRONG_TYPE
+<span class="nc" id="L3999">                ? NoAddReason.WRONG_TYPE</span>
 <span class="fc bfc" id="L4000" title="All 2 branches covered.">                : (locatable.getSpaceTaken() &gt; getSpaceLeft())</span>
-                ? NoAddReason.CAPACITY_EXCEEDED
+<span class="fc" id="L4001">                ? NoAddReason.CAPACITY_EXCEEDED</span>
 <span class="fc" id="L4002">                : super.getNoAddReason(locatable);</span>
 <span class="pc bpc" id="L4003" title="1 of 2 branches missed.">        } else if (locatable instanceof Goods) {</span>
 <span class="fc" id="L4004">            Goods goods = (Goods)locatable;</span>
 <span class="pc bpc" id="L4005" title="1 of 2 branches missed.">            return (!canCarryGoods())</span>
-                ? NoAddReason.WRONG_TYPE
+<span class="nc" id="L4006">                ? NoAddReason.WRONG_TYPE</span>
 <span class="fc bfc" id="L4007" title="All 2 branches covered.">                : (goods.getAmount() &gt; getLoadableAmount(goods.getType()))</span>
-                ? NoAddReason.CAPACITY_EXCEEDED
-                : NoAddReason.NONE;
+<span class="fc" id="L4008">                ? NoAddReason.CAPACITY_EXCEEDED</span>
+<span class="fc" id="L4009">                : NoAddReason.NONE;</span>
             // Do not call super.getNoAddReason for goods because
             // the capacity test in GoodsLocation.getNoAddReason does not
             // account for packing and is thus too conservative.
@@ -4081,7 +4081,7 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L4081">                this.role = getSpecification().getDefaultRole();</span>
 <span class="fc" id="L4082">                logger.warning(&quot;Fixed missing role for: &quot; + getId());</span>
 <span class="fc" id="L4083">                result = 0;</span>
-            } else {
+<span class="fc" id="L4084">            } else {</span>
 <span class="nc" id="L4085">                logger.warning(&quot;Missing role for: &quot; + getId());</span>
 <span class="nc" id="L4086">                result = -1;</span>
             }
@@ -4093,7 +4093,7 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L4093">                    logger.warning(&quot;Cleared uninitialized destination for: &quot;</span>
 <span class="nc" id="L4094">                        + getId());</span>
 <span class="nc" id="L4095">                    result = Math.min(result, 0);</span>
-                } else {
+<span class="nc" id="L4096">                } else {</span>
 <span class="nc" id="L4097">                    logger.warning(&quot;Uninitialized destination for: &quot;</span>
 <span class="nc" id="L4098">                        + getId());</span>
 <span class="nc" id="L4099">                    result = -1;</span>
@@ -4140,9 +4140,9 @@ public class Unit extends GoodsLocation
             // this routine we can not rely on owner.europe being initialized
             // yet.  Hence the following:
 <span class="fc" id="L4142">            Location loc = getLocation();</span>
-<span class="pc bpc" id="L4143" title="1 of 4 branches missed.">            Europe europe = (loc instanceof Europe) ? (Europe)loc</span>
-<span class="pc" id="L4144">                : (loc instanceof Unit) ? (Europe)((Unit)loc).getLocation()</span>
-                : null;
+<span class="fc bfc" id="L4143" title="All 2 branches covered.">            Europe europe = (loc instanceof Europe) ? (Europe)loc</span>
+<span class="pc bpc" id="L4144" title="1 of 2 branches missed.">                : (loc instanceof Unit) ? (Europe)((Unit)loc).getLocation()</span>
+<span class="nc" id="L4145">                : null;</span>
             // end @compat 0.10.x
 <span class="fc" id="L4147">            result.addAll(europe.getAbilities(id, unitType, turn));</span>
         }
@@ -4209,10 +4209,10 @@ public class Unit extends GoodsLocation
     private static final String EQUIPMENT_TAG = &quot;equipment&quot;;
     /** The equipment this Unit carries.  Now subsumed into roles. */
 <span class="fc" id="L4211">    private final TypeCountMap&lt;EquipmentType&gt; equipment</span>
-        = new TypeCountMap&lt;&gt;();
+<span class="fc" id="L4212">        = new TypeCountMap&lt;&gt;();</span>
     // end @compat 0.10.x
     // @compat 0.11.3
-    private static final String OLD_TILE_IMPROVEMENT_TAG = &quot;tileimprovement&quot;;
+<span class="fc" id="L4215">    private static final String OLD_TILE_IMPROVEMENT_TAG = &quot;tileimprovement&quot;;</span>
     // end @compat 0.11.3
 
 
@@ -4241,17 +4241,17 @@ public class Unit extends GoodsLocation
             // Pirates do not disclose national characteristics.
 <span class="nc" id="L4242">            xw.writeAttribute(OWNER_TAG, getGame().getUnknownEnemy());</span>
 
-        } else {
+<span class="nc" id="L4244">        } else {</span>
 <span class="fc" id="L4245">            xw.writeAttribute(OWNER_TAG, getOwner());</span>
 
 <span class="fc bfc" id="L4247" title="All 2 branches covered.">            if (isPerson()) {</span>
                 // Do not write out nationality and ethnicity for non-persons.
 <span class="pc bpc" id="L4249" title="1 of 2 branches missed.">                xw.writeAttribute(NATIONALITY_TAG, (nationality != null)</span>
-                    ? nationality
+<span class="fc" id="L4250">                    ? nationality</span>
 <span class="nc" id="L4251">                    : getOwner().getNationId());</span>
 
 <span class="pc bpc" id="L4253" title="1 of 2 branches missed.">                xw.writeAttribute(ETHNICITY_TAG, (ethnicity != null)</span>
-                    ? ethnicity
+<span class="fc" id="L4254">                    ? ethnicity</span>
 <span class="nc" id="L4255">                    : getOwner().getNationId());</span>
             }
         }
@@ -4264,7 +4264,7 @@ public class Unit extends GoodsLocation
                 // serialized to the client.
 <span class="nc" id="L4265">                xw.writeLocationAttribute(LOCATION_TAG, getColony());</span>
 
-            } else {
+<span class="nc" id="L4267">            } else {</span>
 <span class="fc" id="L4268">                xw.writeLocationAttribute(LOCATION_TAG, location);</span>
             }
         }
@@ -4341,12 +4341,12 @@ public class Unit extends GoodsLocation
 
 <span class="fc" id="L4342">        Player oldOwner = owner;</span>
 <span class="fc" id="L4343">        owner = xr.findFreeColGameObject(game, OWNER_TAG,</span>
-                                         Player.class, (Player)null, true);
+<span class="fc" id="L4344">                                         Player.class, (Player)null, true);</span>
 <span class="fc bfc" id="L4345" title="All 2 branches covered.">        if (xr.shouldIntern()) game.checkOwners(this, oldOwner);</span>
 
 <span class="fc" id="L4347">        UnitType oldUnitType = unitType;</span>
 <span class="fc" id="L4348">        unitType = xr.getType(spec, UNIT_TYPE_TAG,</span>
-                              UnitType.class, (UnitType)null);
+<span class="fc" id="L4349">                              UnitType.class, (UnitType)null);</span>
 
 <span class="fc" id="L4351">        state = xr.getAttribute(STATE_TAG, UnitState.class, UnitState.ACTIVE);</span>
 
@@ -4362,7 +4362,7 @@ public class Unit extends GoodsLocation
 <span class="pc bpc" id="L4362" title="1 of 2 branches missed.">            } else if (&quot;model.role.dragoon&quot;.equals(role.getId())) {</span>
 <span class="nc" id="L4363">                role = spec.getRole(&quot;model.role.nativeDragoon&quot;);</span>
             }
-<span class="fc bfc" id="L4365" title="All 2 branches covered.">        } else if (owner.isREF()) {</span>
+<span class="pc bfc" id="L4365" title="All 2 branches covered.">        } else if (owner.isREF()) {</span>
 <span class="pc bpc" id="L4366" title="1 of 2 branches missed.">            if (&quot;model.role.soldier&quot;.equals(role.getId())</span>
 <span class="nc bnc" id="L4367" title="All 2 branches missed.">                &amp;&amp; unitType.hasAbility(Ability.REF_UNIT)) {</span>
 <span class="nc" id="L4368">                role = spec.getRole(&quot;model.role.infantry&quot;);</span>
@@ -4376,10 +4376,10 @@ public class Unit extends GoodsLocation
 <span class="pc bpc" id="L4376" title="1 of 2 branches missed.">                &amp;&amp; !unitType.hasAbility(Ability.REF_UNIT)) {</span>
 <span class="nc" id="L4377">                role = spec.getRole(&quot;model.role.dragoon&quot;);</span>
             }
-        } else {
+<span class="nc" id="L4379">        } else {</span>
 <span class="pc bpc" id="L4380" title="1 of 2 branches missed.">            if (&quot;model.role.infantry&quot;.equals(role.getId())) {</span>
 <span class="nc" id="L4381">                role = spec.getRole(&quot;model.role.soldier&quot;);</span>
-<span class="fc bfc" id="L4382" title="All 2 branches covered.">            } else if (&quot;model.role.cavalry&quot;.equals(role.getId())) {</span>
+<span class="pc bfc" id="L4382" title="All 2 branches covered.">            } else if (&quot;model.role.cavalry&quot;.equals(role.getId())) {</span>
 <span class="fc" id="L4383">                role = spec.getRole(&quot;model.role.dragoon&quot;);</span>
             }
         }            
@@ -4387,7 +4387,7 @@ public class Unit extends GoodsLocation
 
 <span class="fc" id="L4388">        roleCount = xr.getAttribute(ROLE_COUNT_TAG,</span>
             // @compat 0.10.x
-            -1
+<span class="fc" id="L4390">            -1</span>
             // Should be role.getMaximumCount()
             // end @compat 0.10.x
             );
@@ -4395,7 +4395,7 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L4395">        location = xr.getLocationAttribute(game, LOCATION_TAG, true);</span>
 
 <span class="fc" id="L4397">        entryLocation = xr.getLocationAttribute(game, ENTRY_LOCATION_TAG,</span>
-                                                true);
+<span class="fc" id="L4398">                                                true);</span>
 
 <span class="fc" id="L4400">        movesLeft = xr.getAttribute(MOVES_LEFT_TAG, 0);</span>
 
@@ -4415,26 +4415,26 @@ public class Unit extends GoodsLocation
         // end @compat
 
 <span class="fc" id="L4417">        teacher = xr.makeFreeColGameObject(game, TEACHER_TAG,</span>
-                                           Unit.class, false);
+<span class="fc" id="L4418">                                           Unit.class, false);</span>
 
 <span class="fc" id="L4420">        student = xr.makeFreeColGameObject(game, STUDENT_TAG,</span>
-                                           Unit.class, false);
+<span class="fc" id="L4421">                                           Unit.class, false);</span>
 
 <span class="fc" id="L4423">        setHomeIndianSettlement(xr.makeFreeColGameObject(game,</span>
-                INDIAN_SETTLEMENT_TAG, IndianSettlement.class, false));
+<span class="fc" id="L4424">                INDIAN_SETTLEMENT_TAG, IndianSettlement.class, false));</span>
 
 <span class="fc" id="L4426">        treasureAmount = xr.getAttribute(TREASURE_AMOUNT_TAG, 0);</span>
 
 <span class="fc" id="L4428">        destination = xr.getLocationAttribute(game, DESTINATION_TAG, true);</span>
 
 <span class="fc" id="L4430">        tradeRoute = xr.findFreeColGameObject(game, TRADE_ROUTE_TAG,</span>
-            TradeRoute.class, (TradeRoute)null, false);
+<span class="fc" id="L4431">            TradeRoute.class, (TradeRoute)null, false);</span>
 
 <span class="pc bpc" id="L4433" title="1 of 2 branches missed.">        currentStop = (tradeRoute == null) ? -1</span>
-<span class="pc" id="L4434">            : xr.getAttribute(CURRENT_STOP_TAG, 0);</span>
+<span class="nc" id="L4434">            : xr.getAttribute(CURRENT_STOP_TAG, 0);</span>
 
 <span class="fc" id="L4436">        experienceType = xr.getType(spec, EXPERIENCE_TYPE_TAG,</span>
-                                    GoodsType.class, (GoodsType)null);
+<span class="fc" id="L4437">                                    GoodsType.class, (GoodsType)null);</span>
 <span class="pc bpc" id="L4438" title="1 of 4 branches missed.">        if (experienceType == null &amp;&amp; workType != null) {</span>
 <span class="nc" id="L4439">            experienceType = workType;</span>
         }
@@ -4463,7 +4463,7 @@ public class Unit extends GoodsLocation
 <span class="fc bfc" id="L4463" title="All 2 branches covered.">        if (roleCount &lt; 0) {</span>
             // If roleCount was not present, set it from equipment
 <span class="fc" id="L4465">            readChildrenRoleCountLessThenZero();</span>
-        } else {
+<span class="fc" id="L4466">        } else {</span>
             // If roleCount was present, we are now ignoring equipment.
 <span class="fc" id="L4468">            equipment.clear();</span>
         }
@@ -4496,13 +4496,13 @@ public class Unit extends GoodsLocation
 <span class="nc bnc" id="L4496" title="All 2 branches missed.">		    } else if (&quot;model.equipment.muskets&quot;.equals(type.getId())</span>
 <span class="nc bnc" id="L4497" title="All 2 branches missed.">		        || &quot;model.equipment.indian.muskets&quot;.equals(type.getId())) {</span>
 <span class="nc" id="L4498">		        muskets = true;</span>
-		    } else {
+<span class="nc" id="L4499">		    } else {</span>
 <span class="nc" id="L4500">		        role = type.getRole();</span>
 <span class="nc bnc" id="L4501" title="All 2 branches missed.">		        if (&quot;model.equipment.tools&quot;.equals(type.getId())) {</span>
 <span class="nc" id="L4502">		            count = equipment.getCount(type);</span>
 		        }
 		    }
-<span class="nc" id="L4505">		}</span>
+		}
 <span class="pc bpc" id="L4506" title="3 of 4 branches missed.">		if (horses &amp;&amp; muskets) {</span>
 <span class="nc" id="L4507">		    role = getRoleThatHasHorsesAndMuskets(spec);</span>
 <span class="pc bpc" id="L4508" title="1 of 2 branches missed.">		} else if (horses) {</span>
@@ -4519,7 +4519,7 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L4519">		    role = spec.getRole(&quot;model.role.armedBrave&quot;);</span>
 <span class="nc bnc" id="L4520" title="All 4 branches missed.">		} else if (owner.isREF() &amp;&amp; hasAbility(Ability.REF_UNIT)) {</span>
 <span class="nc" id="L4521">		    role = spec.getRole(&quot;model.role.infantry&quot;);</span>
-		} else {
+<span class="nc" id="L4522">		} else {</span>
 <span class="nc" id="L4523">		    role = spec.getRole(&quot;model.role.soldier&quot;);</span>
 		}
 <span class="nc" id="L4525">		return role;</span>
@@ -4530,7 +4530,7 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L4530">		    role = spec.getRole(&quot;model.role.mountedBrave&quot;);</span>
 <span class="nc bnc" id="L4531" title="All 4 branches missed.">		} else if (owner.isREF() &amp;&amp; hasAbility(Ability.REF_UNIT)) {</span>
 <span class="nc" id="L4532">		    logger.warning(&quot;Undefined role: REF Scout&quot;);</span>
-		} else {
+<span class="nc" id="L4533">		} else {</span>
 <span class="nc" id="L4534">		    role = spec.getRole(&quot;model.role.scout&quot;);</span>
 		}
 <span class="nc" id="L4536">		return role;</span>
@@ -4542,7 +4542,7 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L4542">		    role = spec.getRole(&quot;model.role.nativeDragoon&quot;);</span>
 <span class="nc bnc" id="L4543" title="All 4 branches missed.">		} else if (owner.isREF() &amp;&amp; hasAbility(Ability.REF_UNIT)) {</span>
 <span class="nc" id="L4544">		    role = spec.getRole(&quot;model.role.cavalry&quot;);</span>
-		} else {
+<span class="nc" id="L4545">		} else {</span>
 <span class="nc" id="L4546">		    role = spec.getRole(&quot;model.role.dragoon&quot;);</span>
 		}
 <span class="nc" id="L4548">		return role;</span>
@@ -4577,9 +4577,9 @@ public class Unit extends GoodsLocation
                    // end @compat 0.11.3
                    ) {
 <span class="nc" id="L4579">            workImprovement = xr.readFreeColGameObject(game,</span>
-                                                       TileImprovement.class);
+<span class="nc" id="L4580">                                                       TileImprovement.class);</span>
 
-        } else {
+<span class="nc" id="L4582">        } else {</span>
 <span class="fc" id="L4583">            super.readChild(xr);</span>
         }
 <span class="fc" id="L4585">    }</span>
@@ -4597,7 +4597,7 @@ public class Unit extends GoodsLocation
 <span class="nc" id="L4597">            sb.append(&quot; uninitialized&quot;);</span>
 <span class="pc bpc" id="L4598" title="1 of 2 branches missed.">        } else if (isDisposed()) {</span>
 <span class="nc" id="L4599">            sb.append(&quot; disposed&quot;);</span>
-        } else {
+<span class="nc" id="L4600">        } else {</span>
 <span class="fc" id="L4601">            sb.append(&quot; &quot;).append(lastPart(owner.getNationId(), &quot;.&quot;))</span>
 <span class="fc" id="L4602">                .append(&quot; &quot;).append(getType().getSuffix());</span>
 <span class="fc bfc" id="L4603" title="All 2 branches covered.">            if (!hasDefaultRole()) {</span>
@@ -4634,4 +4634,4 @@ public class Unit extends GoodsLocation
 <span class="fc" id="L4634">        return &quot;unit&quot;;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

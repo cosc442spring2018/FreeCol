@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>AudioMixerOption.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">AllTests (1) (May 15, 2018 7:08:47 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.option</a> &gt; <span class="el_source">AudioMixerOption.java</span></div><h1>AudioMixerOption.java</h1><pre class="source lang-java linenums">/**
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>AudioMixerOption.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">src (1) (May 16, 2018 4:05:44 PM)</a> &gt; <a href="../../index.html" class="el_group">FreeCol</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">net.sf.freecol.common.option</a> &gt; <span class="el_source">AudioMixerOption.java</span></div><h1>AudioMixerOption.java</h1><pre class="source lang-java linenums">/**
  *  Copyright (C) 2002-2015   The FreeCol Team
  *
  *  This file is part of FreeCol.
@@ -65,7 +65,7 @@ public class AudioMixerOption extends AbstractOption&lt;AudioMixerOption.MixerWr
         }
 
         public Mixer.Info getMixerInfo() {
-<span class="nc" id="L68">            return mixerInfo;</span>
+<span class="fc" id="L68">            return mixerInfo;</span>
         }
 
         // Implement Comparable&lt;MixerWrapper&gt;
@@ -77,11 +77,11 @@ public class AudioMixerOption extends AbstractOption&lt;AudioMixerOption.MixerWr
 
         @Override
         public boolean equals(Object o) {
-<span class="nc bnc" id="L80" title="All 2 branches missed.">            if (this == o) return true;</span>
-<span class="nc bnc" id="L81" title="All 2 branches missed.">            if (o instanceof MixerWrapper) {</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">            if (this == o) return true;</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">            if (o instanceof MixerWrapper) {</span>
 <span class="nc" id="L82">                return ((MixerWrapper)o).getKey().equals(getKey());</span>
             }
-<span class="nc" id="L84">            return false;</span>
+<span class="fc" id="L84">            return false;</span>
         }
 
         @Override
@@ -126,7 +126,7 @@ public class AudioMixerOption extends AbstractOption&lt;AudioMixerOption.MixerWr
 
 
     /** The value of this option. */
-<span class="nc" id="L129">    private MixerWrapper value = null;</span>
+<span class="fc" id="L129">    private MixerWrapper value = null;</span>
 
 
     /**
@@ -135,8 +135,8 @@ public class AudioMixerOption extends AbstractOption&lt;AudioMixerOption.MixerWr
      * @param specification The &lt;code&gt;Specification&lt;/code&gt; to refer to.
      */
     public AudioMixerOption(Specification specification) {
-<span class="nc" id="L138">        super(specification);</span>
-<span class="nc" id="L139">    }</span>
+<span class="fc" id="L138">        super(specification);</span>
+<span class="fc" id="L139">    }</span>
 
 
     /**
@@ -146,7 +146,7 @@ public class AudioMixerOption extends AbstractOption&lt;AudioMixerOption.MixerWr
      * @return The mixer wrapper with the name given, or null if none.
      */
     private MixerWrapper getMixerWrapperByName(String name) {
-<span class="nc" id="L149">        return find(audioMixers, mw -&gt; mw.getKey().equals(name));</span>
+<span class="fc" id="L149">        return find(audioMixers, mw -&gt; mw.getKey().equals(name));</span>
     }
 
     /**
@@ -176,7 +176,7 @@ public class AudioMixerOption extends AbstractOption&lt;AudioMixerOption.MixerWr
      */
     @Override
     public final MixerWrapper getValue() {
-<span class="nc" id="L179">        return value;</span>
+<span class="fc" id="L179">        return value;</span>
     }
 
     /**
@@ -184,13 +184,13 @@ public class AudioMixerOption extends AbstractOption&lt;AudioMixerOption.MixerWr
      */
     @Override
     public final void setValue(MixerWrapper newValue) {
-<span class="nc" id="L187">        final MixerWrapper oldValue = this.value;</span>
-<span class="nc bnc" id="L188" title="All 2 branches missed.">        if (newValue == null) newValue = DEFAULT_MIXER_WRAPPER;</span>
-<span class="nc" id="L189">        this.value = newValue;</span>
-<span class="nc bnc" id="L190" title="All 2 branches missed.">        if (!newValue.equals(oldValue)) {</span>
-<span class="nc" id="L191">            firePropertyChange(VALUE_TAG, oldValue, value);</span>
+<span class="fc" id="L187">        final MixerWrapper oldValue = this.value;</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        if (newValue == null) newValue = DEFAULT_MIXER_WRAPPER;</span>
+<span class="fc" id="L189">        this.value = newValue;</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">        if (!newValue.equals(oldValue)) {</span>
+<span class="fc" id="L191">            firePropertyChange(VALUE_TAG, oldValue, value);</span>
         }
-<span class="nc" id="L193">    }</span>
+<span class="fc" id="L193">    }</span>
 
 
     // Override AbstractOption
@@ -201,16 +201,16 @@ public class AudioMixerOption extends AbstractOption&lt;AudioMixerOption.MixerWr
      */
     @Override
     protected void setValue(String valueString, String defaultValueString) {
-<span class="nc" id="L204">        MixerWrapper mw = null;</span>
-<span class="nc bnc" id="L205" title="All 4 branches missed.">        if (mw == null &amp;&amp; valueString != null) {</span>
+<span class="fc" id="L204">        MixerWrapper mw = null;</span>
+<span class="pc bpc" id="L205" title="2 of 4 branches missed.">        if (mw == null &amp;&amp; valueString != null) {</span>
 <span class="nc" id="L206">            mw = getMixerWrapperByName(valueString);</span>
         }
-<span class="nc bnc" id="L208" title="All 4 branches missed.">        if (mw == null &amp;&amp; defaultValueString != null) {</span>
-<span class="nc" id="L209">            mw = getMixerWrapperByName(defaultValueString);</span>
+<span class="pc bpc" id="L208" title="2 of 4 branches missed.">        if (mw == null &amp;&amp; defaultValueString != null) {</span>
+<span class="fc" id="L209">            mw = getMixerWrapperByName(defaultValueString);</span>
         }
-<span class="nc bnc" id="L211" title="All 2 branches missed.">        if (mw == null) mw = DEFAULT_MIXER_WRAPPER;</span>
-<span class="nc" id="L212">        setValue(mw);</span>
-<span class="nc" id="L213">    }</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">        if (mw == null) mw = DEFAULT_MIXER_WRAPPER;</span>
+<span class="fc" id="L212">        setValue(mw);</span>
+<span class="fc" id="L213">    }</span>
 
 
     // Serialization
@@ -243,4 +243,4 @@ public class AudioMixerOption extends AbstractOption&lt;AudioMixerOption.MixerWr
 <span class="fc" id="L243">        return &quot;audioMixerOption&quot;;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>AllTests (1) (May 15, 2018 7:08:47 PM)</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>src (1) (May 16, 2018 4:05:44 PM)</div></body></html>

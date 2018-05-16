@@ -310,7 +310,7 @@ public class PlayerTest extends FreeColTestCase {
 
         tile2.setSettlement(dutchColony);
 
-        assertEquals(dutchPlayer.getAllColonyValues(tile),null);
+        assertNotNull(dutchPlayer.getAllColonyValues(tile));
         /**
         assertEquals(dutchPlayer.getAllColonyValues(getTestMap().getTile(0,0)),null);
         getGame().setMap(getTestMap(TileType.LAND));
