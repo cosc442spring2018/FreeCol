@@ -31,15 +31,6 @@ import net.sf.freecol.server.control.ChangeSet;
  */
 public interface ServerModelObject {
 
-    /*
-      All ServerModelObjects must also implement a trivial constructor
-      (ServerGame does not but it is special, being the Game itself)
-      of the form:
-
-      public <constructor>(Game game, String id) {
-          super(game, id);
-      }
-    */
 
     /**
      * Get the object identifier.

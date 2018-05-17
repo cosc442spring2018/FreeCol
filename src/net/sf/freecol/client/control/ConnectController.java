@@ -263,10 +263,7 @@ public final class ConnectController {
 
         String message = null;
         try {
-            if (!freeColClient.askServer().connect(FreeCol.CLIENT_THREAD + user,
-                    host, port, freeColClient.getPreGameInputHandler())) {
-                message = "repeated failure";
-            }
+            message = initConnection(user, host, port, message);
         } catch (Exception e) {
             message = e.getMessage();
         }
@@ -276,8 +273,8 @@ public final class ConnectController {
         }
         logger.info("Connected to " + host + ":" + port);
 
-        LoginMessage msg = freeColClient.askServer().login(user,
-            FreeCol.getVersion());
+        LoginMessage msg = freeColClient.askServer().login(user, FreeCol.getVersion());
+        
         Game game;
         if (msg == null || (game = msg.getGame()) == null) {
             gui.showErrorMessage("server.couldNotLogin");
@@ -301,7 +298,25 @@ public final class ConnectController {
         logger.info("FreeColClient logged in as " + user
             + "/" + player.getId());
 
-        // Reconnect
+        reconnect(msg, player);
+
+        // All done.
+        freeColClient.setLoggedIn(true);
+        return true;
+    }
+
+
+	private String initConnection(String user, String host, int port, String message) throws IOException {
+		if (!freeColClient.askServer().connect(FreeCol.CLIENT_THREAD + user,
+		        host, port, freeColClient.getPreGameInputHandler())) {
+		    message = "repeated failure";
+		}
+		return message;
+	}
+
+
+	private void reconnect(LoginMessage msg, Player player) {
+		// Reconnect
         if (msg.getStartGame()) {
             Tile entryTile = (player.getEntryLocation() == null) ? null
                 : player.getEntryLocation().getTile();
@@ -325,11 +340,7 @@ public final class ConnectController {
                 }
             }
         }
-
-        // All done.
-        freeColClient.setLoggedIn(true);
-        return true;
-    }
+	}
 
     //
     // There are several ways to start a game.
@@ -416,13 +427,7 @@ public final class ConnectController {
                 return false;
             }
 
-            List<ChoiceItem<String>> choices = new ArrayList<>();
-            for (String n : names) {
-                String nam = Messages.message(StringTemplate
-                    .template("countryName")
-                    .add("%nation%", Messages.nameKey(n)));
-                choices.add(new ChoiceItem<>(nam, n));
-            }
+            List<ChoiceItem<String>> choices = addChoices(names);
             String choice = gui.getChoice(null,
                 Messages.message("client.choicePlayer"),
                 "cancel", choices);
@@ -441,6 +446,18 @@ public final class ConnectController {
         }
         return true;
     }
+
+
+	private List<ChoiceItem<String>> addChoices(List<String> names) {
+		List<ChoiceItem<String>> choices = new ArrayList<>();
+		for (String n : names) {
+		    String nam = Messages.message(StringTemplate
+		        .template("countryName")
+		        .add("%nation%", Messages.nameKey(n)));
+		    choices.add(new ChoiceItem<>(nam, n));
+		}
+		return choices;
+	}
 
     /**
      * Starts a new single player game by connecting to the server.
@@ -489,6 +506,39 @@ public final class ConnectController {
         return true;
     }
 
+    
+    
+    /* Moving class outside of startSavedGame method 
+     * so refactoring into shorter methods is possible 
+     */
+    
+    class ErrorJob implements Runnable {
+
+        private final String message;
+        private final StringTemplate template;
+        
+        ErrorJob(String message) {
+            this.message = message;
+            this.template = null;
+        }
+
+        ErrorJob(StringTemplate template) {
+            this.message = null;
+            this.template = template;
+        }
+        
+        @Override
+        public void run() {
+            gui.closeMenus();
+            if (this.template != null) {
+                gui.showErrorMessage(template);
+            } else {
+                gui.showErrorMessage(message);
+            }
+        }
+    }
+    
+    
     /**
      * Loads and starts a game from the given file.
      *
@@ -499,31 +549,7 @@ public final class ConnectController {
     public boolean startSavedGame(File file, final String userMsg) {
         freeColClient.setMapEditor(false);
 
-        class ErrorJob implements Runnable {
-            private final String message;
-            private final StringTemplate template;
-            
-            ErrorJob(String message) {
-                this.message = message;
-                this.template = null;
-            }
-
-            ErrorJob(StringTemplate template) {
-                this.message = null;
-                this.template = template;
-            }
-            
-            @Override
-            public void run() {
-                gui.closeMenus();
-                if (this.template != null) {
-                    gui.showErrorMessage(template);
-                } else {
-                    gui.showErrorMessage(message);
-                }
-            }
-        }
-
+       
         final ClientOptions options = freeColClient.getClientOptions();
         final boolean defaultSinglePlayer;
         final boolean defaultPublicServer;
@@ -599,7 +625,15 @@ public final class ConnectController {
         if (!unblockServer(port)) return false;
         gui.showStatusPanel(Messages.message("status.loadingGame"));
 
-        final File theFile = file;
+        Runnable loadGameJob = loginToServer(file, userMsg, singlePlayer, name, port);
+        freeColClient.setWork(loadGameJob);
+        return true;
+    }
+
+
+	private Runnable loginToServer(File file, final String userMsg, final boolean singlePlayer, final String name,
+			final int port) {
+		final File theFile = file;
         Runnable loadGameJob = () -> {
             FreeColServer freeColServer = null;
             StringTemplate err = null;
@@ -651,9 +685,8 @@ public final class ConnectController {
                 SwingUtilities.invokeLater(new ErrorJob(err));
             }
         };
-        freeColClient.setWork(loadGameJob);
-        return true;
-    }
+		return loadGameJob;
+	}
 
     /**
      * Reconnects to the server.

@@ -53,6 +53,7 @@ import net.sf.freecol.server.control.ChangeSet.See;
 public class ServerIndianSettlement extends IndianSettlement
     implements ServerModelObject {
 
+    /** The Constant logger. */
     private static final Logger logger = Logger.getLogger(ServerIndianSettlement.class.getName());
 
     /** Alarm added when a new missionary is added. */
@@ -61,11 +62,15 @@ public class ServerIndianSettlement extends IndianSettlement
     /** How far to search for a colony to add an Indian convert to. */
     public static final int MAX_CONVERT_DISTANCE = 10;
 
+    /** The Constant MAX_HORSES_PER_TURN. */
     public static final int MAX_HORSES_PER_TURN = 2;
 
 
     /**
      * Trivial constructor for all ServerModelObjects.
+     *
+     * @param game the game
+     * @param id the id
      */
     public ServerIndianSettlement(Game game, String id) {
         super(game, id);
@@ -143,7 +148,6 @@ public class ServerIndianSettlement extends IndianSettlement
      * @param cs A <code>ChangeSet</code> to update.
      */
     public void csStartTurn(Random random, ChangeSet cs) {
-        final Specification spec = getSpecification();
         final Unit missionary = getMissionary();
         if (missionary == null) return;
         final ServerPlayer other = (ServerPlayer)missionary.getOwner();

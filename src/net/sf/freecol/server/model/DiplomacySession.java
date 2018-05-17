@@ -19,21 +19,16 @@
 
 package net.sf.freecol.server.model;
 
-import java.util.logging.Logger;
-
 import net.sf.freecol.common.model.DiplomaticTrade;
 import net.sf.freecol.common.model.Settlement;
 import net.sf.freecol.common.model.Unit;
 import net.sf.freecol.server.control.ChangeSet;
 import net.sf.freecol.server.control.ChangeSet.See;
 
-
 /**
  * A type of session to handle diplomacy.
  */
 public class DiplomacySession extends TransactionSession {
-
-    private static final Logger logger = Logger.getLogger(DiplomacySession.class.getName());
 
     /** The agreement under consideration. */
     private DiplomaticTrade agreement;
@@ -48,6 +43,12 @@ public class DiplomacySession extends TransactionSession {
     private final Unit otherUnit;
 
 
+    /**
+     * Instantiates a new diplomacy session.
+     *
+     * @param unit the unit
+     * @param settlement the settlement
+     */
     public DiplomacySession(Unit unit, Settlement settlement) {
         super(makeSessionKey(DiplomacySession.class, unit, settlement));
         this.agreement = null;
@@ -56,6 +57,12 @@ public class DiplomacySession extends TransactionSession {
         this.otherUnit = null;
     }
 
+    /**
+     * Instantiates a new diplomacy session.
+     *
+     * @param unit the unit
+     * @param otherUnit the other unit
+     */
     public DiplomacySession(Unit unit, Unit otherUnit) {
         super(makeSessionKey(DiplomacySession.class, unit, otherUnit));
         this.agreement = null;
@@ -64,6 +71,9 @@ public class DiplomacySession extends TransactionSession {
         this.otherUnit = otherUnit;
     }
 
+    /* (non-Javadoc)
+     * @see net.sf.freecol.server.model.TransactionSession#complete(net.sf.freecol.server.control.ChangeSet)
+     */
     @Override
     public void complete(ChangeSet cs) {
         unit.setMovesLeft(0);
@@ -71,22 +81,47 @@ public class DiplomacySession extends TransactionSession {
         super.complete(cs);
     }
 
+    /**
+     * Gets the agreement.
+     *
+     * @return the agreement
+     */
     public DiplomaticTrade getAgreement() {
         return agreement;
     }
 
+    /**
+     * Sets the agreement.
+     *
+     * @param agreement the new agreement
+     */
     public void setAgreement(DiplomaticTrade agreement) {
         this.agreement = agreement;
     }
     
+    /**
+     * Gets the unit.
+     *
+     * @return the unit
+     */
     public Unit getUnit() {
         return unit;
     }
 
+    /**
+     * Gets the settlement.
+     *
+     * @return the settlement
+     */
     public Settlement getSettlement() {
         return settlement;
     }
 
+    /**
+     * Gets the other unit.
+     *
+     * @return the other unit
+     */
     public Unit getOtherUnit() {
         return otherUnit;
     }

@@ -49,11 +49,15 @@ import net.sf.freecol.server.control.ChangeSet.See;
  */
 public class ServerEurope extends Europe implements ServerModelObject {
 
+    /** The Constant logger. */
     private static final Logger logger = Logger.getLogger(ServerEurope.class.getName());
 
 
     /**
      * Trivial constructor required for all ServerModelObjects.
+     *
+     * @param game the game
+     * @param id the id
      */
     public ServerEurope(Game game, String id) {
         super(game, id);
@@ -85,17 +89,7 @@ public class ServerEurope extends Europe implements ServerModelObject {
         int price = priceGoods(required);
         if (price < 0 || !unit.getOwner().checkGold(price)) return false;
 
-        // Sell any excess
-        final ServerPlayer owner = (ServerPlayer)getOwner();
-        for (AbstractGoods ag : required) {
-            if (ag.getAmount() >= 0) continue;
-            if (owner.canTrade(ag.getType(), Market.Access.EUROPE)) {
-                int rm = owner.sell(null, ag.getType(), -ag.getAmount());
-                if (rm > 0) {
-                    owner.addExtraTrade(new AbstractGoods(ag.getType(), rm));
-                }
-            }
-        }
+        final ServerPlayer owner = sellExcessGoods(required);
         // Buy what is needed
         for (AbstractGoods ag : required) {
             if (ag.getAmount() <= 0) continue;
@@ -108,6 +102,21 @@ public class ServerEurope extends Europe implements ServerModelObject {
         unit.changeRole(role, roleCount);
         return true;
     }
+
+	private ServerPlayer sellExcessGoods(List<AbstractGoods> required) {
+		// Sell any excess
+        final ServerPlayer owner = (ServerPlayer)getOwner();
+        for (AbstractGoods ag : required) {
+            if (ag.getAmount() >= 0) continue;
+            if (owner.canTrade(ag.getType(), Market.Access.EUROPE)) {
+                int rm = owner.sell(null, ag.getType(), -ag.getAmount());
+                if (rm > 0) {
+                    owner.addExtraTrade(new AbstractGoods(ag.getType(), rm));
+                }
+            }
+        }
+		return owner;
+	}
 
     /**
      * Generates the initial recruits for this player.  Recruits may
@@ -123,7 +132,7 @@ public class ServerEurope extends Europe implements ServerModelObject {
             UnitListOption option
                 = (UnitListOption)spec.getOption(GameOptions.IMMIGRANTS);
             for (AbstractUnit au : option.getOptionValues()) {
-                unitType = au.getType(spec);
+                //unitType = au.getType(spec);
                 addRecruitable(au.getType(spec));
             }
         } else {
@@ -131,11 +140,13 @@ public class ServerEurope extends Europe implements ServerModelObject {
             for (int index = 0;; index++) {
                 String optionId = "model.option.recruitable.slot" + index;
                 String unitTypeId;
-                if (spec.hasOption(optionId)
+                if (!(spec.hasOption(optionId)
                     && (unitTypeId = spec.getString(optionId)) != null
                     && (unitType = spec.getUnitType(unitTypeId)) != null
-                    && addRecruitable(unitType)) continue;
-                break; // Failed
+                    && addRecruitable(unitType)))
+                {
+                		break; // Failed
+                }
             }
             // end @compat
         }

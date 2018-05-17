@@ -44,11 +44,15 @@ import net.sf.freecol.server.control.ChangeSet.See;
  */
 public class ServerBuilding extends Building implements ServerModelObject {
 
+    /** The Constant logger. */
     private static final Logger logger = Logger.getLogger(ServerBuilding.class.getName());
 
-
+    private String colonyString = "%colony%";
     /**
      * Trivial constructor required for all ServerModelObjects.
+     *
+     * @param game the game
+     * @param id the id
      */
     public ServerBuilding(Game game, String id) {
         super(game, id);
@@ -170,7 +174,7 @@ public class ServerBuilding extends Building implements ServerModelObject {
                                  getColony(), this)
                     .addStringTemplate("%oldName%", oldName)
                     .addStringTemplate("%unit%", newName)
-                    .addName("%colony%", getColony().getName()));
+                    .addName(colonyString, getColony().getName()));
         }
         student.setTurnsOfTraining(0);
         student.setMovesLeft(0);
@@ -200,7 +204,7 @@ public class ServerBuilding extends Building implements ServerModelObject {
                                  "model.building.noStudent",
                                  colony, teacher)
                           .addStringTemplate("%teacher%", teacher.getLabel())
-                          .addName("%colony%", colony.getName()));
+                          .addName(colonyString, colony.getName()));
             return false;
         }
         teacher.setStudent(student);
@@ -247,7 +251,7 @@ public class ServerBuilding extends Building implements ServerModelObject {
                                      this, goods.getType())
                         .addNamed("%inputGoods%", goods.getType())
                         .addNamed("%building%", this)
-                        .addName("%colony%", getColony().getName()));
+                        .addName(colonyString, getColony().getName()));
             }
         }
     }

@@ -59,6 +59,7 @@ public class ServerRegion extends Region {
      * Trivial constructor for serialization.
      *
      * @param game The <code>Game</code> to create in.
+     * @param id the id
      */
     public ServerRegion(Game game, String id) {
         super(game, id);
@@ -66,6 +67,9 @@ public class ServerRegion extends Region {
 
     /**
      * Constructor for copying in a new region from an imported game.
+     *
+     * @param game the game
+     * @param region the region
      */
     public ServerRegion(Game game, Region region) {
         super(game);
@@ -162,7 +166,7 @@ public class ServerRegion extends Region {
     }
 
     /**
-     * Is this a geographic region?
+     * Is this a geographic region?.
      *
      * @return True if this is a geographic region.
      */
@@ -181,7 +185,7 @@ public class ServerRegion extends Region {
     }
 
     /**
-     * Does this region contain the center of another?
+     * Does this region contain the center of another?.
      *
      * @param other The other <code>ServerRegion</code> to check.
      * @return True if the center of the other region is within this one.
@@ -237,9 +241,9 @@ public class ServerRegion extends Region {
      *
      * @param map The <code>Map</code> to check.
      * @param lb A <code>LogBuilder</code> to log to.
+     * @return the list
      */     
     public static List<ServerRegion> requireFixedRegions(Map map, LogBuilder lb) {
-        final Game game = map.getGame();
         final java.util.Map<String, Region> fixed = map.getFixedRegions();
         List<ServerRegion> result = new ArrayList<>();
 
@@ -449,7 +453,11 @@ public class ServerRegion extends Region {
             final int midx = maxx / 2;
             final int maxy = map.getHeight();
             final int midy = maxy / 2;
-            Tile tNP = null, tSP = null, tNA = null, tSA = null, t;
+            Tile tNP = null;
+            Tile tSP = null;
+            Tile tNA = null;
+            Tile tSA = null;
+            Tile t;
             for (int y = midy-1; y >= 0; y--) {
                 if (tNP == null && !(t = map.getTile(0, y)).isLand()) tNP = t;
                 if (tNA == null && !(t = map.getTile(maxx-1, y)).isLand()) tNA = t;
@@ -460,7 +468,10 @@ public class ServerRegion extends Region {
                 if (tSA == null && !(t = map.getTile(maxx-1, y)).isLand()) tSA = t;
                 if (tSP != null && tSA != null) break;
             }
-            int nNP = 0, nSP = 0, nNA = 0, nSA = 0;
+            int nNP = 0;
+            int nSP = 0;
+            int nNA = 0;
+            int nSA = 0;
             
             Rectangle rNP = new Rectangle(0,0,       midx,midy);
             Rectangle rSP = new Rectangle(0,midy,    midx,maxy-midy);
@@ -487,7 +498,7 @@ public class ServerRegion extends Region {
                 nNP, " North Pacific, ",
                 nSP, " South Pacific, ",
                 nNA, " North Atlantic, ",
-                nSP, " South Atlantic.\n");
+                nSA, " South Atlantic.\n");
         }
         return result;
     }

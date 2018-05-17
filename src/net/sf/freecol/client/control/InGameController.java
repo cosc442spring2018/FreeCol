@@ -260,12 +260,17 @@ public final class InGameController implements NetworkConstants {
      * @return True if it is our turn.
      */
     private boolean requireOurTurn() {
-        if (freeColClient.currentPlayerIsMyPlayer()) return true;
+        return setTurn();
+    }
+
+
+	private boolean setTurn() {
+		if (freeColClient.currentPlayerIsMyPlayer()) return true;
         if (freeColClient.isInGame()) {
             gui.showInformationMessage("info.notYourTurn");
         }
         return false;
-    }
+	}
 
     /**
      * Display the colony panel for a colony, and select the unit that just
@@ -305,15 +310,22 @@ public final class InGameController implements NetworkConstants {
     private StringTemplate getNationAt(Tile tile, Direction direction) {
         Tile newTile = tile.getNeighbourOrNull(direction);
         Player player = null;
-        if (newTile.hasSettlement()) {
+        player = decideIfSettlement(newTile);
+        return player.getNationLabel();
+    }
+
+
+	private Player decideIfSettlement(Tile newTile) {
+		Player player;
+		if (newTile.hasSettlement()) {
             player = newTile.getSettlement().getOwner();
         } else if (newTile.getFirstUnit() != null) {
             player = newTile.getFirstUnit().getOwner();
         } else { // should not happen
             player = freeColClient.getGame().getUnknownEnemy();
         }
-        return player.getNationLabel();
-    }
+		return player;
+	}
 
     /**
      * Update the GUI and the active unit with a fallback tile.
@@ -3421,7 +3433,7 @@ public final class InGameController implements NetworkConstants {
      */
     public boolean firstContact(Player player, Player other, Tile tile,
                                 boolean result) {
-        if (player == null || player == null || player == other
+        if (player == null || player == other
             || tile == null) return false;
 
         boolean ret = askServer().firstContact(player, other, tile, result);

@@ -232,7 +232,11 @@ public class DebugUtils {
         final Player sPlayer = sGame.getFreeColGameObject(player.getId(),
                                                           Player.class);
 
-        String response = gui.getInput(null,
+        processReponse(gui, player, sPlayer);
+    }
+
+	private static void processReponse(final GUI gui, final Player player, final Player sPlayer) {
+		String response = gui.getInput(null,
             StringTemplate.template("prompt.selectImmigration"),
             Integer.toString(100), "ok", "cancel");
         if (response == null || response.isEmpty()) return;
@@ -244,7 +248,7 @@ public class DebugUtils {
         }
         player.modifyImmigration(crosses);
         sPlayer.modifyImmigration(crosses);
-    }
+	}
 
     /**
      * Debug action to add liberty to the player colonies.
@@ -259,7 +263,11 @@ public class DebugUtils {
         final Player player = freeColClient.getMyPlayer();
         final Game sGame = server.getGame();
 
-        String response = gui.getInput(null,
+        processLiberty(gui, player, sGame);
+    }
+
+	private static void processLiberty(final GUI gui, final Player player, final Game sGame) {
+		String response = gui.getInput(null,
             StringTemplate.template("prompt.selectLiberty"),
             Integer.toString(100), "ok", "cancel");
         if (response == null || response.isEmpty()) return;
@@ -274,7 +282,7 @@ public class DebugUtils {
             sGame.getFreeColGameObject(c.getId(), Colony.class)
                 .addLiberty(liberty);
         }
-    }
+	}
 
     /**
      * Adds a change listener to a menu (the debug menu in fact),
@@ -333,22 +341,31 @@ public class DebugUtils {
                 && u.getSpaceLeft() >= unitChoice.getSpaceTaken());
         }
         Location loc = (sCarrier != null) ? sCarrier : sTile;
-        ServerUnit sUnit = new ServerUnit(sGame, loc, sPlayer,
-                                          unitChoice);//-vis(sPlayer)
-        ((ServerPlayer)sPlayer).exploreForUnit(sUnit);
-        sUnit.setMovesLeft(sUnit.getInitialMovesLeft());
-        sPlayer.invalidateCanSeeTiles();//+vis(sPlayer)
+        ServerUnit sUnit = getServerUnit(sGame, sPlayer, unitChoice, loc);
 
         freeColClient.getConnectController().reconnect();
         // Note "game" is no longer valid after reconnect.
         Unit unit = freeColClient.getGame()
             .getFreeColGameObject(sUnit.getId(), Unit.class);
         if (unit != null) {
-            gui.setActiveUnit(unit);
-            gui.refresh();
-            gui.resetMenuBar();
+            refreshGui(gui, unit);
         }
     }
+
+	private static ServerUnit getServerUnit(final Game sGame, final Player sPlayer, UnitType unitChoice, Location loc) {
+		ServerUnit sUnit = new ServerUnit(sGame, loc, sPlayer,
+                                          unitChoice);//-vis(sPlayer)
+        ((ServerPlayer)sPlayer).exploreForUnit(sUnit);
+        sUnit.setMovesLeft(sUnit.getInitialMovesLeft());
+        sPlayer.invalidateCanSeeTiles();//+vis(sPlayer)
+		return sUnit;
+	}
+
+	private static void refreshGui(final GUI gui, Unit unit) {
+		gui.setActiveUnit(unit);
+		gui.refresh();
+		gui.resetMenuBar();
+	}
 
     /**
      * Debug action to add goods to a unit.
@@ -365,23 +382,9 @@ public class DebugUtils {
         final Specification sSpec = sGame.getSpecification();
         final GUI gui = freeColClient.getGUI();
 
-        List<ChoiceItem<GoodsType>> gtl = new ArrayList<>();
-        for (GoodsType t : sSpec.getGoodsTypeList()) {
-            if (t.isFoodType() && t != sSpec.getPrimaryFoodType()) continue;
-            String msg = Messages.getName(t);
-            gtl.add(new ChoiceItem<>(msg, t));
-        }
+        List<ChoiceItem<GoodsType>> gtl = processGTL(sSpec);
         Collections.sort(gtl);
-        GoodsType goodsType = gui.getChoice(null,
-            StringTemplate.template("prompt.selectGoodsType"),
-            "cancel",
-            sSpec.getGoodsTypeList().stream()
-            .filter(gt -> !gt.isFoodType() || gt == sSpec.getPrimaryFoodType())
-            .map(gt -> {
-                    String msg = Messages.getName(gt);
-                    return new ChoiceItem<GoodsType>(msg, gt);
-                })
-            .sorted().collect(Collectors.toList()));
+        GoodsType goodsType = processGoodsType(sSpec, gui);
         if (goodsType == null) return;
 
         String amount = gui.getInput(null,
@@ -402,6 +405,30 @@ public class DebugUtils {
         ugc.setAmount(goodsType, a);
         sgc.setAmount(sGoodsType, a);
     }
+
+	private static GoodsType processGoodsType(final Specification sSpec, final GUI gui) {
+		GoodsType goodsType = gui.getChoice(null,
+            StringTemplate.template("prompt.selectGoodsType"),
+            "cancel",
+            sSpec.getGoodsTypeList().stream()
+            .filter(gt -> !gt.isFoodType() || gt == sSpec.getPrimaryFoodType())
+            .map(gt -> {
+                    String msg = Messages.getName(gt);
+                    return new ChoiceItem<GoodsType>(msg, gt);
+                })
+            .sorted().collect(Collectors.toList()));
+		return goodsType;
+	}
+
+	private static List<ChoiceItem<GoodsType>> processGTL(final Specification sSpec) {
+		List<ChoiceItem<GoodsType>> gtl = new ArrayList<>();
+        for (GoodsType t : sSpec.getGoodsTypeList()) {
+            if (t.isFoodType() && t != sSpec.getPrimaryFoodType()) continue;
+            String msg = Messages.getName(t);
+            gtl.add(new ChoiceItem<>(msg, t));
+        }
+		return gtl;
+	}
 
     /**
      * Debug action to apply a disaster to a colony.
@@ -578,38 +605,47 @@ public class DebugUtils {
         boolean problemDetected = false;
         LogBuilder lb = new LogBuilder(256);
         lb.add("Desynchronization detected\n");
-        for (Tile t : sMap.getAllTiles()) {
-            if (!sPlayer.canSee(t)) continue;
-            for (Unit u : t.getUnitList()) {
-                if (!sPlayer.owns(u)
-                    && (t.hasSettlement() || u.isOnCarrier())) continue;
-                if (game.getFreeColGameObject(u.getId(), Unit.class) == null) {
-                    lb.add("Unit missing on client-side.\n", "  Server: ",
-                           u.getDescription(Unit.UnitLabelType.NATIONAL),
-                           "(", u.getId(), ") from: ", 
-                           u.getLocation().getId(), ".\n");
-                    try {
-                        lb.add("  Client: ", map.getTile(u.getTile().getX(),
-                               u.getTile().getY()).getFirstUnit().getId(),
-                               "\n");
-                    } catch (NullPointerException npe) {}
-                    problemDetected = true;
-                } else {
-                    Unit cUnit = game.getFreeColGameObject(u.getId(),
-                                                           Unit.class);
-                    if (cUnit.hasTile()
-                        && !cUnit.getTile().getId().equals(u.getTile().getId())) {
-                        lb.add("Unit located on different tiles.\n",
-                            "  Server: ", u.getDescription(Unit.UnitLabelType.NATIONAL),
-                            "(", u.getId(), ") from: ",
-                            u.getLocation().getId(), "\n",
-                            "  Client: ", cUnit.getDescription(Unit.UnitLabelType.NATIONAL),
-                            "(", cUnit.getId(), ") at: ",
-                            cUnit.getLocation().getId(), "\n");
-                        problemDetected = true;
-                    }
-                }
+        problemDetected = processTiles(game, map, sMap, sPlayer, problemDetected, lb);
+
+        boolean goodsProblemDetected = getGoodsProblemDetected(game, player, sGame, sPlayer, lb);
+        
+        if (goodsProblemDetected) {
+            lb.add("  Server:\n", sPlayer.getMarket(), "\n",
+                "  Client:\n", player.getMarket(), "\n");
+            problemDetected = true;
+        }
+
+        if (problemDetected) {
+            lb.shrink("\n");
+            String err = lb.toString();
+            freeColClient.getGUI().showInformationMessage(err);
+            logger.severe(err);
+        }
+        return problemDetected;
+    }
+
+	private static boolean getGoodsProblemDetected(final Game game, final Player player, final Game sGame,
+			final ServerPlayer sPlayer, LogBuilder lb) {
+		boolean goodsProblemDetected = false;
+        for (GoodsType sg : sGame.getSpecification().getGoodsTypeList()) {
+            int sPrice = sPlayer.getMarket().getBidPrice(sg, 1);
+            GoodsType cg = game.getSpecification().getGoodsType(sg.getId());
+            int cPrice = player.getMarket().getBidPrice(cg, 1);
+            if (sPrice != cPrice) {
+                lb.add("Goods prices for ", sg, " differ.\n");
+                goodsProblemDetected = true;
             }
+        }
+		return goodsProblemDetected;
+	}
+
+	private static boolean processTiles(final Game game, final Map map, final Map sMap, final ServerPlayer sPlayer,
+			boolean problemDetected, LogBuilder lb) {
+		for (Tile t : sMap.getAllTiles()) {
+            if (!sPlayer.canSee(t)) continue;
+            // iterates using the iterator in unit through the element looking for a problem. 
+            problemDetected = iterateU(game, map, sPlayer, problemDetected, lb, t);
+            
             Tile ct = game.getFreeColGameObject(t.getId(), Tile.class);
             Settlement sSettlement = t.getSettlement();
             Settlement cSettlement = ct.getSettlement();
@@ -633,31 +669,43 @@ public class DebugUtils {
                 }
             }
         }
+		return problemDetected;
+	}
 
-        boolean goodsProblemDetected = false;
-        for (GoodsType sg : sGame.getSpecification().getGoodsTypeList()) {
-            int sPrice = sPlayer.getMarket().getBidPrice(sg, 1);
-            GoodsType cg = game.getSpecification().getGoodsType(sg.getId());
-            int cPrice = player.getMarket().getBidPrice(cg, 1);
-            if (sPrice != cPrice) {
-                lb.add("Goods prices for ", sg, " differ.\n");
-                goodsProblemDetected = true;
-            }
-        }
-        if (goodsProblemDetected) {
-            lb.add("  Server:\n", sPlayer.getMarket(), "\n",
-                "  Client:\n", player.getMarket(), "\n");
-            problemDetected = true;
-        }
-
-        if (problemDetected) {
-            lb.shrink("\n");
-            String err = lb.toString();
-            freeColClient.getGUI().showInformationMessage(err);
-            logger.severe(err);
-        }
-        return problemDetected;
-    }
+	private static boolean iterateU(final Game game, final Map map, final ServerPlayer sPlayer, boolean problemDetected,
+			LogBuilder lb, Tile t) {
+		for (Unit u : t.getUnitList()) {
+		    if (!sPlayer.owns(u)
+		        && (t.hasSettlement() || u.isOnCarrier())) continue;
+		    if (game.getFreeColGameObject(u.getId(), Unit.class) == null) {
+		        lb.add("Unit missing on client-side.\n", "  Server: ",
+		               u.getDescription(Unit.UnitLabelType.NATIONAL),
+		               "(", u.getId(), ") from: ", 
+		               u.getLocation().getId(), ".\n");
+		        try {
+		            lb.add("  Client: ", map.getTile(u.getTile().getX(),
+		                   u.getTile().getY()).getFirstUnit().getId(),
+		                   "\n");
+		        } catch (NullPointerException npe) {}
+		        problemDetected = true;
+		    } else {
+		        Unit cUnit = game.getFreeColGameObject(u.getId(),
+		                                               Unit.class);
+		        if (cUnit.hasTile()
+		            && !cUnit.getTile().getId().equals(u.getTile().getId())) {
+		            lb.add("Unit located on different tiles.\n",
+		                "  Server: ", u.getDescription(Unit.UnitLabelType.NATIONAL),
+		                "(", u.getId(), ") from: ",
+		                u.getLocation().getId(), "\n",
+		                "  Client: ", cUnit.getDescription(Unit.UnitLabelType.NATIONAL),
+		                "(", cUnit.getId(), ") at: ",
+		                cUnit.getLocation().getId(), "\n");
+		            problemDetected = true;
+		        }
+		    }
+		}
+		return problemDetected;
+	}
 
     /**
      * Debug action to display an AI colony plan.
@@ -743,29 +791,7 @@ public class DebugUtils {
                 inEurope.add(u);
             }
 
-            for (Entry<String, List<Unit>> entry : units.entrySet()) {
-                final String label = entry.getKey();
-                final List<Unit> list = entry.getValue();
-                if (list.isEmpty()) continue;
-                lb.add("\n->", label, "\n");
-                for (Unit u : list) {
-                    lb.add("\n", u.getDescription(Unit.UnitLabelType.NATIONAL));
-                    if (u.isDamaged()) {
-                        lb.add(" (", Messages.message(u.getRepairLabel()),
-                            ")");
-                    } else {
-                        lb.add("    ");
-                        AIUnit aiu = aiMain.getAIUnit(u);
-                        if (!aiu.hasMission()) {
-                            lb.add(" (", Messages.message("none"), ")");
-                        } else {
-                            lb.add(aiu.getMission().toString()
-                                .replaceAll("\n", "    \n"));
-                        }
-                    }
-                }
-                lb.add("\n");
-            }
+            processEntry(aiMain, lb, units);
             lb.add("\n->", Messages.message("immigrants"), "\n\n");
             for (UnitType unitType : p.getEurope().getRecruitables()) {
                 lb.add(Messages.getName(unitType), "\n");
@@ -774,6 +800,32 @@ public class DebugUtils {
         }
         freeColClient.getGUI().showInformationMessage(lb.toString());
     }
+
+	private static void processEntry(final AIMain aiMain, LogBuilder lb, HashMap<String, List<Unit>> units) {
+		for (Entry<String, List<Unit>> entry : units.entrySet()) {
+		    final String label = entry.getKey();
+		    final List<Unit> list = entry.getValue();
+		    if (list.isEmpty()) continue;
+		    lb.add("\n->", label, "\n");
+		    for (Unit u : list) {
+		        lb.add("\n", u.getDescription(Unit.UnitLabelType.NATIONAL));
+		        if (u.isDamaged()) {
+		            lb.add(" (", Messages.message(u.getRepairLabel()),
+		                ")");
+		        } else {
+		            lb.add("    ");
+		            AIUnit aiu = aiMain.getAIUnit(u);
+		            if (!aiu.hasMission()) {
+		                lb.add(" (", Messages.message("none"), ")");
+		            } else {
+		                lb.add(aiu.getMission().toString()
+		                    .replaceAll("\n", "    \n"));
+		            }
+		        }
+		    }
+		    lb.add("\n");
+		}
+	}
 
     /**
      * Debug action to display a mission.
@@ -822,13 +874,7 @@ public class DebugUtils {
         lb.add("Going-to units:\n");
         first = player.getNextGoingToUnit();
         if (first != null) {
-            all.remove(first);
-            lb.add(first, "\nat ", first.getLocation(), "\n");
-            while (player.hasNextGoingToUnit()
-                && (u = player.getNextGoingToUnit()) != first) {
-                lb.add(u, "\nat ", u.getLocation(), "\n");
-                all.remove(u);
-            }
+            processNextUnit(player, all, lb, first);
         }
         lb.add("Remaining units:\n");
         while (!all.isEmpty()) {
@@ -838,6 +884,17 @@ public class DebugUtils {
 
         freeColClient.getGUI().showInformationMessage(lb.toString());
     }
+
+	private static void processNextUnit(final Player player, List<Unit> all, LogBuilder lb, Unit first) {
+		Unit u;
+		all.remove(first);
+		lb.add(first, "\nat ", first.getLocation(), "\n");
+		while (player.hasNextGoingToUnit()
+		    && (u = player.getNextGoingToUnit()) != first) {
+		    lb.add(u, "\nat ", u.getLocation(), "\n");
+		    all.remove(u);
+		}
+	}
 
     /**
      * Debug action to dump a tile to stderr.
@@ -879,7 +936,13 @@ public class DebugUtils {
         final GUI gui = freeColClient.getGUI();
 
         boolean first = true;
-        for (Unit u : units) {
+        first = processResetMoves(units, sGame, gui, first);
+        gui.refresh();
+        gui.resetMenuBar();
+    }
+
+	private static boolean processResetMoves(List<Unit> units, final Game sGame, final GUI gui, boolean first) {
+		for (Unit u : units) {
             Unit su = sGame.getFreeColGameObject(u.getId(), Unit.class);
             u.setMovesLeft(u.getInitialMovesLeft());
             su.setMovesLeft(su.getInitialMovesLeft());
@@ -893,9 +956,8 @@ public class DebugUtils {
                 su2.setMovesLeft(su2.getInitialMovesLeft());
             }
         }
-        gui.refresh();
-        gui.resetMenuBar();
-    }
+		return first;
+	}
 
     /**
      * Debug action to reveal or hide the map.
@@ -1091,15 +1153,7 @@ public class DebugUtils {
         LogBuilder lb = new LogBuilder(256);
         lb.add(sis.getName(), "\n\nAlarm\n");
         Player mostHated = sis.getMostHated();
-        for (Player p : sGame.getLiveEuropeanPlayers(null)) {
-            Tension tension = sis.getAlarm(p);
-            lb.add(Messages.message(p.getNationLabel()),
-                   " ", ((tension == null) ? "(none)"
-                       : Integer.toString(tension.getValue())),
-                   ((mostHated == p) ? " (most hated)" : ""),
-                   " ", Messages.message(sis.getAlarmLevelKey(p)),
-                   " ", sis.getContactLevel(p), "\n");
-        }
+        getEuropeanPlayers(sGame, sis, lb, mostHated);
 
         lb.add("\nGoods Present\n");
         for (Goods goods : sis.getCompactGoods()) {
@@ -1157,6 +1211,19 @@ public class DebugUtils {
 
         freeColClient.getGUI().showInformationMessage(lb.toString());
     }
+
+	private static void getEuropeanPlayers(final Game sGame, final IndianSettlement sis, LogBuilder lb,
+			Player mostHated) {
+		for (Player p : sGame.getLiveEuropeanPlayers(null)) {
+            Tension tension = sis.getAlarm(p);
+            lb.add(Messages.message(p.getNationLabel()),
+                   " ", ((tension == null) ? "(none)"
+                       : Integer.toString(tension.getValue())),
+                   ((mostHated == p) ? " (most hated)" : ""),
+                   " ", Messages.message(sis.getAlarmLevelKey(p)),
+                   " ", sis.getContactLevel(p), "\n");
+        }
+	}
 
     /**
      * Debug action to run the AI.

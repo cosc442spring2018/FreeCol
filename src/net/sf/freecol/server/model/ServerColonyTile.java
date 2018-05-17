@@ -41,11 +41,11 @@ import net.sf.freecol.server.control.ChangeSet.See;
  */
 public class ServerColonyTile extends ColonyTile implements ServerModelObject {
 
-    private static final Logger logger = Logger.getLogger(ServerColonyTile.class.getName());
-
-
     /**
      * Trivial constructor required for all ServerModelObjects.
+     *
+     * @param game the game
+     * @param id the id
      */
     public ServerColonyTile(Game game, String id) {
         super(game, id);

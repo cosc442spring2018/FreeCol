@@ -82,7 +82,13 @@ final class UnitMoveAnimation {
         final Rectangle r2 = gui.getTileBounds(destinationTile);
         final Rectangle bounds = r1.union(r2);
 
-        gui.executeWithUnitOutForAnimation(unit, sourceTile,
+        guiExecuteAnimation(gui, srcP, dstP, movementRatio, bounds);
+    }
+
+
+	private void guiExecuteAnimation(final SwingGUI gui, final Point srcP, final Point dstP, final int movementRatio,
+			final Rectangle bounds) {
+		gui.executeWithUnitOutForAnimation(unit, sourceTile,
             (JLabel unitLabel) -> {
                 final int labelWidth = unitLabel.getWidth();
                 final int labelHeight = unitLabel.getHeight();
@@ -101,39 +107,47 @@ final class UnitMoveAnimation {
 
                 int dropFrames = 0;
                 Point point = srcPoint;
-                while (!point.equals(dstPoint)) {
-                    long time = System.currentTimeMillis();
-
-                    point.x += stepX * xratio * movementRatio;
-                    point.y += stepY * movementRatio;
-                    if ((stepX < 0 && point.x < dstPoint.x)
-                        || (stepX > 0 && point.x > dstPoint.x)) {
-                        point.x = dstPoint.x;
-                    }
-                    if ((stepY < 0 && point.y < dstPoint.y)
-                        || (stepY > 0 && point.y > dstPoint.y)) {
-                        point.y = dstPoint.y;
-                    }
-                    if (dropFrames <= 0) {
-                        unitLabel.setLocation(point);
-                        gui.paintImmediatelyCanvasIn(bounds);
-                            
-                        int timeTaken = (int)(System.currentTimeMillis() - time);
-                        final int waitTime = ANIMATION_DELAY - timeTaken;
-                        if (waitTime > 0) {
-                            try {
-                                Thread.sleep(waitTime);
-                            } catch (InterruptedException ex) {
-                                //ignore
-                            }
-                            dropFrames = 0;
-                        } else {
-                            dropFrames = timeTaken / ANIMATION_DELAY - 1;
-                        }
-                    } else {
-                            dropFrames--;
-                    }
-                }
+                dropFrames = processMove(gui, movementRatio, bounds, unitLabel, dstPoint, xratio, stepX, stepY,
+						dropFrames, point);
             });
-    }
+	}
+
+
+	private int processMove(final SwingGUI gui, final int movementRatio, final Rectangle bounds, JLabel unitLabel,
+			final Point dstPoint, final double xratio, final int stepX, final int stepY, int dropFrames, Point point) {
+		while (!point.equals(dstPoint)) {
+		    long time = System.currentTimeMillis();
+
+		    point.x += stepX * xratio * movementRatio;
+		    point.y += stepY * movementRatio;
+		    if ((stepX < 0 && point.x < dstPoint.x)
+		        || (stepX > 0 && point.x > dstPoint.x)) {
+		        point.x = dstPoint.x;
+		    }
+		    if ((stepY < 0 && point.y < dstPoint.y)
+		        || (stepY > 0 && point.y > dstPoint.y)) {
+		        point.y = dstPoint.y;
+		    }
+		    if (dropFrames <= 0) {
+		        unitLabel.setLocation(point);
+		        gui.paintImmediatelyCanvasIn(bounds);
+		            
+		        int timeTaken = (int)(System.currentTimeMillis() - time);
+		        final int waitTime = ANIMATION_DELAY - timeTaken;
+		        if (waitTime > 0) {
+		            try {
+		                Thread.sleep(waitTime);
+		            } catch (InterruptedException ex) {
+		                //ignore
+		            }
+		            dropFrames = 0;
+		        } else {
+		            dropFrames = timeTaken / ANIMATION_DELAY - 1;
+		        }
+		    } else {
+		            dropFrames--;
+		    }
+		}
+		return dropFrames;
+	}
 }
