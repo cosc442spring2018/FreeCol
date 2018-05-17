@@ -27,7 +27,6 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.common.io.FreeColXMLReader;
@@ -151,10 +150,14 @@ public class AIMain extends FreeColObject
      * @return True if a corresponding AI object is needed.
      */
     private boolean shouldHaveAIObject(FreeColGameObject fcgo) {
-        return (fcgo instanceof Colony) ? true
-            : (fcgo instanceof Player)  ? ((Player)fcgo).isAI()
-            : (fcgo instanceof Unit)    ? true
-            : false;
+    		if (fcgo instanceof Colony) {
+    			return true;
+    		} else if (fcgo instanceof Player) {
+    			return ((Player)fcgo).isAI();
+    		}
+    		
+    		return (fcgo instanceof Unit)    ? true
+    				: false;
     }
 
     /**
@@ -499,8 +502,8 @@ public class AIMain extends FreeColObject
                 aio.dispose();
                 continue;
             }
-            if (aio instanceof Wish) {
-                if (!((Wish)aio).shouldBeStored()) continue;
+            if ((aio instanceof Wish) && !((Wish)aio).shouldBeStored()) {
+                continue;
             }
 
             try {
@@ -616,11 +619,6 @@ public class AIMain extends FreeColObject
         } catch (Exception e) {
             logger.log(Level.WARNING, "Exception reading AIObject: "
                        + tag + ", id=" + oid, e);
-            // We are hosed.  Try to resynchronize at the end of the tag
-            // or aiMain.
-            final String mainTag = getXMLElementTagName();
-            while (xr.nextTag() != XMLStreamConstants.END_ELEMENT
-                || !(xr.atTag(tag) || xr.atTag(mainTag)));
         }
     }
 

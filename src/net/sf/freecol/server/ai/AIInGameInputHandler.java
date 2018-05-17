@@ -139,27 +139,27 @@ public final class AIInGameInputHandler implements MessageHandler {
             case "reconnect":
                 logger.warning("Reconnect on illegal operation, refer to any previous error message."); break;
             case "chooseFoundingFather":
-                reply = chooseFoundingFather(connection, element); break;
+                reply = chooseFoundingFather(element); break;
             case "diplomacy":
-                reply = diplomacy(connection, element); break;
+                reply = diplomacy(element); break;
             case "firstContact":
-                reply = firstContact(connection, element); break;
+                reply = firstContact(element); break;
             case "fountainOfYouth":
-                reply = fountainOfYouth(connection, element); break;
+                reply = fountainOfYouth(element); break;
             case "indianDemand":
-                reply = indianDemand(connection, element); break;
+                reply = indianDemand(element); break;
             case "lootCargo":
-                reply = lootCargo(connection, element); break;
+                reply = lootCargo(element); break;
             case "monarchAction":
-                reply = monarchAction(connection, element); break;
+                reply = monarchAction(element); break;
             case "multiple":
                 reply = multiple(connection, element); break;
             case "newLandName":
-                reply = newLandName(connection, element); break;
+                reply = newLandName(element); break;
             case "newRegionName":
-                reply = newRegionName(connection, element); break;
+                reply = newRegionName(element); break;
             case "setCurrentPlayer":
-                reply = setCurrentPlayer(connection, element); break;
+                reply = setCurrentPlayer(element); break;
                 
             // Since we're the server, we can see everything.
             // Therefore most of these messages are useless.  This
@@ -189,13 +189,10 @@ public final class AIInGameInputHandler implements MessageHandler {
      * Handles a "chooseFoundingFather"-message.
      * Only meaningful for AIPlayer types that implement selectFoundingFather.
      *
-     * @param connection The <code>Connection</code> the element arrived on.
      * @param element The <code>Element</code> to process.
      * @return An <code>Element</code> containing the response/s.
      */
-    private Element chooseFoundingFather(
-        @SuppressWarnings("unused") Connection connection,
-        Element element) {
+    private Element chooseFoundingFather(Element element) {
         final Game game = aiMain.getGame();
         final AIPlayer aiPlayer = getAIPlayer();
 
@@ -214,9 +211,7 @@ public final class AIInGameInputHandler implements MessageHandler {
      * @param element The <code>Element</code> to process.
      * @return An <code>Element</code> containing the response/s.
      */
-    private Element diplomacy(
-        @SuppressWarnings("unused") Connection connection,
-        Element element) {
+    private Element diplomacy(Element element) {
         final Game game = freeColServer.getGame();
         final DiplomacyMessage message = new DiplomacyMessage(game, element);
         final DiplomaticTrade agreement = message.getAgreement();
@@ -236,13 +231,10 @@ public final class AIInGameInputHandler implements MessageHandler {
     /**
      * Replies to a first contact offer.
      *
-     * @param connection The <code>Connection</code> the element arrived on.
      * @param element The <code>Element</code> to process.
      * @return An <code>Element</code> containing the response/s.
      */
-    private Element firstContact(
-        @SuppressWarnings("unused") Connection connection,
-        Element element) {
+    private Element firstContact(Element element) {
         final Game game = freeColServer.getGame();
 
         return new FirstContactMessage(game, element).setResult(true)
@@ -252,13 +244,10 @@ public final class AIInGameInputHandler implements MessageHandler {
     /**
      * Replies to fountain of youth offer.
      *
-     * @param connection The <code>Connection</code> the element arrived on.
      * @param element The <code>Element</code> to process.
      * @return Null.
      */
-    private Element fountainOfYouth(
-        @SuppressWarnings("unused") Connection connection,
-        Element element) {
+    private Element fountainOfYouth(Element element) {
         final AIPlayer aiPlayer = getAIPlayer();
 
         String migrants = element.getAttribute("migrants");
@@ -275,15 +264,12 @@ public final class AIInGameInputHandler implements MessageHandler {
     /**
      * Handles an "indianDemand"-message.
      *
-     * @param connection The <code>Connection</code> the element arrived on.
      * @param element The <code>Element</code> to process.
      * @return The original message with the acceptance state set if querying
      *     the colony player (result == null), or null if reporting the final
      *     result to the native player (result != null).
      */
-    private Element indianDemand(
-        @SuppressWarnings("unused") Connection connection,
-        Element element) {
+    private Element indianDemand(Element element) {
         final Game game = aiMain.getGame();
         final AIPlayer aiPlayer = getAIPlayer();
 
@@ -302,13 +288,10 @@ public final class AIInGameInputHandler implements MessageHandler {
     /**
      * Replies to loot cargo offer.
      *
-     * @param connection The <code>Connection</code> the element arrived on.
      * @param element The <code>Element</code> to process.
      * @return Null.
      */
-    private Element lootCargo(
-        @SuppressWarnings("unused") Connection connection,
-        Element element) {
+    private Element lootCargo(Element element) {
         final Game game = freeColServer.getGame();
         final Market market = serverPlayer.getMarket();
 
@@ -340,13 +323,10 @@ public final class AIInGameInputHandler implements MessageHandler {
     /**
      * Handles a "monarchAction"-message.
      *
-     * @param connection The <code>Connection</code> the element arrived on.
      * @param element The <code>Element</code> to process.
      * @return An <code>Element</code> containing the response/s.
      */
-    private Element monarchAction(
-        @SuppressWarnings("unused") Connection connection,
-        Element element) {
+    private Element monarchAction(Element element) {
         final Game game = aiMain.getGame();
 
         MonarchActionMessage message = new MonarchActionMessage(game, element);
@@ -399,14 +379,11 @@ public final class AIInGameInputHandler implements MessageHandler {
 
     /**
      * Replies to offer to name the new land.
-     *
-     * @param connection The <code>Connection</code> the element arrived on.
+     * 
      * @param element The <code>Element</code> to process.
      * @return An <code>Element</code> containing the response/s.
      */
-    private Element newLandName(
-        @SuppressWarnings("unused") Connection connection,
-        Element element) {
+    private Element newLandName(Element element) {
         return new NewLandNameMessage(freeColServer.getGame(), element)
             .toXMLElement();
     }
@@ -414,13 +391,10 @@ public final class AIInGameInputHandler implements MessageHandler {
     /**
      * Replies to offer to name a new region name.
      *
-     * @param connection The <code>Connection</code> the element arrived on.
      * @param element The <code>Element</code> to process.
      * @return An <code>Element</code> containing the response/s.
      */
-    private Element newRegionName(
-        @SuppressWarnings("unused") Connection connection,
-        Element element) {
+    private Element newRegionName(Element element) {
         return new NewRegionNameMessage(freeColServer.getGame(), element)
             .toXMLElement();
     }
@@ -428,13 +402,10 @@ public final class AIInGameInputHandler implements MessageHandler {
     /**
      * Handles a "setCurrentPlayer"-message.
      *
-     * @param connection The <code>Connection</code> the element arrived on.
      * @param element The <code>Element</code> to process.
      * @return Null.
      */
-    private Element setCurrentPlayer(
-        @SuppressWarnings("unused") Connection connection,
-        final Element element) {
+    private Element setCurrentPlayer(final Element element) {
         final Game game = freeColServer.getGame();
 
         String str = element.getAttribute("player");

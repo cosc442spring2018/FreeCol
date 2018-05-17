@@ -77,12 +77,22 @@ public abstract class AIPlayer extends AIObject {
         = new Comparator<AIUnit>() {
             @Override
             public int compare(AIUnit a1, AIUnit a2) {
-                Location l1 = (a1 == null) ? null
-                    : (a1.getUnit() == null) ? null
-                    : a1.getUnit().getLocation();
-                Location l2 = (a2 == null) ? null
-                    : (a2.getUnit() == null) ? null
-                    : a2.getUnit().getLocation();
+            		Location l1;
+            		if (a1 == null) {
+            			l1 = null;
+            		} else {
+            			l1 = (a1.getUnit() == null) ? null
+            					: a1.getUnit().getLocation();
+            		}
+
+            		Location l2;
+            		if (a2 == null) {
+            			l2 = null;
+            		} else {
+            			l2 = (a2.getUnit() == null) ? null
+            					: a2.getUnit().getLocation();
+            		}
+            		
                 FreeColObject f1 = (l1 instanceof WorkLocation)
                     ? l1.getColony()
                     : (FreeColObject)l1;
@@ -379,9 +389,14 @@ public abstract class AIPlayer extends AIObject {
         // Determine the defending player.
         Settlement settlement = tile.getSettlement();
         Unit defender = tile.getDefendingUnit(attacker);
-        Player defenderPlayer = (settlement != null) ? settlement.getOwner()
-            : (defender != null) ? defender.getOwner()
-            : null;
+        
+        Player defenderPlayer;
+        if (settlement != null) {
+        		defenderPlayer = settlement.getOwner();
+        } else {
+        		defenderPlayer = (defender != null) ? defender.getOwner()
+        				: null;
+        }
 
         // Insist there be a defending player.
         if (defenderPlayer == null) return false;
@@ -395,11 +410,8 @@ public abstract class AIPlayer extends AIObject {
         boolean atWar = attackerPlayer.atWarWith(defenderPlayer);
         if (attackerPlayer.isEuropean()) {
             if (!atWar) return false;
-        } else if (attackerPlayer.isIndian()) {
-            if (!atWar && attackerPlayer.getTension(defenderPlayer)
-                .getLevel().compareTo(Tension.Level.CONTENT) <= 0) {
-                return false;
-            }
+        } else if ((attackerPlayer.isIndian()) && (!atWar && attackerPlayer.getTension(defenderPlayer).getLevel().compareTo(Tension.Level.CONTENT) <= 0)) {
+            return false;
         }
         return attacker.canAttack(defender);
     }

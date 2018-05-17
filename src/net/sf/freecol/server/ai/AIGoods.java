@@ -242,9 +242,14 @@ public class AIGoods extends TransportableAIObject {
     public PathNode getDeliveryPath(Unit carrier, Location dst) {
         if (dst == null) dst = Location.upLoc(getTransportDestination());
 
-        PathNode path = (goods.getLocation() == carrier) ? carrier.findPath(dst)
-            : (goods.getLocation() instanceof Unit) ? null
-            : carrier.findPath(goods.getLocation(), dst, null, null);
+        PathNode path;
+        if (goods.getLocation() == carrier) {
+        		path = carrier.findPath(dst);
+        } else {
+        		path = (goods.getLocation() instanceof Unit) ? null
+        				: carrier.findPath(goods.getLocation(), dst, null, null);
+        }
+
         if (path != null) path.convertToGoodsDeliveryPath();
         return path;
     }
@@ -301,9 +306,9 @@ public class AIGoods extends TransportableAIObject {
 
         final GoodsType type = goods.getType();
         boolean failed = false;
-        int oldAmount = carrier.getGoodsCount(type),
-            goodsAmount = goods.getAmount(),
-            amount = Math.min(goodsAmount, carrier.getLoadableAmount(type));
+        int oldAmount = carrier.getGoodsCount(type);
+        int goodsAmount = goods.getAmount();
+        int amount = Math.min(goodsAmount, carrier.getLoadableAmount(type));
         if (AIMessage.askLoadGoods(goods.getLocation(), type, amount,
                                    aiCarrier)) {
             setGoods(new Goods(getGame(), carrier, type, amount));
@@ -325,15 +330,14 @@ public class AIGoods extends TransportableAIObject {
     public String invalidReason() {
         String reason = Mission.invalidTransportableReason(this);
         Settlement s;
-        return (reason != null)
-            ? reason
-            : (goods.getLocation() instanceof Unit
-                && destination instanceof Settlement
-                && !((Unit)goods.getLocation())
-                    .getOwner().owns(s = (Settlement)destination))
-            ? "transportableDestination-" + s.getName() + "-captured-by-"
-                + s.getOwner().getDebugName()
-            : null;
+        
+        if (reason != null) {
+        		return reason;
+        } else if (goods.getLocation() instanceof Unit && destination instanceof Settlement && !((Unit)goods.getLocation()).getOwner().owns(s = (Settlement)destination)) {
+        		return "transportableDestination-" + s.getName() + "-captured-by-" + s.getOwner().getDebugName();
+        }
+        
+        return null;
     }
 
 
@@ -370,13 +374,24 @@ public class AIGoods extends TransportableAIObject {
     @Override
     public int checkIntegrity(boolean fix) {
         int result = super.checkIntegrity(fix);
-        String why = (result < 0) ? "super"
-            : (goods == null) ? "null-goods"
-            : (goods.getType() == null) ? "null-goods-type"
-            : (goods.getAmount() <= 0) ? "non-positive-goods-amount"
-            : (goods.getLocation() == null) ? "null-location"
-            : (((FreeColGameObject)goods.getLocation()).isDisposed()) ? "disposed-location"
-            : null;
+        
+        String why;
+        if (result < 0) {
+        		why = "super";
+        } else if (goods == null) {
+        		why = "null-goods";
+        } else if (goods.getType() == null) {
+        		why = "null-goods-type";
+        } else if (goods.getAmount() <= 0) {
+        		why = "non-positive-goods-amount";
+        } else if (goods.getLocation() == null) {
+        		why = "null-location";
+        } else if ((((FreeColGameObject)goods.getLocation()).isDisposed())) {
+        		why = "disposed-location";
+        } else {
+        		why = null;
+        }
+
         if (destination != null
             && ((FreeColGameObject)destination).isDisposed()) {
             if (fix) {

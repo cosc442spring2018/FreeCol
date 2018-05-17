@@ -486,7 +486,10 @@ public class NameCache {
         final String base = getFallbackSettlementName(player);
         int i = player.getSettlements().size() + 1;
         String name = null;
-        while (game.getSettlementByName(name = base + i++) != null);
+        while (game.getSettlementByName(base + i++) != null) {
+        	name = base + i;
+        	game.getSettlementByName(name);
+        }
         return name;
     }           
 
@@ -515,9 +518,12 @@ public class NameCache {
     public static String getTradeRouteName(Player player) {
         String base = Messages.message("nameCache.base.tradeRoute");
         if (player.getTradeRouteByName(base) == null) return base;
-        String name;
+        String name = null;
         int i = 1;
-        while (player.getTradeRouteByName(name = base + i++) != null);
+        while (player.getTradeRouteByName(base + i++) != null) {
+        	name = base + i;
+        	player.getTradeRouteByName(name);
+        }
         return name;
     }
 
@@ -535,7 +541,7 @@ public class NameCache {
     public static String getUnitName(Player player, UnitType type,
                                      Random random) {
         if (!type.isNaval()) return null;
-        String name;
+        String name = null;
 
         // Find a new name in the installed ship names if possible.
         requireShipNames(player, random);
@@ -550,7 +556,10 @@ public class NameCache {
         // Get a fallback ship name
         final String base = Messages.message("nameCache.base.ship") + "-";
         int i = 1;
-        while (player.getUnitByName(name = base + i++) != null);
+        while (player.getUnitByName(base + i++) != null) {
+        	name = base + i;
+        	player.getUnitByName(name);
+        }
         return name;
     }
 }

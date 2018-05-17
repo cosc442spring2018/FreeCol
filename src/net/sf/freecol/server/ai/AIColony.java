@@ -278,8 +278,8 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         Set<AIUnit> result = new HashSet<>();
 
         // First check if it is collapsing.
-        if (colony.getUnitCount() <= 0) {
-            if (!avertAutoDestruction()) return result;
+        if ((colony.getUnitCount() <= 0) && !avertAutoDestruction()) {
+            return result;
         }
 
         // Skip this colony if it does not yet need rearranging.
@@ -347,7 +347,6 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         List<Unit> workers = colony.getUnitList();
         List<UnitWas> was = new ArrayList<>();
         for (Unit u : workers) {
-            Location loc = u.getLocation();
             was.add(new UnitWas(u));
         }
         for (Unit u : tile.getUnitList()) {
@@ -425,9 +424,15 @@ public class AIColony extends AIObject implements PropertyChangeListener {
             int have = colony.getGoodsCount(g);
             int net = colony.getAdjustedNetProductionOf(g);
             if (net >= 0 && (have >= warehouse || g.limitIgnored())) continue;
-            int when = (net < 0) ? (have / -net - 1)
-                : (net > 0) ? ((warehouse - have) / net - 1)
-                : Integer.MAX_VALUE;
+
+            int when;
+            if (net < 0) {
+            		when = (have / -net - 1);
+            } else {
+            		when = (net > 0) ? ((warehouse - have) / net - 1)
+            			: Integer.MAX_VALUE;
+            }
+
             nextRearrange = Math.max(1, Math.min(nextRearrange, when));
         }
 
@@ -459,7 +464,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
                 Mission m = aiu.getMission();
                 Location oldTarget = (m == null) ? null : m.getTarget();
 
-                if ((m = aiPlayer.getPioneeringMission(aiu, null)) != null) {
+                if ((aiPlayer.getPioneeringMission(aiu, null)) != null) {
                     lb.add(", ", aiu.getMission());
                     aiPlayer.updateTransport(aiu, oldTarget, lb);
                     if (--tipSize <= 0) break;
@@ -499,10 +504,14 @@ public class AIColony extends AIObject implements PropertyChangeListener {
 
         // Log the changes.
         build = colony.getCurrentlyBuilding();
-        String buildStr = (build != null) ? build.toString()
-            : ((build = colonyPlan.getBestBuildableType()) != null)
-            ? "unexpected-null(" + build + ")"
-            : "expected-null";
+
+        String buildStr;
+        if (build != null) {
+        		buildStr = build.toString();
+        } else {
+        		buildStr = ((build = colonyPlan.getBestBuildableType()) != null) ? "unexpected-null(" + build + ")"
+        				: "expected-null";
+        }
         lb.add(", building ", buildStr, ", population ", colony.getUnitCount(),
             ", rearrange ", nextRearrange, ".\n");
         lb.add(aw.toString());
@@ -783,7 +792,9 @@ public class AIColony extends AIObject implements PropertyChangeListener {
      */
     public void removeExportGoods(AIGoods ag) {
         synchronized (exportGoods) {
-            while (exportGoods.remove(ag)) {} /* Do nothing here */
+            while (exportGoods.remove(ag)) {
+            		/* Do nothing here */
+            }
         }
     }
 
@@ -857,17 +868,23 @@ public class AIColony extends AIObject implements PropertyChangeListener {
             outer: for (GoodsType gt : getSpecification().getGoodsTypeList()) {
                 if (colony.getAdjustedNetProductionOf(gt) < 0) continue;
                 int count = colony.getGoodsCount(gt);
-                int exportAmount = (fullExport.contains(gt))
-                    ? count
-                    : (partExport.contains(gt))
-                    ? count - colony.getExportData(gt).getExportLevel()
-                    : -1;
+
+                int exportAmount;
+                if (fullExport.contains(gt)) {
+                		exportAmount = count;
+                } else {
+                		exportAmount = (partExport.contains(gt)) ? count - colony.getExportData(gt).getExportLevel()
+                				: -1;
+                }
                 if (exportAmount <= 0) continue;
-                int priority = (exportAmount >= capacity)
-                    ? TransportableAIObject.IMPORTANT_DELIVERY
-                    : (exportAmount >= GoodsContainer.CARGO_SIZE)
-                    ? TransportableAIObject.FULL_DELIVERY
-                    : 0;
+
+                int priority;
+                if (exportAmount >= capacity) {
+                		priority = TransportableAIObject.IMPORTANT_DELIVERY;
+                } else {
+                		priority = (exportAmount >= GoodsContainer.CARGO_SIZE) ? TransportableAIObject.FULL_DELIVERY
+                				: 0;
+                }
 
                 // Find all existing AI goods of type gt, update
                 // amount of goods to export to that present in the
@@ -1263,7 +1280,7 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         // but make sure there is a unit present that can use it.
         if (isBadlyDefended()) {
             Role role = spec.getMilitaryRoles().get(0);
-            Player owner = colony.getOwner();
+
             for (Unit unit : colony.getTile().getUnitList()) {
                 if (!unit.roleIsAvailable(role)
                     || (!unit.hasDefaultRole()
@@ -1574,9 +1591,14 @@ public class AIColony extends AIObject implements PropertyChangeListener {
         }
 
         for (Wish w : wishes) {
-            String tag = (w instanceof GoodsWish) ? GOODS_WISH_LIST_TAG
-                : (w instanceof WorkerWish) ? WORKER_WISH_LIST_TAG
-                : null;
+            String tag;
+            if (w instanceof GoodsWish) {
+            		tag = GOODS_WISH_LIST_TAG;
+            } else {
+            		tag = (w instanceof WorkerWish) ? WORKER_WISH_LIST_TAG
+            				: null;
+            }
+            
             if (w.checkIntegrity(true) < 0 || !w.shouldBeStored()
                 || tag == null) continue;
 

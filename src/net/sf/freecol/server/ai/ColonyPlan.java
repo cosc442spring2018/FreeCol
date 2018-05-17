@@ -101,11 +101,16 @@ public class ColonyPlan {
          * @param size A proposed colony size.
          */
         public static ProfileType getProfileTypeFromSize(int size) {
-            return (size <= 1) ? ProfileType.OUTPOST
-                : (size <= 2) ? ProfileType.SMALL
-                : (size <= 4) ? ProfileType.MEDIUM
-                : (size <= 8) ? ProfileType.LARGE
-                : ProfileType.CAPITAL;
+        		if (size <= 1) {
+        			return ProfileType.OUTPOST;
+        		} else if (size <= 2) {
+        			return ProfileType.SMALL;
+        		} else if (size <= 4) {
+        			return ProfileType.MEDIUM;
+        		}
+        		
+        		return (size <= 8) ? ProfileType.LARGE
+        				: ProfileType.CAPITAL;
         }
     };
     private ProfileType profileType;
@@ -156,7 +161,12 @@ public class ColonyPlan {
             @Override
             public int compare(BuildPlan b1, BuildPlan b2) {
                 double d = b1.getValue() - b2.getValue();
-                return (d > 0.0) ? -1 : (d < 0.0) ? 1 : 0;
+                
+                if (d > 0.0) {
+                		return -1;
+                } else {
+                		return (d < 0.0) ? 1 : 0;
+                }
             }
         };
 
@@ -343,7 +353,8 @@ public class ColonyPlan {
             } else if (g.isRefined()
                 && (rawBuildingGoodsTypes.contains(g.getInputType())
                     || buildingGoodsTypes.contains(g.getInputType()))) {
-                int n = 0, idx = produce.indexOf(g);
+                int n = 0;
+                int idx = produce.indexOf(g);
                 for (GoodsType type = g.getInputType(); type != null;
                      type = type.getInputType()) {
                     if ((wls = suppressed.get(type)) == null) break;
@@ -657,7 +668,6 @@ public class ColonyPlan {
             ret = prioritize(type, IMMIGRATION_WEIGHT * factor,
                 1.0/*FIXME: Brewster?*/);
         } else if (produce.contains(goodsType)) {
-            if ("trade".equals(advantage)) factor = 1.2;
             double f = 0.1 * colony.getTotalProductionOf(goodsType.getInputType());
             ret = prioritize(type, PRODUCTION_WEIGHT,
                 f/*FIXME: improvement?*/);
@@ -713,7 +723,8 @@ public class ColonyPlan {
                 double factor = 0.0;
                 if (!colony.hasAbility(Ability.PRODUCE_IN_WATER)
                     && colony.getTile().isShore()) {
-                    int landFood = 0, seaFood = 0;
+                    int landFood = 0;
+                    	int seaFood = 0;
                     for (Tile t : colony.getTile().getSurroundingTiles(1)) {
                         if (t.getOwningSettlement() == colony
                             || player.canClaimForSettlement(t)) {
@@ -766,10 +777,8 @@ public class ColonyPlan {
                 }
             } else {
                 for (GoodsType g : spec().getGoodsTypeList()) {
-                    if (type.hasModifier(g.getId())) {
-                        if (!prioritizeProduction(type, g)) {
-                            expectFail = true;
-                        }
+                    if (type.hasModifier(g.getId()) && (!prioritizeProduction(type, g))) {
+                    		expectFail = true;
                     }
                 }
                 // Hacks.  No good way to make this really generic.
@@ -793,8 +802,12 @@ public class ColonyPlan {
         double wagonNeed = 0.0;
         if (!colony.isConnectedPort()) { // Inland colonies need transportation
             int wagons = euaip.getNeededWagons(colony.getTile());
-            wagonNeed = (wagons <= 0) ? 0.0 : (wagons > 3) ? 1.0
-                : wagons / 3.0;
+            if (wagons <= 0) {
+            		wagonNeed = 0.0;
+            } else {
+            		wagonNeed = (wagons > 3) ? 1.0
+            				: wagons / 3.0;
+            }
         }
         for (UnitType unitType : spec().getUnitTypeList()) {
             if (!colony.canBuild(unitType)) continue;
@@ -805,13 +818,11 @@ public class ColonyPlan {
                     prioritize(unitType, DEFENCE_WEIGHT,
                         1.0/*FIXME: how badly defended?*/);
                 }
-            } else if (unitType.hasAbility(Ability.CARRY_GOODS)) {
-                if (wagonNeed > 0.0) {
-                    double factor = 1.0;
-                    if ("trade".equals(advantage)) factor = 1.1;
-                    prioritize(unitType, TRANSPORT_WEIGHT * factor,
-                        wagonNeed/*FIXME: type.getSpace()*/);
-                }
+            } else if (unitType.hasAbility(Ability.CARRY_GOODS) && (wagonNeed > 0.0)) {
+                double factor = 1.0;
+                if ("trade".equals(advantage)) factor = 1.1;
+                prioritize(unitType, TRANSPORT_WEIGHT * factor,
+                    wagonNeed/*FIXME: type.getSpace()*/);
             }
         }
 
@@ -1228,8 +1239,8 @@ public class ColonyPlan {
             for (Unit u : new ArrayList<>(workers)) {
                 if (workers.size() <= 1) break;
                 Role role = outdoorRole;
-                if (role == null) {
-                    if ((role = u.getMilitaryRole()) == null) continue;
+                if (role == null && ((role = u.getMilitaryRole()) == null)) {
+                    continue;
                 }
                 if (u.getType() == role.getExpertUnit()
                         && fullEquipUnit(spec(), u, role, col)) {
@@ -1571,7 +1582,6 @@ plans:          for (WorkLocationPlan w : getFoodPlans()) {
      */
     @Override
     public String toString() {
-        final Tile tile = colony.getTile();
         LogBuilder lb = new LogBuilder(256);
         lb.add("ColonyPlan: ", colony,
             " ", colony.getTile(),

@@ -49,13 +49,11 @@ import net.sf.freecol.common.util.LogBuilder;
  */
 public class Cargo {
 
-    private static final Logger logger = Logger.getLogger(Cargo.class.getName());
-
     /** Abandon cargo after three blockages. */
     private static final int MAX_TRY = 3;
 
     /** The actions to perform at the target. */
-    public static enum CargoMode {
+    public enum CargoMode {
         LOAD,       // Go to target and load transportable
         UNLOAD,     // Go to target and unload transportable
         PICKUP,     // Go to drop node target, transportable unit to embark
@@ -76,7 +74,10 @@ public class Cargo {
     public static class CargoPlan {
 
         /** The key locations along the path taken by cargo and carrier. */
-        public Location twait, cwait, cdst, tdst;
+        public Location twait;
+        public Location cwait;
+        public Location cdst;
+        public Location tdst;
 
         /** Expected total duration of this plan when it is initialized. */
         public int turns;
@@ -597,7 +598,7 @@ public class Cargo {
     public boolean canQueueAt(Unit carrier, int index, List<Cargo> cargoes) {
         final int maxHolds = carrier.getCargoCapacity();
         final int newSpace = this.getNewSpace();
-        Cargo tr = cargoes.get(index);
+        
         for (int j = index; j < cargoes.size(); j++) {
             int holds = (j == 0) ? carrier.getCargoSpaceTaken()
                 : maxHolds - cargoes.get(j-1).getSpaceLeft();

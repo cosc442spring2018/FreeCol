@@ -38,7 +38,6 @@ import net.sf.freecol.common.model.Direction;
 import net.sf.freecol.common.model.PathNode;
 import net.sf.freecol.common.model.Player;
 import net.sf.freecol.common.model.Settlement;
-import net.sf.freecol.common.model.Specification;
 import net.sf.freecol.common.model.Tile;
 import net.sf.freecol.common.model.Unit;
 import net.sf.freecol.common.model.UnitLocation;
@@ -250,9 +249,12 @@ public class AIUnit extends TransportableAIObject {
      * @return The owning AIPlayer.
      */
     public AIPlayer getAIOwner() {
-        return (unit == null) ? null
-            : (unit.getOwner() == null) ? null
-            : getAIMain().getAIPlayer(unit.getOwner());
+    		if (unit == null) {
+    			return null;
+    		}
+    		
+    		return (unit.getOwner() == null) ? null
+    	            : getAIMain().getAIPlayer(unit.getOwner());
     }
 
     /**
@@ -384,7 +386,6 @@ public class AIUnit extends TransportableAIObject {
      * @return True if the role change was successful.
      */
     public boolean equipForRole(Role role) {
-        final Specification spec = getSpecification();
         final Player player = unit.getOwner();
         Location loc = Location.upLoc(unit.getLocation());
         if (!(loc instanceof UnitLocation)) return false;
@@ -625,9 +626,13 @@ public class AIUnit extends TransportableAIObject {
     @Override
     public String invalidReason() {
         String reason = Mission.invalidTransportableReason(this);
-        return (reason != null) ? reason
-            : (hasMission()) ? getMission().invalidReason()
-            : null;
+        
+        if (reason != null) {
+        		return reason;
+        }
+        
+        return (hasMission()) ? getMission().invalidReason()
+                : null;
     }
 
 

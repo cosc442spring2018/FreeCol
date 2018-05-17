@@ -1800,41 +1800,39 @@ public class ServerPlayer extends Player implements ServerModelObject {
      * @param random A pseudo-random number source.
      * @param cs A <code>ChangeSet</code> to update.
      */
-    public void csYearlyGoodsAdjust(Random random, ChangeSet cs) {
-        final Game game = getGame();
-        final List<GoodsType> goodsTypes = game.getSpecification()
-            .getStorableGoodsTypeList();
-        final Market market = getMarket();
+	public void csYearlyGoodsAdjust(Random random, ChangeSet cs) {
+		final Game game = getGame();
+		final List<GoodsType> goodsTypes = game.getSpecification().getStorableGoodsTypeList();
+		final Market market = getMarket();
 
-        // Pick a random type of storable goods to add/remove an extra
-        // amount of.
-        GoodsType extraType;
-        while (!(extraType = getRandomMember(logger, "Choose goods type",
-                                             goodsTypes, random)).isStorable());
+		// Pick a random type of storable goods to add/remove an extra
+		// amount of.
+		GoodsType extraType;
+		extraType = getRandomMember(logger, "Choose goods type", goodsTypes, random);
+		if (extraType.isStorable()) {
 
-        // Remove standard amount, and the extra amount.
-        for (GoodsType type : goodsTypes) {
-            if (market.hasBeenTraded(type)) {
-                boolean add = market.getAmountInMarket(type)
-                    < type.getInitialAmount();
-                int amount = game.getTurn().getNumber() / 10;
-                if (type == extraType) amount = 2 * amount + 1;
-                if (amount <= 0) continue;
-                amount = randomInt(logger, "Market adjust " + type,
-                                   random, amount);
-                if (!add) amount = -amount;
-                market.addGoodsToMarket(type, amount);
-                logger.finest(getName() + " adjust of " + amount
-                              + " " + type
-                              + ", total: " + market.getAmountInMarket(type)
-                              + ", initial: " + type.getInitialAmount());
-                addExtraTrade(new AbstractGoods(type, amount));
-            }
-        }
-
-        flushExtraTrades(random);
-        csFlushMarket(cs);
-    }
+			// Remove standard amount, and the extra amount.
+			for (GoodsType type : goodsTypes) {
+				if (market.hasBeenTraded(type)) {
+					boolean add = market.getAmountInMarket(type) < type.getInitialAmount();
+					int amount = game.getTurn().getNumber() / 10;
+					if (type == extraType)
+						amount = 2 * amount + 1;
+					if (amount <= 0)
+						continue;
+					amount = randomInt(logger, "Market adjust " + type, random, amount);
+					if (!add)
+						amount = -amount;
+					market.addGoodsToMarket(type, amount);
+					logger.finest(getName() + " adjust of " + amount + " " + type + ", total: "
+							+ market.getAmountInMarket(type) + ", initial: " + type.getInitialAmount());
+					addExtraTrade(new AbstractGoods(type, amount));
+				}
+			}
+		}
+		flushExtraTrades(random);
+		csFlushMarket(cs);
+	}
 
     /**
      * Starts a new turn for a player.

@@ -587,9 +587,11 @@ public abstract class Mission extends AIObject {
      * @param logMe A string to log the random number generation with.
      */
     protected void moveRandomlyTurn(String logMe) {
-        Direction direction = null;
-        while ((direction = moveRandomly(logMe, direction)) != null);
-        getUnit().setMovesLeft(0);
+    	 Direction direction = null;
+         while ((moveRandomly(logMe, direction)) != null) {
+         	direction = moveRandomly(logMe, direction);
+         }
+         getUnit().setMovesLeft(0);
     }
 
     /**

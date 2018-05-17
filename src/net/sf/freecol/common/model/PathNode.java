@@ -225,8 +225,10 @@ public class PathNode {
      * @return The first <code>PathNode</code>.
      */
     public PathNode getFirstNode() {
-        PathNode path;
-        for (path = this; path.previous != null; path = path.previous);
+        PathNode path = this;
+        while(path.previous != null) {
+        	path = path.previous;
+        }
         return path;
     }
 
@@ -236,8 +238,10 @@ public class PathNode {
      * @return The last <code>PathNode</code>.
      */
     public PathNode getLastNode() {
-        PathNode path;
-        for (path = this; path.next != null; path = path.next);
+    	PathNode path = this;
+        while(path.next != null) {
+        	path = path.next;
+        }
         return path;
     }
 
